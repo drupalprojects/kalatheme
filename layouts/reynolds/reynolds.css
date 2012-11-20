@@ -1,0 +1,36 @@
+/**
+ * @file
+ * Brenham Flipped panel layout
+**/
+
+.reynolds-container {
+  margin-bottom: 1em;
+}
+
+.reynolds-sidebar {
+  min-height: 1px;
+  width: 31.915%;
+  float: left;
+}
+
+.reynolds-content {
+  width: 68.085%;
+  float: left;
+}
+
+  .reynolds-content-inner {
+    margin-right: 20px;
+  }
+  
+/* iPhone [portrait + landscape] */
+@media only screen and (max-width: 480px) {
+  .reynolds-content,
+  .reynolds-sidebar {
+    width: 100%;
+    float: none;
+  }
+  
+  .reynolds-content-inner {
+    margin-right: 0;
+  }
+}

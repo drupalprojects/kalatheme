@@ -1,0 +1,35 @@
+/**
+ * @file
+ * mcbryan panel layout
+**/
+
+.mcbryan-column {
+  min-height: 1px;
+  width: 34.043%;
+  float: left;
+}
+
+  .mcbryan-column-inner {
+    margin-right: 20px;
+  }
+
+  .mcbryan-column3,
+  .mcbryan-secondary-column3 {
+    min-height: 1px;
+    width: 31.915%;
+    margin-right: 0;
+  }
+  
+/* iPhone [portrait + landscape] */
+@media only screen and (max-width: 480px) {
+  .mcbryan-column,
+  .mcbryan-column3,
+  .mcbryan-secondary-column3 {
+    width: 100%;
+    float: none;
+  }
+  
+  .mcbryan-column-inner  {
+    margin-right: 0;
+  }
+}

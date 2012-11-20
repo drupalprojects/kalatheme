@@ -35,3 +35,10 @@ xmlrpc.php
 /profiles
 /scripts
 /themes
+
+# Eclipse & Mac
+.project
+.buildpath
+._*
+.DS_Store
+.settings/*

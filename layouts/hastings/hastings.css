@@ -1,0 +1,39 @@
+/**
+ * @file
+ * hastings panel layout
+**/
+
+.hastings-container {
+  margin-bottom: 1em;
+}
+
+.hastings-column {
+  min-height: 1px;
+  width: 34.043%;
+  float: left;
+}
+
+  .hastings-column-inner {
+    margin-right: 20px;
+  }
+
+  .hastings-column3,
+  .hastings-secondary-column3 {
+    min-height: 1px;
+    width: 31.915%;
+    margin-right: 0;
+  }
+  
+/* iPhone [portrait + landscape] */
+@media only screen and (max-width: 480px) {
+  .hastings-column,
+  .hastings-column3,
+  .hastings-secondary-column3 {
+    width: 100%;
+    float: none;
+  }
+  
+  .hastings-column-inner  {
+    margin-right: 0;
+  }
+}

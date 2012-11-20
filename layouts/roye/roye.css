@@ -1,0 +1,41 @@
+/**
+ * @file
+ * Brenham Flipped panel layout
+**/
+
+.roye-container {
+  margin-bottom: 1em;
+}
+
+.roye-main {
+  position: relative;
+  top: -40px;
+}
+
+.roye-sidebar {
+  min-height: 1px;
+  float: left;
+  width: 50%;
+}
+
+.roye-content {
+  float: left;
+  width: 50%;
+}
+
+  .roye-content-inner {
+    margin-right: 20px;
+  }
+  
+/* iPhone [portrait + landscape] */
+@media only screen and (max-width: 480px) {
+  .roye-content,
+  .roye-sidebar {
+    width: 100%;
+    float: none;
+  }
+  
+  .roye-content-inner {
+    margin-right: 0;
+  }
+}
