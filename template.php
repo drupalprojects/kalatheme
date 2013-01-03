@@ -38,6 +38,14 @@ function kalatheme_process_html(&$variables) {
 }
 
 /**
+ * Implements template_preprocess_page().
+ */
+function kalatheme_preprocess_page(&$variables) {
+  //Add what we need from Bootstrap
+  _kalatheme_add_bootstrap_css();
+}
+
+/**
  * Override or insert variables into the page template.
  */
 function kalatheme_process_page(&$variables) {
@@ -421,6 +429,25 @@ function _kalatheme_messages_purr($type, $messages) {
 
 
 /**
+ * Adds the Bootstrap CSS that Kalatheme needs for every page
+ */
+function _kalatheme_add_bootstrap_css() {
+  $bootstrap_files = array(
+    'reset.css', 'scaffolding.css', 'grid.css', 'layouts.css', 'type.css',
+    'forms.css', 'tables.css', 'sprites.css', 'wells.css', 'buttons.css',
+    'alerts.css', 'navs.css', 'navbar.css', 'thumbnails.css', 'media.css',
+    'hero-unit.css', 'utilities.css', 'responsive.css',
+  );
+  $bootstrap_css_path = libraries_get_path('bootstrap') . '/css/';
+  foreach ($bootstrap_files as $file) {
+    drupal_add_css($bootstrap_css_path . $file, array(
+      'every_page' => TRUE,
+    ));
+  }
+}
+
+
+/**
  * Return a themed set of status and/or error messages. The messages are grouped
  * by type.
  *
@@ -451,4 +478,17 @@ function theme_original_status_messages($vars) {
   }
   $output .= "</div>\n";
   return $output;
+}
+
+/**
+ * Implements hook_libraries_info()
+ */
+function kalatheme_libraries_info() {
+  return array(
+    'bootstrap' => array(
+      'name' => 'Twitter Bootstrap',
+      'vendor url' => 'http://twitter.github.com',
+      'download url' => 'https://github.com/twitter/bootstrap/tarball/v2.0.3',
+    ),
+  );
 }
