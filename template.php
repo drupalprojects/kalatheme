@@ -42,7 +42,7 @@ function kalatheme_process_html(&$variables) {
  */
 function kalatheme_preprocess_page(&$variables) {
   //Add what we need from Bootstrap
-  _kalatheme_add_bootstrap_css();
+  _kalatheme_add_bootstrap();
 }
 
 /**
@@ -429,18 +429,30 @@ function _kalatheme_messages_purr($type, $messages) {
 
 
 /**
- * Adds the Bootstrap CSS that Kalatheme needs for every page
+ * Adds the Bootstrap CSS & JS that Kalatheme needs for every page
  */
-function _kalatheme_add_bootstrap_css() {
-  $bootstrap_files = array(
+function _kalatheme_add_bootstrap() {
+  $bootstrap_path = libraries_get_path('bootstrap');
+  //Add CSS
+  $bootstrap_css = array(
     'reset.css', 'scaffolding.css', 'grid.css', 'layouts.css', 'type.css',
     'forms.css', 'tables.css', 'sprites.css', 'wells.css', 'buttons.css',
     'alerts.css', 'navs.css', 'navbar.css', 'thumbnails.css', 'media.css',
     'hero-unit.css', 'utilities.css', 'responsive.css',
   );
-  $bootstrap_css_path = libraries_get_path('bootstrap') . '/css/';
-  foreach ($bootstrap_files as $file) {
-    drupal_add_css($bootstrap_css_path . $file, array(
+  $bootstrap_css_path = $bootstrap_path . '/css/';
+  foreach ($bootstrap_css as $css) {
+    drupal_add_css($bootstrap_css_path . $css, array(
+      'every_page' => TRUE,
+    ));
+  }
+  //Add JS
+  $bootstrap_js = array(
+    'bootstrap-collapse.js',
+  );
+  $bootstrap_js_path = $bootstrap_path . '/js/';
+  foreach ($bootstrap_js as $js) {
+    drupal_add_js($bootstrap_js_path . $js, array(
       'every_page' => TRUE,
     ));
   }
