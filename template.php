@@ -5,6 +5,9 @@ function kalatheme_preprocess_html(&$variables) {
   // Add variables for path to theme.
   $variables['base_path'] = base_path();
   $variables['path_to_kalatheme'] = drupal_get_path('theme', 'kalatheme');
+  
+  //Add what we need from Bootstrap
+  _kalatheme_add_bootstrap();
 }
 
 /**
@@ -15,14 +18,6 @@ function kalatheme_process_html(&$variables) {
   if (module_exists('color')) {
     _color_html_alter($variables);
   }
-}
-
-/**
- * Implements template_preprocess_page().
- */
-function kalatheme_preprocess_page(&$variables) {
-  //Add what we need from Bootstrap
-  _kalatheme_add_bootstrap();
 }
 
 /**
@@ -329,23 +324,45 @@ function kalatheme_links__system_main_menu($variables) {
  */
 function _kalatheme_add_bootstrap() {
   $bootstrap_path = libraries_get_path('bootstrap');
-  //Add CSS
+  // Add CSS
+  
+  // Maybe figure out how to integrate this more granular source later?
+  /**
   $bootstrap_css = array(
     'reset.css', 'scaffolding.css', 'grid.css', 'layouts.css', 'type.css',
     'forms.css', 'tables.css', 'sprites.css', 'wells.css', 'buttons.css',
     'alerts.css', 'navs.css', 'navbar.css', 'thumbnails.css', 'media.css',
     'hero-unit.css', 'utilities.css', 'responsive.css',
   );
+  **/
+  
+  $bootstrap_css = array(
+      'bootstrap.min.css',
+  );
+ 
+  
   $bootstrap_css_path = $bootstrap_path . '/css/';
   foreach ($bootstrap_css as $css) {
     drupal_add_css($bootstrap_css_path . $css, array(
       'every_page' => TRUE,
+      'group' => CSS_THEME,
     ));
   }
-  //Add JS
+  
+  // Add JS
+  
+  // Maybe figure out similar granularity for loading JS later ?
+  /**
   $bootstrap_js = array(
     'bootstrap-collapse.js',
   );
+  **/
+  
+  $bootstrap_js = array(
+    'bootstrap.min.js',
+    'group' => JS_THEME,
+  );
+  
   $bootstrap_js_path = $bootstrap_path . '/js/';
   foreach ($bootstrap_js as $js) {
     drupal_add_js($bootstrap_js_path . $js, array(
