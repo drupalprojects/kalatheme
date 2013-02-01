@@ -1,30 +1,10 @@
 <?php
 
-/**
- * Constants
- */
-// Define a default fade in speed.
-define('PURR_FADE_IN', 1200);
-// Define a default fade out speed.
-define('PURR_FADE_OUT', 2000);
-// Define a default timeout speed.
-define('PURR_TIMER', 5000);
-// Show this notice on every page except the listed pages.
-define('PURR_VISIBILITY_NOTLISTED', 0);
-// Show this notice on only the listed pages.
-define('PURR_VISIBILITY_LISTED', 1);
-// Show this notice if the associated PHP code returns TRUE.
-define('PURR_VISIBILITY_PHP', 2);
-// Which DOM element to attach to.
-define('PURR_ATTACH_TO', 'body');
-// Whether notices should be sticky or not.
-define('PURR_STICKY', FALSE);
 
 function kalatheme_preprocess_html(&$variables) {
   // Add variables for path to theme.
   $variables['base_path'] = base_path();
   $variables['path_to_kalatheme'] = drupal_get_path('theme', 'kalatheme');
-  $variables['classes_array'][] = 'theme-pattern-lightmesh';
 }
 
 /**
@@ -345,90 +325,6 @@ function kalatheme_links__system_main_menu($variables) {
 }
 
 /**
- * 
- * @param unknown $variables
- * @return string
- */
-function kalatheme_status_messages($variables) {
-  $display = $variables['display'];
-  $output = '';
-  $purr = NULL;
-  foreach (drupal_get_messages($display) as $type => $messages) {
-    $purr[] = _kalatheme_messages_purr($type, array_unique($messages));
-  }
-  $theme_path = drupal_get_path('theme', 'kalatheme');
-  drupal_add_css($theme_path . '/css/messages.css');
-
-  if ($purr) {
-    // Add the purr js
-    drupal_add_js($theme_path . '/js/jquery.timer.js');
-    drupal_add_js($theme_path . '/js/jquery.purr.js');
-    // Add the settings
-    $settings = array(
-      'fadeInSpeed' => variable_get('purr_messages_fade_in', PURR_FADE_IN),
-      'fadeOutSpeed' => variable_get('purr_messages_fade_out', PURR_FADE_OUT),
-      'removeTimer' => variable_get('purr_messages_timer', PURR_TIMER),
-      'pauseOnHover' => variable_get('purr_messages_hover', TRUE) ? TRUE : FALSE,
-      'usingTransparentPNG' => variable_get('purr_messages_transparent', TRUE) ? TRUE : FALSE,
-      'attachTo' => variable_get('purr_messages_attachto', PURR_ATTACH_TO),
-      'sticky' => variable_get('purr_messages_sticky', PURR_STICKY),
-    );
-    drupal_add_js(array('purr_messages' => $settings), 'setting');
-    $output .= "<script type=\"text/javascript\">";
-    $output .= "(function($) {\nDrupal.behaviors.purr_messages = {\n
-      attach: function(context) {\n if ($('#purr-container').length == 0) { \nvar notice = ";
-    foreach ($purr as $purr_message) {
-      $script[] = $purr_message['script'];
-    }
-    $script = array_unique($script);
-    $output .= implode(' + ', $script);
-    $output .= "$(notice).purr();";
-    // Finish off the script.
-    $output .= "\n}\n}\n}\n})(jQuery);</script>\n";
-    $output .= "<noscript>\n";
-    foreach ($purr as $purr_message) {
-      $output .= $purr_message['noscript'];
-    }
-    $output .= "</noscript>\n";
-  }
-  return $output;
-}
-
-
-/**
- * Builds and returns the formatted purr message code
- *
- * @param $type
- *   String containing a message type. Used to set the class on the message div.
- *
- * @param $messages
- *   An array, each containing a message.
- *
- * @return array A string containing the formatted messages.
- */
-function _kalatheme_messages_purr($type, $messages) {
-  $script = '';
-  $pattern = array("\r\n", "\r", "\n", "\t");
-  $script .= "'<div class=\"notice $type\">'\n + '<div class=\"notice-body\">'";
-  if (count($messages) > 1) {
-    $script .= "+ '<ul>'\n";
-    foreach ($messages as $message) {
-      $script .= "+  '<li>" . str_replace($pattern, ' ', addslashes($message)) . "</li>'\n";
-    }
-    $script .= "+ '</ul>'\n";
-  }
-  else {
-    $script .= "\n+ '" . str_replace($pattern, ' ', addslashes($messages[0])) . "'\n";
-  }
-  $script .= "+ '</div>'\n + '<div class=\"notice-bottom\">'\n +
-    '</div>' + '</div>'\n";
-  $output['script'] = $script;
-  $output['noscript'] = theme('original_status_messages', array('type' => $type, 'messages' => $messages));
-  return $output;
-}
-
-
-/**
  * Adds the Bootstrap CSS & JS that Kalatheme needs for every page
  */
 function _kalatheme_add_bootstrap() {
@@ -456,40 +352,6 @@ function _kalatheme_add_bootstrap() {
       'every_page' => TRUE,
     ));
   }
-}
-
-
-/**
- * Return a themed set of status and/or error messages. The messages are grouped
- * by type.
- *
- * This is the original output which we use if purr messages is turned off.
- *
- * @param $vars
- *
- * @internal param $type String containing a message type. Used to set the class on the message div.
- *
- * @internal param $messages An array, each containing a message.
- *
- * @return string A string containing the formatted messages.
- */
-function theme_original_status_messages($vars) {
-  $type = $vars['type'];
-  $messages = $vars['messages'];
-  $output = '';
-  $output .= "<div class=\"messages $type\">\n";
-  if (count($messages) > 1) {
-    $output .= " <ul>\n";
-    foreach ($messages as $message) {
-      $output .= '  <li>' . $message . "</li>\n";
-    }
-    $output .= " </ul>\n";
-  }
-  else {
-    $output .= $messages[0];
-  }
-  $output .= "</div>\n";
-  return $output;
 }
 
 /**

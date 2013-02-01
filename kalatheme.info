@@ -3,13 +3,6 @@ description = A flexible, responsive and mobile-first layout built on Panopoly.
 version = VERSION
 core = 7.x
 
-stylesheets[screen][] = css/bootstrap.css
-stylesheets[screen][] = css/font-awesome.css
-stylesheets[screen][] = css/fonts.css
-stylesheets[screen][] = css/responsive.css
-stylesheets[screen][] = css/theme.css
-stylesheets[screen][] = css/custom.css
-
 features[] = logo
 ;features[] = name
 features[] = slogan
@@ -19,7 +12,5 @@ features[] = slogan
 features[] = favicon
 features[] = main_menu
 features[] = secondary_menu
-
-scripts[] = js/bootstrap.js
 
 plugins[panels][layouts] = layouts
