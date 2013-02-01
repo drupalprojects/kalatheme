@@ -337,7 +337,7 @@ function _kalatheme_add_bootstrap() {
   **/
   
   $bootstrap_css = array(
-      'bootstrap.min.css',
+    'bootstrap.min.css', 'bootstrap-responsive.min.css'
   );
  
   
