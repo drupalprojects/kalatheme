@@ -1,0 +1,39 @@
+/**
+ * @file
+ * wooten panel layout
+**/
+
+.wooten-container {
+  margin-bottom: 1em;
+}
+
+.wooten-column {
+  min-height: 1px;
+  width: 34.043%;
+  float: left;
+}
+
+  .wooten-column-inner {
+    margin-right: 20px;
+  }
+
+  .wooten-column3,
+  .wooten-secondary-column3 {
+    min-height: 1px;
+    width: 31.915%;
+    margin-right: 0;
+  }
+  
+/* iPhone [portrait + landscape] */
+@media only screen and (max-width: 480px) {
+  .wooten-column,
+  .wooten-column3,
+  .wooten-secondary-column3 {
+    width: 100%;
+    float: none;
+  }
+  
+  .wooten-column-inner  {
+    margin-right: 0;
+  }
+}

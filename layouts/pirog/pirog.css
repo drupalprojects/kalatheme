@@ -1,0 +1,39 @@
+/**
+ * @file
+ * pirog panel layout
+**/
+
+.pirog-container {
+  margin-bottom: 1em;
+}
+
+.pirog-column {
+  min-height: 1px;
+  width: 34.043%;
+  float: left;
+}
+
+  .pirog-column-inner {
+    margin-right: 20px;
+  }
+
+  .pirog-column3,
+  .pirog-secondary-column3 {
+    min-height: 1px;
+    width: 31.915%;
+    margin-right: 0;
+  }
+  
+/* iPhone [portrait + landscape] */
+@media only screen and (max-width: 480px) {
+  .pirog-column,
+  .pirog-column3,
+  .pirog-secondary-column3 {
+    width: 100%;
+    float: none;
+  }
+  
+  .pirog-column-inner  {
+    margin-right: 0;
+  }
+}
