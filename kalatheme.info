@@ -5,6 +5,8 @@ core = 7.x
 
 regions[content] = content
 
+stylesheets[screen][] = css/custom.css
+
 features[] = logo
 ;features[] = name
 features[] = slogan
