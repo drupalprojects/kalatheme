@@ -3,6 +3,8 @@ description = A flexible, responsive and mobile-first layout built on Panopoly a
 version = VERSION
 core = 7.x
 
+regions[content] = content
+
 features[] = logo
 ;features[] = name
 features[] = slogan
