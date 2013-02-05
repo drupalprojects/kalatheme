@@ -63,22 +63,13 @@
  *   associated with the page, and the node ID is the second argument
  *   in the page's path (e.g. node/12345 and node/12345/revisions, but not
  *   comment/reply/12345).
+ *   
+ * Kalatheme tweaks
+ * - $buffer: provides a buffer class on non-panels pages
+ * - $kala_contain: wraps Page Main with bootstrap container class on non-panels pages 
  *
  * Regions:
- * - $page['header']: Items for the header region.
- * - $page['featured']: Items for the featured region.
- * - $page['highlighted']: Items for the highlighted content region.
- * - $page['help']: Dynamic help text, mostly for admin pages.
  * - $page['content']: The main content of the current page.
- * - $page['sidebar_first']: Items for the first sidebar.
- * - $page['triptych_first']: Items for the first triptych.
- * - $page['triptych_middle']: Items for the middle triptych.
- * - $page['triptych_last']: Items for the last triptych.
- * - $page['footer_firstcolumn']: Items for the first footer column.
- * - $page['footer_secondcolumn']: Items for the second footer column.
- * - $page['footer_thirdcolumn']: Items for the third footer column.
- * - $page['footer_fourthcolumn']: Items for the fourth footer column.
- * - $page['footer']: Items for the footer region.
  *
  * @see template_preprocess()
  * @see template_preprocess_page()
