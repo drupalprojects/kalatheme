@@ -63,10 +63,6 @@
  *   associated with the page, and the node ID is the second argument
  *   in the page's path (e.g. node/12345 and node/12345/revisions, but not
  *   comment/reply/12345).
- *   
- * Kalatheme tweaks
- * - $buffer: provides a buffer class on non-panels pages
- * - $kala_contain: wraps Page Main with bootstrap container class on non-panels pages 
  *
  * Regions:
  * - $page['content']: The main content of the current page.
@@ -152,11 +148,11 @@
   </header>
     
   <!-- Page Main -->
-  <div id="main-wrapper" class="clearfix"><div id="main" class="clearfix <?php if (isset($kala_contain)) { print $kala_contain; } ?>">
+  <div id="main-wrapper" class="clearfix"><div id="main" class="clearfix">
     
     <?php // print $breadcrumb; ?>
 
-    <div id="content" class="column <?php if (isset($buffer)) { print $buffer; } ?>">
+    <div id="content" class="column container">
       <a id="main-content"></a>
 
       <?php print render($page['content']); ?>
