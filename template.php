@@ -6,8 +6,20 @@ function kalatheme_preprocess_html(&$variables) {
   $variables['base_path'] = base_path();
   $variables['path_to_kalatheme'] = drupal_get_path('theme', 'kalatheme');
   
-  //Add what we need from Bootstrap
-  _kalatheme_add_bootstrap();
+  // Add what we need from Bootstrap
+  if (module_exists('panopoly_core')) {
+    if (($library = libraries_detect('bootstrap')) && !empty($library['installed'])) {
+      libraries_load('bootstrap', 'minified');
+    }
+    else {
+      // Something went wrong. :(
+      // This contains a detailed (localized) error message.
+      drupal_set_message(t($library['error message']), 'error');
+    }
+  }
+  else {
+    drupal_set_message(t('You need panopoly for this to work.'), 'error');
+  }
 }
 
 /**
@@ -302,11 +314,11 @@ function kalatheme_links__system_main_menu($variables) {
       
       if (!empty($link['#below'])) {
         $output .= theme('links__system_main_menu', array(
-                    'links' => $link['#below'],
-                      'attributes' => array(
-                        'class' => array('dropdown-menu'),
-                      ),
-                  ));
+          'links' => $link['#below'],
+            'attributes' => array(
+              'class' => array('dropdown-menu'),
+            ),
+        ));
       }
 
       $i++;
@@ -320,66 +332,59 @@ function kalatheme_links__system_main_menu($variables) {
 }
 
 /**
- * Adds the Bootstrap CSS & JS that Kalatheme needs for every page
+ * Implements hook_libraries_info_alter()
  */
-function _kalatheme_add_bootstrap() {
-  $bootstrap_path = libraries_get_path('bootstrap');
-  // Add CSS
-  
-  // Maybe figure out how to integrate this more granular source later?
-  /**
-  $bootstrap_css = array(
-    'reset.css', 'scaffolding.css', 'grid.css', 'layouts.css', 'type.css',
-    'forms.css', 'tables.css', 'sprites.css', 'wells.css', 'buttons.css',
-    'alerts.css', 'navs.css', 'navbar.css', 'thumbnails.css', 'media.css',
-    'hero-unit.css', 'utilities.css', 'responsive.css',
-  );
-  **/
-  
-  $bootstrap_css = array(
-    'bootstrap.min.css', 'bootstrap-responsive.min.css'
-  );
- 
-  
-  $bootstrap_css_path = $bootstrap_path . '/css/';
-  foreach ($bootstrap_css as $css) {
-    drupal_add_css($bootstrap_css_path . $css, array(
-      'every_page' => TRUE,
-      'group' => CSS_THEME,
-    ));
-  }
-  
-  // Add JS
-  
-  // Maybe figure out similar granularity for loading JS later ?
-  /**
-  $bootstrap_js = array(
-    'bootstrap-collapse.js',
-  );
-  **/
-  
-  $bootstrap_js = array(
-    'bootstrap.min.js',
-    'group' => JS_THEME,
-  );
-  
-  $bootstrap_js_path = $bootstrap_path . '/js/';
-  foreach ($bootstrap_js as $js) {
-    drupal_add_js($bootstrap_js_path . $js, array(
-      'every_page' => TRUE,
-    ));
-  }
-}
-
-/**
- * Implements hook_libraries_info()
- */
-function kalatheme_libraries_info() {
-  return array(
-    'bootstrap' => array(
-      'name' => 'Twitter Bootstrap',
-      'vendor url' => 'http://twitter.github.com',
-      'download url' => 'https://github.com/twitter/bootstrap/tarball/v2.0.3',
+function kalatheme_libraries_info_alter(&$libraries)  {
+  $libraries['bootstrap'] = array(
+    'name' => 'Twitter Bootstrap',
+    'machine name' => 'bootstrap',
+    'vendor url' => 'http://twitter.github.com',
+    'download url' => 'http://twitter.github.com',
+    'path' => '',
+    'callbacks' => array(),
+    'version arguments' => array(
+      'file' => 'css/bootstrap.css',
+      'pattern' => '@v+([0-9a-zA-Z\.-]+)@',
+      'lines' => 5,
+      'cols' => 20,
     ),
+    'version callback' => 'libraries_get_version',
+    'versions' => array(
+      '2' => array(
+        'files' => array(
+          'js' => array(
+            'js/bootstrap.js',
+           ),
+          'css' => array(
+            'css/bootstrap.css',
+              'css/bootstrap-responsive.css',
+            ),
+          ),
+          'variants' => array(
+            'minified' => array(
+              'files' => array(
+                'js' => array(
+                  'js/bootstrap.min.js',
+                ),
+                'css' => array(
+                  'css/bootstrap.min.css',
+                  'css/bootstrap-responsive.min.css',
+                ),
+              ),
+            'variant arguments' => array(
+              'variant' => 'minified',
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  $libraries['bootstrap']['callbacks'] += array(
+    'info' => array(),
+    'pre-detect' => array(),
+    'post-detect' => array(),
+    'pre-load' => array(),
+    'post-load' => array(),
   );
 }
