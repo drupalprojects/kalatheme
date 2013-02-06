@@ -5,7 +5,7 @@ core = 7.x
 
 regions[content] = content
 
-stylesheets[screen][] = css/custom.css
+stylesheets[screen][] = css/tweaks.css
 
 features[] = logo
 ;features[] = name
