@@ -1,5 +1,12 @@
 <?php
 
+function kalatheme_theme($existing, $type, $theme, $path){ 
+  return array(
+    'menu_local_actions' => array(
+      'variables' => array('menu_actions' => NULL, 'attributes' => NULL),
+    ),
+  );
+}
 
 function kalatheme_preprocess_html(&$variables) {
   // Add variables for path to theme.
@@ -43,6 +50,24 @@ function kalatheme_process_html(&$variables) {
  * Override or insert variables into the page template.
  */
 function kalatheme_process_page(&$variables) {
+  $dropdown_attributes = array(
+    'container' => array(
+      'class' => array('dropdown', 'actions', 'pull-right'),
+    ),
+    'toggle' => array(
+      'class' => array('dropdown-toggle', 'enabled'), 
+      'data-toggle' => array('dropdown'), 
+      'href' => array('#') 
+    ),
+    'content' => array(
+      'class' => array('dropdown-menu'),
+    ), 
+  );  
+
+  //Add local actions as the last item in the local tasks
+  $variables['tabs']['#primary'][]['#markup'] = theme('menu_local_actions', array('menu_actions' => $variables['action_links'], 'attributes' => $dropdown_attributes));
+  $variables['action_links'] = FALSE;
+  
   // Get the entire main menu tree
   $main_menu_tree = array();
   $main_menu_tree = menu_tree_all_data('main-menu', NULL, 2);
@@ -440,6 +465,94 @@ function kalatheme_libraries_info_alter(&$libraries)  {
 }
 
 /**
+ * Returns HTML for primary and secondary local tasks.
+ */
+function kalatheme_menu_local_tasks(&$variables) {
+  $output = '';
+
+  if ( !empty($variables['primary']) ) {
+    $variables['primary']['#prefix'] = '<h2 class="element-invisible">' . t('Primary tabs') . '</h2>';
+    $variables['primary']['#prefix'] = '<ul class="nav nav-pills">';
+    $variables['primary']['#suffix'] = '</ul>';
+    $output .= drupal_render($variables['primary']);
+  }
+
+  if ( !empty($variables['secondary']) ) {
+    $variables['primary']['#prefix'] = '<h2 class="element-invisible">' . t('Primary tabs') . '</h2>';
+    $variables['secondary']['#prefix'] = '<ul class="nav nav-pills">';
+    $variables['secondary']['#suffix'] = '</ul>';
+    $output .= drupal_render($variables['secondary']);
+  }
+  return $output;
+}
+
+/**
+ * HTML for individual local task links
+ */
+function kalatheme_menu_local_task($variables){
+  $link = $variables['element']['#link'];
+  $link_text = $link['title'];
+  $classes = array();
+
+  if (!empty($variables['element']['#active'])) {
+    // Add text to indicate active tab for non-visual users.
+    $active = '<span class="element-invisible">' . t('(active tab)') . '</span>';
+
+    // If the link does not contain HTML already, check_plain() it now.
+    // After we set 'html'=TRUE the link will not be sanitized by l().
+    if (empty($link['localized_options']['html'])) {
+      $link['title'] = check_plain($link['title']);
+    }
+    $link['localized_options']['html'] = TRUE;
+    $link_text = t('!local-task-title!active', array('!local-task-title' => $link['title'], '!active' => $active));
+
+    $classes[] = 'active';
+  }
+
+  return '<li class="' . implode(' ', $classes) . '">' . l($link_text, $link['href'], $link['localized_options']) . "</li>\n";
+}
+
+/**
+ * HTML for all local actions (rendered as dropdown)
+ */
+function kalatheme_menu_local_actions($variables){
+  $container_attributes = isset($variables['attributes']['container']) ? drupal_attributes($variables['attributes']['container']) : FALSE;
+  $toggle_attributes = isset($variables['attributes']['toggle']) ? drupal_attributes($variables['attributes']['toggle']) : FALSE;
+  $content_attributes = isset($variables['attributes']['content']) ? drupal_attributes($variables['attributes']['content']) : FALSE;
+
+  //Render the dropdown
+  $output = $container_attributes ?  '<li' . $container_attributes . '>' : '<li>';
+  $output .= $toggle_attributes ?  '<a' . $toggle_attributes . '><i class="icon-wrench"></i> Actions <b class="caret"></b></a>' : '<a>Actions <b class="caret"></b></a>'; 
+  $output .= $content_attributes ? '<ul' . $content_attributes . '>' : '<ul>';
+  $output .= drupal_render($variables['menu_actions']);
+  $output .= '</ul>';
+  $output .= '</li>';
+  
+  return $output;
+}
+
+/**
+ * HTML for individual local actions
+ */
+function kalatheme_menu_local_action($variables){
+  $link = $variables['element']['#link'];
+
+  $output = '<li>';
+  if (isset($link['href'])) {
+    $output .= l($link['title'], $link['href'], isset($link['localized_options']) ? $link['localized_options'] : array());
+  }
+  elseif (!empty($link['localized_options']['html'])) {
+    $output .= $link['title'];
+  }
+  else {
+    $output .= check_plain($link['title']);
+  }
+  $output .= "</li>\n";
+
+  return $output;
+}
+
+/**
  * Checks if Bootstrap's responsive CSS is installed
  *
  * @param array $variant
@@ -460,3 +573,4 @@ function kalatheme_check_responsive(&$variant, $version, $variant_name) {
     }
   }
 }
+

@@ -128,13 +128,6 @@
                 )); ?>
             <?php endif; ?>
             
-            <?php if ($tabs): ?>
-                <?php print render($tabs); ?>
-            <?php endif; ?>
-            
-            <?php if ($action_links): ?>
-                <?php print render($action_links); ?>
-            <?php endif; ?>
           </div>    
           
         </div>
@@ -149,6 +142,13 @@
 
     <div id="content" class="column container">
       <a id="main-content"></a>
+      <?php if ($tabs): ?>
+          <?php print render($tabs); ?>
+      <?php endif; ?>
+      
+      <?php if ($action_links): ?>
+          <?php print render($action_links); ?>
+      <?php endif; ?>
 
       <?php if ($messages): ?>
         <div id="messages"><div class="section clearfix">
