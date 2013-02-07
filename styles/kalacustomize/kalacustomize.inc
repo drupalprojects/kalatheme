@@ -8,9 +8,7 @@
 $plugin = array(
   'title' => t('Kalacustomize'),
   'description' => t('Customize elements, visbility and classes with Twitter Bootstrap'),
-  'render region' => 'kalatheme_kalacustomize_render_region',
   'render pane' => 'kalatheme_kalacustomize_render_pane',
-  'settings form' => 'kalatheme_kalacustomize_region_settings_form',
   'pane settings form' => 'kalatheme_kalacustomize_pane_settings_form',
   'weight' => 100,
 );
@@ -43,27 +41,7 @@ function theme_kalatheme_kalacustomize_render_pane($vars) {
 }
 
 /**
- * Theme function for the region style.
- */
-function theme_kalatheme_kalacustomize_render_region($vars) {
-  $content = $vars['panes'];
-  $settings = $vars['settings'];
-
-  $output = theme('panels_default_style_render_region', $vars);
-
-  if (!empty($output)) {
-    $content_wrapper = _panels_extra_styles_wrapper_wrap(!empty($settings['content']) ? $settings['content'] : array());
-    $output
-      = $content_wrapper['prefix'] .
-        $output .
-        $content_wrapper['suffix'];
-  }
-
-  return $output;
-}
-
-/**
- * Some responsive options
+ * Some options
  */
 function kalatheme_kalacustomize_pane_settings_form($style_settings) {
   
@@ -80,6 +58,12 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
     '#title' => t('Title'),
     '#description' => t('HTML element to wrap around the title.'),
   ) + _kalatheme_wrapper_element_options($element_default_value);
+  
+  $attribute_default_value = isset($style_settings['title']['attributes']) ? $style_settings['title']['attributes'] : array();
+  $form['title']['attributes'] = array(
+      '#title' => t('Title Style'),
+      '#description' => t('Style to use for this element.'),
+  ) + _kalatheme_wrapper_attribute_options($attribute_default_value);
 
   // Content form items, grabbed from the region settings.
   $form += kalatheme_kalacustomize_region_settings_form($style_settings);
@@ -91,12 +75,17 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
  * Region settings form callback.
  */
 function kalatheme_kalacustomize_region_settings_form($style_settings) {
-  // Content.
   $element_default_value = isset($style_settings['content']['element']) ? $style_settings['content']['element'] : '';
   $form['content']['element'] = array(
       '#title' => t('Content'),
       '#description' => t('HTML element to wrap around the content.'),
   ) + _kalatheme_wrapper_element_options($element_default_value);
+
+  $attribute_default_value = isset($style_settings['content']['attributes']) ? $style_settings['content']['attributes'] : array();
+  $form['content']['attributes'] = array(
+      '#title' => t('Content Style'),
+      '#description' => t('Style to use for this element.'),
+  ) + _kalatheme_wrapper_attribute_options($attribute_default_value);
 
   return $form;
 }
@@ -106,8 +95,8 @@ function kalatheme_kalacustomize_region_settings_form($style_settings) {
  */
 function _kalatheme_wrapper_element_options($default_value = '') {
   $options = array(
-      '#type' => 'select',
-      '#default_value' => $default_value,
+    '#type' => 'select',
+    '#default_value' => $default_value,
   );
 
   // Fallback element options, grabbed from View's defaults.
@@ -125,7 +114,35 @@ function _kalatheme_wrapper_element_options($default_value = '') {
       'p' => 'P',
       'strong' => 'STRONG',
       'em' => 'EM',
+      'small' => 'SMALL',
+      'blockquote' => 'BLOCKQUOTE',
+      'code' => 'CODE',
+      'pre' => 'PRE',
   ));
+
+  return $options;
+}
+
+/**
+ * Element options for settings forms.
+ */
+function _kalatheme_wrapper_attribute_options($default_value = '') {
+  $options = array(
+    '#type' => 'select',
+    '#default_value' => $default_value,
+  );
+
+  $options['#options'] = array(
+      '' => t('- Use default -'),
+      '0' => t('- None -'),
+      'lead' => 'LEAD BODY COPY',
+      'page-header' => 'PAGE HEADER',
+      'muted' => 'MUTED TEXT',
+      'text-warning' => 'WARNING TEXT',
+      'text-error' => 'ERROR TEXT',
+      'text-info' => 'INFO TEXT',
+      'text-success' => 'SUCCESS TEXT',
+  );
 
   return $options;
 }
@@ -141,11 +158,8 @@ function _kalatheme_wrapper_wrap($item = array()) {
   $wrap['attributes'] = NULL;
 
   if (!empty($item['attributes'])) {
-    foreach ($item['attributes'] as $key => $value) {
-      if (!empty($value)) {
-        $wrap['attributes'] .= " $key=\"$value\"";
-      }
-    }
+    $value = $item['attributes'];
+    $wrap['attributes'] .= " class=\"$value\"";
   }
 
   if (!empty($item['element']) && $item['element'] != 'no_wrapper') {
