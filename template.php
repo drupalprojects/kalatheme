@@ -351,7 +351,7 @@ function kalatheme_libraries_info_alter(&$libraries)  {
            ),
           'css' => array(
             'css/bootstrap.css',
-              'css/bootstrap-responsive.css',
+            'css/bootstrap-responsive.css',
             ),
           ),
           'variants' => array(
