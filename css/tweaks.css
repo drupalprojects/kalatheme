@@ -3,7 +3,7 @@
 }
 
 .navbar-fixed-top, .navbar-fixed-bottom {
-  z-index: 1000;
+  z-index: 999;
 }
 
 html.js input.form-autocomplete {
