@@ -6,10 +6,10 @@
  */
 
 $plugin = array(
-  'title' => t('Kalatheme Responsive'),
-  'description' => t('Leverage responsive Twitter Bootstrap classes'),
-  'render pane' => 'kalatheme_kalatheme_responsive_render_pane',
-  'pane settings form' => 'kalatheme_kalatheme_responsive_settings_form',
+  'title' => t('Twitter Bootstrap'),
+  'description' => t('Leverage popular bootstrap classes'),
+  'render pane' => 'kalatheme_twitter_bootstrap_render_pane',
+  'pane settings form' => 'kalatheme_twitter_bootstrap_settings_form',
   'weight' => 100,
 );
 
@@ -28,7 +28,7 @@ function theme_kalatheme_kalatheme_responsive_render_pane($vars) {
 /**
  * Some responsive options
  */
-function kalatheme_kalatheme_responsive_settings_form(&$form, &$form_state, $form_id) {
+function kalatheme_twitter_bootstrap_settings_form(&$form, &$form_state, $form_id) {
   // Create the responsive toggle form
   $form['devices'] = array(
     '#type' => 'checkboxes',
