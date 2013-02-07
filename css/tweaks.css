@@ -3,7 +3,7 @@
 }
 
 .navbar-fixed-top, .navbar-fixed-bottom {
-  z-index: 1000;
+  z-index: 999;
 }
 
 html.js input.form-autocomplete {
@@ -12,4 +12,8 @@ html.js input.form-autocomplete {
 
 #main-wrapper {
   margin-top: 120px;
+}
+
+#footerlower {
+  margin-top: 50px;
 }

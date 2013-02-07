@@ -16,7 +16,14 @@ function kalatheme_preprocess_html(&$variables) {
   // Add what we need from Bootstrap
   if (module_exists('panopoly_core')) {
     if (($library = libraries_detect('bootstrap')) && !empty($library['installed'])) {
-      libraries_load('bootstrap', 'minified');
+      $bootstrap_path = DRUPAL_ROOT . '/' . $library['library path'];
+      $variant = NULL;
+      $has_minified_css = file_exists($bootstrap_path . '/css/bootstrap.min.css');
+      $has_minified_js = file_exists($bootstrap_path . '/js/bootstrap.min.js');
+      if ($has_minified_css && $has_minified_js) {
+        $variant = 'minified';
+      }
+      libraries_load('bootstrap', $variant);
     }
     else {
       // Something went wrong. :(
@@ -423,7 +430,7 @@ function kalatheme_libraries_info_alter(&$libraries)  {
            ),
           'css' => array(
             'css/bootstrap.css',
-              'css/bootstrap-responsive.css',
+            'css/bootstrap-responsive.css',
             ),
           ),
           'variants' => array(
@@ -450,12 +457,15 @@ function kalatheme_libraries_info_alter(&$libraries)  {
     'info' => array(),
     'pre-detect' => array(),
     'post-detect' => array(),
-    'pre-load' => array(),
+    'pre-load' => array(
+      'kalatheme_check_responsive',
+    ),
     'post-load' => array(),
   );
 }
 
 /**
+<<<<<<< HEAD
  * Returns HTML for primary and secondary local tasks.
  */
 function kalatheme_menu_local_tasks(&$variables) {
@@ -541,5 +551,47 @@ function kalatheme_menu_local_action($variables){
   $output .= "</li>\n";
 
   return $output;
-  
+}
+
+/**
+ * Implements hook_form_alter()
+ */
+function kalatheme_form_alter(&$form, &$form_state, $form_id) { 
+  // Create the responsive toggle fieldset
+  if ($form_id == 'panels_edit_style_type_form' && $form_state['type'] == 'pane') {
+    $form['widget_responsive'] = array(
+      '#type' => 'fieldset',
+      '#title' => 'Visibility Settings',
+      '#collapsible' => FALSE,
+      '#weight' => 0,
+    );
+    // device information
+    $form['widget_responsive']['devices'] = array(
+      '#type' => 'checkboxes',
+      '#options' => drupal_map_assoc(array(t('Desktop'), t('Tablet'), t('Mobile'))),
+      '#title' => t('Show this pane on the following devices. By default it will show on all devices.'),
+    );
+  }
+}
+
+/**
+ * Checks if Bootstrap's responsive CSS is installed
+ *
+ * @param array $variant
+ *   Library, or one of its variants, to check
+ * @param $version
+ *   Library's version number, if applicable
+ * @param $variant_name
+ *   Name of current variant, if applicable
+ */
+function kalatheme_check_responsive(&$variant, $version, $variant_name) {
+  foreach ($variant['files']['css'] as $index => $css) {
+    if (!preg_match('/^css\/bootstrap\-responsive\.(?:min\.)?css$/', $css)) {
+      continue;
+    }
+    $css_path = DRUPAL_ROOT . '/' . $variant['library path'] . '/' . $css;
+    if (!file_exists($css_path)) {
+      unset($variant['files']['css'][$index]);
+    }
+  }
 }
