@@ -440,27 +440,6 @@ function kalatheme_libraries_info_alter(&$libraries)  {
 }
 
 /**
- * Implements hook_form_alter()
- */
-function kalatheme_form_alter(&$form, &$form_state, $form_id) { 
-  // Create the responsive toggle fieldset
-  if ($form_id == 'panels_edit_style_type_form' && $form_state['type'] == 'pane') {
-    $form['widget_responsive'] = array(
-      '#type' => 'fieldset',
-      '#title' => 'Visibility Settings',
-      '#collapsible' => FALSE,
-      '#weight' => 0,
-    );
-    // device information
-    $form['widget_responsive']['devices'] = array(
-      '#type' => 'checkboxes',
-      '#options' => drupal_map_assoc(array(t('Desktop'), t('Tablet'), t('Mobile'))),
-      '#title' => t('Show this pane on the following devices. By default it will show on all devices.'),
-    );
-  }
-}
-
-/**
  * Checks if Bootstrap's responsive CSS is installed
  *
  * @param array $variant

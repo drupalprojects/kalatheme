@@ -18,3 +18,4 @@ features[] = main_menu
 features[] = secondary_menu
 
 plugins[panels][layouts] = layouts
+plugins[panels][styles] = styles
