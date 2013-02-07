@@ -78,11 +78,6 @@
 ?>
 <div id="page-wrapper"><div id="page">
 
-  <?php if ($messages): ?>
-    <div id="messages"><div class="section clearfix element-invisible">
-      <?php print $messages; ?>
-    </div></div> <!-- /.section, /#messages -->
-  <?php endif; ?>
    
    <!-- Page Header -->
   <header id='masthead'>
@@ -154,6 +149,12 @@
 
     <div id="content" class="column container">
       <a id="main-content"></a>
+
+      <?php if ($messages): ?>
+        <div id="messages"><div class="section clearfix">
+          <?php print $messages; ?>
+        </div></div> <!-- /.section, /#messages -->
+      <?php endif; ?>
 
       <?php print render($page['content']); ?>
       
