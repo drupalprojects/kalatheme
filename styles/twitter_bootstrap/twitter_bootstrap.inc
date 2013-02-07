@@ -16,7 +16,7 @@ $plugin = array(
 /**
  * Theme function for the pane style.
  */
-function theme_kalatheme_kalatheme_responsive_render_pane($vars) {
+function theme_kalatheme_twitter_bootstrap_render_pane($vars) {
   $content = $vars['content'];
   $pane = $vars['pane'];
   $display = $vars['display'];
