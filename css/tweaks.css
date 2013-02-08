@@ -52,3 +52,7 @@ label.option {
 .media-list-thumbnails .form-type-checkbox {
   bottom: 0;
 }
+
+div#admin-toolbar.vertical {
+  z-index: 9999;
+}
