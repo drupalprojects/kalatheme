@@ -1,0 +1,522 @@
+/**
+ * Title and body styling
+ */
+#node-edit #edit-title {
+  font-size: 2em;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  *width: 98%; /* IE 7 and below, as far as I know */
+}
+
+#node-edit .form-item-title {
+  margin-bottom: 0;
+  padding-bottom: .25em;
+}
+
+#node-edit .form-item-title label {
+  display: none;
+}
+
+#node-edit #edit-body .form-type-textarea {
+  padding-top: .25em;
+}
+
+#node-edit #edit-body {
+  width: 100%;
+}
+
+/**
+ * Pathauto styling
+ */
+#node-edit .form-item-path-alias label {
+  float: left;
+  font-weight: 400;
+}
+
+#node-edit .form-item-path-alias {
+  margin-top: .25em;
+  margin-bottom: .25em;
+  padding: 0;
+  font-size: .8em;
+  vertical-align: middle;
+  min-height: 1.2em;
+}
+
+#node-edit .form-item-path-alias input {
+  margin-left: 4px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#node-edit .form-item-path-pathauto {
+  display: none;
+}
+
+/**
+ * Publishing styling
+ */
+#node-edit .form-item-machine-name label, 
+#node-edit .form-item-date label, 
+#node-edit .form-item-name label {
+  float: left;
+  font-weight: 400;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+/**
+ * Menu Styling
+ */
+#node-edit .pane-node-form-menu .form-item-menu-parent label,
+#node-edit .pane-node-form-menu .form-item-menu-link-title label {
+  float: left;
+  margin-right: 4px;
+  font-weight: normal;
+  width: 49px;
+}
+
+/**
+ * Featured Category Styling
+ */
+#node-edit .field-name-field-featured-categories>.form-item-field-featured-categories-und>label {
+  display: none;
+}
+
+/**
+ * Featured Image Styling
+ */
+#node-edit .pane-node-field-featured-image h2 {
+  margin-top: 5px;
+}
+
+#node-edit .form-item-field-featured-image-und-0-alt label {
+  font-weight: normal;
+  float: left;
+  margin: 4px 10px 0 0;
+}
+
+#node-edit #edit-field-featured-image-und-0-alt {
+  width: 180px;
+}
+
+#node-edit #edit-field-featured-image .form-item-field-featured-image-und-0 > label, 
+#node-edit .form-item-field-featured-image-und-0-alt .description {
+  display: none;
+}
+
+#node-edit .field-name-field-featured-image .image-preview img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 0; /* Overrides Bartik's default margin, which is too much */
+}
+
+#node-edit .field-name-field-featured-image div.image-widget-data {
+  float: none;
+}
+
+#node-edit .field-name-field-featured-image .image-widget-data img {
+  margin-bottom: 0;
+}
+  
+#node-edit .field-name-field-featured-image .image-widget-data span.file {
+  width: 65%;
+  margin-right: 5%;
+  float: left;
+  margin-top: 5px;
+}
+  
+#node-edit .field-name-field-featured-image .image-widget-data img {
+  margin-bottom: 0;
+}
+  
+#node-edit .field-name-field-featured-image .image-widget-data span.file-size {
+  display: none;
+}
+  
+#node-edit .field-name-field-featured-image .image-widget-data input#edit-field-featured-image-und-0-remove-button {
+  max-width: 28%
+}
+  
+#node-edit .field-name-field-featured-image .image-widget-data div.form-item {
+  clear: both;
+  margin-top: .75em;
+  margin-bottom: .25em;
+}
+  
+#node-edit .field-name-field-featured-image .image-preview {
+  width: 100%;
+}
+
+#node-edit .form-item-field-featured-image-und-0 > label {
+  display: none;
+}
+
+/** 
+ * Date/Time Styling
+ */
+#node-edit .container-inline-date > .form-item {
+  border: 0;
+  margin: 0;
+}
+
+#node-edit .container-inline-date .date-padding {
+  float: none;
+  padding: 0;
+}
+
+#node-edit .container-inline-date .form-item-date-time, 
+#node-edit .container-inline-date .form-item-date-date {
+  padding-bottom: 1em;
+}
+
+#node-edit .container-inline-date .form-item-date-time {
+  clear: left;
+}
+
+#node-edit .form-item-date-time label, 
+#node-edit .form-item-date-date label, 
+#node-edit .form-item-name label {
+  width: 49px;
+}
+
+#node-edit .container-inline-date .form-item-date-date .description, 
+#node-edit .container-inline-date .form-item-date-time .description {
+  display: none;
+}
+
+/**
+ * Media Styles
+ */
+#media-browser-page {
+  background: transparent;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  padding: 0;
+}
+
+#media-browser-page .content {
+  margin-top: 0px;
+}
+
+ul#media-browser-library-list {
+  margin: 0;
+}
+
+#media-browser-tabset .views-exposed-form {
+  margin-bottom: 1em;
+}
+
+#media-browser-tabset .views-exposed-form .views-exposed-widget {
+  float: left;
+  margin-right: 15px;
+}
+
+#media-browser-tabset .views-exposed-form div.form-item {
+  margin: .25em 0;
+}
+
+#media-browser-tabset .view .item-list .pager li {
+  padding: 0;
+}
+
+/**
+ * Misc
+ */
+#active-vertical-tab {
+  height: 1px; /* fixes a small issue with vertical tabs on the administrative pages */
+  overflow: hidden;
+}
+
+#views-ajax-body form {
+  background-color: #FFF; /* makes sure that our background color is white when ajaxing in views */
+}
+
+.tabledrag-toggle-weight-wrapper {
+  display: none; /* removes the "show row weights" option. has accessibility considerations. */
+}
+
+.form-item-uid {
+  position: relative; /* fixes positioning for auto complete items in firefox - http://drupal.org/node/1218684 */
+}
+/**
+ * Modal stylings
+ */
+
+#modal-content input.form-text {
+  max-width: 98%; /* Handle fixed width form elements in the IPE */
+}
+
+#modal-content .form-item-exposed-widget-title input,
+#modal-content .form-item-title input {
+  font-size: 1.5em;
+}
+
+#modalContent div.ctools-modal-content {
+  -webkit-border-radius: 10px 10px 0 0;
+  -moz-border-radius: 10px 10px 0 0;
+  border-radius: 10px 10px 0 0;
+  border: none;
+}
+
+#modalContent div.ctools-modal-content .modal-header {
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+  background: #666;
+  background-image: linear-gradient(bottom, #333333 0%, #666666 100%);
+  background-image: -o-linear-gradient(bottom, #333333 0%, #666666 100%);
+  background-image: -moz-linear-gradient(bottom, #333333 0%, #666666 100%);
+  background-image: -webkit-linear-gradient(bottom, #333333 0%, #666666 100%);
+  background-image: -ms-linear-gradient(bottom, #333333 0%, #666666 100%);
+  background-image: -webkit-gradient(
+  linear,
+  left bottom,
+  left top,
+  color-stop(0, #333333),
+  color-stop(1, #666666)
+  );
+  color: #fff;
+  font: bold 16px/50px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
+  vertical-align: middle;
+  height: 50px;
+  padding: 0 14px 0 24px;
+}
+
+#modalContent div.ctools-modal-content .modal-title {
+  color: #fff;
+  font: bold 16px/50px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
+  text-shadow: none;
+  padding: 0;
+}
+
+#modalContent div.ctools-modal-content a.close {
+  display: block;
+  text-indent: -99999em;
+  overflow: hidden;
+  outline: none;
+  height: 15px;
+  width: 16px;
+  margin-top: 15px;
+  background: url(../images/close-popup.png) no-repeat left top;
+  padding: 0;
+}
+
+#modalContent div.ctools-modal-content a.close:hover {
+  background-position: left -15px;
+}
+
+#modalContent .panels-add-content-modal {
+  background: #FFF;
+  padding-top: .9em;
+}
+
+#modalContent .panels-add-content-modal a.panels-modal-add-category {
+  background: #EAEAEC;
+  background-image: linear-gradient(bottom, #DBDCDF 0%, #F6F6F7 100%);
+  background-image: -o-linear-gradient(bottom, #DBDCDF 0%, #F6F6F7 100%);
+  background-image: -moz-linear-gradient(bottom, #DBDCDF 0%, #F6F6F7 100%);
+  background-image: -webkit-linear-gradient(bottom, #DBDCDF 0%, #F6F6F7 100%);
+  background-image: -ms-linear-gradient(bottom, #DBDCDF 0%, #F6F6F7 100%);
+  background-image: -webkit-gradient(
+  linear,
+  left bottom,
+  left top,
+  color-stop(0, #DBDCDF),
+  color-stop(1, #F6F6F7)
+  );
+  font: bold 11px/30px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
+  color: #333;
+  text-decoration: none;
+  margin-left: 10px;
+  border-bottom: none;
+  padding: 0 12px;
+}
+
+#modalContent .panels-add-content-modal a.panels-modal-add-category:active, 
+#modalContent .panels-add-content-modal a.panels-modal-add-category.active {
+  border: 1px solid #CECECA;
+  border-right: none;
+  background: #FFF;
+  margin-right: -1px;
+}
+
+#modal-content .option-text-aligner {
+  float: left;
+  width: auto;
+}
+
+/**
+ * Pane configuration preview styling
+ *
+ * Much of the fieldset-related css is ripped directly from Bartik to give
+ * IPE a more consistent look
+ * @see https://drupal.org/node/1717644
+ */
+
+
+#modal-content fieldset.widget-preview {
+  margin-top: 3em;
+  margin-bottom: 4em;
+  -webkitborder-top-right-radius: 0;
+  -moz-border-topright-radius: 0;
+  border-top-right-radius: 0;
+}
+
+#modal-content fieldset.widget-preview-single {
+  margin-top: 0em;
+  margin-bottom: 1em;
+}
+
+#modal-content fieldset.widget-preview-single .fieldset-wrapper {
+  font-size: 100%;
+  max-width: 100%;
+  overflow-y: auto;
+  min-height: 75px;
+  max-height: 375px;
+}
+
+#modal-content fieldset.widget-preview-single .fieldset-wrapper .panopoly-spotlight img {
+  width: 100%;
+}
+  
+#modal-content .fieldset-legend {
+  font: bold 12px/1.5em 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
+}
+  
+#modal-content fieldset legend a {
+  color: #3b3b3b;
+}
+
+#modal-content fieldset legend a:hover,
+#modal-content fieldset legend a:focus,
+#modal-content fieldset legend a:active {
+  color: #000;
+}
+  
+#modal-content .fieldset-wrapper {
+  padding: 0 10px;
+  margin-top: 2.25em;
+}
+
+#modal-content .widget-preview .fieldset-wrapper {
+  max-width: 100%;
+  overflow-y: auto;
+  font-size: 75%;
+  max-height: 200px;
+  min-height: 200px;
+  overflow-x: hidden;
+}
+
+#modal-content .widget-preview .fieldset-wrapper table tr.even td, 
+#modal-content .widget-preview .fieldset-wrapper table tr.odd td {
+  padding: 3px 5px;
+}
+
+#modal-content .widget-preview .fieldset-wrapper h2 {
+  font-size: 150%;
+  margin-top: .25em;
+}
+
+#modal-content .widget-preview-single {
+  float: right;
+  margin-left: 1em;
+  margin-top: 0;
+  width: 48%;
+}
+
+#modal-content .form-actions {
+  float: right;
+  clear: right;
+  width: 48%;
+  margin-left: 1em;
+  text-align: right;
+}
+
+#modal-content .widget-preview-title {
+  position: absolute;
+  right: -1px;
+  top: -24px;
+  font: bold 11px/23px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
+}
+
+#modal-content .widget-preview-title .content-type-button div {
+  float: none;
+  left: 0;
+  top: 0;
+  width: 60px;
+  padding: 0;
+}
+
+#modal-content .panels-section-columns,
+#modal-content .panels-categories-description {
+  overflow: visible;
+  border: 1px solid #CECECA;
+  border-right: none;
+  height: 100%;
+  margin: 0;
+  margin-top: 1px;
+  overflow-y: auto;
+}
+
+#modal-content .panels-categories-description {
+  color: #FFF;
+}
+
+/**
+ * Misc Modal Stylings
+ */
+#modal-content .form-type-textarea .form-type-select, 
+#modal-content .field-type-text-long .form-type-select {
+  float: right;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#modal-content .form-type-textarea .form-type-select label, 
+#modal-content .field-type-text-long .form-type-select label {
+  float: left;
+  margin-right: .5em;
+  margin-top: .5em;
+  font-weight: normal;
+  display: block;
+  width: auto;
+}
+
+#modal-content .view-settings-wrapper .form-radios {
+  display: inline;
+  padding-right: 5px;
+}
+
+.panels-section-column .content-type-button {
+  font-size: 1em;
+}
+
+#modal-content .widget-preview-title .content-type-button img, 
+#modal-content .panels-add-content-modal > .panels-modal-add-category {
+  display: none;
+}
+
+#modal-content #edit-widget-preview {
+  margin-top: 0;
+}
+
+#modalContent .panels-section-column-categories .content-type-button img:hover {
+  border: none;
+}
+
+#modal-content .widget-preview .fieldset-wrapper table img, 
+#modal-content .widget-preview .panopoly-image-featured {
+  width: 100%;
+}
+
+.pane-content .create-links, 
+.pane-categories .categories-links, 
+.pane-menus .menu-links, 
+.pane-users .user-links {
+  float: right;
+}
+
+

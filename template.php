@@ -8,6 +8,11 @@ function kalatheme_theme($existing, $type, $theme, $path){
   );
 }
 
+function kalatheme_css_alter(&$css) {
+  unset($css[drupal_get_path('module','panopoly_admin').'/panopoly-admin.css']);
+  unset($css[drupal_get_path('module','panopoly_core').'/css/panopoly-modal.css']);
+}
+
 function kalatheme_preprocess_html(&$variables) {
   // Add variables for path to theme.
   $variables['base_path'] = base_path();

@@ -14,7 +14,7 @@
 
   <section class='section alt' id='promo'>
     <div class='container'>
-      <div class="webb-flipped-container webb-flipped-header clearfix panel-panel hero-unit">
+      <div class="webb-flipped-container webb-flipped-header clearfix panel-panel ">
         <div class="webb-flipped-container-inner webb-flipped-header-inner panel-panel-inner">
           <?php print $content['header']; ?>
         </div>

@@ -6,6 +6,7 @@ core = 7.x
 regions[content] = content
 
 stylesheets[screen][] = css/tweaks.css
+stylesheets[screen][] = css/panopoly.css
 
 features[] = logo
 ;features[] = name

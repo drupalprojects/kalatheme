@@ -14,7 +14,7 @@
 
   <section class='section alt' id='promo'>
     <div class='container'>
-      <div class="sutro-double-container sutro-double-header clearfix panel-panel hero-unit">
+      <div class="sutro-double-container sutro-double-header clearfix panel-panel ">
         <div class="sutro-double-container-inner sutro-double-header-inner panel-panel-inner">
           <?php print $content['header']; ?>
         </div>

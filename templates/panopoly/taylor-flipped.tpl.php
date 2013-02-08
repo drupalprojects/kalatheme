@@ -14,7 +14,7 @@
 
   <section class='section alt' id='promo'>
     <div class='container'>
-      <div class="taylor-flipped-container taylor-flipped-header clearfix panel-panel hero-unit">
+      <div class="taylor-flipped-container taylor-flipped-header clearfix panel-panel ">
         <div class="taylor-flipped-container-inner taylor-flipped-header-inner panel-panel-inner">
           <?php print $content['header']; ?>
         </div>
