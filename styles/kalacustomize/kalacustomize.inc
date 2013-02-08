@@ -21,6 +21,14 @@ function theme_kalatheme_kalacustomize_render_pane($vars) {
   $settings = $vars['settings'];
   
   $content->css_class .= _kalatheme_get_responsive($vars['settings']);
+  
+  $test == $test;
+  
+  if (!empty($vars['settings']['pane_style'])) { 
+    $content->css_class .= $vars['settings']['pane_style'] ? ' ' . $vars['settings']['pane_style'] : '';
+  }
+  
+  $test == $test;
 
   if (!empty($content->title)) {
     $title_wrapper = _kalatheme_wrapper_wrap(!empty($settings['title']) ? $settings['title'] : array());
@@ -47,13 +55,17 @@ function theme_kalatheme_kalacustomize_render_pane($vars) {
  */
 function kalatheme_kalacustomize_pane_settings_form($style_settings) {
   
-  // Create the responsive toggle form 
   $form['devices'] = array(
     '#type' => 'checkboxes',
     '#options' => drupal_map_assoc(array(t('Desktop'), t('Tablet'), t('Phone'))),
     '#title' => t('Hide this pane on the following devices.'),
     '#default_value' => $style_settings['devices'],
   );
+  
+  $pane_style_default_value = isset($style_settings['pane_style']) ? $style_settings['pane_style'] : '';
+  $form['pane_style'] = array(
+    '#title' => t('Pane Style'),
+  ) + _kalatheme_wrapper_pane_options($pane_style_default_value);
   
   $element_default_value = isset($style_settings['title']['element']) ? $style_settings['title']['element'] : '';
   $form['title']['element'] = array(
@@ -121,6 +133,27 @@ function _kalatheme_wrapper_element_options($default_value = '') {
       'code' => 'CODE',
       'pre' => 'PRE',
   ));
+
+  return $options;
+}
+
+/**
+ * Element options for settings forms.
+ */
+function _kalatheme_wrapper_pane_options($default_value = '') {
+  $options = array(
+    '#type' => 'radios',
+    '#default_value' => $default_value,
+  );
+
+  $options['#options'] = array(
+    '' => t('- Use default -'),
+    '0' => t('- None -'),
+    'hero-unit' => 'HERO UNIT',
+    'well' => 'WELL',
+    'well well-large' => 'LARGE WELL',
+    'well well-small' => 'SMALL WELL',  
+  );
 
   return $options;
 }
@@ -202,11 +235,11 @@ function _kalatheme_get_responsive($item = array()) {
   
   switch ($count) {
     case 0:
-      return 'element-invisible';
+      return ' element-invisible';
     case 1:
-      return 'visible-' . $show;
+      return ' visible-' . $show;
     case 2:
-      return 'hidden-' . $hide;
+      return ' hidden-' . $hide;
     case 3:
       return '';
   }
