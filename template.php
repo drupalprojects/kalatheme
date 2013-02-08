@@ -155,12 +155,29 @@ function kalatheme_preprocess_block(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_views_view()
+ * Implements hook_preprocess_table()
+ */
+function kalatheme_preprocess_table(&$variables) {
+  if (isset($variables['attributes']['class']) && is_string($variables['attributes']['class'])) {
+    $variables['attributes']['class'] = explode(' ', $variables['attributes']['class']);
+  }
+  $variables['attributes']['class'][] = 'table';
+}
+
+/**
+ * Implements hook_preprocess_views_view_grid()
  */
 function kalatheme_preprocess_views_view_grid(&$variables) {
   if (12 % $variables['options']['columns'] === 0) {
     $variables['span'] = 'span' . 12 / $variables['options']['columns'];
   }
+}
+
+/**
+ * Implements hook_preprocess_views_view_table()
+ */
+function kalatheme_preprocess_views_view_table(&$variables) {
+  $variables['classes_array'][] = 'table';
 }
 
 /**
