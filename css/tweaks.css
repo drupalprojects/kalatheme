@@ -17,3 +17,7 @@ html.js input.form-autocomplete {
 #footerlower {
   margin-top: 50px;
 }
+
+.panel-display .container {
+  width: auto;
+}
