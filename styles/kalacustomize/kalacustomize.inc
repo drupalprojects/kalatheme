@@ -22,13 +22,9 @@ function theme_kalatheme_kalacustomize_render_pane($vars) {
   
   $content->css_class .= _kalatheme_get_responsive($vars['settings']);
   
-  $test == $test;
-  
   if (!empty($vars['settings']['pane_style'])) { 
     $content->css_class .= $vars['settings']['pane_style'] ? ' ' . $vars['settings']['pane_style'] : '';
   }
-  
-  $test == $test;
 
   if (!empty($content->title)) {
     $title_wrapper = _kalatheme_wrapper_wrap(!empty($settings['title']) ? $settings['title'] : array());
