@@ -19,6 +19,8 @@ $plugin = array(
 function theme_kalatheme_kalacustomize_render_pane($vars) {
   $content = &$vars['content'];
   $settings = $vars['settings'];
+  
+  $content->css_class .= _kalatheme_get_responsive($vars['settings']);
 
   if (!empty($content->title)) {
     $title_wrapper = _kalatheme_wrapper_wrap(!empty($settings['title']) ? $settings['title'] : array());
@@ -48,8 +50,8 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
   // Create the responsive toggle form 
   $form['devices'] = array(
     '#type' => 'checkboxes',
-    '#options' => drupal_map_assoc(array(t('Desktop'), t('Tablet'), t('Mobile'))),
-    '#title' => t('Show this pane on the following devices. By default it will show on all devices.'),
+    '#options' => drupal_map_assoc(array(t('Desktop'), t('Tablet'), t('Phone'))),
+    '#title' => t('Hide this pane on the following devices.'),
     '#default_value' => $style_settings['devices'],
   );
   
@@ -179,4 +181,33 @@ function _kalatheme_wrapper_wrap($item = array()) {
   $wrap['suffix'] = $wrap['suffix'] . PHP_EOL;
 
   return $wrap;
+}
+
+/**
+ *
+ * @return array
+ *   Array with prefix and suffix keys.
+ */
+function _kalatheme_get_responsive($item = array()) {
+  $count = 0;
+  foreach ($item['devices'] as $device => $hidden) {
+    if ($hidden === 0) {
+      $show = strtolower($device);
+      $count++;
+    }
+    else {
+      $hide = strtolower($device);
+    }
+  }
+  
+  switch ($count) {
+    case 0:
+      return 'element-invisible';
+    case 1:
+      return 'visible-' . $show;
+    case 2:
+      return 'hidden-' . $hide;
+    case 3:
+      return '';
+  }
 }
