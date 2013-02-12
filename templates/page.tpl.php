@@ -140,7 +140,7 @@
     
     <?php // print $breadcrumb; ?>
 
-    <div id="content" class="column container">
+    <div id="content" class="column">
       <a id="main-content"></a>
       <?php if ($tabs): ?>
           <?php print render($tabs); ?>
