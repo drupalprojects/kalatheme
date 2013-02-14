@@ -420,65 +420,6 @@ function _kalatheme_status_messages($variables) {
 }
 
 
-/**
- * Implements hook_libraries_info_alter()
- */
-function kalatheme_libraries_info_alter(&$libraries)  {
-  $libraries['bootstrap'] = array(
-    'name' => 'Twitter Bootstrap',
-    'machine name' => 'bootstrap',
-    'vendor url' => 'http://twitter.github.com',
-    'download url' => 'http://twitter.github.com',
-    'path' => '',
-    'callbacks' => array(),
-    'version arguments' => array(
-      'file' => 'css/bootstrap.css',
-      'pattern' => '@v+([0-9a-zA-Z\.-]+)@',
-      'lines' => 5,
-      'cols' => 20,
-    ),
-    'version callback' => 'libraries_get_version',
-    'versions' => array(
-      '2' => array(
-        'files' => array(
-          'js' => array(
-            'js/bootstrap.js',
-           ),
-          'css' => array(
-            'css/bootstrap.css',
-            'css/bootstrap-responsive.css',
-            ),
-          ),
-          'variants' => array(
-            'minified' => array(
-              'files' => array(
-                'js' => array(
-                  'js/bootstrap.min.js',
-                ),
-                'css' => array(
-                  'css/bootstrap.min.css',
-                  'css/bootstrap-responsive.min.css',
-                ),
-              ),
-            'variant arguments' => array(
-              'variant' => 'minified',
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
-
-  $libraries['bootstrap']['callbacks'] += array(
-    'info' => array(),
-    'pre-detect' => array(),
-    'post-detect' => array(),
-    'pre-load' => array(
-      'kalatheme_check_responsive',
-    ),
-    'post-load' => array(),
-  );
-}
 
 /**
  * Returns HTML for primary and secondary local tasks.
@@ -590,3 +531,62 @@ function kalatheme_check_responsive(&$variant, $version, $variant_name) {
   }
 }
 
+/**
+ * Implements hook_libraries_info_alter()
+ */
+function kalatheme_libraries_info_alter(&$libraries)  {
+  $libraries['bootstrap'] = array(
+      'name' => 'Twitter Bootstrap',
+      'machine name' => 'bootstrap',
+      'vendor url' => 'http://twitter.github.com',
+      'download url' => 'http://twitter.github.com',
+      'path' => '',
+      'callbacks' => array(),
+      'version arguments' => array(
+          'file' => 'css/bootstrap.css',
+          'pattern' => '@v+([0-9a-zA-Z\.-]+)@',
+          'lines' => 10,
+          'cols' => 20,
+      ),
+      'version callback' => 'libraries_get_version',
+      'versions' => array(
+          '2' => array(
+              'files' => array(
+                  'js' => array(
+                      'js/bootstrap.js',
+                  ),
+                  'css' => array(
+                      'css/bootstrap.css',
+                      'css/bootstrap-responsive.css',
+                  ),
+              ),
+              'variants' => array(
+                  'minified' => array(
+                      'files' => array(
+                          'js' => array(
+                              'js/bootstrap.min.js',
+                          ),
+                          'css' => array(
+                              'css/bootstrap.min.css',
+                              'css/bootstrap-responsive.min.css',
+                          ),
+                      ),
+                      'variant arguments' => array(
+                          'variant' => 'minified',
+                      ),
+                  ),
+              ),
+          ),
+      ),
+  );
+
+  $libraries['bootstrap']['callbacks'] += array(
+      'info' => array(),
+      'pre-detect' => array(),
+      'post-detect' => array(),
+      'pre-load' => array(
+          'kalatheme_check_responsive',
+      ),
+      'post-load' => array(),
+  );
+}
