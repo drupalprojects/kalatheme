@@ -1,6 +1,6 @@
 <?php
 
-function kalatheme_theme($existing, $type, $theme, $path){ 
+function kalatheme_theme($existing, $type, $theme, $path){
   return array(
     'menu_local_actions' => array(
       'variables' => array('menu_actions' => NULL, 'attributes' => NULL),
@@ -17,28 +17,10 @@ function kalatheme_preprocess_html(&$variables) {
   // Add variables for path to theme.
   $variables['base_path'] = base_path();
   $variables['path_to_kalatheme'] = drupal_get_path('theme', 'kalatheme');
-  
-  // Add what we need from Bootstrap
-  if (module_exists('panopoly_core')) {
-    if (($library = libraries_detect('bootstrap')) && !empty($library['installed'])) {
-      $bootstrap_path = DRUPAL_ROOT . '/' . $library['library path'];
-      $variant = NULL;
-      $has_minified_css = file_exists($bootstrap_path . '/css/bootstrap.min.css');
-      $has_minified_js = file_exists($bootstrap_path . '/js/bootstrap.min.js');
-      if ($has_minified_css && $has_minified_js) {
-        $variant = 'minified';
-      }
-      libraries_load('bootstrap', $variant);
-    }
-    else {
-      // Something went wrong. :(
-      // This contains a detailed (localized) error message.
-      drupal_set_message(t($library['error message']), 'error');
-    }
-  }
-  else {
-    drupal_set_message(t('You need panopoly for this to work.'), 'error');
-  }
+
+  //Load all dependencies
+  require_once $variables['path_to_kalatheme'] . '/includes/kalatheme.inc';
+  _kalatheme_load_dependencies();
 }
 
 /**
@@ -60,27 +42,27 @@ function kalatheme_process_page(&$variables) {
       'class' => array('dropdown', 'actions', 'pull-right'),
     ),
     'toggle' => array(
-      'class' => array('dropdown-toggle', 'enabled'), 
-      'data-toggle' => array('dropdown'), 
-      'href' => array('#') 
+      'class' => array('dropdown-toggle', 'enabled'),
+      'data-toggle' => array('dropdown'),
+      'href' => array('#')
     ),
     'content' => array(
       'class' => array('dropdown-menu'),
-    ), 
-  );  
+    ),
+  );
 
   //Add local actions as the last item in the local tasks
   if(!empty($variables['action_links'])){
     $variables['tabs']['#primary'][]['#markup'] = theme('menu_local_actions', array('menu_actions' => $variables['action_links'], 'attributes' => $dropdown_attributes));
-    $variables['action_links'] = FALSE; 
+    $variables['action_links'] = FALSE;
   }
-  
+
   // Get the entire main menu tree
   $main_menu_tree = array();
   $main_menu_tree = menu_tree_all_data('main-menu', NULL, 2);
   // Add the rendered output to the $main_menu_expanded variable
   $variables['main_menu_expanded'] = menu_tree_output($main_menu_tree);
-  
+
   // Always print the site name and slogan, but if they are toggled off, we'll
   // just hide them visually.
   $variables['hide_site_name']   = theme_get_setting('toggle_name') ? FALSE : TRUE;
@@ -217,7 +199,7 @@ function kalatheme_button($variables) {
   if (!empty($element['#attributes']['disabled'])) {
     $element['#attributes']['class'][] = 'form-button-disabled';
   }
-  
+
   return '<input' . drupal_attributes($element['#attributes']) . ' />';;
 }
 
@@ -302,7 +284,7 @@ function kalatheme_links__system_main_menu($variables) {
         // is a string.
         $heading = array(
           'text' => $heading,
-          // Set the default level of the heading. 
+          // Set the default level of the heading.
           'level' => 'h2',
         );
       }
@@ -320,7 +302,7 @@ function kalatheme_links__system_main_menu($variables) {
 
     foreach ($links as $key => $link) {
       $class = array($key);
-      
+
       // Add first, last and active classes to the list of links to help out themers.
       if ($i == 1) {
         $class[] = 'first';
@@ -339,7 +321,7 @@ function kalatheme_links__system_main_menu($variables) {
         $link['#href'] = NULL;
       }
       $options['attributes'] = $link['#attributes'];
-      
+
       $output .= '<li' . drupal_attributes(array('class' => $class)) . '>';
 
       if (isset($link['#href'])) {
@@ -361,7 +343,7 @@ function kalatheme_links__system_main_menu($variables) {
         }
         $output .= '<span' . $span_attributes . '>' . $link['#title'] . '</span>';
       }
-      
+
       if (!empty($link['#below'])) {
         $output .= theme('links__system_main_menu', array(
           'links' => $link['#below'],
@@ -382,9 +364,19 @@ function kalatheme_links__system_main_menu($variables) {
 }
 
 /**
- * Returns HTML for status and/or error messages, grouped by type.
+ * Implements theme_status_messages().
  */
 function kalatheme_status_messages($variables) {
+  //Call correct theme function depending on whether all dependencies loaded
+  require_once drupal_get_path('theme', 'kalatheme') . '/includes/kalatheme.inc';
+  $status_function = _kalatheme_load_dependencies();
+  return $status_function($variables);
+}
+
+/**
+ * Returns HTML for status and/or error messages, grouped by type.
+ */
+function _kalatheme_status_messages($variables) {
   $display = $variables['display'];
   $output = '';
 
@@ -546,12 +538,12 @@ function kalatheme_menu_local_actions($variables){
 
   //Render the dropdown
   $output = $container_attributes ?  '<li' . $container_attributes . '>' : '<li>';
-  $output .= $toggle_attributes ?  '<a' . $toggle_attributes . '><i class="icon-wrench"></i> Actions <b class="caret"></b></a>' : '<a>Actions <b class="caret"></b></a>'; 
+  $output .= $toggle_attributes ?  '<a' . $toggle_attributes . '><i class="icon-wrench"></i> Actions <b class="caret"></b></a>' : '<a>Actions <b class="caret"></b></a>';
   $output .= $content_attributes ? '<ul' . $content_attributes . '>' : '<ul>';
   $output .= drupal_render($variables['menu_actions']);
   $output .= '</ul>';
   $output .= '</li>';
-  
+
   return $output;
 }
 
