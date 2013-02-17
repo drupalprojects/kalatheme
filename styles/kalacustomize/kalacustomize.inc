@@ -51,14 +51,16 @@ function theme_kalatheme_kalacustomize_render_pane($vars) {
  */
 function kalatheme_kalacustomize_pane_settings_form($style_settings) {
   
-  $form['devices'] = array(
-    '#prefix' => '<div class="well">',
-    '#suffix' => '</div>',
-    '#type' => 'checkboxes',
-    '#options' => drupal_map_assoc(array(t('Desktop'), t('Tablet'), t('Phone'))),
-    '#title' => t('Hide this pane on the following devices.'),
-    '#default_value' => $style_settings['devices'],
-  );
+  if (theme_get_setting('responsive_toggle')) {
+    $form['devices'] = array(
+      '#prefix' => '<div class="well">',
+      '#suffix' => '</div>',
+      '#type' => 'checkboxes',
+      '#options' => drupal_map_assoc(array(t('Desktop'), t('Tablet'), t('Phone'))),
+      '#title' => t('Hide this pane on the following devices.'),
+      '#default_value' => $style_settings['devices'],
+    );
+  }
   
   $pane_style_default_value = isset($style_settings['pane_style']) ? $style_settings['pane_style'] : '';
   $form['pane_style'] = array(

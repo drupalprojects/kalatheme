@@ -18,5 +18,7 @@ features[] = favicon
 features[] = main_menu
 features[] = secondary_menu
 
+settings[responsive_toggle] = 1
+
 plugins[panels][layouts] = layouts
 plugins[panels][styles] = styles
