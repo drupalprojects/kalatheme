@@ -8,30 +8,30 @@
 /**
  * Message displayed when user does not have Panopoly installed
  */
-define('KALATHEME_PANOPOLY_ERROR', t('In order to use Kalatheme, you must ' .
-  'have the Panopoly distribution installed. Please check the README for ' .
-  'installation instructions.'));
+define('KALATHEME_PANOPOLY_ERROR', t('In order to use Kalatheme, 
+  you must have the Panopoly distribution installed. 
+  Please check the README for installation instructions.'));
 /**
  * Message displayed when user does not have Bootstrap available
  */
-define('KALATHEME_BOOTSTRAP_ERROR', t('In order to use Kalatheme, you must ' .
-  'have the Twitter Bootstrap library available. Please check the README for ' .
-  'installation instructions.'));
+define('KALATHEME_BOOTSTRAP_ERROR', t('In order to use Kalatheme, you must 
+  have the Twitter Bootstrap library available. Please check the README for 
+  installation instructions.'));
 
 /**
- * Loads all dependencies necessary for Kalatheme to operate
+ * Loads all dependencies necessary for Kalatheme to operate.
  *
  * @return string
  *   Name of the function for kalatheme_status_messages to call
  */
 function _kalatheme_load_dependencies() {
-  //If we've already loaded dependencies, just return the correct function to
-  //call for status messages
+  // If we've already loaded dependencies, just return the correct function to
+  // call for status messages.
   $status_function = &drupal_static(__FUNCTION__);
   if (isset($status_function)) {
     return $status_function;
   }
-  // Add what we need from Bootstrap and make sure Panopoly is installed
+  // Add what we need from Bootstrap and make sure Panopoly is installed.
   $all_loaded = FALSE;
   if (module_exists('panopoly_core')) {
     if (($library = libraries_detect('bootstrap')) && !empty($library['installed'])) {
@@ -53,8 +53,8 @@ function _kalatheme_load_dependencies() {
   else {
     drupal_set_message(KALATHEME_PANOPOLY_ERROR, 'error');
   }
-  //Return the correct status message function depending on whether we were able
-  //to load all of our dependencies
+  // Return the correct status message function depending on whether
+  // we were able to load all of our dependencies.
   if (!$all_loaded) {
     $status_function = 'theme_status_messages';
   }
