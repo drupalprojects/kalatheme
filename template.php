@@ -90,6 +90,12 @@ function kalatheme_process_page(&$variables) {
     // Make sure the shortcut link is the first item in title_suffix.
     $variables['title_suffix']['add_or_remove_shortcut']['#weight'] = -100;
   }
+  
+  // If panels arent being used at all
+  $variables['no_panels'] = FALSE;
+  if (!isset($variables['page']['content']['system_main']['main']['#markup']) || (strpos($variables['page']['content']['system_main']['main']['#markup'], 'panel-panel') === FALSE)) {
+    $variables['no_panels'] = TRUE;
+  }
 }
 
 /**
