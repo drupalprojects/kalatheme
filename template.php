@@ -374,54 +374,6 @@ function kalatheme_status_messages($variables) {
 }
 
 /**
- * Returns HTML for status and/or error messages, grouped by type.
- */
-function _kalatheme_status_messages($variables) {
-  $display = $variables['display'];
-  $output = '';
-
-  $status_heading = array(
-    'status' => t('Status message'),
-    'error' => t('Error message'),
-    'warning' => t('Warning message'),
-  );
-
-  // Map Drupal message types to their corresponding Bootstrap classes.
-  // @see http://twitter.github.com/bootstrap/components.html#alerts
-  $status_class = array(
-    'status' => 'success',
-    'error' => 'error',
-    'warning' => 'info',
-  );
-
-  foreach (drupal_get_messages($display) as $type => $messages) {
-    $class = (isset($status_class[$type])) ? ' alert-' . $status_class[$type] : '';
-    $output .= "<div class=\"alert alert-block$class\">\n";
-    $output .= "  <a class=\"close\" data-dismiss=\"alert\" href=\"#\">x</a>\n";
-
-    if (!empty($status_heading[$type])) {
-      $output .= '<h2 class="element-invisible">' . $status_heading[$type] . "</h2>\n";
-    }
-
-    if (count($messages) > 1) {
-      $output .= " <ul>\n";
-      foreach ($messages as $message) {
-        $output .= '  <li>' . $message . "</li>\n";
-      }
-      $output .= " </ul>\n";
-    }
-    else {
-      $output .= $messages[0];
-    }
-
-    $output .= "</div>\n";
-  }
-  return $output;
-}
-
-
-
-/**
  * Returns HTML for primary and secondary local tasks.
  */
 function kalatheme_menu_local_tasks(&$variables) {
@@ -431,15 +383,12 @@ function kalatheme_menu_local_tasks(&$variables) {
     $variables['primary']['#prefix'] = '<h2 class="element-invisible">' . t('Primary tabs') . '</h2>';
     $variables['primary']['#prefix'] = '<ul class="nav nav-pills">';
     $variables['primary']['#suffix'] = '</ul>';
+    if ( !empty($variables['secondary']) ) {
+      $variables = _kalatheme_associate_parent_tasks($variables);
+    }
     $output .= drupal_render($variables['primary']);
   }
 
-  if ( !empty($variables['secondary']) ) {
-    $variables['primary']['#prefix'] = '<h2 class="element-invisible">' . t('Primary tabs') . '</h2>';
-    $variables['secondary']['#prefix'] = '<ul class="nav nav-pills">';
-    $variables['secondary']['#suffix'] = '</ul>';
-    $output .= drupal_render($variables['secondary']);
-  }
   return $output;
 }
 
@@ -448,6 +397,7 @@ function kalatheme_menu_local_tasks(&$variables) {
  */
 function kalatheme_menu_local_task($variables){
   $link = $variables['element']['#link'];
+  $children = isset($variables['element']['#children']) ? $variables['element']['#children'] : FALSE;
   $link_text = $link['title'];
   $classes = array();
 
@@ -465,8 +415,24 @@ function kalatheme_menu_local_task($variables){
 
     $classes[] = 'active';
   }
-
-  return '<li class="' . implode(' ', $classes) . '">' . l($link_text, $link['href'], $link['localized_options']) . "</li>\n";
+  
+  // If the primary link has children, render them as a dropdown.
+  if($children){
+    $classes[] = 'dropdown';
+    $link['localized_options']['attributes']['class'][] = 'dropdown-toggle';
+    $link['localized_options']['attributes']['data-toggle'][] = 'dropdown';
+    $link['href'] = '#';
+    $link_text .= ' <b class="caret"></b>';
+    $output =  '<li class="' . implode(' ', $classes) . '">';
+    $output .= l($link_text, $link['href'], $link['localized_options']);
+    $output .= '<ul class="dropdown-menu">';
+    $output .= drupal_render($children);
+    $output .= '</ul>';
+    $output .= '</li>';
+    return $output;   
+  }else{
+    return '<li class="' . implode(' ', $classes) . '">' . l($link_text, $link['href'], $link['localized_options']) . "</li>\n";   
+  }
 }
 
 /**
@@ -589,4 +555,75 @@ function kalatheme_libraries_info_alter(&$libraries)  {
       ),
       'post-load' => array(),
   );
+}
+
+/**
+ * Given menu_local_tasks variables, associate all the secondary
+ * menu tasks as #children of their parent primary tasks. 
+ */
+function _kalatheme_associate_parent_tasks($variables){
+  // Assign all secondary links as children of their parent primary link.
+  foreach($variables['secondary'] as $secondary_index => $secondary_link){
+    $link = $secondary_link['#link'];
+    foreach($variables['primary'] as $primary_index => $primary_link){
+      if(!isset($primary_link['#markup']) && $primary_link['#link']['path'] == $link['tab_parent']){
+        $variables['primary'][$primary_index]['#children'][] = $secondary_link;
+        unset($variables['secondary'][$secondary_index]); 
+      }
+    }
+  }
+
+  // If a secondary link hasn't been assigned, put it on the end of the primary links.
+  // @todo: this should never happen; consider removing?
+  foreach($variables['secondary'] as $secondary_link){
+    $variables['primary'][] = $secondary_link;
+  }
+  
+  return $variables;
+}
+
+/**
+ * Returns HTML for status and/or error messages, grouped by type.
+ */
+function _kalatheme_status_messages($variables) {
+  $display = $variables['display'];
+  $output = '';
+
+  $status_heading = array(
+    'status' => t('Status message'),
+    'error' => t('Error message'),
+    'warning' => t('Warning message'),
+  );
+
+  // Map Drupal message types to their corresponding Bootstrap classes.
+  // @see http://twitter.github.com/bootstrap/components.html#alerts
+  $status_class = array(
+    'status' => 'success',
+    'error' => 'error',
+    'warning' => 'info',
+  );
+
+  foreach (drupal_get_messages($display) as $type => $messages) {
+    $class = (isset($status_class[$type])) ? ' alert-' . $status_class[$type] : '';
+    $output .= "<div class=\"alert alert-block$class\">\n";
+    $output .= "  <a class=\"close\" data-dismiss=\"alert\" href=\"#\">x</a>\n";
+
+    if (!empty($status_heading[$type])) {
+      $output .= '<h2 class="element-invisible">' . $status_heading[$type] . "</h2>\n";
+    }
+
+    if (count($messages) > 1) {
+      $output .= " <ul>\n";
+      foreach ($messages as $message) {
+        $output .= '  <li>' . $message . "</li>\n";
+      }
+      $output .= " </ul>\n";
+    }
+    else {
+      $output .= $messages[0];
+    }
+
+    $output .= "</div>\n";
+  }
+  return $output;
 }
