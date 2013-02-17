@@ -265,19 +265,6 @@ ul#media-browser-library-list {
   -webkit-border-radius: 5px 5px 0 0;
   -moz-border-radius: 5px 5px 0 0;
   border-radius: 5px 5px 0 0;
-  background: #666;
-  background-image: linear-gradient(bottom, #333333 0%, #666666 100%);
-  background-image: -o-linear-gradient(bottom, #333333 0%, #666666 100%);
-  background-image: -moz-linear-gradient(bottom, #333333 0%, #666666 100%);
-  background-image: -webkit-linear-gradient(bottom, #333333 0%, #666666 100%);
-  background-image: -ms-linear-gradient(bottom, #333333 0%, #666666 100%);
-  background-image: -webkit-gradient(
-  linear,
-  left bottom,
-  left top,
-  color-stop(0, #333333),
-  color-stop(1, #666666)
-  );
   color: #fff;
   font: bold 16px/50px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
   vertical-align: middle;
@@ -286,7 +273,6 @@ ul#media-browser-library-list {
 }
 
 #modalContent div.ctools-modal-content .modal-title {
-  color: #fff;
   font: bold 16px/50px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
   text-shadow: none;
   padding: 0;
@@ -300,12 +286,8 @@ ul#media-browser-library-list {
   height: 15px;
   width: 16px;
   margin-top: 15px;
-  background: url(../images/close-popup.png) no-repeat left top;
   padding: 0;
-}
-
-#modalContent div.ctools-modal-content a.close:hover {
-  background-position: left -15px;
+  opacity: 1;
 }
 
 #modalContent .panels-add-content-modal {
@@ -315,18 +297,6 @@ ul#media-browser-library-list {
 
 #modalContent .panels-add-content-modal a.panels-modal-add-category {
   background: #EAEAEC;
-  background-image: linear-gradient(bottom, #DBDCDF 0%, #F6F6F7 100%);
-  background-image: -o-linear-gradient(bottom, #DBDCDF 0%, #F6F6F7 100%);
-  background-image: -moz-linear-gradient(bottom, #DBDCDF 0%, #F6F6F7 100%);
-  background-image: -webkit-linear-gradient(bottom, #DBDCDF 0%, #F6F6F7 100%);
-  background-image: -ms-linear-gradient(bottom, #DBDCDF 0%, #F6F6F7 100%);
-  background-image: -webkit-gradient(
-  linear,
-  left bottom,
-  left top,
-  color-stop(0, #DBDCDF),
-  color-stop(1, #F6F6F7)
-  );
   font: bold 11px/30px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
   color: #333;
   text-decoration: none;
