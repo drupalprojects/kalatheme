@@ -5,7 +5,7 @@
  */
 
 /**
- * Implements hook_theme(). 
+ * Implements hook_theme().
  */
 function kalatheme_theme($existing, $type, $theme, $path) {
   return array(
@@ -17,7 +17,7 @@ function kalatheme_theme($existing, $type, $theme, $path) {
 
 /**
  * Remove conflicting CSS.
- * 
+ *
  * Implements hook_css_alter().
  */
 function kalatheme_css_alter(&$css) {
@@ -55,7 +55,7 @@ function kalatheme_process_html(&$variables) {
 /**
  * Override or insert variables into the page template.
  *
- * Implements template_process_page(). 
+ * Implements template_process_page().
  */
 function kalatheme_process_page(&$variables) {
   // Define variables to theme local actions as a dropdown.
@@ -128,7 +128,7 @@ function kalatheme_preprocess_maintenance_page(&$variables) {
   // By default, site_name is set to Drupal if no db connection is available
   // or during site installation. Setting site_name to an empty string makes
   // the site and update pages look cleaner.
-  // @see template_preprocess_maintenance_page
+  // @see template_preprocess_maintenance_page()
   if (!$variables['db_is_active']) {
     $variables['site_name'] = '';
   }
@@ -166,7 +166,7 @@ function kalatheme_preprocess_node(&$variables) {
 
 /**
  * Override or insert variables into the block template.
- * 
+ *
  * Implements template_preprocess_block().
  */
 function kalatheme_preprocess_block(&$variables) {
@@ -398,7 +398,7 @@ function kalatheme_links__system_main_menu($variables) {
 
 /**
  * Use Bootstrap-styled status messages when appropriate.
- * 
+ *
  * Implements theme_status_messages().
  */
 function kalatheme_status_messages($variables) {
