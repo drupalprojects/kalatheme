@@ -79,7 +79,7 @@ function _kalatheme_associate_parent_tasks($variables) {
     }
   }
 
-  // If a secondary link hasn't been assigned, make it a primary link. 
+  // If a secondary link hasn't been assigned, make it a primary link.
   // @todo: this should never happen; consider removing?
   foreach ($variables['secondary'] as $secondary_link) {
     $variables['primary'][] = $secondary_link;
