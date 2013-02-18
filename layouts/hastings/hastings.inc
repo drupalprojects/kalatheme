@@ -1,5 +1,9 @@
 <?php
-// Plugin definition
+/**
+ * @file
+ * Plugin definition.
+ */
+
 $plugin = array(
   'title' => t('Hastings'),
   'icon' => 'hastingsred.png',

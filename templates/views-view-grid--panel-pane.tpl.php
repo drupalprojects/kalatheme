@@ -2,8 +2,7 @@
 
 /**
  * @file
- * Default simple view template to display a rows in a grid.
- * T
+ * Default simple view template to display a rows in a grid. 
  *
  * - $rows contains a nested array of rows. Each row contains an array of
  *   columns.
@@ -36,7 +35,7 @@
       
       <div class="<?php print $row_class; ?>">
         <?php foreach ($columns as $column_number => $item): ?>
-          <div class="gridCol gridborder <?php print 'col-'. ($column_number + 1); ?> <?php if ($span) { print $span; } ?>">
+          <div class="gridCol gridborder <?php print 'col-'. ($column_number + 1); ?> <?php $span ? print $span : ''; ?>">
             <?php if ($item): ?>
   	        <div class='grid-item'>     	
   	          <?php print $item; ?>

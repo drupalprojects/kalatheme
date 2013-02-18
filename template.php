@@ -1,6 +1,13 @@
 <?php
+/**
+ * @file
+ * Kalatheme's primary theme functions and alterations.
+ */
 
-function kalatheme_theme($existing, $type, $theme, $path){
+/**
+ * Implements hook_theme(). 
+ */
+function kalatheme_theme($existing, $type, $theme, $path) {
   return array(
     'menu_local_actions' => array(
       'variables' => array('menu_actions' => NULL, 'attributes' => NULL),
@@ -8,23 +15,35 @@ function kalatheme_theme($existing, $type, $theme, $path){
   );
 }
 
+/**
+ * Remove conflicting CSS.
+ * 
+ * Implements hook_css_alter().
+ */
 function kalatheme_css_alter(&$css) {
-  unset($css[drupal_get_path('module','panopoly_admin').'/panopoly-admin.css']);
-  unset($css[drupal_get_path('module','panopoly_core').'/css/panopoly-modal.css']);
+  unset($css[drupal_get_path('module', 'panopoly_admin') . '/panopoly-admin.css']);
+  unset($css[drupal_get_path('module', 'panopoly_core') . '/css/panopoly-modal.css']);
 }
 
+/**
+ * Load Kalatheme dependencies.
+ *
+ * Implements template_preprocess_html().
+ */
 function kalatheme_preprocess_html(&$variables) {
   // Add variables for path to theme.
   $variables['base_path'] = base_path();
   $variables['path_to_kalatheme'] = drupal_get_path('theme', 'kalatheme');
 
-  //Load all dependencies
+  // Load all dependencies.
   require_once $variables['path_to_kalatheme'] . '/includes/kalatheme.inc';
   _kalatheme_load_dependencies();
 }
 
 /**
  * Override or insert variables into the page template for HTML output.
+ *
+ * Implements template_process_html().
  */
 function kalatheme_process_html(&$variables) {
   // Hook into color.module.
@@ -35,8 +54,11 @@ function kalatheme_process_html(&$variables) {
 
 /**
  * Override or insert variables into the page template.
+ *
+ * Implements template_process_page(). 
  */
 function kalatheme_process_page(&$variables) {
+  // Define variables to theme local actions as a dropdown.
   $dropdown_attributes = array(
     'container' => array(
       'class' => array('dropdown', 'actions', 'pull-right'),
@@ -44,23 +66,23 @@ function kalatheme_process_page(&$variables) {
     'toggle' => array(
       'class' => array('dropdown-toggle', 'enabled'),
       'data-toggle' => array('dropdown'),
-      'href' => array('#')
+      'href' => array('#'),
     ),
     'content' => array(
       'class' => array('dropdown-menu'),
     ),
   );
 
-  //Add local actions as the last item in the local tasks
-  if(!empty($variables['action_links'])){
+  // Add local actions as the last item in the local tasks.
+  if (!empty($variables['action_links'])) {
     $variables['tabs']['#primary'][]['#markup'] = theme('menu_local_actions', array('menu_actions' => $variables['action_links'], 'attributes' => $dropdown_attributes));
     $variables['action_links'] = FALSE;
   }
 
-  // Get the entire main menu tree
+  // Get the entire main menu tree.
   $main_menu_tree = array();
   $main_menu_tree = menu_tree_all_data('main-menu', NULL, 2);
-  // Add the rendered output to the $main_menu_expanded variable
+  // Add the rendered output to the $main_menu_expanded variable.
   $variables['main_menu_expanded'] = menu_tree_output($main_menu_tree);
 
   // Always print the site name and slogan, but if they are toggled off, we'll
@@ -72,13 +94,14 @@ function kalatheme_process_page(&$variables) {
     $variables['site_name'] = filter_xss_admin(variable_get('site_name', 'Drupal'));
   }
   if ($variables['hide_site_slogan']) {
-    // If toggle_site_slogan is FALSE, the site_slogan will be empty, so we rebuild it.
+    // If toggle_site_slogan is FALSE, the site_slogan will be empty,
+    // so we rebuild it.
     $variables['site_slogan'] = filter_xss_admin(variable_get('site_slogan', ''));
   }
   // Since the title and the shortcut link are both block level elements,
   // positioning them next to each other is much simpler with a wrapper div.
   if (!empty($variables['title_suffix']['add_or_remove_shortcut']) && $variables['title']) {
-    // Add a wrapper div using the title_prefix and title_suffix render elements.
+    // Add a wrapper div using title_prefix and title_suffix render elements.
     $variables['title_prefix']['shortcut_wrapper'] = array(
       '#markup' => '<div class="shortcut-wrapper clearfix">',
       '#weight' => 100,
@@ -91,7 +114,8 @@ function kalatheme_process_page(&$variables) {
     $variables['title_suffix']['add_or_remove_shortcut']['#weight'] = -100;
   }
 
-  // If panels arent being used at all
+
+  // If panels arent being used at all.
   $variables['no_panels'] = FALSE;
   if (!isset($variables['page']['content']['system_main']['main']['#markup']) || (strpos($variables['page']['content']['system_main']['main']['#markup'], 'panel-panel') === FALSE)) {
     $variables['no_panels'] = TRUE;
@@ -132,6 +156,8 @@ function kalatheme_process_maintenance_page(&$variables) {
 
 /**
  * Override or insert variables into the node template.
+ *
+ * Implements template_preprocess_node().
  */
 function kalatheme_preprocess_node(&$variables) {
   if ($variables['view_mode'] == 'full' && node_is_page($variables['node'])) {
@@ -141,6 +167,8 @@ function kalatheme_preprocess_node(&$variables) {
 
 /**
  * Override or insert variables into the block template.
+ * 
+ * Implements template_preprocess_block().
  */
 function kalatheme_preprocess_block(&$variables) {
   // In the header region visually hide block titles.
@@ -150,7 +178,7 @@ function kalatheme_preprocess_block(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_table()
+ * Implements hook_preprocess_table().
  */
 function kalatheme_preprocess_table(&$variables) {
   if (isset($variables['attributes']['class']) && is_string($variables['attributes']['class'])) {
@@ -160,7 +188,7 @@ function kalatheme_preprocess_table(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_views_view_grid()
+ * Implements hook_preprocess_views_view_grid().
  */
 function kalatheme_preprocess_views_view_grid(&$variables) {
   if (12 % $variables['options']['columns'] === 0) {
@@ -169,14 +197,14 @@ function kalatheme_preprocess_views_view_grid(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_views_view_table()
+ * Implements hook_preprocess_views_view_table().
  */
 function kalatheme_preprocess_views_view_table(&$variables) {
   $variables['classes_array'][] = 'table';
 }
 
 /**
- * Implements theme_form()
+ * Implements theme_form().
  */
 function kalatheme_form($variables) {
   $element = $variables['element'];
@@ -192,7 +220,7 @@ function kalatheme_form($variables) {
 }
 
 /**
- * Implements theme_button()
+ * Implements theme_button().
  */
 function kalatheme_button($variables) {
   $element = $variables['element'];
@@ -210,7 +238,7 @@ function kalatheme_button($variables) {
 }
 
 /**
- * Implements theme_textarea()
+ * Implements theme_textarea().
  */
 function kalatheme_textarea($variables) {
   $element = $variables['element'];
@@ -261,7 +289,8 @@ function kalatheme_field__taxonomy_term_reference($variables) {
   $output .= '</ul>';
 
   // Render the top-level DIV.
-  $output = '<div class="' . $variables['classes'] . (!in_array('clearfix', $variables['classes_array']) ? ' clearfix' : '') . '"' . $variables['attributes'] .'>' . $output . '</div>';
+  $output = '<div class="' . $variables['classes'] . (!in_array('clearfix', $variables['classes_array']) ? ' clearfix' : '') . '"' . $variables['attributes'] . '>' . $output . '</div>';
+
 
   return $output;
 }
@@ -370,10 +399,12 @@ function kalatheme_links__system_main_menu($variables) {
 }
 
 /**
+ * Use Bootstrap-styled status messages when appropriate.
+ * 
  * Implements theme_status_messages().
  */
 function kalatheme_status_messages($variables) {
-  //Call correct theme function depending on whether all dependencies loaded
+  // Call correct theme function depending on whether all dependencies loaded.
   require_once drupal_get_path('theme', 'kalatheme') . '/includes/kalatheme.inc';
   $status_function = _kalatheme_load_dependencies();
   return $status_function($variables);
@@ -381,15 +412,17 @@ function kalatheme_status_messages($variables) {
 
 /**
  * Returns HTML for primary and secondary local tasks.
+ *
+ * Implements theme_menu_local_tasks().
  */
 function kalatheme_menu_local_tasks(&$variables) {
   $output = '';
 
-  if ( !empty($variables['primary']) ) {
+  if (!empty($variables['primary'])) {
     $variables['primary']['#prefix'] = '<h2 class="element-invisible">' . t('Primary tabs') . '</h2>';
     $variables['primary']['#prefix'] = '<ul class="nav nav-pills">';
     $variables['primary']['#suffix'] = '</ul>';
-    if ( !empty($variables['secondary']) ) {
+    if (!empty($variables['secondary'])) {
       $variables = _kalatheme_associate_parent_tasks($variables);
     }
     $output .= drupal_render($variables['primary']);
@@ -399,9 +432,11 @@ function kalatheme_menu_local_tasks(&$variables) {
 }
 
 /**
- * HTML for individual local task links
+ * HTML for individual local task links.
+ *
+ * Implements theme_menu_local_task().
  */
-function kalatheme_menu_local_task($variables){
+function kalatheme_menu_local_task($variables) {
   $link = $variables['element']['#link'];
   $children = isset($variables['element']['#children']) ? $variables['element']['#children'] : FALSE;
   $link_text = $link['title'];
@@ -423,33 +458,34 @@ function kalatheme_menu_local_task($variables){
   }
 
   // If the primary link has children, render them as a dropdown.
-  if($children){
+  if ($children) {
     $classes[] = 'dropdown';
     $link['localized_options']['attributes']['class'][] = 'dropdown-toggle';
     $link['localized_options']['attributes']['data-toggle'][] = 'dropdown';
     $link['href'] = '#';
     $link_text .= ' <b class="caret"></b>';
-    $output =  '<li class="' . implode(' ', $classes) . '">';
+    $output = '<li class="' . implode(' ', $classes) . '">';
     $output .= l($link_text, $link['href'], $link['localized_options']);
     $output .= '<ul class="dropdown-menu">';
     $output .= drupal_render($children);
     $output .= '</ul>';
     $output .= '</li>';
     return $output;
-  }else{
+  }
+  else {
     return '<li class="' . implode(' ', $classes) . '">' . l($link_text, $link['href'], $link['localized_options']) . "</li>\n";
   }
 }
 
 /**
- * HTML for all local actions (rendered as dropdown)
+ * HTML for all local actions (rendered as dropdown).
  */
-function kalatheme_menu_local_actions($variables){
+function kalatheme_menu_local_actions($variables) {
   $container_attributes = isset($variables['attributes']['container']) ? drupal_attributes($variables['attributes']['container']) : FALSE;
   $toggle_attributes = isset($variables['attributes']['toggle']) ? drupal_attributes($variables['attributes']['toggle']) : FALSE;
   $content_attributes = isset($variables['attributes']['content']) ? drupal_attributes($variables['attributes']['content']) : FALSE;
 
-  //Render the dropdown
+  // Render the dropdown
   $output = $container_attributes ?  '<li' . $container_attributes . '>' : '<li>';
   $output .= $toggle_attributes ?  '<a' . $toggle_attributes . '><i class="icon-wrench"></i> Actions <b class="caret"></b></a>' : '<a>Actions <b class="caret"></b></a>';
   $output .= $content_attributes ? '<ul' . $content_attributes . '>' : '<ul>';
@@ -461,9 +497,9 @@ function kalatheme_menu_local_actions($variables){
 }
 
 /**
- * HTML for individual local actions
+ * HTML for individual local actions.
  */
-function kalatheme_menu_local_action($variables){
+function kalatheme_menu_local_action($variables) {
   $link = $variables['element']['#link'];
 
   $output = '<li>';
@@ -482,13 +518,13 @@ function kalatheme_menu_local_action($variables){
 }
 
 /**
- * Checks if Bootstrap's responsive CSS is installed
+ * Checks if Bootstrap's responsive CSS is installed.
  *
  * @param array $variant
  *   Library, or one of its variants, to check
- * @param $version
+ * @param string $version
  *   Library's version number, if applicable
- * @param $variant_name
+ * @param string $variant_name
  *   Name of current variant, if applicable
  */
 function kalatheme_check_responsive(&$variant, $version, $variant_name) {
@@ -504,9 +540,9 @@ function kalatheme_check_responsive(&$variant, $version, $variant_name) {
 }
 
 /**
- * Implements hook_libraries_info_alter()
+ * Implements hook_libraries_info_alter().
  */
-function kalatheme_libraries_info_alter(&$libraries)  {
+function kalatheme_libraries_info_alter(&$libraries) {
   $libraries['bootstrap'] = array(
     'name' => 'Twitter Bootstrap',
     'machine name' => 'bootstrap',

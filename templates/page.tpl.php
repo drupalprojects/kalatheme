@@ -143,7 +143,7 @@
     
     <?php // print $breadcrumb; ?>
 
-    <div id="content" class="column <?php if ($no_panels) { print ' container"'; } ?>">
+    <div id="content" class="column <?php $no_panels ? print ' container"' : ''; ?>">
       <a id="main-content"></a>
       <?php if ($tabs): ?>
         <div id="tabs" class="container">
