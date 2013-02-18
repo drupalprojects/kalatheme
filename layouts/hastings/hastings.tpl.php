@@ -10,7 +10,7 @@
  */
 ?>
 
-<div class="panel-display hastings clearfix <?php if (!empty($class)) { print $class; } ?>" <?php if (!empty($css_id)) { print "id=\"$css_id\""; } ?>>
+<div class="panel-display hastings clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
   
   <section class='section alt' id='promo'>
     <div class='container'>

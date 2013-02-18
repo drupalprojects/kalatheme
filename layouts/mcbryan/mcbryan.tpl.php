@@ -10,7 +10,7 @@
  */
 ?>
 
-<div class="panel-display mcbryan clearfix <?php if (!empty($class)) { print $class; } ?>" <?php if (!empty($css_id)) { print "id=\"$css_id\""; } ?>>
+<div class="panel-display mcbryan clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
     
     <div class='container'>
       <div class="mcbryan-container mcbryan-header clearfix row-fluid">
