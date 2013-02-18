@@ -19,10 +19,10 @@ $plugin = array(
 function theme_kalatheme_kalacustomize_render_pane($vars) {
   $content = &$vars['content'];
   $settings = $vars['settings'];
-  
+
   $content->css_class .= _kalatheme_get_responsive($vars['settings']);
-  
-  if (!empty($vars['settings']['pane_style'])) { 
+
+  if (!empty($vars['settings']['pane_style'])) {
     $content->css_class .= $vars['settings']['pane_style'] ? ' ' . $vars['settings']['pane_style'] : '';
   }
 
@@ -42,26 +42,27 @@ function theme_kalatheme_kalacustomize_render_pane($vars) {
   }
 
   $output = theme('panels_pane', $vars);
-  
+
   return $output;
 }
 
 /**
- * Some options
+ * Options for the Panels style plugin to help style panes.
  */
 function kalatheme_kalacustomize_pane_settings_form($style_settings) {
-  
+
   if (theme_get_setting('responsive_toggle')) {
+    $mobile_options = array(t('Desktop'), t('Tablet'), t('Phone'));
     $form['devices'] = array(
       '#prefix' => '<div class="well">',
       '#suffix' => '</div>',
       '#type' => 'checkboxes',
-      '#options' => drupal_map_assoc(array(t('Desktop'), t('Tablet'), t('Phone'))),
+      '#options' => drupal_map_assoc($mobile_options),
       '#title' => t('Hide this pane on the following devices.'),
       '#default_value' => $style_settings['devices'],
     );
   }
-  
+
   if (theme_get_setting('pane_styles_toggle')) {
     $pane_style_default_value = isset($style_settings['pane_style']) ? $style_settings['pane_style'] : '';
     $form['pane_style'] = array(
@@ -70,7 +71,7 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
       '#suffix' => '</div>',
     ) + _kalatheme_wrapper_pane_options($pane_style_default_value);
   }
-  
+
   if (theme_get_setting('extra_styles_toggle')) {
     $element_default_value = isset($style_settings['title']['element']) ? $style_settings['title']['element'] : '';
     $form['title']['element'] = array(
@@ -79,7 +80,7 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
       '#prefix' => '<div class="well">',
       '#suffix' => '</div>',
     ) + _kalatheme_wrapper_element_options($element_default_value);
-    
+
     $attribute_default_value = isset($style_settings['title']['attributes']) ? $style_settings['title']['attributes'] : array();
     $form['title']['attributes'] = array(
       '#title' => t('Title Style'),
@@ -87,7 +88,7 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
       '#prefix' => '<div class="well">',
       '#suffix' => '</div>',
     ) + _kalatheme_wrapper_attribute_options($attribute_default_value);
-  
+
     // Content form items, grabbed from the region settings.
     $form += kalatheme_kalacustomize_region_settings_form($style_settings);
   }
@@ -162,7 +163,8 @@ function _kalatheme_wrapper_attribute_options($default_value = '') {
 }
 
 /**
- *
+ * Create a pane wrapper from provided attributes. 
+ * 
  * @return array
  *   Array with prefix and suffix keys.
  */
@@ -178,7 +180,7 @@ function _kalatheme_wrapper_wrap($item = array()) {
 
   if (!empty($item['element']) && $item['element'] != 'no_wrapper') {
     $wrap['prefix'] = '<' . $item['element'] . $wrap['attributes'] . '>';
-    $wrap['suffix'] = '</' .  $item['element'] . '>';
+    $wrap['suffix'] = '</' . $item['element'] . '>';
   }
 
   if (!empty($item['prefix'])) {
@@ -196,7 +198,8 @@ function _kalatheme_wrapper_wrap($item = array()) {
 }
 
 /**
- *
+ * Create responsive display classes depending on chosen devices.
+ * 
  * @return array
  *   Array with prefix and suffix keys.
  */
@@ -211,15 +214,19 @@ function _kalatheme_get_responsive($item = array()) {
       $hide = strtolower($device);
     }
   }
-  
+
   switch ($count) {
     case 0:
       return ' element-invisible';
+
     case 1:
       return ' visible-' . $show;
+
     case 2:
       return ' hidden-' . $hide;
+
     case 3:
       return '';
+
   }
 }
