@@ -128,25 +128,7 @@ function _kalatheme_wrapper_element_options($default_value = '') {
   );
 
   // Fallback element options, grabbed from View's defaults.
-  $options['#options'] = variable_get('views_field_rewrite_elements', array(
-      '' => t('- Use default -'),
-      '0' => t('- None -'),
-      'div' => 'DIV',
-      'span' => 'SPAN',
-      'h1' => 'H1',
-      'h2' => 'H2',
-      'h3' => 'H3',
-      'h4' => 'H4',
-      'h5' => 'H5',
-      'h6' => 'H6',
-      'p' => 'P',
-      'strong' => 'STRONG',
-      'em' => 'EM',
-      'small' => 'SMALL',
-      'blockquote' => 'BLOCKQUOTE',
-      'code' => 'CODE',
-      'pre' => 'PRE',
-  ));
+  $options['#options'] = theme_get_setting('extra_elements');
 
   return $options;
 }
@@ -174,17 +156,7 @@ function _kalatheme_wrapper_attribute_options($default_value = '') {
     '#default_value' => $default_value,
   );
 
-  $options['#options'] = array(
-      '' => t('- Use default -'),
-      '0' => t('- None -'),
-      'lead' => 'LEAD BODY COPY',
-      'page-header' => 'PAGE HEADER',
-      'muted' => 'MUTED TEXT',
-      'text-warning' => 'WARNING TEXT',
-      'text-error' => 'ERROR TEXT',
-      'text-info' => 'INFO TEXT',
-      'text-success' => 'SUCCESS TEXT',
-  );
+  $options['#options'] = theme_get_setting('extra_classes');
 
   return $options;
 }

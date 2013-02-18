@@ -14,6 +14,9 @@
  *   The form state.
  */
 function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
+  // Need to pass this through to use list_allowed_values_string without errors
+  $field = array('type' => 'list_text');
+
   // Responsive style plugin settings
   $form['responsive'] = array(
     '#type' => 'fieldset',
@@ -54,7 +57,6 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
       ),
     ),
   );
-
   // Set defaults here instead of info because it is an array
   $pane_classes = theme_get_setting('pane_classes');
   if (is_null($pane_classes)) {
@@ -65,8 +67,6 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
       'well' => 'WELL',
     );
   }
-  // Need to pass this through to use list_allowed_values_string without errors
-  $field = array('type' => 'list_text');
   $form['pane_styles']['pane_styles_settings']['pane_classes'] = array(
     '#type' => 'textarea',
     '#title' => t('Allowed values list'),
@@ -101,6 +101,53 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
         'input[name="extra_styles_toggle"]' => array('checked' => FALSE),
       ),
     ),
+  );
+  // Set defaults here instead of info because it is an array
+  $extra_elements = theme_get_setting('extra_elements');
+  if (is_null($extra_elements)) {
+    $extra_elements = array(
+      '' => t('- Use default -'),
+      '0' => t('- None -'),
+      'div' => 'DIV',
+      'span' => 'SPAN',
+      'h1' => 'H1',
+      'h2' => 'H2',
+      'h3' => 'H3',
+      'blockquote' => 'BLOCKQUOTE',
+    );
+  }
+  $form['extra_styles']['extra_styles_settings']['extra_elements'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Allowed values list'),
+    '#default_value' => list_allowed_values_string($extra_elements),
+    '#rows' => 10,
+    '#element_validate' => array('list_allowed_values_setting_validate'),
+    '#field_has_data' => FALSE,
+    '#field' => $field,
+    '#field_type' => $field['type'],
+    '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
+  );
+  // Set defaults here instead of info because it is an array
+  $extra_classes = theme_get_setting('extra_classes');
+  if (is_null($extra_classes)) {
+    $extra_classes = array(
+      '' => t('- Use default -'),
+      '0' => t('- None -'),
+      'lead' => 'LEAD BODY COPY',
+      'page-header' => 'PAGE HEADER',
+      'muted' => 'MUTED TEXT',
+    );
+  }
+  $form['extra_styles']['extra_styles_settings']['extra_classes'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Allowed values list'),
+    '#default_value' => list_allowed_values_string($extra_classes),
+    '#rows' => 10,
+    '#element_validate' => array('list_allowed_values_setting_validate'),
+    '#field_has_data' => FALSE,
+    '#field' => $field,
+    '#field_type' => $field['type'],
+    '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
   );
 
 
