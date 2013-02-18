@@ -41,7 +41,6 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#collapsible' => FALSE,
     '#collapsed' => FALSE,
     '#description' => t('If toggled on, the kalacustomize style plugin will allow the user to set a class for panels panes.'),
-     
   );
   $form['pane_styles']['pane_styles_toggle'] = array(
     '#type' => 'checkbox',
