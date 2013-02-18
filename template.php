@@ -114,7 +114,6 @@ function kalatheme_process_page(&$variables) {
     $variables['title_suffix']['add_or_remove_shortcut']['#weight'] = -100;
   }
 
-
   // If panels arent being used at all.
   $variables['no_panels'] = FALSE;
   if (!isset($variables['page']['content']['system_main']['main']['#markup']) || (strpos($variables['page']['content']['system_main']['main']['#markup'], 'panel-panel') === FALSE)) {
@@ -149,7 +148,7 @@ function kalatheme_process_maintenance_page(&$variables) {
     $variables['site_name'] = filter_xss_admin(variable_get('site_name', 'Drupal'));
   }
   if ($variables['hide_site_slogan']) {
-    // If toggle_site_slogan is FALSE, the site_slogan will be empty, so we rebuild it.
+    // If toggle_site_slogan is FALSE, rebuild the empty site slogan.
     $variables['site_slogan'] = filter_xss_admin(variable_get('site_slogan', ''));
   }
 }
@@ -291,7 +290,6 @@ function kalatheme_field__taxonomy_term_reference($variables) {
   // Render the top-level DIV.
   $output = '<div class="' . $variables['classes'] . (!in_array('clearfix', $variables['classes_array']) ? ' clearfix' : '') . '"' . $variables['attributes'] . '>' . $output . '</div>';
 
-
   return $output;
 }
 
@@ -338,7 +336,7 @@ function kalatheme_links__system_main_menu($variables) {
     foreach ($links as $key => $link) {
       $class = array($key);
 
-      // Add first, last and active classes to the list of links to help out themers.
+      // Add first/last/active classes to help out themers.
       if ($i == 1) {
         $class[] = 'first';
       }
@@ -363,12 +361,12 @@ function kalatheme_links__system_main_menu($variables) {
         // Pass in $link as $options, they share the same keys.
         $output .= l($link['#title'], $link['#href'], array('attributes' => $link['#attributes']));
       }
-      // need to put in empty anchor for dropdown, for some reason drupal can't do this with l()?
+      // Put in empty anchor for dropdown.
       elseif ($link['#attributes']['data-toggle'] && !isset($link['#href'])) {
         $output .= str_replace('href="/"', 'href="#"', l($link['#title'], $link['#href'], array('attributes' => $link['#attributes'])));
       }
       elseif (!empty($link['#title'])) {
-        // Some links are actually not links, but we wrap these in <span> for adding title and class attributes.
+        // Wrap non-<a> links in <span> for adding title and class attributes.
         if (empty($link['#html'])) {
           $link['#title'] = check_plain($link['#title']);
         }
@@ -485,7 +483,7 @@ function kalatheme_menu_local_actions($variables) {
   $toggle_attributes = isset($variables['attributes']['toggle']) ? drupal_attributes($variables['attributes']['toggle']) : FALSE;
   $content_attributes = isset($variables['attributes']['content']) ? drupal_attributes($variables['attributes']['content']) : FALSE;
 
-  // Render the dropdown
+  // Render the dropdown.
   $output = $container_attributes ?  '<li' . $container_attributes . '>' : '<li>';
   $output .= $toggle_attributes ?  '<a' . $toggle_attributes . '><i class="icon-wrench"></i> Actions <b class="caret"></b></a>' : '<a>Actions <b class="caret"></b></a>';
   $output .= $content_attributes ? '<ul' . $content_attributes . '>' : '<ul>';
