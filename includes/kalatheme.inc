@@ -34,7 +34,8 @@ function _kalatheme_load_dependencies() {
   // Add what we need from Bootstrap and make sure Panopoly is installed.
   $all_loaded = FALSE;
   if (module_exists('panopoly_core')) {
-    if (($library = libraries_detect('bootstrap')) && !empty($library['installed'])) {
+    $library = libraries_detect('bootstrap');
+    if ($library && !empty($library['installed'])) {
       $bootstrap_path = DRUPAL_ROOT . '/' . $library['library path'];
       $variant = NULL;
       $has_minified_css = file_exists($bootstrap_path . '/css/bootstrap.min.css');
@@ -46,7 +47,7 @@ function _kalatheme_load_dependencies() {
       $all_loaded = TRUE;
     }
     else {
-      // Something went wrong. :(
+      // Something went wrong. Sadface.
       drupal_set_message(KALATHEME_BOOTSTRAP_ERROR, 'error');
     }
   }
