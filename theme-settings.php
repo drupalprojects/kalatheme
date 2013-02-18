@@ -55,6 +55,30 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     ),
   );
 
+  // Set defaults here instead of info because it is an array
+  $pane_classes = theme_get_setting('pane_classes');
+  if (is_null($pane_classes)) {
+    $pane_classes = array(
+      '' => t('- Use default -'),
+      '0' => t('- None -'),
+      'hero-unit' => 'HERO UNIT',
+      'well' => 'WELL',
+    );
+  }
+  // Need to pass this through to use list_allowed_values_string without errors
+  $field = array('type' => 'list_text');
+  $form['pane_styles']['pane_styles_settings']['pane_classes'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Allowed values list'),
+    '#default_value' => list_allowed_values_string($pane_classes),
+    '#rows' => 10,
+    '#element_validate' => array('list_allowed_values_setting_validate'),
+    '#field_has_data' => FALSE,
+    '#field' => $field,
+    '#field_type' => $field['type'],
+    '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
+  );
+
   // Extra styles style plugin settings
   $form['extra_styles'] = array(
     '#type' => 'fieldset',

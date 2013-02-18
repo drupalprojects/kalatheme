@@ -114,6 +114,7 @@ function kalatheme_process_page(&$variables) {
     $variables['title_suffix']['add_or_remove_shortcut']['#weight'] = -100;
   }
 
+
   // If panels arent being used at all.
   $variables['no_panels'] = FALSE;
   if (!isset($variables['page']['content']['system_main']['main']['#markup']) || (strpos($variables['page']['content']['system_main']['main']['#markup'], 'panel-panel') === FALSE)) {
@@ -345,7 +346,7 @@ function kalatheme_links__system_main_menu($variables) {
         $class[] = 'last';
       }
       if (isset($link['#href']) && ($link['#href'] == $_GET['q'] || ($link['#href'] == '<front>' && drupal_is_front_page()))
-           && (empty($link['#language']) || $link['#language']->language == $language_url->language)) {
+        && (empty($link['#language']) || $link['#language']->language == $language_url->language)) {
         $class[] = 'active';
       }
       if (!empty($link['#below'])) {
@@ -381,9 +382,9 @@ function kalatheme_links__system_main_menu($variables) {
       if (!empty($link['#below'])) {
         $output .= theme('links__system_main_menu', array(
           'links' => $link['#below'],
-            'attributes' => array(
-              'class' => array('dropdown-menu'),
-            ),
+          'attributes' => array(
+            'class' => array('dropdown-menu'),
+          ),
         ));
       }
 

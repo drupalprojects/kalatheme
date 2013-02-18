@@ -160,14 +160,7 @@ function _kalatheme_wrapper_pane_options($default_value = '') {
     '#default_value' => $default_value,
   );
 
-  $options['#options'] = array(
-    '' => t('- Use default -'),
-    '0' => t('- None -'),
-    'hero-unit' => 'HERO UNIT',
-    'well' => 'WELL',
-    'well well-large' => 'LARGE WELL',
-    'well well-small' => 'SMALL WELL',  
-  );
+  $options['#options'] = theme_get_setting('pane_classes');
 
   return $options;
 }
