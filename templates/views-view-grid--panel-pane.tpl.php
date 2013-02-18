@@ -2,8 +2,7 @@
 
 /**
  * @file
- * Default simple view template to display a rows in a grid.
- * T
+ * Default simple view template to display a rows in a grid. 
  *
  * - $rows contains a nested array of rows. Each row contains an array of
  *   columns.
