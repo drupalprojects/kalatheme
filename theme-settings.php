@@ -7,17 +7,12 @@
 
 /**
  * Implements hook_form_FORM_ID_alter().
- *
- * @param $form
- *   The form.
- * @param $form_state
- *   The form state.
  */
 function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
-  // Need to pass this through to use list_allowed_values_string without errors
+  // Need to pass this through to use list_allowed_values_string without errors.
   $field = array('type' => 'list_text');
 
-  // Responsive style plugin settings
+  // Responsive style plugin settings.
   $form['responsive'] = array(
     '#type' => 'fieldset',
     '#title' => t('Responsive'),
@@ -30,10 +25,10 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#type' => 'checkbox',
     '#title' => t('Use responsive toggling.'),
     '#default_value' => theme_get_setting('responsive_toggle'),
-    '#description' => t('Check here if you want the user to be able to set the responsive visbility of each panels pane.')
+    '#description' => t('Check here if you want the user to be able to set the responsive visbility of each panels pane.'),
   );
 
-  // Panels styles style plugin settings
+  // Panels styles style plugin settings.
   $form['pane_styles'] = array(
     '#type' => 'fieldset',
     '#title' => t('Pane Styles'),
@@ -46,7 +41,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#type' => 'checkbox',
     '#title' => t('Use panels styles.'),
     '#default_value' => theme_get_setting('pane_styles_toggle'),
-    '#description' => t('Check here if you want to set the class for each panels pane.')
+    '#description' => t('Check here if you want to set the class for each panels pane.'),
   );
   $form['pane_styles']['pane_styles_settings'] = array(
     '#type' => 'container',
@@ -56,7 +51,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
       ),
     ),
   );
-  // Set defaults here instead of info because it is an array
+  // Set defaults here instead of info because it is an array.
   $pane_classes = theme_get_setting('pane_classes');
   if (is_null($pane_classes)) {
     $pane_classes = array(
@@ -78,7 +73,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
   );
 
-  // Extra styles style plugin settings
+  // Extra styles style plugin settings.
   $form['extra_styles'] = array(
     '#type' => 'fieldset',
     '#title' => t('Extra Styles'),
@@ -91,7 +86,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#type' => 'checkbox',
     '#title' => t('Use extra styles.'),
     '#default_value' => theme_get_setting('extra_styles_toggle'),
-    '#description' => t('Check here if you want to customize the elements and classes for pane titles and content.')
+    '#description' => t('Check here if you want to customize the elements and classes for pane titles and content.'),
   );
   $form['extra_styles']['extra_styles_settings'] = array(
     '#type' => 'container',
@@ -101,7 +96,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
       ),
     ),
   );
-  // Set defaults here instead of info because it is an array
+  // Set defaults here instead of info because it is an array.
   $extra_elements = theme_get_setting('extra_elements');
   if (is_null($extra_elements)) {
     $extra_elements = array(
@@ -126,7 +121,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#field_type' => $field['type'],
     '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
   );
-  // Set defaults here instead of info because it is an array
+  // Set defaults here instead of info because it is an array.
   $extra_classes = theme_get_setting('extra_classes');
   if (is_null($extra_classes)) {
     $extra_classes = array(
@@ -148,6 +143,4 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#field_type' => $field['type'],
     '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
   );
-
-
 }

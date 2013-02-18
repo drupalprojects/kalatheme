@@ -163,8 +163,8 @@ function _kalatheme_wrapper_attribute_options($default_value = '') {
 }
 
 /**
- * Create a pane wrapper from provided attributes. 
- * 
+ * Create a pane wrapper from provided attributes.
+ *
  * @return array
  *   Array with prefix and suffix keys.
  */
@@ -199,7 +199,7 @@ function _kalatheme_wrapper_wrap($item = array()) {
 
 /**
  * Create responsive display classes depending on chosen devices.
- * 
+ *
  * @return array
  *   Array with prefix and suffix keys.
  */
