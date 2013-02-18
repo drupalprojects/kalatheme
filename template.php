@@ -90,7 +90,7 @@ function kalatheme_process_page(&$variables) {
     // Make sure the shortcut link is the first item in title_suffix.
     $variables['title_suffix']['add_or_remove_shortcut']['#weight'] = -100;
   }
-  
+
   // If panels arent being used at all
   $variables['no_panels'] = FALSE;
   if (!isset($variables['page']['content']['system_main']['main']['#markup']) || (strpos($variables['page']['content']['system_main']['main']['#markup'], 'panel-panel') === FALSE)) {
@@ -221,7 +221,7 @@ function kalatheme_textarea($variables) {
   _form_set_class($element, array('form-textarea'));
 
   $wrapper_attributes = array(
-      'class' => array('form-textarea-wrapper'),
+    'class' => array('form-textarea-wrapper'),
   );
 
   // Add resizable behavior.
@@ -317,7 +317,7 @@ function kalatheme_links__system_main_menu($variables) {
         $class[] = 'last';
       }
       if (isset($link['#href']) && ($link['#href'] == $_GET['q'] || ($link['#href'] == '<front>' && drupal_is_front_page()))
-           && (empty($link['#language']) || $link['#language']->language == $language_url->language)) {
+        && (empty($link['#language']) || $link['#language']->language == $language_url->language)) {
         $class[] = 'active';
       }
       if (!empty($link['#below'])) {
@@ -353,9 +353,9 @@ function kalatheme_links__system_main_menu($variables) {
       if (!empty($link['#below'])) {
         $output .= theme('links__system_main_menu', array(
           'links' => $link['#below'],
-            'attributes' => array(
-              'class' => array('dropdown-menu'),
-            ),
+          'attributes' => array(
+            'class' => array('dropdown-menu'),
+          ),
         ));
       }
 
@@ -421,7 +421,7 @@ function kalatheme_menu_local_task($variables){
 
     $classes[] = 'active';
   }
-  
+
   // If the primary link has children, render them as a dropdown.
   if($children){
     $classes[] = 'dropdown';
@@ -435,9 +435,9 @@ function kalatheme_menu_local_task($variables){
     $output .= drupal_render($children);
     $output .= '</ul>';
     $output .= '</li>';
-    return $output;   
+    return $output;
   }else{
-    return '<li class="' . implode(' ', $classes) . '">' . l($link_text, $link['href'], $link['localized_options']) . "</li>\n";   
+    return '<li class="' . implode(' ', $classes) . '">' . l($link_text, $link['href'], $link['localized_options']) . "</li>\n";
   }
 }
 
@@ -508,57 +508,57 @@ function kalatheme_check_responsive(&$variant, $version, $variant_name) {
  */
 function kalatheme_libraries_info_alter(&$libraries)  {
   $libraries['bootstrap'] = array(
-      'name' => 'Twitter Bootstrap',
-      'machine name' => 'bootstrap',
-      'vendor url' => 'http://twitter.github.com',
-      'download url' => 'http://twitter.github.com',
-      'path' => '',
-      'callbacks' => array(),
-      'version arguments' => array(
-          'file' => 'css/bootstrap.css',
-          'pattern' => '@v+([0-9a-zA-Z\.-]+)@',
-          'lines' => 10,
-          'cols' => 20,
-      ),
-      'version callback' => 'libraries_get_version',
-      'versions' => array(
-          '2' => array(
-              'files' => array(
-                  'js' => array(
-                      'js/bootstrap.js',
-                  ),
-                  'css' => array(
-                      'css/bootstrap.css',
-                      'css/bootstrap-responsive.css',
-                  ),
-              ),
-              'variants' => array(
-                  'minified' => array(
-                      'files' => array(
-                          'js' => array(
-                              'js/bootstrap.min.js',
-                          ),
-                          'css' => array(
-                              'css/bootstrap.min.css',
-                              'css/bootstrap-responsive.min.css',
-                          ),
-                      ),
-                      'variant arguments' => array(
-                          'variant' => 'minified',
-                      ),
-                  ),
-              ),
+    'name' => 'Twitter Bootstrap',
+    'machine name' => 'bootstrap',
+    'vendor url' => 'http://twitter.github.com',
+    'download url' => 'http://twitter.github.com',
+    'path' => '',
+    'callbacks' => array(),
+    'version arguments' => array(
+      'file' => 'css/bootstrap.css',
+      'pattern' => '@v+([0-9a-zA-Z\.-]+)@',
+      'lines' => 10,
+      'cols' => 20,
+    ),
+    'version callback' => 'libraries_get_version',
+    'versions' => array(
+      '2' => array(
+        'files' => array(
+          'js' => array(
+            'js/bootstrap.js',
           ),
+          'css' => array(
+            'css/bootstrap.css',
+            'css/bootstrap-responsive.css',
+          ),
+        ),
+        'variants' => array(
+          'minified' => array(
+            'files' => array(
+              'js' => array(
+                'js/bootstrap.min.js',
+              ),
+              'css' => array(
+                'css/bootstrap.min.css',
+                'css/bootstrap-responsive.min.css',
+              ),
+            ),
+            'variant arguments' => array(
+              'variant' => 'minified',
+            ),
+          ),
+        ),
       ),
+    ),
   );
 
   $libraries['bootstrap']['callbacks'] += array(
-      'info' => array(),
-      'pre-detect' => array(),
-      'post-detect' => array(),
-      'pre-load' => array(
-          'kalatheme_check_responsive',
-      ),
-      'post-load' => array(),
+    'info' => array(),
+    'pre-detect' => array(),
+    'post-detect' => array(),
+    'pre-load' => array(
+      'kalatheme_check_responsive',
+    ),
+    'post-load' => array(),
   );
 }
