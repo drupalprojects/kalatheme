@@ -8,14 +8,14 @@
 /**
  * Message displayed when user does not have Panopoly installed
  */
-define('KALATHEME_PANOPOLY_ERROR', t('In order to use Kalatheme, 
-  you must have the Panopoly distribution installed. 
+define('KALATHEME_PANOPOLY_ERROR', t('In order to use Kalatheme,
+  you must have the Panopoly distribution installed.
   Please check the README for installation instructions.'));
 /**
  * Message displayed when user does not have Bootstrap available
  */
-define('KALATHEME_BOOTSTRAP_ERROR', t('In order to use Kalatheme, you must 
-  have the Twitter Bootstrap library available. Please check the README for 
+define('KALATHEME_BOOTSTRAP_ERROR', t('In order to use Kalatheme, you must
+  have the Twitter Bootstrap library available. Please check the README for
   installation instructions.'));
 
 /**
@@ -65,24 +65,23 @@ function _kalatheme_load_dependencies() {
 }
 
 /**
- * Given menu_local_tasks variables, associate all the secondary
- * menu tasks as #children of their parent primary tasks.
+ * Associate all the secondary menu tasks as #children of primary tasks.
  */
-function _kalatheme_associate_parent_tasks($variables){
+function _kalatheme_associate_parent_tasks($variables) {
   // Assign all secondary links as children of their parent primary link.
-  foreach($variables['secondary'] as $secondary_index => $secondary_link){
+  foreach ($variables['secondary'] as $secondary_index => $secondary_link) {
     $link = $secondary_link['#link'];
-    foreach($variables['primary'] as $primary_index => $primary_link){
-      if(!isset($primary_link['#markup']) && $primary_link['#link']['path'] == $link['tab_parent']){
+    foreach ($variables['primary'] as $primary_index => $primary_link) {
+      if (!isset($primary_link['#markup']) && $primary_link['#link']['path'] == $link['tab_parent']) {
         $variables['primary'][$primary_index]['#children'][] = $secondary_link;
         unset($variables['secondary'][$secondary_index]);
       }
     }
   }
 
-  // If a secondary link hasn't been assigned, put it on the end of the primary links.
+  // If a secondary link hasn't been assigned, make it a primary link. 
   // @todo: this should never happen; consider removing?
-  foreach($variables['secondary'] as $secondary_link){
+  foreach ($variables['secondary'] as $secondary_link) {
     $variables['primary'][] = $secondary_link;
   }
 
