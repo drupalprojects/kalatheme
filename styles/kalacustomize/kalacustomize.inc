@@ -62,31 +62,35 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
     );
   }
   
-  $pane_style_default_value = isset($style_settings['pane_style']) ? $style_settings['pane_style'] : '';
-  $form['pane_style'] = array(
-    '#title' => t('Pane Style'),
-    '#prefix' => '<div class="well">',
-    '#suffix' => '</div>',
-  ) + _kalatheme_wrapper_pane_options($pane_style_default_value);
+  if (theme_get_setting('pane_styles_toggle')) {
+    $pane_style_default_value = isset($style_settings['pane_style']) ? $style_settings['pane_style'] : '';
+    $form['pane_style'] = array(
+      '#title' => t('Pane Style'),
+      '#prefix' => '<div class="well">',
+      '#suffix' => '</div>',
+    ) + _kalatheme_wrapper_pane_options($pane_style_default_value);
+  }
   
-  $element_default_value = isset($style_settings['title']['element']) ? $style_settings['title']['element'] : '';
-  $form['title']['element'] = array(
-    '#title' => t('Title'),
-    '#description' => t('HTML element to wrap around the title.'),
-    '#prefix' => '<div class="well">',
-    '#suffix' => '</div>',
-  ) + _kalatheme_wrapper_element_options($element_default_value);
+  if (theme_get_setting('extra_styles_toggle')) {
+    $element_default_value = isset($style_settings['title']['element']) ? $style_settings['title']['element'] : '';
+    $form['title']['element'] = array(
+      '#title' => t('Title'),
+      '#description' => t('HTML element to wrap around the title.'),
+      '#prefix' => '<div class="well">',
+      '#suffix' => '</div>',
+    ) + _kalatheme_wrapper_element_options($element_default_value);
+    
+    $attribute_default_value = isset($style_settings['title']['attributes']) ? $style_settings['title']['attributes'] : array();
+    $form['title']['attributes'] = array(
+      '#title' => t('Title Style'),
+      '#description' => t('Style to use for this element.'),
+      '#prefix' => '<div class="well">',
+      '#suffix' => '</div>',
+    ) + _kalatheme_wrapper_attribute_options($attribute_default_value);
   
-  $attribute_default_value = isset($style_settings['title']['attributes']) ? $style_settings['title']['attributes'] : array();
-  $form['title']['attributes'] = array(
-    '#title' => t('Title Style'),
-    '#description' => t('Style to use for this element.'),
-    '#prefix' => '<div class="well">',
-    '#suffix' => '</div>',
-  ) + _kalatheme_wrapper_attribute_options($attribute_default_value);
-
-  // Content form items, grabbed from the region settings.
-  $form += kalatheme_kalacustomize_region_settings_form($style_settings);
+    // Content form items, grabbed from the region settings.
+    $form += kalatheme_kalacustomize_region_settings_form($style_settings);
+  }
 
   return $form;
 }
