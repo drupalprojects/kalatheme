@@ -25,16 +25,11 @@ $gridsize = count($rows[0]);
 <div class="views-view-grid grid-<?php print $gridsize ?>">
   <?php foreach ($rows as $row_number => $columns): ?>
   <?php 
-  $row_class = 'row-' . ($row_number + 1);
-  if ($row_number == 0 && count($rows) > 1) {
-          $row_class .= ' row-first';
-        }
-        elseif (count($rows) == ($row_number + 1)) {
-          $row_class .= ' row-last';
-        }
-        $row_class .= ' row-fluid'
+    $row_class = 'row-' . ($row_number + 1);
+    $row_class .= ($row_number == 0 && count($rows) > 1) ? ' row-first' : '';
+    $row_class .= (count($rows) == ($row_number + 1)) ? ' row-last' : '';
+    $row_class .= ' row-fluid';
   ?>
-
   <div class="<?php print $row_class; ?>">
     <?php foreach ($columns as $column_number => $item): ?>
     <div
