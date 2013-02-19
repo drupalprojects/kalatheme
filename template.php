@@ -295,7 +295,7 @@ function kalatheme_field__taxonomy_term_reference($variables) {
 
 
 /**
- * Implements theme_links__system_secondary_menu().
+ * Implements theme_links__system_main_menu.
  */
 function kalatheme_links__system_main_menu($variables) {
   $links = $variables['links'];
