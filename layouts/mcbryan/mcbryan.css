@@ -2,34 +2,29 @@
  * @file
  * mcbryan panel layout
 **/
-
 .mcbryan-column {
+  float: left;
   min-height: 1px;
   width: 34.043%;
-  float: left;
 }
 
-  .mcbryan-column-inner {
-    margin-right: 20px;
-  }
+.mcbryan-column-inner {
+  margin-right: 20px;
+}
 
-  .mcbryan-column3,
-  .mcbryan-secondary-column3 {
-    min-height: 1px;
-    width: 31.915%;
-    margin-right: 0;
-  }
-  
+.mcbryan-column3,.mcbryan-secondary-column3 {
+  margin-right: 0;
+  min-height: 1px;
+  width: 31.915%;
+}
+
 /* iPhone [portrait + landscape] */
 @media only screen and (max-width: 480px) {
-  .mcbryan-column,
-  .mcbryan-column3,
-  .mcbryan-secondary-column3 {
-    width: 100%;
+  .mcbryan-column,.mcbryan-column3,.mcbryan-secondary-column3 {
     float: none;
+    width: 100%;
   }
-  
-  .mcbryan-column-inner  {
+  .mcbryan-column-inner {
     margin-right: 0;
   }
 }

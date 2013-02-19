@@ -36,18 +36,18 @@
 }
 
 #node-edit .form-item-path-alias {
-  margin-top: .25em;
-  margin-bottom: .25em;
-  padding: 0;
   font-size: .8em;
-  vertical-align: middle;
+  margin-bottom: .25em;
+  margin-top: .25em;
   min-height: 1.2em;
+  padding: 0;
+  vertical-align: middle;
 }
 
 #node-edit .form-item-path-alias input {
   margin-left: 4px;
-  padding-top: 0;
   padding-bottom: 0;
+  padding-top: 0;
 }
 
 #node-edit .form-item-path-pathauto {
@@ -57,8 +57,8 @@
 /**
  * Publishing styling
  */
-#node-edit .form-item-machine-name label, 
-#node-edit .form-item-date label, 
+#node-edit .form-item-machine-name label,
+#node-edit .form-item-date label,
 #node-edit .form-item-name label {
   float: left;
   font-weight: 400;
@@ -71,9 +71,9 @@
  */
 #node-edit .pane-node-form-menu .form-item-menu-parent label,
 #node-edit .pane-node-form-menu .form-item-menu-link-title label {
+  font-weight: normal;
   float: left;
   margin-right: 4px;
-  font-weight: normal;
   width: 49px;
 }
 
@@ -101,15 +101,15 @@
   width: 180px;
 }
 
-#node-edit #edit-field-featured-image .form-item-field-featured-image-und-0 > label, 
+#node-edit #edit-field-featured-image .form-item-field-featured-image-und-0 > label,
 #node-edit .form-item-field-featured-image-und-0-alt .description {
   display: none;
 }
 
 #node-edit .field-name-field-featured-image .image-preview img {
-  max-width: 100%;
   height: auto;
   margin-bottom: 0; /* Overrides Bartik's default margin, which is too much */
+  max-width: 100%;
 }
 
 #node-edit .field-name-field-featured-image div.image-widget-data {
@@ -119,32 +119,32 @@
 #node-edit .field-name-field-featured-image .image-widget-data img {
   margin-bottom: 0;
 }
-  
+
 #node-edit .field-name-field-featured-image .image-widget-data span.file {
-  width: 65%;
-  margin-right: 5%;
   float: left;
+  margin-right: 5%;
   margin-top: 5px;
+  width: 65%;
 }
   
 #node-edit .field-name-field-featured-image .image-widget-data img {
   margin-bottom: 0;
 }
-  
+
 #node-edit .field-name-field-featured-image .image-widget-data span.file-size {
   display: none;
 }
-  
+
 #node-edit .field-name-field-featured-image .image-widget-data input#edit-field-featured-image-und-0-remove-button {
-  max-width: 28%
+  max-width: 28%;
 }
-  
+
 #node-edit .field-name-field-featured-image .image-widget-data div.form-item {
   clear: both;
-  margin-top: .75em;
   margin-bottom: .25em;
+  margin-top: .75em;
 }
-  
+
 #node-edit .field-name-field-featured-image .image-preview {
   width: 100%;
 }
@@ -166,7 +166,7 @@
   padding: 0;
 }
 
-#node-edit .container-inline-date .form-item-date-time, 
+#node-edit .container-inline-date .form-item-date-time,
 #node-edit .container-inline-date .form-item-date-date {
   padding-bottom: 1em;
 }
@@ -175,13 +175,13 @@
   clear: left;
 }
 
-#node-edit .form-item-date-time label, 
-#node-edit .form-item-date-date label, 
+#node-edit .form-item-date-time label,
+#node-edit .form-item-date-date label,
 #node-edit .form-item-name label {
   width: 49px;
 }
 
-#node-edit .container-inline-date .form-item-date-date .description, 
+#node-edit .container-inline-date .form-item-date-date .description,
 #node-edit .container-inline-date .form-item-date-time .description {
   display: none;
 }
@@ -231,7 +231,7 @@ ul#media-browser-library-list {
 }
 
 #views-ajax-body form {
-  background-color: #FFF; /* makes sure that our background color is white when ajaxing in views */
+  background-color: #fff; /* makes sure that our background color is white when ajaxing in views */
 }
 
 .tabledrag-toggle-weight-wrapper {
@@ -255,61 +255,61 @@ ul#media-browser-library-list {
 }
 
 #modalContent div.ctools-modal-content {
-  -webkit-border-radius: 10px 10px 0 0;
-  -moz-border-radius: 10px 10px 0 0;
-  border-radius: 10px 10px 0 0;
   border: none;
+  border-radius: 10px 10px 0 0;
+  -moz-border-radius: 10px 10px 0 0;
+  -webkit-border-radius: 10px 10px 0 0;
 }
 
 #modalContent div.ctools-modal-content .modal-header {
-  -webkit-border-radius: 5px 5px 0 0;
-  -moz-border-radius: 5px 5px 0 0;
   border-radius: 5px 5px 0 0;
   color: #fff;
   font: bold 16px/50px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
-  vertical-align: middle;
   height: 50px;
   padding: 0 14px 0 24px;
+  vertical-align: middle;
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
 }
 
 #modalContent div.ctools-modal-content .modal-title {
   font: bold 16px/50px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
-  text-shadow: none;
   padding: 0;
+  text-shadow: none;
 }
 
 #modalContent div.ctools-modal-content a.close {
   display: block;
-  text-indent: -99999em;
-  overflow: hidden;
-  outline: none;
   height: 15px;
-  width: 16px;
   margin-top: 15px;
-  padding: 0;
   opacity: 1;
+  outline: none;
+  overflow: hidden;
+  padding: 0;
+  text-indent: -99999em;
+  width: 16px;
 }
 
 #modalContent .panels-add-content-modal {
-  background: #FFF;
+  background: #fff;
   padding-top: .9em;
 }
 
 #modalContent .panels-add-content-modal a.panels-modal-add-category {
-  background: #EAEAEC;
-  font: bold 11px/30px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
-  color: #333;
-  text-decoration: none;
-  margin-left: 10px;
+  background: #eaeaec;
   border-bottom: none;
+  color: #333;
+  font: bold 11px/30px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
+  margin-left: 10px;
   padding: 0 12px;
+  text-decoration: none;
 }
 
 #modalContent .panels-add-content-modal a.panels-modal-add-category:active, 
 #modalContent .panels-add-content-modal a.panels-modal-add-category.active {
+  background: #FFF;
   border: 1px solid #CECECA;
   border-right: none;
-  background: #FFF;
   margin-right: -1px;
 }
 
@@ -328,34 +328,34 @@ ul#media-browser-library-list {
 
 
 #modal-content fieldset.widget-preview {
-  margin-top: 3em;
-  margin-bottom: 4em;
-  -webkitborder-top-right-radius: 0;
-  -moz-border-topright-radius: 0;
   border-top-right-radius: 0;
+  margin-bottom: 4em;
+  margin-top: 3em;
+  -moz-border-topright-radius: 0;
+  -webkitborder-top-right-radius: 0;
 }
 
 #modal-content fieldset.widget-preview-single {
-  margin-top: 0em;
   margin-bottom: 1em;
+  margin-top: 0em;
 }
 
 #modal-content fieldset.widget-preview-single .fieldset-wrapper {
   font-size: 100%;
   max-width: 100%;
-  overflow-y: auto;
-  min-height: 75px;
   max-height: 375px;
+  min-height: 75px;
+  overflow-y: auto;
 }
 
 #modal-content fieldset.widget-preview-single .fieldset-wrapper .panopoly-spotlight img {
   width: 100%;
 }
-  
+
 #modal-content .fieldset-legend {
   font: bold 12px/1.5em 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
 }
-  
+
 #modal-content fieldset legend a {
   color: #3b3b3b;
 }
@@ -365,22 +365,22 @@ ul#media-browser-library-list {
 #modal-content fieldset legend a:active {
   color: #000;
 }
-  
+
 #modal-content .fieldset-wrapper {
-  padding: 0 10px;
   margin-top: 2.25em;
+  padding: 0 10px;
 }
 
 #modal-content .widget-preview .fieldset-wrapper {
-  max-width: 100%;
-  overflow-y: auto;
   font-size: 75%;
   max-height: 200px;
+  max-width: 100%;
   min-height: 200px;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
-#modal-content .widget-preview .fieldset-wrapper table tr.even td, 
+#modal-content .widget-preview .fieldset-wrapper table tr.even td,
 #modal-content .widget-preview .fieldset-wrapper table tr.odd td {
   padding: 3px 5px;
 }
@@ -398,60 +398,60 @@ ul#media-browser-library-list {
 }
 
 #modal-content .form-actions {
-  float: right;
   clear: right;
-  width: 48%;
+  float: right;
   margin-left: 1em;
   text-align: right;
+  width: 48%;
 }
 
 #modal-content .widget-preview-title {
+  font: bold 11px/23px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
   position: absolute;
   right: -1px;
   top: -24px;
-  font: bold 11px/23px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
 }
 
 #modal-content .widget-preview-title .content-type-button div {
   float: none;
   left: 0;
+  padding: 0;
   top: 0;
   width: 60px;
-  padding: 0;
 }
 
 #modal-content .panels-section-columns,
 #modal-content .panels-categories-description {
-  overflow: visible;
-  border: 1px solid #CECECA;
+  border: 1px solid #cececa;
   border-right: none;
   height: 100%;
   margin: 0;
   margin-top: 1px;
+  overflow: visible;
   overflow-y: auto;
 }
 
 #modal-content .panels-categories-description {
-  color: #FFF;
+  color: #fff;
 }
 
 /**
  * Misc Modal Stylings
  */
-#modal-content .form-type-textarea .form-type-select, 
+#modal-content .form-type-textarea .form-type-select,
 #modal-content .field-type-text-long .form-type-select {
   float: right;
-  margin-top: 5px;
   margin-bottom: 5px;
+  margin-top: 5px;
 }
 
-#modal-content .form-type-textarea .form-type-select label, 
+#modal-content .form-type-textarea .form-type-select label,
 #modal-content .field-type-text-long .form-type-select label {
+  display: block;
   float: left;
+  font-weight: normal;
   margin-right: .5em;
   margin-top: .5em;
-  font-weight: normal;
-  display: block;
   width: auto;
 }
 
@@ -464,7 +464,7 @@ ul#media-browser-library-list {
   font-size: 1em;
 }
 
-#modal-content .widget-preview-title .content-type-button img, 
+#modal-content .widget-preview-title .content-type-button img,
 #modal-content .panels-add-content-modal > .panels-modal-add-category {
   display: none;
 }
@@ -477,16 +477,14 @@ ul#media-browser-library-list {
   border: none;
 }
 
-#modal-content .widget-preview .fieldset-wrapper table img, 
+#modal-content .widget-preview .fieldset-wrapper table img,
 #modal-content .widget-preview .panopoly-image-featured {
   width: 100%;
 }
 
-.pane-content .create-links, 
-.pane-categories .categories-links, 
-.pane-menus .menu-links, 
+.pane-content .create-links,
+.pane-categories .categories-links,
+.pane-menus .menu-links,
 .pane-users .user-links {
   float: right;
 }
-
-

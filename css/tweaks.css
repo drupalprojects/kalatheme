@@ -2,11 +2,12 @@
   height: auto;
 }
 
-.navbar-fixed-top{
+.navbar-fixed-top {
   position: static;
 }
 
-.navbar-fixed-top, .navbar-fixed-bottom {
+.navbar-fixed-top, 
+.navbar-fixed-bottom {
   z-index: 999;
 }
 
@@ -15,8 +16,8 @@ html.js input.form-autocomplete {
 }
 
 #main-wrapper {
-  margin-top: 20px;
   margin-bottom: 50px;
+  margin-top: 20px;
 }
 
 .pane-content .container {
@@ -49,7 +50,8 @@ label.option {
   font-weight: normal;
 }
 
-.radio input[type="radio"], .checkbox input[type="checkbox"] {
+.radio input[type="radio"], 
+.checkbox input[type="checkbox"] {
   margin-left: 0px;
 }
 
@@ -61,7 +63,7 @@ div#admin-toolbar.vertical {
   z-index: 9999;
 }
 
-#navbar{
-  z-index: 9999;
+#navbar {
   position: absolute;
+  z-index: 9999;
 }
