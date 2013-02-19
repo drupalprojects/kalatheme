@@ -30,7 +30,7 @@
 
     <div id="header"><div class="section clearfix">
       <?php if ($site_name || $site_slogan): ?>
-        <div id="name-and-slogan"<?php ($hide_site_name && $hide_site_slogan) ? print ' class="element-invisible"' : ''; } ?>>
+        <div id="name-and-slogan"<?php ($hide_site_name && $hide_site_slogan) ? print ' class="element-invisible"' : ''; ?>>
           <?php if ($site_name): ?>
             <div id="site-name"<?php $hide_site_name ? print ' class="element-invisible"' : ''; ?>>
               <strong>

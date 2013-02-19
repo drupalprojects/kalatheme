@@ -38,7 +38,8 @@
  * Navigation:
  * - $main_menu (array): An array containing the Main menu links for the
  *   site, if they have been configured.
- * - $main_menu_expanded (array): An array containing 2 depths of the Main menu links 
+ * - $main_menu_expanded (array): An array containing 2 depths of the Main 
+ *   menu links 
  *   for the site, if they have been configured.
  * - $secondary_menu (array): An array containing the Secondary menu links for
  *   the site, if they have been configured.
@@ -107,7 +108,12 @@
                   'links' => $secondary_menu,
                   'attributes' => array(
                     'id' => 'secondary-menu-links',
-                    'class' => array('links', 'inline', 'clearfix', 'nav pull-right'),
+                    'class' => array(
+                      'links', 
+                      'inline', 
+                      'clearfix', 
+                      'nav pull-right'
+                    ),
                   ),
                   'heading' => array(
                     'text' => t('Secondary menu'),
@@ -140,9 +146,6 @@
     
   <!-- Page Main -->
   <div id="main-wrapper" class="clearfix"><div id="main" class="clearfix">
-    
-    <?php // print $breadcrumb; ?>
-
     <div id="content" class="column <?php $no_panels ? print ' container"' : ''; ?>">
       <a id="main-content"></a>
       <?php if ($tabs): ?>

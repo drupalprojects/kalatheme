@@ -46,5 +46,3 @@
   </section><!--  /.section -->
   
 </div><!-- /.bartlett -->
-  
-
