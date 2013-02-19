@@ -109,10 +109,10 @@
                   'attributes' => array(
                     'id' => 'secondary-menu-links',
                     'class' => array(
-                      'links', 
-                      'inline', 
-                      'clearfix', 
-                      'nav pull-right'
+                      'links',
+                      'inline',
+                      'clearfix',
+                      'nav pull-right',
                     ),
                   ),
                   'heading' => array(
