@@ -6,7 +6,7 @@
   position: static;
 }
 
-.navbar-fixed-top, 
+.navbar-fixed-top,
 .navbar-fixed-bottom {
   z-index: 999;
 }
@@ -50,7 +50,7 @@ label.option {
   font-weight: normal;
 }
 
-.radio input[type="radio"], 
+.radio input[type="radio"],
 .checkbox input[type="checkbox"] {
   margin-left: 0px;
 }

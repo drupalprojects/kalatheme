@@ -23,7 +23,8 @@
 
 /* iPhone [portrait + landscape] */
 @media only screen and (max-width: 480px) {
-  .reynolds-content,.reynolds-sidebar {
+  .reynolds-content,
+  .reynolds-sidebar {
     float: none;
     width: 100%;
   }

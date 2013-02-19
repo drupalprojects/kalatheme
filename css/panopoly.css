@@ -71,8 +71,8 @@
  */
 #node-edit .pane-node-form-menu .form-item-menu-parent label,
 #node-edit .pane-node-form-menu .form-item-menu-link-title label {
-  font-weight: normal;
   float: left;
+  font-weight: normal;
   margin-right: 4px;
   width: 49px;
 }
@@ -92,8 +92,8 @@
 }
 
 #node-edit .form-item-field-featured-image-und-0-alt label {
-  font-weight: normal;
   float: left;
+  font-weight: normal;
   margin: 4px 10px 0 0;
 }
 
@@ -126,7 +126,7 @@
   margin-top: 5px;
   width: 65%;
 }
-  
+
 #node-edit .field-name-field-featured-image .image-widget-data img {
   margin-bottom: 0;
 }
@@ -305,10 +305,10 @@ ul#media-browser-library-list {
   text-decoration: none;
 }
 
-#modalContent .panels-add-content-modal a.panels-modal-add-category:active, 
+#modalContent .panels-add-content-modal a.panels-modal-add-category:active,
 #modalContent .panels-add-content-modal a.panels-modal-add-category.active {
-  background: #FFF;
-  border: 1px solid #CECECA;
+  background: #fff;
+  border: 1px solid #cececa;
   border-right: none;
   margin-right: -1px;
 }
@@ -342,8 +342,8 @@ ul#media-browser-library-list {
 
 #modal-content fieldset.widget-preview-single .fieldset-wrapper {
   font-size: 100%;
-  max-width: 100%;
   max-height: 375px;
+  max-width: 100%;
   min-height: 75px;
   overflow-y: auto;
 }

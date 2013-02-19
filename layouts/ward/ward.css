@@ -23,7 +23,8 @@
 
 /* iPhone [portrait + landscape] */
 @media only screen and (max-width: 480px) {
-  .ward-content,.ward-sidebar {
+  .ward-content,
+  .ward-sidebar {
     float: none;
     width: 100%;
   }

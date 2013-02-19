@@ -23,7 +23,7 @@
   min-height: 1px;
   width: 31.915%;
 }
-  
+
 /* iPhone [portrait + landscape] */
 @media only screen and (max-width: 480px) {
   .hastings-column,
@@ -32,7 +32,7 @@
     float: none;
     width: 100%;
   }
-  
+
   .hastings-column-inner {
     margin-right: 0;
   }
