@@ -28,7 +28,8 @@
 
 /* iPhone [portrait + landscape] */
 @media only screen and (max-width: 480px) {
-  .roye-content,.roye-sidebar {
+  .roye-content,
+  .roye-sidebar {
     float: none;
     width: 100%;
   }
