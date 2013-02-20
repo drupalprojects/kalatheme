@@ -34,9 +34,9 @@ function kalatheme_preprocess_html(&$variables) {
   // Add variables for path to theme.
   $variables['base_path'] = base_path();
   $variables['path_to_kalatheme'] = drupal_get_path('theme', 'kalatheme');
-
+    
   // Load all dependencies.
-  require_once $variables['path_to_kalatheme'] . '/includes/kalatheme.inc';
+  require_once DRUPAL_ROOT . '/' . $variables['path_to_kalatheme'] . '/includes/kalatheme.inc';
   _kalatheme_load_dependencies();
 }
 
@@ -403,7 +403,7 @@ function kalatheme_links__system_main_menu($variables) {
  */
 function kalatheme_status_messages($variables) {
   // Call correct theme function depending on whether all dependencies loaded.
-  require_once drupal_get_path('theme', 'kalatheme') . '/includes/kalatheme.inc';
+  require_once DRUPAL_ROOT . '/' . drupal_get_path('theme', 'kalatheme') . '/includes/kalatheme.inc';
   $status_function = _kalatheme_load_dependencies();
   return $status_function($variables);
 }
