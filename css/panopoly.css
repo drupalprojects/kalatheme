@@ -355,7 +355,7 @@ ul#media-browser-library-list {
 }
 
 #modal-content .fieldset-legend {
-  font: bold 12px/1.5em 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
+  margin-left: 10px;
 }
 
 #modal-content fieldset legend a {
@@ -465,7 +465,7 @@ ul#media-browser-library-list {
 .panels-section-column .content-type-button {
   font-size: 1em;
   position: relative;
-  top: 27px;
+  top: 29px;
 }
 
 #modal-content .widget-preview-title .content-type-button img,
@@ -489,6 +489,8 @@ ul#media-browser-library-list {
 #modal-content legend {
   background-color: #ccc;
   border: 1px #ccc solid;
+  position: relative;
+  left: -1px;
 }
 
 .pane-content .create-links,
