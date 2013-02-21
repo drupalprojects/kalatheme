@@ -34,7 +34,7 @@ function kalatheme_preprocess_html(&$variables) {
   // Add variables for path to theme.
   $variables['base_path'] = base_path();
   $variables['path_to_kalatheme'] = drupal_get_path('theme', 'kalatheme');
-    
+
   // Load all dependencies.
   require_once DRUPAL_ROOT . '/' . $variables['path_to_kalatheme'] . '/includes/kalatheme.inc';
   _kalatheme_load_dependencies();
@@ -184,6 +184,13 @@ function kalatheme_preprocess_table(&$variables) {
     $variables['attributes']['class'] = explode(' ', $variables['attributes']['class']);
   }
   $variables['attributes']['class'][] = 'table';
+}
+
+/**
+ * Implements hook_preprocess_panels_add_content_link().
+ */
+function kalatheme_preprocess_panels_add_content_link(&$vars) {
+  $vars['text_button'] = ctools_ajax_text_button($vars['title'], $vars['url'], $vars['description'], 'panels-modal-add-config btn');
 }
 
 /**

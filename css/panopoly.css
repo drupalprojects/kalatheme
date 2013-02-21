@@ -333,6 +333,8 @@ ul#media-browser-library-list {
   margin-top: 3em;
   -moz-border-topright-radius: 0;
   -webkitborder-top-right-radius: 0;
+  position: relative;
+  border: 1px #ccc solid;
 }
 
 #modal-content fieldset.widget-preview-single {
@@ -462,6 +464,8 @@ ul#media-browser-library-list {
 
 .panels-section-column .content-type-button {
   font-size: 1em;
+  position: relative;
+  top: 27px;
 }
 
 #modal-content .widget-preview-title .content-type-button img,
@@ -480,6 +484,11 @@ ul#media-browser-library-list {
 #modal-content .widget-preview .fieldset-wrapper table img,
 #modal-content .widget-preview .panopoly-image-featured {
   width: 100%;
+}
+
+#modal-content legend {
+  background-color: #ccc;
+  border: 1px #ccc solid;
 }
 
 .pane-content .create-links,
