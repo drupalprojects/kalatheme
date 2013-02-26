@@ -686,12 +686,11 @@ function kalatheme_libraries_info_alter(&$libraries) {
     'path' => '',
     'callbacks' => array(),
     'version arguments' => array(
-      'file' => 'css/bootstrap.css',
       'pattern' => '@v+([0-9a-zA-Z\.-]+)@',
       'lines' => 10,
       'cols' => 20,
     ),
-    'version callback' => 'libraries_get_version',
+    'version callback' => '_kalatheme_get_version',
     'versions' => array(
       '2' => array(
         'files' => array(

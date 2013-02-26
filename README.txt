@@ -53,29 +53,31 @@ files.
   /bootstrap/css/bootstrap.min.css
   /bootstrap/css/bootstrap-responsive.css
   /bootstrap/css/bootstrap-responsive.min.css
-  /img/
-  /js/
-  /js/bootstrap.js
-  /js/bootstrap.min.js
+  /bootstrap/img/
+  /bootstrap/js/
+  /bootstrap/js/bootstrap.js
+  /bootstrap/js/bootstrap.min.js
 
-IMPORTANT: The only actual requirement here is that bootstrap/css/bootstrap.css 
-exists and has some sort of version information at the top. Most themes have this
-by default and you can use the standard bootstrap library as a basis. It is also
-worth nothing that while you only need boostrap.css for this to "work" you will 
-likely be disappointed if you don't have the JS and responsive files as well.
+IMPORTANT: The only actual requirement here is that either bootstrap.css or 
+bootstrap.min.css exist and that they both have some sort of version information 
+at the top like this:
+
+  /*!
+   * Bootstrap v2.3.0
+   *
+   * Copyright 2012 Twitter, Inc
+   * Licensed under the Apache License v2.0
+   * http://www.apache.org/licenses/LICENSE-2.0
+
+Most themes have this by default and you can use the above as a basis. It is also worth 
+noting that while you only need boostrap.(min).css for this to "work" you will likely be 
+disappointed if you don't have the JS and responsive files as well.
 
 If you have more files then what is listed about we recommend putting these files
 in a KalaSUBtheme. 
 
-You do not need to have the minified files to get this to work but they are highly 
+You also do not need to have the minified files to get this to work but they are highly 
 recommended. 
-
-In the case where you have bootstrap.min.css but not bootstrap.css you can simply
-make a copy of bootstrap.min.css and rename it bootstrap.css. As long as the min
-has version information at the top this will work. 
-
-We are working on checking the min version if the non-min version does not exist
-so the above is a workaround for now.
 
 CREATING A SUBTHEME
 -------------------
