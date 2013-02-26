@@ -38,13 +38,14 @@ to shop around for one.
  * If you don't mind paying for a little extra:
  http://wrapbootstrap.com/
 
- * You can also Google for other source if you are feeling adventerous.
+ * You can also Google for other sources if you are feeling adventerous.
  http://www.google.com/
  
 Kalatheme uses the Libraries API so in order to get Bootstrap working you need 
 to put your Bootstrap files in sites/all/libraries/bootstrap. Custom Bootstrap 
 libraries can use a non-standard files scheme so you need to make sure that 
-your bootstrap directory contains at least the following folders and files. 
+your bootstrap directory contains something like the following folders and 
+files. 
 
   /bootstrap
   /bootstrap/css
@@ -56,10 +57,25 @@ your bootstrap directory contains at least the following folders and files.
   /js/
   /js/bootstrap.js
   /js/bootstrap.min.js
-  
-We recommend putting all other files that come with your Bootstrap library
-in a KalaSUBtheme. You do not need to have the minified or responsive files to 
-get this to work but they are highly recommended. 
+
+IMPORTANT: The only actual requirement here is that bootstrap/css/bootstrap.css 
+exists and has some sort of version information at the top. Most themes have this
+by default and you can use the standard bootstrap library as a basis. It is also
+worth nothing that while you only need boostrap.css for this to "work" you will 
+likely be disappointed if you don't have the JS and responsive files as well.
+
+If you have more files then what is listed about we recommend putting these files
+in a KalaSUBtheme. 
+
+You do not need to have the minified files to get this to work but they are highly 
+recommended. 
+
+In the case where you have bootstrap.min.css but not bootstrap.css you can simply
+make a copy of bootstrap.min.css and rename it bootstrap.css. As long as the min
+has version information at the top this will work. 
+
+We are working on checking the min version if the non-min version does not exist
+so the above is a workaround for now.
 
 CREATING A SUBTHEME
 -------------------
