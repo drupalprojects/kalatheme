@@ -21,6 +21,7 @@ function kalatheme_theme($existing, $type, $theme, $path) {
  * Implements hook_css_alter().
  */
 function kalatheme_css_alter(&$css) {
+  // Pull out some panopoly CSS, will want to pull more later
   unset($css[drupal_get_path('module', 'panopoly_admin') . '/panopoly-admin.css']);
   unset($css[drupal_get_path('module', 'panopoly_core') . '/css/panopoly-modal.css']);
 }
@@ -177,16 +178,6 @@ function kalatheme_preprocess_block(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_table().
- */
-function kalatheme_preprocess_table(&$variables) {
-  if (isset($variables['attributes']['class']) && is_string($variables['attributes']['class'])) {
-    $variables['attributes']['class'] = explode(' ', $variables['attributes']['class']);
-  }
-  $variables['attributes']['class'][] = 'table';
-}
-
-/**
  * Implements hook_preprocess_panels_add_content_link().
  */
 function kalatheme_preprocess_panels_add_content_link(&$vars) {
@@ -206,8 +197,147 @@ function kalatheme_preprocess_views_view_grid(&$variables) {
  * Implements hook_preprocess_views_view_table().
  */
 function kalatheme_preprocess_views_view_table(&$variables) {
-  $variables['classes_array'][] = 'table';
+  $rows = array();
+  foreach ($variables['row_classes'] as $row) {
+    // This assume the first element of any row will be the odd/even class which we no longer need
+    array_shift($row);
+    $rows[] = $row;
+  }
+  $variables['row_classes'] = $rows;
+  
+  // Add in bootstrap classes
+  $variables['classes_array'] = array('table', 'table-striped', 'table-bordered', 'table-hover');
 }
+
+/**
+ * Implements theme_table().
+ */
+function kalatheme_table($variables) {
+  $variables['attributes']['class'] = (isset($variables['attributes']['class'])) ? $variables['attributes']['class'] : array();
+  $variables['attributes']['class'] = (is_array($variables['attributes']['class'])) ? $variables['attributes']['class'] : array($variables['attributes']['class']);
+  $variables['attributes']['class'] = array_merge($variables['attributes']['class'], array('table', 'table-striped', 'table-bordered', 'table-hover'));
+
+  $header = $variables['header'];
+  $rows = $variables['rows'];
+  $attributes = $variables['attributes'];
+  $caption = $variables['caption'];
+  $colgroups = $variables['colgroups'];
+  $sticky = $variables['sticky'];
+  $empty = $variables['empty'];
+
+  $output = '<table' . drupal_attributes($attributes) . ">\n";
+
+  if (isset($caption)) {
+    $output .= '<caption>' . $caption . "</caption>\n";
+  }
+
+  if (count($colgroups)) {
+    foreach ($colgroups as $number => $colgroup) {
+      $attributes = array();
+
+      if (isset($colgroup['data'])) {
+        foreach ($colgroup as $key => $value) {
+          if ($key == 'data') {
+            $cols = $value;
+          }
+          else {
+            $attributes[$key] = $value;
+          }
+        }
+      }
+      else {
+        $cols = $colgroup;
+      }
+
+      // Build colgroup
+      if (is_array($cols) && count($cols)) {
+        $output .= ' <colgroup' . drupal_attributes($attributes) . '>';
+        $i = 0;
+        foreach ($cols as $col) {
+          $output .= ' <col' . drupal_attributes($col) . ' />';
+        }
+        $output .= " </colgroup>\n";
+      }
+      else {
+        $output .= ' <colgroup' . drupal_attributes($attributes) . " />\n";
+      }
+    }
+  }
+
+  // Add the 'empty' row message if available.
+  if (!count($rows) && $empty) {
+    $header_count = 0;
+    foreach ($header as $header_cell) {
+      if (is_array($header_cell)) {
+        $header_count += isset($header_cell['colspan']) ? $header_cell['colspan'] : 1;
+      }
+      else {
+        $header_count++;
+      }
+    }
+    $rows[] = array(array(
+        'data' => $empty,
+        'colspan' => $header_count,
+        'class' => array('empty', 'message'),
+      ));
+  }
+
+  // Format the table header:
+  if (count($header)) {
+    $ts = tablesort_init($header);
+    // HTML requires that the thead tag has tr tags in it followed by tbody
+    // tags. Using ternary operator to check and see if we have any rows.
+    $output .= (count($rows) ? ' <thead><tr>' : ' <tr>');
+    foreach ($header as $cell) {
+      $cell = tablesort_header($cell, $header, $ts);
+      $output .= _theme_table_cell($cell, TRUE);
+    }
+    // Using ternary operator to close the tags based on whether or not there are rows
+    $output .= (count($rows) ? " </tr></thead>\n" : "</tr>\n");
+  }
+  else {
+    $ts = array();
+  }
+
+  // Format the table rows:
+  if (count($rows)) {
+    $output .= "<tbody>\n";
+    foreach ($rows as $number => $row) {
+      $attributes = array();
+
+      // Check if we're dealing with a simple or complex row
+      if (isset($row['data'])) {
+        foreach ($row as $key => $value) {
+          if ($key == 'data') {
+            $cells = $value;
+          }
+          else {
+            $attributes[$key] = $value;
+          }
+        }
+      }
+      else {
+        $cells = $row;
+      }
+      if (count($cells)) {
+
+        // Build row
+        $output .= ' <tr' . drupal_attributes($attributes) . '>';
+        $i = 0;
+        foreach ($cells as $cell) {
+          $cell = tablesort_cell($cell, $header, $ts, $i++);
+          $output .= _theme_table_cell($cell);
+        }
+        $output .= " </tr>\n";
+      }
+    }
+    $output .= "</tbody>\n";
+  }
+
+  $output .= "</table>\n";
+  return $output;
+}
+
 
 /**
  * Implements theme_form().
