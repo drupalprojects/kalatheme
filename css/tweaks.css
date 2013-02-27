@@ -67,3 +67,13 @@ div#admin-toolbar.vertical {
   position: absolute;
   z-index: 9999;
 }
+
+.update tbody > tr:nth-child(even) > td, .table-striped tbody > tr:nth-child(even) > th,
+  .update tbody > tr:nth-child(odd) > td, .table-striped tbody > tr:nth-child(odd) > th,
+  table.update, .update table.version {
+  background-color: transparent;
+}
+
+.version-links .links {
+  list-style-type: none;
+}

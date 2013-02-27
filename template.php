@@ -59,6 +59,11 @@ function kalatheme_process_html(&$variables) {
  * Implements template_process_page().
  */
 function kalatheme_process_page(&$variables) {
+  // Hook into color.module.
+  if (module_exists('color')) {
+    _color_page_alter($variables);
+  }
+  
   // Define variables to theme local actions as a dropdown.
   $dropdown_attributes = array(
     'container' => array(
@@ -687,8 +692,8 @@ function kalatheme_libraries_info_alter(&$libraries) {
     'callbacks' => array(),
     'version arguments' => array(
       'pattern' => '@v+([0-9a-zA-Z\.-]+)@',
-      'lines' => 10,
-      'cols' => 20,
+      'lines' => 100,
+      'cols' => 200,
     ),
     'version callback' => '_kalatheme_get_version',
     'versions' => array(
