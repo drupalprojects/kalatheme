@@ -77,3 +77,12 @@ div#admin-toolbar.vertical {
 .version-links .links {
   list-style-type: none;
 }
+
+table .active {
+  background-color: transparent;
+}
+
+#module-filter-squeeze {
+  background-color: transparent;
+  border: 0;
+}
