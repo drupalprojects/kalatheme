@@ -86,3 +86,9 @@ table .active {
   background-color: transparent;
   border: 0;
 }
+
+tr.even, tr.odd {
+  background-color: transparent;
+  border-bottom: inherit;
+  padding: inherit;
+}
