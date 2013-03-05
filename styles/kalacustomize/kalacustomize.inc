@@ -139,7 +139,9 @@ function _kalatheme_wrapper_element_options($default_value = '') {
     'h3' => 'H3',
     'blockquote' => 'BLOCKQUOTE',
   );
-  $options['#options'] += theme_get_setting('extra_elements');
+  if (theme_get_setting('extra_elements')) {
+    $options['#options'] += theme_get_setting('extra_elements');
+  }
 
   return $options;
 }
@@ -152,15 +154,17 @@ function _kalatheme_wrapper_pane_options($default_value = '') {
     '#type' => 'radios',
     '#default_value' => $default_value,
   );
-
+  
   $options['#options'] = array(
     '' => t('- Use default -'),
     '0' => t('- None -'),
     'hero-unit' => 'HERO UNIT',
     'well' => 'WELL',
   );
-  $options['#options'] += theme_get_setting('pane_classes');
-
+  if (theme_get_setting('pane_classes')) {
+    $options['#options'] += theme_get_setting('pane_classes');
+  }
+  
   return $options;
 }
 
@@ -180,7 +184,10 @@ function _kalatheme_wrapper_attribute_options($default_value = '') {
     'page-header' => 'PAGE HEADER',
     'muted' => 'MUTED TEXT',
   );
-  $options['#options'] += theme_get_setting('extra_classes');
+  
+  if (theme_get_setting('extra_classes')) {
+    $options['#options'] += theme_get_setting('extra_classes');
+  }
 
   return $options;
 }
