@@ -53,14 +53,6 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   );
   // Set defaults here instead of info because it is an array.
   $pane_classes = theme_get_setting('pane_classes');
-  if (is_null($pane_classes)) {
-    $pane_classes = array(
-      '' => t('- Use default -'),
-      '0' => t('- None -'),
-      'hero-unit' => 'HERO UNIT',
-      'well' => 'WELL',
-    );
-  }
   $form['pane_styles']['pane_styles_settings']['pane_classes'] = array(
     '#type' => 'textarea',
     '#title' => t('Allowed values list'),
@@ -98,18 +90,6 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   );
   // Set defaults here instead of info because it is an array.
   $extra_elements = theme_get_setting('extra_elements');
-  if (is_null($extra_elements)) {
-    $extra_elements = array(
-      '' => t('- Use default -'),
-      '0' => t('- None -'),
-      'div' => 'DIV',
-      'span' => 'SPAN',
-      'h1' => 'H1',
-      'h2' => 'H2',
-      'h3' => 'H3',
-      'blockquote' => 'BLOCKQUOTE',
-    );
-  }
   $form['extra_styles']['extra_styles_settings']['extra_elements'] = array(
     '#type' => 'textarea',
     '#title' => t('Allowed values list'),
@@ -123,15 +103,6 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   );
   // Set defaults here instead of info because it is an array.
   $extra_classes = theme_get_setting('extra_classes');
-  if (is_null($extra_classes)) {
-    $extra_classes = array(
-      '' => t('- Use default -'),
-      '0' => t('- None -'),
-      'lead' => 'LEAD BODY COPY',
-      'page-header' => 'PAGE HEADER',
-      'muted' => 'MUTED TEXT',
-    );
-  }
   $form['extra_styles']['extra_styles_settings']['extra_classes'] = array(
     '#type' => 'textarea',
     '#title' => t('Allowed values list'),

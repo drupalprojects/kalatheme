@@ -15,7 +15,7 @@ $plugin = array(
 
 /**
  * Theme function for the pane style.
- */
+*/
 function theme_kalatheme_kalacustomize_render_pane($vars) {
   $content = &$vars['content'];
   $settings = $vars['settings'];
@@ -29,16 +29,16 @@ function theme_kalatheme_kalacustomize_render_pane($vars) {
   if (!empty($content->title)) {
     $title_wrapper = _kalatheme_wrapper_wrap(!empty($settings['title']) ? $settings['title'] : array());
     $content->title
-      = $title_wrapper['prefix'] .
-        $content->title .
-        $title_wrapper['suffix'];
+    = $title_wrapper['prefix'] .
+    $content->title .
+    $title_wrapper['suffix'];
   }
   if (!empty($content->content)) {
     $content_wrapper = _kalatheme_wrapper_wrap(!empty($settings['content']) ? $settings['content'] : array());
     $content->content
-      = $content_wrapper['prefix'] .
-        render($content->content) .
-        $content_wrapper['suffix'];
+    = $content_wrapper['prefix'] .
+    render($content->content) .
+    $content_wrapper['suffix'];
   }
 
   $output = theme('panels_pane', $vars);
@@ -129,7 +129,17 @@ function _kalatheme_wrapper_element_options($default_value = '') {
   );
 
   // Fallback element options, grabbed from View's defaults.
-  $options['#options'] = theme_get_setting('extra_elements');
+  $options['#options'] = array(
+    '' => t('- Use default -'),
+    '0' => t('- None -'),
+    'div' => 'DIV',
+    'span' => 'SPAN',
+    'h1' => 'H1',
+    'h2' => 'H2',
+    'h3' => 'H3',
+    'blockquote' => 'BLOCKQUOTE',
+  );
+  $options['#options'] += theme_get_setting('extra_elements');
 
   return $options;
 }
@@ -143,7 +153,13 @@ function _kalatheme_wrapper_pane_options($default_value = '') {
     '#default_value' => $default_value,
   );
 
-  $options['#options'] = theme_get_setting('pane_classes');
+  $options['#options'] = array(
+    '' => t('- Use default -'),
+    '0' => t('- None -'),
+    'hero-unit' => 'HERO UNIT',
+    'well' => 'WELL',
+  );
+  $options['#options'] += theme_get_setting('pane_classes');
 
   return $options;
 }
@@ -157,7 +173,14 @@ function _kalatheme_wrapper_attribute_options($default_value = '') {
     '#default_value' => $default_value,
   );
 
-  $options['#options'] = theme_get_setting('extra_classes');
+  $options['#options'] = array(
+    '' => t('- Use default -'),
+    '0' => t('- None -'),
+    'lead' => 'LEAD BODY COPY',
+    'page-header' => 'PAGE HEADER',
+    'muted' => 'MUTED TEXT',
+  );
+  $options['#options'] += theme_get_setting('extra_classes');
 
   return $options;
 }
