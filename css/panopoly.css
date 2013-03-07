@@ -57,9 +57,8 @@
 /**
  * Publishing styling
  */
-#node-edit .form-item-machine-name label,
-#node-edit .form-item-date label,
-#node-edit .form-item-name label {
+#node-edit .form-item-machine-name label,#node-edit .form-item-date label,#node-edit .form-item-name label
+  {
   float: left;
   font-weight: 400;
   margin-right: 5px;
@@ -69,8 +68,8 @@
 /**
  * Menu Styling
  */
-#node-edit .pane-node-form-menu .form-item-menu-parent label,
-#node-edit .pane-node-form-menu .form-item-menu-link-title label {
+#node-edit .pane-node-form-menu .form-item-menu-parent label,#node-edit .pane-node-form-menu .form-item-menu-link-title label
+  {
   float: left;
   font-weight: normal;
   margin-right: 4px;
@@ -80,7 +79,8 @@
 /**
  * Featured Category Styling
  */
-#node-edit .field-name-field-featured-categories>.form-item-field-featured-categories-und>label {
+#node-edit .field-name-field-featured-categories>.form-item-field-featured-categories-und>label
+  {
   display: none;
 }
 
@@ -101,14 +101,15 @@
   width: 180px;
 }
 
-#node-edit #edit-field-featured-image .form-item-field-featured-image-und-0 > label,
-#node-edit .form-item-field-featured-image-und-0-alt .description {
+#node-edit #edit-field-featured-image .form-item-field-featured-image-und-0>label,#node-edit .form-item-field-featured-image-und-0-alt .description
+  {
   display: none;
 }
 
 #node-edit .field-name-field-featured-image .image-preview img {
   height: auto;
-  margin-bottom: 0; /* Overrides Bartik's default margin, which is too much */
+  margin-bottom: 0;
+  /* Overrides Bartik's default margin, which is too much */
   max-width: 100%;
 }
 
@@ -120,7 +121,8 @@
   margin-bottom: 0;
 }
 
-#node-edit .field-name-field-featured-image .image-widget-data span.file {
+#node-edit .field-name-field-featured-image .image-widget-data span.file
+  {
   float: left;
   margin-right: 5%;
   margin-top: 5px;
@@ -131,15 +133,18 @@
   margin-bottom: 0;
 }
 
-#node-edit .field-name-field-featured-image .image-widget-data span.file-size {
+#node-edit .field-name-field-featured-image .image-widget-data span.file-size
+  {
   display: none;
 }
 
-#node-edit .field-name-field-featured-image .image-widget-data input#edit-field-featured-image-und-0-remove-button {
+#node-edit .field-name-field-featured-image .image-widget-data input#edit-field-featured-image-und-0-remove-button
+  {
   max-width: 28%;
 }
 
-#node-edit .field-name-field-featured-image .image-widget-data div.form-item {
+#node-edit .field-name-field-featured-image .image-widget-data div.form-item
+  {
   clear: both;
   margin-bottom: .25em;
   margin-top: .75em;
@@ -149,14 +154,14 @@
   width: 100%;
 }
 
-#node-edit .form-item-field-featured-image-und-0 > label {
+#node-edit .form-item-field-featured-image-und-0>label {
   display: none;
 }
 
 /** 
  * Date/Time Styling
  */
-#node-edit .container-inline-date > .form-item {
+#node-edit .container-inline-date>.form-item {
   border: 0;
   margin: 0;
 }
@@ -166,8 +171,8 @@
   padding: 0;
 }
 
-#node-edit .container-inline-date .form-item-date-time,
-#node-edit .container-inline-date .form-item-date-date {
+#node-edit .container-inline-date .form-item-date-time,#node-edit .container-inline-date .form-item-date-date
+  {
   padding-bottom: 1em;
 }
 
@@ -175,14 +180,13 @@
   clear: left;
 }
 
-#node-edit .form-item-date-time label,
-#node-edit .form-item-date-date label,
-#node-edit .form-item-name label {
+#node-edit .form-item-date-time label,#node-edit .form-item-date-date label,#node-edit .form-item-name label
+  {
   width: 49px;
 }
 
-#node-edit .container-inline-date .form-item-date-date .description,
-#node-edit .container-inline-date .form-item-date-time .description {
+#node-edit .container-inline-date .form-item-date-date .description,#node-edit .container-inline-date .form-item-date-time .description
+  {
   display: none;
 }
 
@@ -226,31 +230,34 @@ ul#media-browser-library-list {
  * Misc
  */
 #active-vertical-tab {
-  height: 1px; /* fixes a small issue with vertical tabs on the administrative pages */
+  height: 1px;
+  /* fixes a small issue with vertical tabs on the administrative pages */
   overflow: hidden;
 }
 
 #views-ajax-body form {
-  background-color: #fff; /* makes sure that our background color is white when ajaxing in views */
+  background-color: #fff;
+  /* makes sure that our background color is white when ajaxing in views */
 }
 
 .tabledrag-toggle-weight-wrapper {
-  display: none; /* removes the "show row weights" option. has accessibility considerations. */
+  display: none;
+  /* removes the "show row weights" option. has accessibility considerations. */
 }
 
 .form-item-uid {
-  position: relative; /* fixes positioning for auto complete items in firefox - http://drupal.org/node/1218684 */
+  position: relative;
+  /* fixes positioning for auto complete items in firefox - http://drupal.org/node/1218684 */
 }
 /**
  * Modal stylings
  */
-
 #modal-content input.form-text {
   max-width: 98%; /* Handle fixed width form elements in the IPE */
 }
 
-#modal-content .form-item-exposed-widget-title input,
-#modal-content .form-item-title input {
+#modal-content .form-item-exposed-widget-title input,#modal-content .form-item-title input
+  {
   font-size: 1.5em;
 }
 
@@ -264,7 +271,8 @@ ul#media-browser-library-list {
 #modalContent div.ctools-modal-content .modal-header {
   border-radius: 5px 5px 0 0;
   color: #fff;
-  font: bold 16px/50px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
+  font: bold 16px/50px 'Open Sans', 'Lucida Sans', 'Lucida Grande',
+    verdana sans-serif;
   height: 50px;
   padding: 0 14px 0 24px;
   vertical-align: middle;
@@ -273,7 +281,8 @@ ul#media-browser-library-list {
 }
 
 #modalContent div.ctools-modal-content .modal-title {
-  font: bold 16px/50px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
+  font: bold 16px/50px 'Open Sans', 'Lucida Sans', 'Lucida Grande',
+    verdana sans-serif;
   padding: 0;
   text-shadow: none;
 }
@@ -299,14 +308,15 @@ ul#media-browser-library-list {
   background: #eaeaec;
   border-bottom: none;
   color: #333;
-  font: bold 11px/30px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
+  font: bold 11px/30px 'Open Sans', 'Lucida Sans', 'Lucida Grande',
+    verdana sans-serif;
   margin-left: 10px;
   padding: 0 12px;
   text-decoration: none;
 }
 
-#modalContent .panels-add-content-modal a.panels-modal-add-category:active,
-#modalContent .panels-add-content-modal a.panels-modal-add-category.active {
+#modalContent .panels-add-content-modal a.panels-modal-add-category:active,#modalContent .panels-add-content-modal a.panels-modal-add-category.active
+  {
   background: #fff;
   border: 1px solid #cececa;
   border-right: none;
@@ -325,8 +335,6 @@ ul#media-browser-library-list {
  * IPE a more consistent look
  * @see https://drupal.org/node/1717644
  */
-
-
 #modal-content fieldset.widget-preview {
   border-top-right-radius: 0;
   margin-bottom: 4em;
@@ -350,7 +358,8 @@ ul#media-browser-library-list {
   overflow-y: auto;
 }
 
-#modal-content fieldset.widget-preview-single .fieldset-wrapper .panopoly-spotlight img {
+#modal-content fieldset.widget-preview-single .fieldset-wrapper .panopoly-spotlight img
+  {
   width: 100%;
 }
 
@@ -362,9 +371,8 @@ ul#media-browser-library-list {
   color: #3b3b3b;
 }
 
-#modal-content fieldset legend a:hover,
-#modal-content fieldset legend a:focus,
-#modal-content fieldset legend a:active {
+#modal-content fieldset legend a:hover,#modal-content fieldset legend a:focus,#modal-content fieldset legend a:active
+  {
   color: #000;
 }
 
@@ -382,8 +390,8 @@ ul#media-browser-library-list {
   overflow-y: auto;
 }
 
-#modal-content .widget-preview .fieldset-wrapper table tr.even td,
-#modal-content .widget-preview .fieldset-wrapper table tr.odd td {
+#modal-content .widget-preview .fieldset-wrapper table tr.even td,#modal-content .widget-preview .fieldset-wrapper table tr.odd td
+  {
   padding: 3px 5px;
 }
 
@@ -408,7 +416,8 @@ ul#media-browser-library-list {
 }
 
 #modal-content .widget-preview-title {
-  font: bold 11px/23px 'Open Sans', 'Lucida Sans', 'Lucida Grande', verdana sans-serif;
+  font: bold 11px/23px 'Open Sans', 'Lucida Sans', 'Lucida Grande',
+    verdana sans-serif;
   position: absolute;
   right: -1px;
   top: -24px;
@@ -422,8 +431,8 @@ ul#media-browser-library-list {
   width: 60px;
 }
 
-#modal-content .panels-section-columns,
-#modal-content .panels-categories-description {
+#modal-content .panels-section-columns,#modal-content .panels-categories-description
+  {
   border: 1px solid #cececa;
   border-right: none;
   height: 100%;
@@ -440,15 +449,15 @@ ul#media-browser-library-list {
 /**
  * Misc Modal Stylings
  */
-#modal-content .form-type-textarea .form-type-select,
-#modal-content .field-type-text-long .form-type-select {
+#modal-content .form-type-textarea .form-type-select,#modal-content .field-type-text-long .form-type-select
+  {
   float: right;
   margin-bottom: 5px;
   margin-top: 5px;
 }
 
-#modal-content .form-type-textarea .form-type-select label,
-#modal-content .field-type-text-long .form-type-select label {
+#modal-content .form-type-textarea .form-type-select label,#modal-content .field-type-text-long .form-type-select label
+  {
   display: block;
   float: left;
   font-weight: normal;
@@ -468,8 +477,8 @@ ul#media-browser-library-list {
   top: 29px;
 }
 
-#modal-content .widget-preview-title .content-type-button img,
-#modal-content .panels-add-content-modal > .panels-modal-add-category {
+#modal-content .widget-preview-title .content-type-button img,#modal-content .panels-add-content-modal>.panels-modal-add-category
+  {
   display: none;
 }
 
@@ -477,12 +486,13 @@ ul#media-browser-library-list {
   margin-top: 0;
 }
 
-#modalContent .panels-section-column-categories .content-type-button img:hover {
+#modalContent .panels-section-column-categories .content-type-button img:hover
+  {
   border: none;
 }
 
-#modal-content .widget-preview .fieldset-wrapper table img,
-#modal-content .widget-preview .panopoly-image-featured {
+#modal-content .widget-preview .fieldset-wrapper table img,#modal-content .widget-preview .panopoly-image-featured
+  {
   width: 100%;
 }
 
@@ -493,9 +503,24 @@ ul#media-browser-library-list {
   left: -1px;
 }
 
-.pane-content .create-links,
-.pane-categories .categories-links,
-.pane-menus .menu-links,
-.pane-users .user-links {
+.pane-content .create-links,.pane-categories .categories-links,.pane-menus .menu-links,.pane-users .user-links
+  {
   float: right;
+}
+
+/**
+ * Navbar Styling
+ */
+#navbar #navbar-link-admin-panopoly {
+  background-image:
+    url(data:image/png;base64,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);
+}
+
+#navbar #navbar-link-admin-apps {
+  background-image:
+    url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4Ig0KCSB3aWR0aD0iMTAwcHgiIGhlaWdodD0iMTAwcHgiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAxMDAgMTAwIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiM3Nzc3NzciIGQ9Ik05LjA5Nyw1My4wMDJjOS40OTksOS41LDIzLjU0MSwxMS41NDQsMzUuMDQyLDYuMjI3bDM3LjYzNCwzNy42MzhjNC4xODEsNC4xODEsMTAuOTUzLDQuMTgxLDE1LjA5LDANCgljNC4xODItNC4xNCw0LjE4Mi0xMC45MSwwLTE1LjA5M0w1OS4yMjcsNDQuMTM5YzUuMzE5LTExLjUsMy4yNzQtMjUuNTQzLTYuMjIzLTM1LjA0MkM0NC41OTcsMC42OTEsMzIuNTUtMS45MDEsMjEuOTYsMS4zNw0KCWwyMy40OTcsMjMuNTAybC00LjQxMiwxNi4wODRsLTE2LjE3NCw0LjUwMUwxLjM3LDIxLjk2Qy0xLjkwMSwzMi41NSwwLjY5MSw0NC41OTcsOS4wOTcsNTMuMDAyeiIvPg0KPC9zdmc+DQo=);
+}
+
+#navbar #edit-shortcuts {
+  display: none;
 }
