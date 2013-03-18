@@ -52,7 +52,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     ),
   );
   // Set defaults here instead of info because it is an array.
-  $pane_classes = (theme_get_setting('pane_classes')) ? list_allowed_values_string($pane_classes) : '';
+  $pane_classes = (theme_get_setting('pane_classes')) ? list_allowed_values_string(theme_get_setting('pane_classes')) : '';
   $form['pane_styles']['pane_styles_settings']['pane_classes'] = array(
     '#type' => 'textarea',
     '#title' => t('Allowed values list'),
@@ -89,7 +89,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     ),
   );
   // Set defaults here instead of info because it is an array.
-  $extra_elements = (theme_get_setting('extra_elements')) ? list_allowed_values_string($extra_elements) : '';
+  $extra_elements = (theme_get_setting('extra_elements')) ? list_allowed_values_string(theme_get_setting('extra_elements')) : '';
   $form['extra_styles']['extra_styles_settings']['extra_elements'] = array(
     '#type' => 'textarea',
     '#title' => t('Allowed values list'),
@@ -102,7 +102,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
   );
   // Set defaults here instead of info because it is an array.
-  $extra_classes = (theme_get_setting('extra_classes')) ? list_allowed_values_string($extra_classes) : '';
+  $extra_classes = (theme_get_setting('extra_classes')) ? list_allowed_values_string(theme_get_setting('extra_classes')) : '';
   $form['extra_styles']['extra_styles_settings']['extra_classes'] = array(
     '#type' => 'textarea',
     '#title' => t('Allowed values list'),
