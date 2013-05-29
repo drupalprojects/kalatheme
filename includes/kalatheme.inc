@@ -66,13 +66,25 @@ function _kalatheme_load_dependencies() {
 }
 
 /**
+ * Helper function to filter element children.
+ *
+ * See http://api.drupal.org/comment/34713#comment-34713
+ */
+function _kalatheme_element_children($element) {
+  return array_intersect_key(
+    $element,
+    array_flip(element_children($element))
+  );
+}
+
+/**
  * Associate all the secondary menu tasks as #children of primary tasks.
  */
 function _kalatheme_associate_parent_tasks($variables) {
   // Assign all secondary links as children of their parent primary link.
-  foreach ($variables['secondary'] as $secondary_index => $secondary_link) {
+  foreach (_kalatheme_element_children($variables['secondary']) as $secondary_index => $secondary_link) {
     $link = $secondary_link['#link'];
-    foreach ($variables['primary'] as $primary_index => $primary_link) {
+    foreach (_kalatheme_element_children($variables['primary']) as $primary_index => $primary_link) {
       if (!isset($primary_link['#markup']) && $primary_link['#link']['path'] == $link['tab_parent']) {
         $variables['primary'][$primary_index]['#children'][] = $secondary_link;
         unset($variables['secondary'][$secondary_index]);
