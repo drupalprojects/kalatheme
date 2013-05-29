@@ -27,7 +27,7 @@ function kalatheme_theme($existing, $type, $theme, $path) {
 function kalatheme_css_alter(&$css) {
   // Pull out some panopoly CSS, will want to pull more later
   unset($css[drupal_get_path('module', 'panopoly_admin') . '/panopoly-admin.css']);
-  unset($css[drupal_get_path('module', 'panopoly_core') . '/css/panopoly-modal.css']);
+  unset($css[drupal_get_path('module', 'panopoly_magic') . '/css/panopoly-modal.css']);
 }
 
 /**
