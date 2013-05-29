@@ -68,10 +68,22 @@ div#admin-toolbar.vertical {
   z-index: 9999;
 }
 
+/*
 .update tbody > tr:nth-child(even) > td, .table-striped tbody > tr:nth-child(even) > th,
   .update tbody > tr:nth-child(odd) > td, .table-striped tbody > tr:nth-child(odd) > th,
   table.update, .update table.version {
   background-color: transparent;
+}
+*/
+
+.update tbody > tr:nth-child(odd) > td, .update tbody > tr:nth-child(odd) > th, 
+  .update tbody > tr:nth-child(even) > td, .update tbody > tr:nth-child(even) > th {
+  background: transparent;
+}
+
+table.package tr.enabling, tr.selected td, tr.dblog-error, tr.dblog-notice, tr.dblog-warning, 
+  tr.dblog-error .active, tr.dblog-notice .active, tr.dblog-warning .active {
+  background: transparent;
 }
 
 .version-links .links {
