@@ -12,7 +12,9 @@ INSTALLING KALATHEME
 Kalatheme was meant to be install on top of the Panopoly ditribution. Using 
 Kalatheme without Panopoly has not been tested and is not recommended. 
 Furthermore, it is likely you would not be able to do much of anything without 
-Panopoly.
+Panopoly. Kalatheme versioning is tied to Panopoly versioning so if you are
+using Panopoly RC3 you should use Kalatheme RC3, if you are
+using Panopoly RC4 you should use Kalatheme RC4, etc.
 
 Please download Panopoly first
 http://drupal.org/project/panopoly

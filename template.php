@@ -229,28 +229,33 @@ function kalatheme_preprocess_views_view_table(&$variables) {
  *   Name of current variant, if applicable
  */
 function kalatheme_check_responsive(&$variant, $version, $variant_name) {
-  foreach ($variant['files']['css'] as $index => $css) {
+  foreach (array_keys($variant['files']['css']) as $css) {
     if (!preg_match('/^css\/bootstrap\-responsive\.(?:min\.)?css$/', $css)) {
       continue;
     }
     $css_path = DRUPAL_ROOT . '/' . $variant['library path'] . '/' . $css;
     if (!file_exists($css_path)) {
-      unset($variant['files']['css'][$index]);
+      unset($variant['files']['css'][$css]);
     }
   }
 }
 
 /**
- * Implements hook_libraries_info_alter().
+ * Implements hook_libraries_info().
  */
-function kalatheme_libraries_info_alter(&$libraries) {
+function kalatheme_libraries_info() {
+  $libraries = array();
   $libraries['bootstrap'] = array(
     'name' => 'Twitter Bootstrap',
     'machine name' => 'bootstrap',
     'vendor url' => 'http://twitter.github.com',
     'download url' => 'http://twitter.github.com',
     'path' => '',
-    'callbacks' => array(),
+    'callbacks' => array(
+      'pre-load' => array(
+        'kalatheme_check_responsive',
+      ),
+    ),
     'version arguments' => array(
       'pattern' => '@v+([0-9a-zA-Z\.-]+)@',
       'lines' => 100,
@@ -287,14 +292,6 @@ function kalatheme_libraries_info_alter(&$libraries) {
       ),
     ),
   );
-
-  $libraries['bootstrap']['callbacks'] += array(
-    'info' => array(),
-    'pre-detect' => array(),
-    'post-detect' => array(),
-    'pre-load' => array(
-      'kalatheme_check_responsive',
-    ),
-    'post-load' => array(),
-  );
+  
+  return $libraries;
 }
