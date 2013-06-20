@@ -325,6 +325,18 @@ function kalatheme_links__system_main_menu($variables) {
         && (empty($link['#language']) || $link['#language']->language == $language_url->language)) {
         $class[] = 'active';
       }
+      // Check for, and honor active states set by context menu reactions
+      if (module_exists('context')) {
+        $contexts = context_active_contexts();
+        foreach ($contexts as $context) {
+          if ((isset($context->reactions['menu']))) {
+            if ($link['#href'] == $context->reactions['menu']) {
+              $class[] = 'active';
+            }
+          }
+        }
+      }
+
       if (!empty($link['#below'])) {
         $class[] = 'dropdown';
         $link['#attributes']['data-toggle'] = 'dropdown';
