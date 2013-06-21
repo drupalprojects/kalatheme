@@ -9,22 +9,20 @@ CONTENTS OF THIS FILE
 
 INSTALLING KALATHEME
 --------------------
-Kalatheme was meant to be install on top of the Panopoly ditribution. Using 
-Kalatheme without Panopoly has not been tested and is not recommended. 
-Furthermore, it is likely you would not be able to do much of anything without 
-Panopoly. Kalatheme versioning is tied to Panopoly versioning so if you are
-using Panopoly RC3 you should use Kalatheme RC3, if you are
-using Panopoly RC4 you should use Kalatheme RC4, etc.
+Kalatheme has certain requirements in order to work correctly. The minimal set
+of requirements are
 
-Please download Panopoly first
+ * Libraries 2.1+
+ * Panels 3.x
+ * JQuery Update 2.x (with JQuery version set to 1.7+)
+ * A bootstrap library (read below in Installing Bootstrap)
+ 
+The easiest way to ensure these dependencies are met, and for a richer experience
+in general is by downloading and starting with the Panopoly distribution.
 http://drupal.org/project/panopoly
 
 Then install Kalatheme like any other theme
 http://drupal.org/documentation/install/modules-themes
-
-You will notice once you install Kalatheme that it doesn't look like much and it
-is giving you an error message to install a Twitter Bootstrap library. Apropos:
-
 
 INSTALLING BOOTSTRAP
 --------------------
@@ -89,7 +87,7 @@ so you can reduce theme clutter and start on the 10th floor. Here is some
 documentation on creating a basic subtheme
 http://drupal.org/node/225125
 
-KEY FEATURES
+BONUS FEATURES
 ------------
  * Settings
  On the settings page for Kalatheme you can configure how you want the style 
@@ -98,12 +96,12 @@ KEY FEATURES
  * Style Plugin
  When you choose to "Customize this page" using the Panels In-Place Editor you 
  gain access to a bunch of customization tools provided by Kalatheme. Select the
- paintbrush on the panels pane you want to edit, choose "Kalacustomize" and hit
- next.
+ paintbrush on the panels pane or region you want to edit, choose "Kalacustomize" 
+ and hit next.
  
  * Views Grid 
  Any view that is made with the grid display and that has an amount of columns 
- that can divide 12 will be automatically responsive. 
+ that can evenly divide 12 will be automatically responsive. 
  
  * Responsive Menu
  The "main-menu" menu will automatically dropdown for subitems. It will also 

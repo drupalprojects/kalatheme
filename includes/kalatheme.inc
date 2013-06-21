@@ -6,19 +6,6 @@
  */
 
 /**
- * Message displayed when user does not have Panopoly installed
- */
-define('KALATHEME_PANOPOLY_ERROR', t('In order to use Kalatheme,
-  you must have the Panopoly distribution installed.
-  Please check the README for installation instructions.'));
-/**
- * Message displayed when user does not have Bootstrap available
- */
-define('KALATHEME_BOOTSTRAP_ERROR', t('In order to use Kalatheme, you must
-  have the Twitter Bootstrap library available. Please check the README for
-  installation instructions.'));
-
-/**
  * Loads all dependencies necessary for Kalatheme to operate.
  *
  * @return string
@@ -31,32 +18,71 @@ function _kalatheme_load_dependencies() {
   if (isset($status_function)) {
     return $status_function;
   }
-  // Add what we need from Bootstrap and make sure Panopoly is installed.
-  $all_loaded = FALSE;
-  if (module_exists('panopoly_core')) {
-    $library = libraries_detect('bootstrap');
-    if ($library && !empty($library['installed'])) {
-      $bootstrap_path = DRUPAL_ROOT . '/' . $library['library path'];
-      $variant = NULL;
-      $has_minified_css = file_exists($bootstrap_path . '/css/bootstrap.min.css');
-      $has_minified_js = file_exists($bootstrap_path . '/js/bootstrap.min.js');
-      if ($has_minified_css && $has_minified_js) {
-        $variant = 'minified';
+    
+  // Check some minimal module, variable and bootstrap reqs 
+  $panels = FALSE;
+  if (module_exists('panels')) {
+    $info = system_get_info('module', 'panels');
+    $regex = '/^7\.x-3\.[0-9]+.*$/';
+    
+    // See if we are running a 3.x version of panels
+    if (preg_match($regex, $info['version'])) {
+      $panels = TRUE;
+    }
+  }
+  if (!$panels) {
+    drupal_set_message('Kalatheme requires a 3.x version of panels.', 'error');
+  }
+  
+  $libs = FALSE;
+  if (module_exists('libraries')) {
+    $info = system_get_info('module', 'libraries');
+    $regex = '/^7\.x-2\.[1-9][0-9]*.*$/';
+    
+    // See if we are running at least 2.1 of libraries
+    if (preg_match($regex, $info['version'])) {
+      // Check to see if bootstrap libraries exist
+      $library = libraries_detect('bootstrap');
+      if ($library && !empty($library['installed'])) {
+        $bootstrap_path = DRUPAL_ROOT . '/' . $library['library path'];
+        $variant = NULL;
+        $has_minified_css = file_exists($bootstrap_path . '/css/bootstrap.min.css');
+        $has_minified_js = file_exists($bootstrap_path . '/js/bootstrap.min.js');
+        if ($has_minified_css && $has_minified_js) {
+          $variant = 'minified';
+        }
+        libraries_load('bootstrap', $variant);
+        $libs = TRUE;
       }
-      libraries_load('bootstrap', $variant);
-      $all_loaded = TRUE;
-    }
-    else {
-      // Something went wrong. Sadface.
-      drupal_set_message(KALATHEME_BOOTSTRAP_ERROR, 'error');
     }
   }
-  else {
-    drupal_set_message(KALATHEME_PANOPOLY_ERROR, 'error');
+  if (!$libs) {
+    drupal_set_message('Kalatheme requires at least Libraries 2.1 and a bootstrap library. 
+      Consult the README for install help.', 'error');
   }
+  
+  $jq = FALSE;
+  if (module_exists('jquery_update')) {
+    $info = system_get_info('module', 'jquery_update');
+    $regex = '/^7\.x-2\.[0-9]+.*$/';
+    
+    // See if we are running at least a 2.x branch of jquery_update
+    if (preg_match($regex, $info['version'])) {
+      // Check to see if we are using jquery 1.7+
+      $regex = '/^1\.[7-9]+.*$/';
+      if (preg_match($regex, variable_get('jquery_update_jquery_version'))) {
+        $jq = TRUE;
+      }
+    }
+  }
+  if (!$jq) {
+    drupal_set_message('Kalatheme requires a 2.x version of JQuery Update that uses at 
+      least JQuery 1.7', 'error');
+  }
+
   // Return the correct status message function depending on whether
   // we were able to load all of our dependencies.
-  if (!$all_loaded) {
+  if (!$panels || !$libs || !$jq) {
     $status_function = 'theme_status_messages';
   }
   else {
