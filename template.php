@@ -67,7 +67,7 @@ function kalatheme_process_page(&$variables) {
   if (module_exists('color')) {
     _color_page_alter($variables);
   }
-  
+
   // Define variables to theme local actions as a dropdown.
   $dropdown_attributes = array(
     'container' => array(
@@ -213,7 +213,7 @@ function kalatheme_preprocess_views_view_table(&$variables) {
     $rows[] = $row;
   }
   $variables['row_classes'] = $rows;
-  
+
   // Add in bootstrap classes
   $variables['classes_array'] = array('table', 'table-striped', 'table-bordered', 'table-hover');
 }
@@ -290,8 +290,33 @@ function kalatheme_libraries_info() {
           ),
         ),
       ),
+      '3' => array(
+        'files' => array(
+          'js' => array(
+            'js/bootstrap.js',
+          ),
+          'css' => array(
+            'css/bootstrap.css',
+          ),
+        ),
+        'variants' => array(
+          'minified' => array(
+            'files' => array(
+              'js' => array(
+                'js/bootstrap.min.js',
+              ),
+              'css' => array(
+                'css/bootstrap.min.css',
+              ),
+            ),
+            'variant arguments' => array(
+              'variant' => 'minified',
+            ),
+          ),
+        ),
+      ),
     ),
   );
-  
+
   return $libraries;
 }
