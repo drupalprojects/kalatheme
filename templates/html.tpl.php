@@ -9,7 +9,7 @@
  * - $css: An array of CSS files for the current page.
  * - $language: (object) The language the site is being displayed in.
  *   $language->language contains its textual representation.
- *   $language->dir contains the language direction. It will either be 'ltr' or 
+ *   $language->dir contains the language direction. It will either be 'ltr' or
  *   'rtl'.
  * - $rdf_namespaces: All the RDF namespace prefixes used in the HTML document.
  * - $grddl_profile: A GRDDL profile allowing agents to extract the RDF data.
@@ -48,7 +48,6 @@
 <head profile="<?php print $grddl_profile; ?>">
   <?php print $head; ?>
     <!-- %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"} -->
-    <meta content='Bootsrap based theme' name='description' />
     <meta content='width=device-width' name='viewport' />
     <!--[if lt IE 9]>
       <script src='http://html5shim.googlecode.com/svn/trunk/html5.js'></script>

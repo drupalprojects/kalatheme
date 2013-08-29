@@ -29,16 +29,16 @@ function theme_kalatheme_kalacustomize_render_region($vars) {
   else {
     $output = implode(PHP_EOL, $content);
   }
-  
+
   // Grab settings and set some defaults
   $settings['content']['element'] = 'div';
   $settings['content']['attributes'] = '';
-  
+
   if (!empty($vars['settings']['region_style'])) {
     $settings['content']['attributes'] .= $vars['settings']['region_style'] ? ' ' . $vars['settings']['region_style'] : '';
   }
   $settings['content']['attributes'] .= _kalatheme_get_responsive($vars['settings']);
-   
+
   if (!empty($output)) {
     $content_wrapper = _kalatheme_wrapper_wrap(!empty($settings['content']) ? $settings['content'] : array());
     $output = $content_wrapper['prefix'] . $output . $content_wrapper['suffix'];
@@ -79,7 +79,9 @@ function theme_kalatheme_kalacustomize_render_pane($vars) {
  */
 function kalatheme_kalacustomize_pane_settings_form($style_settings) {
 
-  if (theme_get_setting('responsive_toggle')) {
+  $settings_exposed = 0;
+
+  if (theme_get_setting('responsive_toggle', 'kalatheme')) {
     $mobile_options = array(t('Desktop'), t('Tablet'), t('Phone'));
     $form['devices'] = array(
       '#prefix' => '<div class="well">',
@@ -89,18 +91,20 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
       '#title' => t('Hide this pane on the following devices.'),
       '#default_value' => $style_settings['devices'],
     );
+    $settings_exposed++;
   }
 
-  if (theme_get_setting('pane_styles_toggle')) {
+  if (theme_get_setting('pane_styles_toggle', 'kalatheme')) {
     $pane_style_default_value = isset($style_settings['pane_style']) ? $style_settings['pane_style'] : '';
     $form['pane_style'] = array(
       '#title' => t('Pane Style'),
       '#prefix' => '<div class="well">',
       '#suffix' => '</div>',
     ) + _kalatheme_wrapper_pane_options($pane_style_default_value);
+    $settings_exposed++;
   }
 
-  if (theme_get_setting('extra_styles_toggle')) {
+  if (theme_get_setting('extra_styles_toggle', 'kalatheme')) {
     $element_default_value = isset($style_settings['title']['element']) ? $style_settings['title']['element'] : '';
     $form['title']['element'] = array(
       '#title' => t('Title'),
@@ -119,6 +123,13 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
 
     // Content form items, grabbed from the more settings.
     $form += kalatheme_kalacustomize_more_settings_form($style_settings);
+
+    $settings_exposed++;
+  }
+
+  // If we don't have any enabled options, let the user know.
+  if ($settings_exposed == 0) {
+    _kalatheme_warn_no_style_options();
   }
 
   return $form;
@@ -128,7 +139,9 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
  * Region settings form callback.
  */
 function kalatheme_kalacustomize_region_settings_form($style_settings) {
-  if (theme_get_setting('responsive_toggle')) {
+  $settings_exposed = 0;
+
+  if (theme_get_setting('responsive_toggle', 'kalatheme')) {
     $mobile_options = array(t('Desktop'), t('Tablet'), t('Phone'));
     $form['devices'] = array(
       '#prefix' => '<div class="well">',
@@ -138,17 +151,24 @@ function kalatheme_kalacustomize_region_settings_form($style_settings) {
       '#title' => t('Hide this region on the following devices.'),
       '#default_value' => $style_settings['devices'],
     );
+    $settings_exposed++;
   }
 
-  if (theme_get_setting('region_styles_toggle')) {
+  if (theme_get_setting('region_styles_toggle', 'kalatheme')) {
     $region_style_default_value = isset($style_settings['region_style']) ? $style_settings['region_style'] : '';
     $form['region_style'] = array(
       '#title' => t('Region Style'),
       '#prefix' => '<div class="well">',
       '#suffix' => '</div>',
     ) + _kalatheme_wrapper_region_options($region_style_default_value);
+    $settings_exposed++;
   }
-  
+
+  // If we don't have any enabled options, let the user know.
+  if ($settings_exposed == 0) {
+    _kalatheme_warn_no_style_options();
+  }
+
   return $form;
 }
 
@@ -195,8 +215,8 @@ function _kalatheme_wrapper_element_options($default_value = '') {
     'h3' => 'H3',
     'blockquote' => 'BLOCKQUOTE',
   );
-  if (theme_get_setting('extra_elements')) {
-    $options['#options'] += theme_get_setting('extra_elements');
+  if (theme_get_setting('extra_elements', 'kalatheme')) {
+    $options['#options'] += theme_get_setting('extra_elements', 'kalatheme');
   }
 
   return $options;
@@ -210,17 +230,17 @@ function _kalatheme_wrapper_pane_options($default_value = '') {
     '#type' => 'radios',
     '#default_value' => $default_value,
   );
-  
+
   $options['#options'] = array(
     '' => t('- Use default -'),
     '0' => t('- None -'),
     'hero-unit' => 'HERO UNIT',
     'well' => 'WELL',
   );
-  if (theme_get_setting('pane_classes')) {
-    $options['#options'] += theme_get_setting('pane_classes');
+  if (theme_get_setting('pane_classes', 'kalatheme')) {
+    $options['#options'] += theme_get_setting('pane_classes', 'kalatheme');
   }
-  
+
   return $options;
 }
 
@@ -232,17 +252,17 @@ function _kalatheme_wrapper_region_options($default_value = '') {
     '#type' => 'radios',
     '#default_value' => $default_value,
   );
-  
+
   $options['#options'] = array(
     '' => t('- Use default -'),
     '0' => t('- None -'),
     'hero-unit' => 'HERO UNIT',
     'well' => 'WELL',
   );
-  if (theme_get_setting('region_classes')) {
-    $options['#options'] += theme_get_setting('region_classes');
+  if (theme_get_setting('region_classes', 'kalatheme')) {
+    $options['#options'] += theme_get_setting('region_classes', 'kalatheme');
   }
-  
+
   return $options;
 }
 
@@ -262,9 +282,9 @@ function _kalatheme_wrapper_attribute_options($default_value = '') {
     'page-header' => 'PAGE HEADER',
     'muted' => 'MUTED TEXT',
   );
-  
-  if (theme_get_setting('extra_classes')) {
-    $options['#options'] += theme_get_setting('extra_classes');
+
+  if (theme_get_setting('extra_classes', 'kalatheme')) {
+    $options['#options'] += theme_get_setting('extra_classes', 'kalatheme');
   }
 
   return $options;
@@ -337,4 +357,14 @@ function _kalatheme_get_responsive($item = array()) {
       return '';
 
   }
+}
+
+/**
+ * Adds a warning status message letting the user know that no customization
+ * options have been enabled from the theme settings page.
+ */
+function _kalatheme_warn_no_style_options() {
+  $settings_link = l(t('Kalatheme settings page'), 'admin/appearance/settings/kalatheme');
+  drupal_set_message(t('You haven\'t enabled any customizations! Please check
+    out the !settings_link to see what\'s available.', array('!settings_link' => $settings_link)), 'warning');
 }
