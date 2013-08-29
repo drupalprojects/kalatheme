@@ -38,8 +38,8 @@
  * Navigation:
  * - $main_menu (array): An array containing the Main menu links for the
  *   site, if they have been configured.
- * - $main_menu_expanded (array): An array containing 2 depths of the Main 
- *   menu links 
+ * - $main_menu_expanded (array): An array containing 2 depths of the Main
+ *   menu links
  *   for the site, if they have been configured.
  * - $secondary_menu (array): An array containing the Secondary menu links for
  *   the site, if they have been configured.
@@ -64,7 +64,7 @@
  *   associated with the page, and the node ID is the second argument
  *   in the page's path (e.g. node/12345 and node/12345/revisions, but not
  *   comment/reply/12345).
- *   
+ *
  * Kalatheme:
  * - $no_panels: A boolean that is true if the current page is not a panels page
  *
@@ -82,7 +82,7 @@
 ?>
 <div id="page-wrapper"><div id="page">
 
-   
+
    <!-- Page Header -->
   <header id='masthead'>
     <nav class='navbar navbar-fixed-top'>
@@ -100,9 +100,9 @@
             </a>
           </h1>
           <?php endif; ?>
-          
+
           <div class='nav-collapse'>
-            <?php 
+            <?php
              if ($secondary_menu): ?>
                 <?php print theme('links__system_secondary_menu', array(
                   'links' => $secondary_menu,
@@ -122,7 +122,7 @@
                   ),
                 )); ?>
             <?php endif;  ?>
-          
+
             <?php if ($main_menu_expanded): ?>
                 <?php print theme('links__system_main_menu', array(
                   'links' => $main_menu_expanded,
@@ -136,24 +136,24 @@
                   ),
                 )); ?>
             <?php endif; ?>
-            
-          </div>    
-          
+
+          </div>
+
         </div>
       </div>
     </nav>
   </header>
-    
+
   <!-- Page Main -->
   <div id="main-wrapper" class="clearfix"><div id="main" class="clearfix">
-    <div id="content" class="column <?php $no_panels ? print ' container"' : ''; ?>">
+    <div id="content" class="column<?php $no_panels ? print ' container' : ''; ?>">
       <a id="main-content"></a>
       <?php if ($tabs): ?>
         <div id="tabs" class="container">
           <?php print render($tabs); ?>
         </div>
       <?php endif; ?>
-      
+
       <?php if ($action_links): ?>
         <div id="action-links" class="container">
           <?php print render($action_links); ?>
@@ -169,7 +169,7 @@
       <?php endif; ?>
 
       <?php print render($page['content']); ?>
-      
+
     </div> <!-- /.section, /#content -->
 
   </div></div> <!-- /#main, /#main-wrapper -->
