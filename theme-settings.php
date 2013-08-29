@@ -12,6 +12,23 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   // Need to pass this through to use list_allowed_values_string without errors.
   $field = array('type' => 'list_text');
 
+  // Page title setting (only print on non-panel pages or always print).
+  $form['page_title'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Page Title'),
+    '#weight' => 41,
+    '#collapsible' => FALSE,
+    '#collapsed' => FALSE,
+    '#description' => t('By default, Kalatheme only displays page titles on pages that aren\'t rendered through Panels or Panelizer.
+      If toggled on, this setting will cause Kalatheme to always print the page title, regardless of how the page is rendered.'),
+  );
+  $form['page_title']['always_show_page_title'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Always show page title.'),
+    '#default_value' => theme_get_setting('always_show_page_title', 'kalatheme'),
+    '#description' => t('Check here to always print page titles.'),
+  );
+
   // Responsive style plugin settings.
   $form['responsive'] = array(
     '#type' => 'fieldset',
@@ -114,7 +131,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#field_type' => $field['type'],
     '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
   );
-  
+
   // Region styles style plugin settings.
   $form['region_styles'] = array(
     '#type' => 'fieldset',

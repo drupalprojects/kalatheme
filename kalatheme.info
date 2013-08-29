@@ -21,6 +21,7 @@ settings[responsive_toggle] = 1
 settings[pane_styles_toggle] = 1
 settings[region_styles_toggle] = 1
 settings[extra_styles_toggle] = 0
+settings[always_show_page_title] = 0
 
 plugins[panels][layouts] = layouts
 plugins[panels][styles] = styles

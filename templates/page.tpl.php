@@ -67,6 +67,8 @@
  *
  * Kalatheme:
  * - $no_panels: A boolean that is true if the current page is not a panels page
+ * - $always_show_page_title: A boolean that is true if we're to always print
+ *   the page title, even on panelized pages.
  *
  * Regions:
  * - $page['content']: The main content of the current page.
@@ -166,6 +168,12 @@
             <?php print $messages; ?>
           </div>
         </div> <!-- /.section, /#messages -->
+      <?php endif; ?>
+
+      <?php if (($no_panels || $always_show_page_title) && $title): ?>
+        <h1 class="title" id="page-title">
+          <?php print $title; ?>
+        </h1>
       <?php endif; ?>
 
       <?php print render($page['content']); ?>
