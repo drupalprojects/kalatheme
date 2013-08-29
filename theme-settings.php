@@ -41,7 +41,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   $form['responsive']['responsive_toggle'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use responsive toggling.'),
-    '#default_value' => theme_get_setting('responsive_toggle'),
+    '#default_value' => theme_get_setting('responsive_toggle', 'kalatheme'),
     '#description' => t('Check here if you want the user to be able to set the responsive visbility of each panels pane and region.'),
   );
 
@@ -57,7 +57,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   $form['pane_styles']['pane_styles_toggle'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use panels styles.'),
-    '#default_value' => theme_get_setting('pane_styles_toggle'),
+    '#default_value' => theme_get_setting('pane_styles_toggle', 'kalatheme'),
     '#description' => t('Check here if you want to set the class for each panels pane.'),
   );
   $form['pane_styles']['pane_styles_settings'] = array(
@@ -69,7 +69,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     ),
   );
   // Set defaults here instead of info because it is an array.
-  $pane_classes = (theme_get_setting('pane_classes')) ? list_allowed_values_string(theme_get_setting('pane_classes')) : '';
+  $pane_classes = (theme_get_setting('pane_classes', 'kalatheme')) ? list_allowed_values_string(theme_get_setting('pane_classes', 'kalatheme')) : '';
   $form['pane_styles']['pane_styles_settings']['pane_classes'] = array(
     '#type' => 'textarea',
     '#title' => t('Allowed values list'),
@@ -94,7 +94,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   $form['extra_styles']['extra_styles_toggle'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use extra pane styles.'),
-    '#default_value' => theme_get_setting('extra_styles_toggle'),
+    '#default_value' => theme_get_setting('extra_styles_toggle', 'kalatheme'),
     '#description' => t('Check here if you want to customize the elements and classes for pane titles and content.'),
   );
   $form['extra_styles']['extra_styles_settings'] = array(
@@ -106,10 +106,10 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     ),
   );
   // Set defaults here instead of info because it is an array.
-  $extra_elements = (theme_get_setting('extra_elements')) ? list_allowed_values_string(theme_get_setting('extra_elements')) : '';
+  $extra_elements = (theme_get_setting('extra_elements', 'kalatheme')) ? list_allowed_values_string(theme_get_setting('extra_elements', 'kalatheme')) : '';
   $form['extra_styles']['extra_styles_settings']['extra_elements'] = array(
     '#type' => 'textarea',
-    '#title' => t('Allowed values list'),
+    '#title' => t('Allowed elements'),
     '#default_value' => $extra_elements,
     '#rows' => 10,
     '#element_validate' => array('list_allowed_values_setting_validate'),
@@ -119,10 +119,10 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
   );
   // Set defaults here instead of info because it is an array.
-  $extra_classes = (theme_get_setting('extra_classes')) ? list_allowed_values_string(theme_get_setting('extra_classes')) : '';
+  $extra_classes = (theme_get_setting('extra_classes', 'kalatheme')) ? list_allowed_values_string(theme_get_setting('extra_classes', 'kalatheme')) : '';
   $form['extra_styles']['extra_styles_settings']['extra_classes'] = array(
     '#type' => 'textarea',
-    '#title' => t('Allowed values list'),
+    '#title' => t('Allowed classes'),
     '#default_value' => $extra_classes,
     '#rows' => 10,
     '#element_validate' => array('list_allowed_values_setting_validate'),
@@ -144,7 +144,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   $form['region_styles']['region_styles_toggle'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use region styles.'),
-    '#default_value' => theme_get_setting('region_styles_toggle'),
+    '#default_value' => theme_get_setting('region_styles_toggle', 'kalatheme'),
     '#description' => t('Check here if you want to set the class for each panels region.'),
   );
   $form['region_styles']['region_styles_settings'] = array(
@@ -156,7 +156,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     ),
   );
   // Set defaults here instead of info because it is an array.
-  $region_classes = (theme_get_setting('region_classes')) ? list_allowed_values_string(theme_get_setting('region_classes')) : '';
+  $region_classes = (theme_get_setting('region_classes', 'kalatheme')) ? list_allowed_values_string(theme_get_setting('region_classes', 'kalatheme')) : '';
   $form['region_styles']['region_styles_settings']['region_classes'] = array(
     '#type' => 'textarea',
     '#title' => t('Allowed values list'),
