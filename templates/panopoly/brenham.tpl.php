@@ -21,16 +21,16 @@
       </div>
     </div>
   </section>
-  
+
   <section class='section'>
     <div class='container'>
-      <div class="brenham-container brenham-column-content clearfix row-fluid">
-        <div class="brenham-column-content-region brenham-sidebar panel-panel span4">
+      <div class="brenham-container brenham-column-content clearfix row">
+        <div class="brenham-column-content-region brenham-sidebar panel-panel col-md-4">
           <div class="brenham-column-content-region-inner brenham-sidebar-inner panel-panel-inner">
             <?php print $content['sidebar']; ?>
           </div>
         </div>
-        <div class="brenham-column-content-region brenham-content panel-panel span8">
+        <div class="brenham-column-content-region brenham-content panel-panel col-md-8">
           <div class="brenham-column-content-region-inner brenham-content-inner panel-panel-inner">
             <?php print $content['contentmain']; ?>
           </div>
@@ -38,5 +38,5 @@
       </div>
     </div>
   </section>
-   
+
 </div><!-- /.brenham -->

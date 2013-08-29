@@ -14,13 +14,13 @@
 
   <section class='section'>
     <div class='container'>
-      <div class="hewston-flipped-container hewston-flipped-top clearfix row-fluid">
-        <div class="hewston-flipped-top-region hewston-flipped-slider-gutter panel-panel span3">
+      <div class="hewston-flipped-container hewston-flipped-top clearfix row">
+        <div class="hewston-flipped-top-region hewston-flipped-slider-gutter panel-panel col-md-3">
           <div class="hewston-flipped-top-region-inner hewston-flipped-slider-gutter-inner panel-panel-inner">
             <?php print $content['slidergutter']; ?>
           </div>
         </div>
-        <div class="hewston-flipped-top-region hewston-flipped-slider panel-panel span9">
+        <div class="hewston-flipped-top-region hewston-flipped-slider panel-panel col-md-9">
           <div class="hewston-flipped-top-region-inner hewston-flipped-slider-inner panel-panel-inner">
             <?php print $content['slider']; ?>
           </div>
@@ -28,21 +28,21 @@
       </div>
     </div>
   </section>
-      
+
   <section class='section'>
     <div class='container'>
-      <div class="hewston-flipped-container hewston-flipped-middle clearfix row-fluid">
-        <div class="hewston-flipped-middle-region hewston-flipped-column1 panel-panel span4">
+      <div class="hewston-flipped-container hewston-flipped-middle clearfix row">
+        <div class="hewston-flipped-middle-region hewston-flipped-column1 panel-panel col-md-4">
           <div class="hewston-flipped-middle-region-inner hewston-flipped-column1-inner panel-panel-inner">
             <?php print $content['column1']; ?>
           </div>
         </div>
-        <div class="hewston-flipped-middle-region hewston-flipped-column2 panel-panel span4">
+        <div class="hewston-flipped-middle-region hewston-flipped-column2 panel-panel col-md-4">
           <div class="hewston-flipped-middle-region-inner hewston-flipped-column2-inner panel-panel-inner">
             <?php print $content['column2']; ?>
           </div>
         </div>
-        <div class="hewston-flipped-middle-region hewston-flipped-column3 panel-panel span4">
+        <div class="hewston-flipped-middle-region hewston-flipped-column3 panel-panel col-md-4">
           <div class="hewston-flipped-middle-region-inner hewston-flipped-column3-inner panel-panel-inner">
             <?php print $content['column3']; ?>
           </div>
@@ -50,5 +50,5 @@
       </div>
     </div>
   </section>
-      
+
 </div><!-- /.hewston-flipped -->

@@ -15,19 +15,19 @@
     <div class='container'>
       <div class="bartlett-flipped-content-container bartlett-flipped-container">
         <div class="bartlett-flipped-content-container-inner bartlett-flipped-container-inner">
-          <div class="bartlett-flipped-column-content-region bartlett-flipped-content-header clearfix panel-panel span8">
+          <div class="bartlett-flipped-column-content-region bartlett-flipped-content-header clearfix panel-panel col-md-8">
             <div class="bartlett-flipped-column-content-region-inner bartlett-flipped-content-header-inner panel-panel-inner">
               <?php print $content['contentheader']; ?>
             </div>
           </div>
-          
-          <div class="bartlett-flipped-content-container-column-container clearfix row-fluid">
-            <div class="bartlett-flipped-column-content-region bartlett-flipped-content-column1 bartlett-flipped-column panel-panel span4">
+
+          <div class="bartlett-flipped-content-container-column-container clearfix row">
+            <div class="bartlett-flipped-column-content-region bartlett-flipped-content-column1 bartlett-flipped-column panel-panel col-md-4">
               <div class="bartlett-flipped-column-content-region-inner bartlett-flipped-content-column1-inner bartlett-flipped-column-inner panel-panel-inner">
                 <?php print $content['contentcolumn1']; ?>
               </div>
             </div>
-            <div class="bartlett-flipped-column-content-region bartlett-flipped-content-column2 bartlett-flipped-column panel-panel span4">
+            <div class="bartlett-flipped-column-content-region bartlett-flipped-content-column2 bartlett-flipped-column panel-panel col-md-4">
               <div class="bartlett-flipped-column-content-region-inner bartlett-flipped-content-column2-inner bartlett-flipped-column-inner panel-panel-inner">
                 <?php print $content['contentcolumn2']; ?>
               </div>
@@ -35,9 +35,9 @@
           </div><!-- /.bartlett-flipped-content-container-column-container -->
         </div>
       </div><!-- /.bartlett-flipped-content-container -->
-      
+
       <div class="bartlett-flipped-column-content-region bartlett-flipped-column bartlett-flipped-container bartlett-flipped-sidebar panel-panel">
-        <div class="bartlett-flipped-sidebar-inner bartlett-flipped-column-content-region-inner bartlett-flipped-column-inner bartlett-flipped-container-inner panel-panel-inner span4">
+        <div class="bartlett-flipped-sidebar-inner bartlett-flipped-column-content-region-inner bartlett-flipped-column-inner bartlett-flipped-container-inner panel-panel-inner col-md-4">
           <?php print $content['sidebar']; ?>
         </div>
       </div>

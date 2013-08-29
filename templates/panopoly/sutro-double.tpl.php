@@ -23,33 +23,33 @@
   </section>
 
   <section class='section'>
-    <div class='container'>  
-      <div class="sutro-double-container sutro-double-column-content sutro-double-first-column-content clearfix row-fluid">
-        <div class="sutro-double-column-content-region sutro-double-column1 sutro-double-column panel-panel span6">
+    <div class='container'>
+      <div class="sutro-double-container sutro-double-column-content sutro-double-first-column-content clearfix row">
+        <div class="sutro-double-column-content-region sutro-double-column1 sutro-double-column panel-panel col-md-6">
           <div class="sutro-double-column-content-region-inner sutro-double-column1-inner sutro-double-column-inner panel-panel-inner">
             <?php print $content['column1']; ?>
           </div>
         </div>
-        <div class="sutro-double-column-content-region sutro-double-column2 sutro-double-column panel-panel span6">
+        <div class="sutro-double-column-content-region sutro-double-column2 sutro-double-column panel-panel col-md-6">
           <div class="sutro-double-column-content-region-inner sutro-double-column2-inner sutro-double-column-inner panel-panel-inner">
             <?php print $content['column2']; ?>
           </div>
         </div>
       </div>
-      
-      <div class="sutro-double-container sutro-double-middle clearfix panel-panel span12">
+
+      <div class="sutro-double-container sutro-double-middle clearfix panel-panel col-md-12">
         <div class="sutro-double-container-inner sutro-double-middle-inner panel-panel-inner">
           <?php print $content['middle']; ?>
         </div>
       </div>
-      
-      <div class="sutro-double-container sutro-double-column-content sutro-double-second-column-content clearfix row-fluid">
-        <div class="sutro-double-column-content-region sutro-double-column1 sutro-double-column panel-panel span6">
+
+      <div class="sutro-double-container sutro-double-column-content sutro-double-second-column-content clearfix row">
+        <div class="sutro-double-column-content-region sutro-double-column1 sutro-double-column panel-panel col-md-6">
           <div class="sutro-double-column-content-region-inner sutro-double-column1-inner sutro-double-column-inner panel-panel-inner">
             <?php print $content['secondcolumn1']; ?>
           </div>
         </div>
-        <div class="sutro-double-column-content-region sutro-double-column2 sutro-double-column panel-panel span6">
+        <div class="sutro-double-column-content-region sutro-double-column2 sutro-double-column panel-panel col-md-6">
           <div class="sutro-double-column-content-region-inner sutro-double-column2-inner sutro-double-column-inner panel-panel-inner">
             <?php print $content['secondcolumn2']; ?>
           </div>
@@ -57,9 +57,9 @@
       </div>
     </div>
   </section>
-  
+
   <footer class='section' id='footer' role='contentinfo'>
-    <div class='container'>  
+    <div class='container'>
       <div class="sutro-double-container sutro-double-footer clearfix panel-panel">
         <div class="sutro-double-container-inner sutro-double-footer-inner panel-panel-inner">
           <?php print $content['footer']; ?>
@@ -67,5 +67,5 @@
       </div>
     </div>
   </footer>
-    
+
 </div><!-- /.sutro-double -->

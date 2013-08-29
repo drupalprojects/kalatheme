@@ -14,13 +14,13 @@
 
   <section class='section'>
     <div class='container'>
-      <div class="burr-container burr-content-container clearfix row-fluid">
-        <div class="burr-sidebar burr-content-region panel-panel span5">
+      <div class="burr-container burr-content-container clearfix row">
+        <div class="burr-sidebar burr-content-region panel-panel col-md-5">
           <div class="burr-sidebar-inner burr-content-region-inner panel-panel-inner">
             <?php print $content['sidebar']; ?>
           </div>
         </div>
-        <div class="burr-content burr-content-region panel-panel span7">
+        <div class="burr-content burr-content-region panel-panel col-md-7">
           <div class="burr-content-inner burr-content-region-inner panel-panel-inner">
             <?php print $content['contentmain']; ?>
           </div>
@@ -28,5 +28,5 @@
       </div>
     </div>
   </section>
-      
+
 </div><!-- /.burr -->

@@ -13,7 +13,7 @@
 <div class="panel-display boxton clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
   <section class='section'>
     <div class='container'>
-      <div class="boxton-container boxton-content boxton-content-region panel-panel span12">
+      <div class="boxton-container boxton-content boxton-content-region panel-panel col-md-12">
         <?php print $content['contentmain']; ?>
       </div>
     </div><!-- /.container -->

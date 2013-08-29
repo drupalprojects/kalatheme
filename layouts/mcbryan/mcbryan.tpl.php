@@ -11,15 +11,15 @@
 ?>
 
 <div class="panel-display mcbryan clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-    
+
     <div class='container'>
-      <div class="mcbryan-container mcbryan-header clearfix row-fluid">
-		    <div class="mcbryan-header mcbryan-main panel-panel span7">
+      <div class="mcbryan-container mcbryan-header clearfix row">
+		    <div class="mcbryan-header mcbryan-main panel-panel col-md-7">
 		      <div class="mcbryan-header-inner mcbryan-main-inner panel-panel-inner">
 	          <?php print $content['main']; ?>
 	        </div>
         </div>
-		    <div class="mcbryan-header mcbryan-image panel-panel span5">
+		    <div class="mcbryan-header mcbryan-image panel-panel col-md-5">
 		      <div class="mcbryan-header-inner mcbryan-image-inner panel-panel-inner">
 	          <?php print $content['image']; ?>
 	        </div>

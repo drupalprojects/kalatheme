@@ -21,16 +21,16 @@
       </div>
     </div>
   </section>
-      
+
   <section class='section'>
-    <div class='container'>  
-      <div class="moscone-flipped-container moscone-flipped-column-content clearfix row-fluid">
-        <div class="moscone-flipped-column-content-region moscone-flipped-content panel-panel span9">
+    <div class='container'>
+      <div class="moscone-flipped-container moscone-flipped-column-content clearfix row">
+        <div class="moscone-flipped-column-content-region moscone-flipped-content panel-panel col-md-9">
           <div class="moscone-flipped-column-content-region-inner moscone-flipped-content-inner panel-panel-inner">
             <?php print $content['contentmain']; ?>
           </div>
         </div>
-        <div class="moscone-flipped-column-content-region moscone-flipped-sidebar panel-panel span3">
+        <div class="moscone-flipped-column-content-region moscone-flipped-sidebar panel-panel col-md-3">
           <div class="moscone-flipped-column-content-region-inner moscone-flipped-sidebar-inner panel-panel-inner">
             <?php print $content['sidebar']; ?>
           </div>
@@ -38,9 +38,9 @@
       </div>
     </div>
   </section>
-      
+
   <footer class='section' id='footer' role='contentinfo'>
-    <div class='container'>  
+    <div class='container'>
       <div class="moscone-container moscone-footer clearfix panel-panel">
         <div class="moscone-container-inner moscone-footer-inner panel-panel-inner">
           <?php print $content['footer']; ?>
@@ -48,5 +48,5 @@
       </div>
     </div>
   </footer>
-  
+
 </div><!-- /.moscone-flipped -->

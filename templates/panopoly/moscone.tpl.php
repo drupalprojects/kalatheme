@@ -21,16 +21,16 @@
       </div>
     </div>
   </section>
-      
+
   <section class='section'>
-    <div class='container'>      
-      <div class="moscone-container moscone-column-content clearfix row-fluid">
-        <div class="moscone-column-content-region moscone-sidebar panel-panel span3">
+    <div class='container'>
+      <div class="moscone-container moscone-column-content clearfix row">
+        <div class="moscone-column-content-region moscone-sidebar panel-panel col-md-3">
           <div class="moscone-column-content-region-inner moscone-sidebar-inner panel-panel-inner">
             <?php print $content['sidebar']; ?>
           </div>
         </div>
-        <div class="moscone-column-content-region moscone-content panel-panel span9">
+        <div class="moscone-column-content-region moscone-content panel-panel col-md-9">
           <div class="moscone-column-content-region-inner moscone-content-inner panel-panel-inner">
             <?php print $content['contentmain']; ?>
           </div>
@@ -38,7 +38,7 @@
       </div>
     </div>
   </section>
-      
+
   <footer class='section' id='footer' role='contentinfo'>
     <div class='container'>
       <div class="moscone-container moscone-footer clearfix panel-panel">
@@ -48,5 +48,5 @@
       </div>
     </div>
   </footer>
-  
+
 </div><!-- /.moscone -->

@@ -14,44 +14,44 @@
 
   <section class='section'>
     <div class='container'>
-      <div class="selby-sidebar selby-column-content-region selby-column selby-container panel-panel span4">
+      <div class="selby-sidebar selby-column-content-region selby-column selby-container panel-panel col-md-4">
         <div class="selby-sidebar-inner selby-column-content-region-inner selby-column-inner selby-container-inner panel-panel-inner">
           <?php print $content['sidebar']; ?>
         </div>
       </div>
-      
+
       <div class="selby-content-container selby-container">
         <div class="selby-content-container-inner selby-container-inner">
-          <div class="selby-column-content-region selby-content-header clearfix panel-panel span8">
+          <div class="selby-column-content-region selby-content-header clearfix panel-panel col-md-8">
             <div class="selby-column-content-region-inner selby-content-header-inner panel-panel-inner">
               <?php print $content['contentheader']; ?>
             </div>
           </div>
-          
-          <div class="selby-content-container-column-container clearfix row-fluid">
+
+          <div class="selby-content-container-column-container clearfix row">
             <div class="selby-content-container-column-container-inner">
-              <div class="selby-column-content-region selby-content-column1 selby-column panel-panel span4">
+              <div class="selby-column-content-region selby-content-column1 selby-column panel-panel col-md-4">
                 <div class="selby-column-content-region-inner selby-content-column1-inner selby-column-inner panel-panel-inner">
                   <?php print $content['contentcolumn1']; ?>
                 </div>
               </div>
-              <div class="selby-column-content-region selby-content-column2 selby-column panel-panel span4">
+              <div class="selby-column-content-region selby-content-column2 selby-column panel-panel col-md-4">
                 <div class="selby-column-content-region-inner selby-content-column2-inner selby-column-inner panel-panel-inner">
                   <?php print $content['contentcolumn2']; ?>
                 </div>
               </div>
             </div>
           </div><!-- /.selby-content-container-column-container -->
-          
-          <div class="selby-column-content-region selby-content-footer clearfix panel-panel span8">
+
+          <div class="selby-column-content-region selby-content-footer clearfix panel-panel col-md-8">
             <div class="selby-column-content-region-inner selby-content-footer-inner panel-panel-inner">
               <?php print $content['contentfooter']; ?>
             </div>
           </div>
-        
+
         </div>
       </div><!-- /.selby-content-container -->
     </div>
   </section>
-      
+
 </div><!-- /.selby -->

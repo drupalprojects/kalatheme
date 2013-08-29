@@ -11,7 +11,7 @@
 ?>
 
 <div class="panel-display brenham-flipped clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-  
+
   <section class='section alt' id='promo'>
     <div class='container'>
       <div class="brenham-flipped-container brenham-flipped-header clearfix panel-panel">
@@ -21,16 +21,16 @@
       </div>
     </div>
   </section>
-  
+
   <section class='section'>
     <div class='container'>
-      <div class="brenham-flipped-container brenham-flipped-column-content clearfix row-fluid">
-        <div class="brenham-flipped-column-content-region brenham-flipped-content panel-panel span8">
+      <div class="brenham-flipped-container brenham-flipped-column-content clearfix row">
+        <div class="brenham-flipped-column-content-region brenham-flipped-content panel-panel col-md-8">
           <div class="brenham-flipped-column-content-region-inner brenham-flipped-content-inner panel-panel-inner">
             <?php print $content['contentmain']; ?>
           </div>
         </div>
-        <div class="brenham-flipped-column-content-region brenham-flipped-sidebar panel-panel span4">
+        <div class="brenham-flipped-column-content-region brenham-flipped-sidebar panel-panel col-md-4">
           <div class="brenham-flipped-column-content-region-inner brenham-flipped-sidebar-inner panel-panel-inner">
             <?php print $content['sidebar']; ?>
           </div>
@@ -38,5 +38,5 @@
       </div>
     </div>
   </section>
-  
+
 </div><!-- /.brenham-flipped -->

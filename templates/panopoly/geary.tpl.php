@@ -11,7 +11,7 @@
 ?>
 
 <div class="panel-display geary clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-  
+
   <section class='section alt' id='promo'>
     <div class='container'>
       <div class="geary-container geary-header clearfix panel-panel">
@@ -21,21 +21,21 @@
       </div>
     </div>
   </section>
-  
+
   <section class='section'>
-    <div class='container'>    
-      <div class="geary-container geary-column-content clearfix row-fluid">
-        <div class="geary-column-content-region geary-column1 panel-panel span4">
+    <div class='container'>
+      <div class="geary-container geary-column-content clearfix row">
+        <div class="geary-column-content-region geary-column1 panel-panel col-md-4">
           <div class="geary-column-content-region-inner geary-column1-inner panel-panel-inner">
             <?php print $content['column1']; ?>
           </div>
         </div>
-        <div class="geary-column-content-region geary-column2 panel-panel span4">
+        <div class="geary-column-content-region geary-column2 panel-panel col-md-4">
           <div class="geary-column-content-region-inner geary-column2-inner panel-panel-inner">
             <?php print $content['column2']; ?>
           </div>
         </div>
-        <div class="geary-column-content-region geary-column3 panel-panel span4">
+        <div class="geary-column-content-region geary-column3 panel-panel col-md-4">
           <div class="geary-column-content-region-inner geary-column3-inner panel-panel-inner">
             <?php print $content['column3']; ?>
           </div>
@@ -43,5 +43,5 @@
       </div>
     </div>
   </section>
-      
+
 </div><!-- /.geary -->

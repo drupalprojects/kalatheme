@@ -16,43 +16,43 @@
     <div class='container'>
       <div class="selby-flipped-content-container selby-flipped-container">
         <div class="selby-flipped-content-container-inner selby-flipped-container-inner">
-        
-          <div class="selby-flipped-column-content-region selby-flipped-content-header clearfix panel-panel span8">
+
+          <div class="selby-flipped-column-content-region selby-flipped-content-header clearfix panel-panel col-md-8">
             <div class="selby-flipped-column-content-region-inner selby-flipped-content-header-inner panel-panel-inner">
               <?php print $content['contentheader']; ?>
             </div>
           </div>
-          
-          <div class="selby-flipped-content-container-column-container clearfix row-fluid">
+
+          <div class="selby-flipped-content-container-column-container clearfix row">
             <div class="selby-flipped-content-container-column-container-inner">
-              <div class="selby-flipped-column-content-region selby-flipped-content-column1 selby-flipped-column panel-panel span4">
+              <div class="selby-flipped-column-content-region selby-flipped-content-column1 selby-flipped-column panel-panel col-md-4">
                 <div class="selby-flipped-column-content-region-inner selby-flipped-content-column1-inner selby-flipped-column-inner panel-panel-inner">
                   <?php print $content['contentcolumn1']; ?>
                 </div>
               </div>
-              <div class="selby-flipped-column-content-region selby-flipped-content-column2 selby-flipped-column panel-panel span4">
+              <div class="selby-flipped-column-content-region selby-flipped-content-column2 selby-flipped-column panel-panel col-md-4">
                 <div class="selby-flipped-column-content-region-inner selby-flipped-content-column2-inner selby-flipped-column-inner panel-panel-inner">
                   <?php print $content['contentcolumn2']; ?>
                 </div>
               </div>
             </div>
           </div><!-- /.selby-flipped-content-container-column-container -->
-          
-          <div class="selby-flipped-column-content-region selby-flipped-content-footer clearfix panel-panel span8">
+
+          <div class="selby-flipped-column-content-region selby-flipped-content-footer clearfix panel-panel col-md-8">
             <div class="selby-flipped-column-content-region-inner selby-flipped-content-footer-inner panel-panel-inner">
               <?php print $content['contentfooter']; ?>
             </div>
           </div>
-          
+
         </div>
       </div><!-- /.selby-flipped-content-container -->
-      
-      <div class="selby-flipped-sidebar selby-flipped-column-content-region selby-flipped-column selby-flipped-container panel-panel span4">
+
+      <div class="selby-flipped-sidebar selby-flipped-column-content-region selby-flipped-column selby-flipped-container panel-panel col-md-4">
         <div class="selby-flipped-sidebar-inner selby-flipped-column-content-region-inner selby-flipped-column-inner selby-flipped-container-inner panel-panel-inner">
           <?php print $content['sidebar']; ?>
         </div>
       </div>
     </div>
   </section>
-      
+
 </div><!-- /.selby-flipped -->

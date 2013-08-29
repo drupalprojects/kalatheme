@@ -24,14 +24,14 @@
 
   <section class='section'>
     <div class='container'>
-      <div class='row-fluid'>
+      <div class='row'>
         <div class="ward-container ward-column-content clearfix">
-          <div class="ward-column-content-region ward-content panel-panel span9">
+          <div class="ward-column-content-region ward-content panel-panel col-md-9">
             <div class="ward-column-content-region-inner ward-content-inner panel-panel-inner">
               <?php print $content['contentmain']; ?>
             </div>
           </div>
-          <div class="ward-column-content-region ward-sidebar panel-panel span3">
+          <div class="ward-column-content-region ward-sidebar panel-panel col-md-3">
             <div class="ward-column-content-region-inner ward-sidebar-inner panel-panel-inner">
               <?php print $content['sidebar']; ?>
             </div>
@@ -40,21 +40,21 @@
       </div>
     </div>
   </section>
-  
+
   <footer class='section' id='footer' role='contentinfo'>
     <div class='container'>
-      <div class="ward-container ward-column-content ward-column-content-row1 clearfix row-fluid">
-        <div class="ward-column-content-region ward-column ward-column1 panel-panel span4">
+      <div class="ward-container ward-column-content ward-column-content-row1 clearfix row">
+        <div class="ward-column-content-region ward-column ward-column1 panel-panel col-md-4">
           <div class="ward-column-content-region-inner ward-column-inner ward-column1-inner panel-panel-inner">
             <?php print $content['footer1']; ?>
           </div>
         </div>
-        <div class="ward-column-content-region ward-column ward-column2 panel-panel span4">
+        <div class="ward-column-content-region ward-column ward-column2 panel-panel col-md-4">
           <div class="ward-column-content-region-inner ward-column-inner ward-column2-inner panel-panel-inner">
             <?php print $content['footer2']; ?>
           </div>
         </div>
-        <div class="ward-column-content-region ward-column ward-column3 panel-panel span4">
+        <div class="ward-column-content-region ward-column ward-column3 panel-panel col-md-4">
           <div class="ward-column-content-region-inner ward-column-inner ward-column3-inner panel-panel-inner">
             <?php print $content['footer3']; ?>
           </div>
@@ -62,5 +62,5 @@
       </div>
     </div>
   </footer>
-  
+
 </div><!-- /.ward -->

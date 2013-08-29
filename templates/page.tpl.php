@@ -185,7 +185,7 @@
   <!-- Page Footer -->
   <footer class='section' id='footerlower' role='contentinfo'>
     <div class='container'>
-      <div class='row-fluid'>
+      <div class='row'>
         <?php if ($site_slogan): ?>
             <?php print $site_slogan; ?>
         <?php endif; ?>

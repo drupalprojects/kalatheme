@@ -14,13 +14,13 @@
 
   <section class='section'>
     <div class='container'>
-      <div class="phelan-container phelan-column-content clearfix row-fluid">
-        <div class="phelan-column-content-region phelan-column1 phelan-column panel-panel span6">
+      <div class="phelan-container phelan-column-content clearfix row">
+        <div class="phelan-column-content-region phelan-column1 phelan-column panel-panel col-md-6">
           <div class="phelan-column-content-region-inner phelan-column1-inner phelan-column-inner panel-panel-inner">
             <?php print $content['column1']; ?>
           </div>
         </div>
-        <div class="phelan-column-content-region phelan-column2 phelan-column panel-panel span6">
+        <div class="phelan-column-content-region phelan-column2 phelan-column panel-panel col-md-6">
           <div class="phelan-column-content-region-inner phelan-column2-inner phelan-column-inner panel-panel-inner">
             <?php print $content['column2']; ?>
           </div>
@@ -28,5 +28,5 @@
       </div>
     </div>
   </section>
-    
+
 </div><!-- /.phelan -->

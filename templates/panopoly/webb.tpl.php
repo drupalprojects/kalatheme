@@ -23,42 +23,42 @@
   </section>
 
   <section class='section'>
-    <div class='container'>  
+    <div class='container'>
       <div class="webb-container webb-column-content clearfix">
-        
-        <div class="webb-sidebar webb-column-content-region webb-column panel-panel span4">
+
+        <div class="webb-sidebar webb-column-content-region webb-column panel-panel col-md-4">
           <div class="webb-sidebar-inner webb-column-content-region-inner webb-column-inner panel-panel-inner">
             <?php print $content['sidebar']; ?>
           </div>
         </div>
-        
+
         <div class="webb-content-container">
           <div class="webb-content-container-inner">
-          
+
             <div class="webb-column-content-region webb-content-header panel-panel clearfix">
-              <div class="webb-column-content-region-inner webb-content-header-inner panel-panel-inner span8">
+              <div class="webb-column-content-region-inner webb-content-header-inner panel-panel-inner col-md-8">
                 <?php print $content['contentheader']; ?>
               </div>
             </div>
-            
-            <div class="webb-content-container-column-container clearfix row-fluid">
-              <div class="webb-column-content-region webb-content-column1 webb-column panel-panel span4">
+
+            <div class="webb-content-container-column-container clearfix row">
+              <div class="webb-column-content-region webb-content-column1 webb-column panel-panel col-md-4">
                 <div class="webb-column-content-region-inner webb-content-column1-inner webb-column-inner panel-panel-inner">
                   <?php print $content['contentcolumn1']; ?>
                 </div>
               </div>
-              <div class="webb-column-content-region webb-content-column2 webb-column panel-panel span4">
+              <div class="webb-column-content-region webb-content-column2 webb-column panel-panel col-md-4">
                 <div class="webb-column-content-region-inner webb-content-column2-inner webb-column-inner panel-panel-inner">
                   <?php print $content['contentcolumn2']; ?>
                 </div>
               </div>
             </div><!-- /.webb-content-container-column-container -->
-          
+
           </div>
         </div><!-- /.webb-content-container -->
-        
+
       </div><!-- /.webb-column-content -->
     </div>
   </section>
-  
+
 </div><!-- /.webb -->

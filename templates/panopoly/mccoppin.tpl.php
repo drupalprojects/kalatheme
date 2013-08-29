@@ -14,18 +14,18 @@
 
   <section class='section'>
     <div class='container'>
-      <div class="mccoppin-container mccoppin-column-content clearfix row-fluid">
-        <div class="mccoppin-column-content-region mccoppin-column1 panel-panel span4">
+      <div class="mccoppin-container mccoppin-column-content clearfix row">
+        <div class="mccoppin-column-content-region mccoppin-column1 panel-panel col-md-4">
           <div class="mccoppin-column-content-region-inner mccoppin-column1-inner panel-panel-inner">
             <?php print $content['column1']; ?>
           </div>
         </div>
-        <div class="mccoppin-column-content-region mccoppin-column2 panel-panel span4">
+        <div class="mccoppin-column-content-region mccoppin-column2 panel-panel col-md-4">
           <div class="mccoppin-column-content-region-inner mccoppin-column2-inner panel-panel-inner">
             <?php print $content['column2']; ?>
           </div>
         </div>
-        <div class="mccoppin-column-content-region mccoppin-column3 panel-panel span4">
+        <div class="mccoppin-column-content-region mccoppin-column3 panel-panel col-md-4">
           <div class="mccoppin-column-content-region-inner mccoppin-column3-inner panel-panel-inner">
             <?php print $content['column3']; ?>
           </div>
@@ -33,5 +33,5 @@
       </div>
     </div>
   </section>
-  
+
 </div><!-- /.mccoppin -->

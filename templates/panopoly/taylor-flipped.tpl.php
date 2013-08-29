@@ -21,21 +21,21 @@
       </div>
     </div>
   </section>
-  
+
   <section class='section'>
-    <div class='container'>      
-      <div class="taylor-flipped-container taylor-flipped-column-content clearfix row-fluid">
-        <div class="taylor-flipped-column-content-region taylor-flipped-quarter1 taylor-flipped-column panel-panel span4">
+    <div class='container'>
+      <div class="taylor-flipped-container taylor-flipped-column-content clearfix row">
+        <div class="taylor-flipped-column-content-region taylor-flipped-quarter1 taylor-flipped-column panel-panel col-md-4">
           <div class="taylor-flipped-column-content-region-inner taylor-flipped-quarter1-inner taylor-flipped-column-inner panel-panel-inner">
             <?php print $content['quarter1']; ?>
           </div>
         </div>
-        <div class="taylor-flipped-column-content-region taylor-flipped-quarter2 taylor-flipped-column panel-panel span4">
+        <div class="taylor-flipped-column-content-region taylor-flipped-quarter2 taylor-flipped-column panel-panel col-md-4">
           <div class="taylor-flipped-column-content-region-inner taylor-flipped-quarter2-inner taylor-flipped-column-inner panel-panel-inner">
             <?php print $content['quarter2']; ?>
           </div>
         </div>
-        <div class="taylor-flipped-column-content-region taylor-flipped-half taylor-flipped-column panel-panel span8">
+        <div class="taylor-flipped-column-content-region taylor-flipped-half taylor-flipped-column panel-panel col-md-8">
           <div class="taylor-flipped-column-content-region-inner taylor-flipped-half-inner taylor-flipped-column-inner panel-panel-inner">
             <?php print $content['half']; ?>
           </div>
@@ -43,9 +43,9 @@
       </div>
     </div>
   </section>
-  
+
   <footer class='section' id='footer' role='contentinfo'>
-    <div class='container'>      
+    <div class='container'>
       <div class="taylor-flipped-container taylor-flipped-footer clearfix panel-panel">
         <div class="taylor-flipped-container-inner taylor-flipped-footer-inner panel-panel-inner">
           <?php print $content['footer']; ?>
@@ -53,5 +53,5 @@
       </div>
     </div>
   </footer>
-    
+
 </div><!-- /.taylor-flipped -->
