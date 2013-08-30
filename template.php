@@ -193,7 +193,7 @@ function kalatheme_preprocess_block(&$variables) {
  * Implements hook_preprocess_panels_add_content_link().
  */
 function kalatheme_preprocess_panels_add_content_link(&$vars) {
-  $vars['text_button'] = ctools_ajax_text_button($vars['title'], $vars['url'], $vars['description'], 'panels-modal-add-config btn');
+  $vars['text_button'] = ctools_ajax_text_button($vars['title'], $vars['url'], $vars['description'], 'panels-modal-add-config btn btn-default');
 }
 
 /**

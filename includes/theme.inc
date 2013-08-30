@@ -259,7 +259,7 @@ function kalatheme_field__taxonomy_term_reference($variables) {
   }
 
   // Render the items.
-  $output .= ($variables['element']['#label_display'] == 'inline') ? '<ul class="links inline">' : '<ul class="links">';
+  $output .= ($variables['element']['#label_display'] == 'inline') ? '<ul class="links list-inline">' : '<ul class="links">';
   foreach ($variables['items'] as $delta => $item) {
     $output .= '<li class="taxonomy-term-reference-' . $delta . '"' . $variables['item_attributes'][$delta] . '>' . drupal_render($item) . '</li>';
   }
@@ -475,7 +475,7 @@ function kalatheme_menu_local_actions($variables) {
 
   // Render the dropdown.
   $output = $container_attributes ?  '<li' . $container_attributes . '>' : '<li>';
-  $output .= $toggle_attributes ?  '<a' . $toggle_attributes . '><i class="icon-wrench"></i> Actions <b class="caret"></b></a>' : '<a>Actions <b class="caret"></b></a>';
+  $output .= $toggle_attributes ?  '<a' . $toggle_attributes . '><i class="glyphicon glyphicon-wrench"></i> Actions <b class="caret"></b></a>' : '<a>Actions <b class="caret"></b></a>';
   $output .= $content_attributes ? '<ul' . $content_attributes . '>' : '<ul>';
   $output .= drupal_render($variables['menu_actions']);
   $output .= '</ul>';

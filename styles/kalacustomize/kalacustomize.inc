@@ -82,12 +82,12 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
   $settings_exposed = 0;
 
   if (theme_get_setting('responsive_toggle', 'kalatheme')) {
-    $mobile_options = array(t('Desktop'), t('Tablet'), t('Phone'));
+    $mobile_options = array('md' => t('Desktop'), 'sm' => t('Tablet'), 'xs' => t('Phone'));
     $form['devices'] = array(
       '#prefix' => '<div class="well">',
       '#suffix' => '</div>',
       '#type' => 'checkboxes',
-      '#options' => drupal_map_assoc($mobile_options),
+      '#options' => $mobile_options,
       '#title' => t('Hide this pane on the following devices.'),
       '#default_value' => $style_settings['devices'],
     );
@@ -142,12 +142,12 @@ function kalatheme_kalacustomize_region_settings_form($style_settings) {
   $settings_exposed = 0;
 
   if (theme_get_setting('responsive_toggle', 'kalatheme')) {
-    $mobile_options = array(t('Desktop'), t('Tablet'), t('Phone'));
+    $mobile_options = array('md' => t('Desktop'), 'sm' => t('Tablet'), 'xs' => t('Phone'));
     $form['devices'] = array(
       '#prefix' => '<div class="well">',
       '#suffix' => '</div>',
       '#type' => 'checkboxes',
-      '#options' => drupal_map_assoc($mobile_options),
+      '#options' => $mobile_options,
       '#title' => t('Hide this region on the following devices.'),
       '#default_value' => $style_settings['devices'],
     );
@@ -234,7 +234,7 @@ function _kalatheme_wrapper_pane_options($default_value = '') {
   $options['#options'] = array(
     '' => t('- Use default -'),
     '0' => t('- None -'),
-    'hero-unit' => 'HERO UNIT',
+    'jumbotron' => 'JUMBOTRON',
     'well' => 'WELL',
   );
   if (theme_get_setting('pane_classes', 'kalatheme')) {
@@ -256,7 +256,7 @@ function _kalatheme_wrapper_region_options($default_value = '') {
   $options['#options'] = array(
     '' => t('- Use default -'),
     '0' => t('- None -'),
-    'hero-unit' => 'HERO UNIT',
+    'jumbotron' => 'JUMBOTRON',
     'well' => 'WELL',
   );
   if (theme_get_setting('region_classes', 'kalatheme')) {
@@ -335,11 +335,11 @@ function _kalatheme_get_responsive($item = array()) {
   $count = 0;
   foreach ($item['devices'] as $device => $hidden) {
     if ($hidden === 0) {
-      $show = strtolower($device);
+      $show = $device;
       $count++;
     }
     else {
-      $hide = strtolower($device);
+      $hide = $device;
     }
   }
 

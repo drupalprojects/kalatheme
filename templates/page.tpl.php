@@ -90,20 +90,20 @@
     <nav class='navbar navbar-fixed-top'>
       <div class='navbar-inner'>
         <div class='container'>
-          <a class='btn btn-navbar' data-target='.nav-collapse' data-toggle='collapse'>
-            <span class='icon-bar'></span>
-            <span class='icon-bar'></span>
-            <span class='icon-bar'></span>
+          <a class='btn navbar-btn' data-target='.navbar-collapse' data-toggle='collapse'>
+            <span class='glyphicon glyphicon-bar'></span>
+            <span class='glyphicon glyphicon-bar'></span>
+            <span class='glyphicon glyphicon-bar'></span>
           </a>
           <?php if ($logo): ?>
-          <h1 class='brand'>
+          <h1 class='navbar-brand'>
             <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
               <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
             </a>
           </h1>
           <?php endif; ?>
 
-          <div class='nav-collapse'>
+          <div class='navbar-collapse'>
             <?php
              if ($secondary_menu): ?>
                 <?php print theme('links__system_secondary_menu', array(
@@ -112,7 +112,7 @@
                     'id' => 'secondary-menu-links',
                     'class' => array(
                       'links',
-                      'inline',
+                      'list-inline',
                       'clearfix',
                       'nav pull-right',
                     ),
