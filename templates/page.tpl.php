@@ -86,64 +86,63 @@
 
 
    <!-- Page Header -->
-  <header id='masthead'>
-    <nav class='navbar navbar-fixed-top'>
-      <div class='navbar-inner'>
-        <div class='container'>
-          <a class='btn navbar-btn' data-target='.navbar-collapse' data-toggle='collapse'>
-            <span class='glyphicon glyphicon-bar'></span>
-            <span class='glyphicon glyphicon-bar'></span>
-            <span class='glyphicon glyphicon-bar'></span>
+  <header class='navbar'>
+    <div class='container'>
+      <div class="navbar-header">
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <?php if ($logo): ?>
+        <h1 class='brand navbar-brand'>
+          <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
+            <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
           </a>
-          <?php if ($logo): ?>
-          <h1 class='navbar-brand'>
-            <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-              <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
-            </a>
-          </h1>
-          <?php endif; ?>
+        </h1>
+        <?php endif; ?>
+      </div><!-- /.navbar-header -->
 
-          <div class='navbar-collapse'>
-            <?php
-             if ($secondary_menu): ?>
-                <?php print theme('links__system_secondary_menu', array(
-                  'links' => $secondary_menu,
-                  'attributes' => array(
-                    'id' => 'secondary-menu-links',
-                    'class' => array(
-                      'links',
-                      'list-inline',
-                      'clearfix',
-                      'nav pull-right',
-                    ),
-                  ),
-                  'heading' => array(
-                    'text' => t('Secondary menu'),
-                    'level' => 'h2',
-                    'class' => array('element-invisible'),
-                  ),
-                )); ?>
-            <?php endif;  ?>
+      <nav class='collapse navbar-collapse' role="navigation">
+        <?php
+        if ($secondary_menu): ?>
+            <?php print theme('links__system_secondary_menu', array(
+              'links' => $secondary_menu,
+              'attributes' => array(
+                'id' => 'secondary-menu-links',
+                'class' => array('nav', 'pull-right'),
+              ),
+              'heading' => array(
+                'text' => t('Secondary menu'),
+                'level' => 'h2',
+                'class' => array('element-invisible'),
+              ),
+            )); ?>
+        <?php endif;  ?>
 
-            <?php if ($main_menu_expanded): ?>
-                <?php print theme('links__system_main_menu', array(
-                  'links' => $main_menu_expanded,
-                  'attributes' => array(
-                    'class' => array('nav pull-right'),
-                  ),
-                  'heading' => array(
-                    'text' => t('Main menu'),
-                    'level' => 'h2',
-                    'class' => array('element-invisible'),
-                  ),
-                )); ?>
-            <?php endif; ?>
+        <?php if ($main_menu_expanded): ?>
+            <?php print theme('links__system_main_menu', array(
+              'links' => $main_menu_expanded,
+              'attributes' => array(
+                'class' => array(
+                  'nav',
+                  'navbar-nav',
+                  'links',
+                  'clearfix',
+                  'pull-right',
+                ),
+              ),
+              'heading' => array(
+                'text' => t('Main menu'),
+                'level' => 'h2',
+                'class' => array('element-invisible'),
+              ),
+            )); ?>
+        <?php endif; ?>
+      </nav>
 
-          </div>
-
-        </div>
-      </div>
-    </nav>
+    </div>
   </header>
 
   <!-- Page Main -->
