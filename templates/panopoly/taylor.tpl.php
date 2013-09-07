@@ -25,17 +25,17 @@
   <section class='section'>
     <div class='container'>
       <div class="taylor-container taylor-column-content clearfix row">
-        <div class="taylor-column-content-region taylor-half taylor-column panel-panel col-md-8">
+        <div class="taylor-column-content-region taylor-half taylor-column panel-panel col-md-6">
           <div class="taylor-column-content-region-inner taylor-half-inner taylor-column-inner panel-panel-inner">
             <?php print $content['half']; ?>
           </div>
         </div>
-        <div class="taylor-column-content-region taylor-quarter1 taylor-column panel-panel col-md-4">
+        <div class="taylor-column-content-region taylor-quarter1 taylor-column panel-panel col-md-3">
           <div class="taylor-column-content-region-inner taylor-quarter1-inner taylor-column-inner panel-panel-inner">
             <?php print $content['quarter1']; ?>
           </div>
         </div>
-        <div class="taylor-column-content-region taylor-quarter2 taylor-column panel-panel col-md-4">
+        <div class="taylor-column-content-region taylor-quarter2 taylor-column panel-panel col-md-3">
           <div class="taylor-column-content-region-inner taylor-quarter2-inner taylor-column-inner panel-panel-inner">
             <?php print $content['quarter2']; ?>
           </div>

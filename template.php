@@ -201,7 +201,7 @@ function kalatheme_preprocess_panels_add_content_link(&$vars) {
  */
 function kalatheme_preprocess_views_view_grid(&$variables) {
   if (12 % $variables['options']['columns'] === 0) {
-    $variables['span'] = 'span' . 12 / $variables['options']['columns'];
+    $variables['span'] = 'col-md-' . 12 / $variables['options']['columns'];
   }
 }
 
@@ -219,26 +219,18 @@ function kalatheme_preprocess_views_view_table(&$variables) {
 
   // Add in bootstrap classes
   $variables['classes_array'] = array('table', 'table-striped', 'table-bordered', 'table-hover');
-}
 
-/**
- * Checks if Bootstrap's responsive CSS is installed.
- *
- * @param array $variant
- *   Library, or one of its variants, to check
- * @param string $version
- *   Library's version number, if applicable
- * @param string $variant_name
- *   Name of current variant, if applicable
- */
-function kalatheme_check_responsive(&$variant, $version, $variant_name) {
-  foreach (array_keys($variant['files']['css']) as $css) {
-    if (!preg_match('/^css\/bootstrap\-responsive\.(?:min\.)?css$/', $css)) {
-      continue;
-    }
-    $css_path = DRUPAL_ROOT . '/' . $variant['library path'] . '/' . $css;
-    if (!file_exists($css_path)) {
-      unset($variant['files']['css'][$css]);
+  // Remove the active class from table cells, as Bootstrap 3 gives them a funky background.
+  $handler = $variables['view']->style_plugin;
+  $active = !empty($handler->active) ? $handler->active : FALSE;
+  if ($active) {
+    foreach ($variables['field_classes'][$active] as &$cell) {
+      $cell_classes = explode(' ', $cell);
+      $active_class_index = array_search('active', $cell_classes);
+      if ($active_class_index !== FALSE) {
+        unset($cell_classes[$active_class_index]);
+        $cell = implode(' ', $cell_classes);
+      }
     }
   }
 }
@@ -254,11 +246,6 @@ function kalatheme_libraries_info() {
     'vendor url' => 'http://twitter.github.com',
     'download url' => 'http://twitter.github.com',
     'path' => '',
-    'callbacks' => array(
-      'pre-load' => array(
-        'kalatheme_check_responsive',
-      ),
-    ),
     'version arguments' => array(
       'pattern' => '@v+([0-9a-zA-Z\.-]+)@',
       'lines' => 100,
@@ -266,33 +253,6 @@ function kalatheme_libraries_info() {
     ),
     'version callback' => '_kalatheme_get_version',
     'versions' => array(
-      '2' => array(
-        'files' => array(
-          'js' => array(
-            'js/bootstrap.js',
-          ),
-          'css' => array(
-            'css/bootstrap.css',
-            'css/bootstrap-responsive.css',
-          ),
-        ),
-        'variants' => array(
-          'minified' => array(
-            'files' => array(
-              'js' => array(
-                'js/bootstrap.min.js',
-              ),
-              'css' => array(
-                'css/bootstrap.min.css',
-                'css/bootstrap-responsive.min.css',
-              ),
-            ),
-            'variant arguments' => array(
-              'variant' => 'minified',
-            ),
-          ),
-        ),
-      ),
       '3' => array(
         'files' => array(
           'js' => array(

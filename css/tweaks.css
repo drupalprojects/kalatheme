@@ -38,11 +38,19 @@ html.js fieldset.collapsed {
 
 .collapse-processed .fieldset-wrapper {
   margin-left: 25px;
+  margin-bottom: 10px;
 }
 
-.form-actions .btn {
+.form-actions .btn,
+.form-submit {
   margin-left: 5px;
   margin-right: 5px;
+}
+
+@media (min-width: 480px) {
+  .form-control {
+    width: auto;
+  }
 }
 
 label.option {
@@ -68,6 +76,10 @@ div#admin-toolbar.vertical {
   z-index: 9999;
 }
 
+#tabs {
+  margin-bottom: 20px;
+}
+
 /*
 .update tbody > tr:nth-child(even) > td, .table-striped tbody > tr:nth-child(even) > th,
   .update tbody > tr:nth-child(odd) > td, .table-striped tbody > tr:nth-child(odd) > th,
@@ -76,12 +88,12 @@ div#admin-toolbar.vertical {
 }
 */
 
-.update tbody > tr:nth-child(odd) > td, .update tbody > tr:nth-child(odd) > th, 
+.update tbody > tr:nth-child(odd) > td, .update tbody > tr:nth-child(odd) > th,
   .update tbody > tr:nth-child(even) > td, .update tbody > tr:nth-child(even) > th {
   background: transparent;
 }
 
-table.package tr.enabling, tr.selected td, tr.dblog-error, tr.dblog-notice, tr.dblog-warning, 
+table.package tr.enabling, tr.selected td, tr.dblog-error, tr.dblog-notice, tr.dblog-warning,
   tr.dblog-error .active, tr.dblog-notice .active, tr.dblog-warning .active {
   background: transparent;
 }

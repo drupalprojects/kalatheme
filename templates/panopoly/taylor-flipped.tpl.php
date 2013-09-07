@@ -25,17 +25,17 @@
   <section class='section'>
     <div class='container'>
       <div class="taylor-flipped-container taylor-flipped-column-content clearfix row">
-        <div class="taylor-flipped-column-content-region taylor-flipped-quarter1 taylor-flipped-column panel-panel col-md-4">
+        <div class="taylor-flipped-column-content-region taylor-flipped-quarter1 taylor-flipped-column panel-panel col-md-3">
           <div class="taylor-flipped-column-content-region-inner taylor-flipped-quarter1-inner taylor-flipped-column-inner panel-panel-inner">
             <?php print $content['quarter1']; ?>
           </div>
         </div>
-        <div class="taylor-flipped-column-content-region taylor-flipped-quarter2 taylor-flipped-column panel-panel col-md-4">
+        <div class="taylor-flipped-column-content-region taylor-flipped-quarter2 taylor-flipped-column panel-panel col-md-3">
           <div class="taylor-flipped-column-content-region-inner taylor-flipped-quarter2-inner taylor-flipped-column-inner panel-panel-inner">
             <?php print $content['quarter2']; ?>
           </div>
         </div>
-        <div class="taylor-flipped-column-content-region taylor-flipped-half taylor-flipped-column panel-panel col-md-8">
+        <div class="taylor-flipped-column-content-region taylor-flipped-half taylor-flipped-column panel-panel col-md-6">
           <div class="taylor-flipped-column-content-region-inner taylor-flipped-half-inner taylor-flipped-column-inner panel-panel-inner">
             <?php print $content['half']; ?>
           </div>

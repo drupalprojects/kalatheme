@@ -155,7 +155,7 @@ function kalatheme_status_report($variables) {
     ),
     REQUIREMENT_ERROR => array(
       'title' => t('Error'),
-      'class' => 'alert alert-error',
+      'class' => 'alert alert-danger',
     ),
   );
   $output = '<table class="system-status-report">';
@@ -219,11 +219,15 @@ function kalatheme_button($variables) {
  */
 function kalatheme_textarea($variables) {
   $element = $variables['element'];
+  _kalatheme_ensure_class($element);
   $element['#attributes']['name'] = $element['#name'];
   $element['#attributes']['id'] = $element['#id'];
   $element['#attributes']['cols'] = $element['#cols'];
   $element['#attributes']['rows'] = $element['#rows'];
   _form_set_class($element, array('form-textarea'));
+
+  // Add Bootstrap class.
+  $variables['element']['#attributes']['class'][] = 'form-control';
 
   $wrapper_attributes = array(
     'class' => array('form-textarea-wrapper'),
@@ -238,6 +242,26 @@ function kalatheme_textarea($variables) {
   $output .= '<textarea' . drupal_attributes($element['#attributes']) . '>' . check_plain($element['#value']) . '</textarea>';
   $output .= '</div>';
   return $output;
+}
+
+/**
+ * Implements theme_textfield().
+ */
+function kalatheme_textfield($variables) {
+  _kalatheme_ensure_class($variables['element']);
+  // Add Bootstrap class, then defer to core for the rest.
+  $variables['element']['#attributes']['class'][] = 'form-control';
+  return theme_textfield($variables);
+}
+
+/**
+ * Implements theme_select().
+ */
+function kalatheme_select($variables) {
+  _kalatheme_ensure_class($variables['element']);
+  // Add Bootstrap class, then defer to core for the rest.
+  $variables['element']['#attributes']['class'][] = 'form-control';
+  return theme_select($variables);
 }
 
 /**
@@ -554,7 +578,7 @@ function kalatheme_update_report($variables) {
       case UPDATE_NOT_SECURE:
       case UPDATE_REVOKED:
       case UPDATE_NOT_SUPPORTED:
-        $class = 'alert alert-error';
+        $class = 'alert alert-danger';
         $icon = theme('image', array('path' => 'misc/watchdog-error.png', 'width' => 18, 'height' => 18, 'alt' => t('error'), 'title' => t('error')));
         break;
       case UPDATE_NOT_CHECKED:
@@ -733,4 +757,19 @@ function kalatheme_update_report($variables) {
   }
   drupal_add_css(drupal_get_path('module', 'update') . '/update.css');
   return $output;
+}
+
+/**
+ * Checks that a render array's ['#attribute']['class'] is set, adding it if necessary.
+ *
+ * @param array $render_array
+ *   A renderable array.
+ */
+function _kalatheme_ensure_class(&$render_array) {
+  if (!isset($render_array['#attributes'])) {
+    $render_array['#attributes'] = array();
+  }
+  if (!isset($render_array['#attributes']['class'])) {
+    $render_array['#attributes']['class'] = array();
+  }
 }

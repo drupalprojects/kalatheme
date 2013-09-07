@@ -280,7 +280,7 @@ function _kalatheme_wrapper_attribute_options($default_value = '') {
     '0' => t('- None -'),
     'lead' => 'LEAD BODY COPY',
     'page-header' => 'PAGE HEADER',
-    'muted' => 'MUTED TEXT',
+    'text-muted' => 'MUTED TEXT',
   );
 
   if (theme_get_setting('extra_classes', 'kalatheme')) {
