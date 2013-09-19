@@ -103,7 +103,7 @@
           </h1>
           <?php endif; ?>
 
-          <div class='nav-collapse'>
+          <div class='nav-collapse collapse'>
             <?php
              if ($secondary_menu): ?>
                 <?php print theme('links__system_secondary_menu', array(
