@@ -86,7 +86,7 @@
 
 
    <!-- Page Header -->
-  <header class='navbar'>
+  <header class='navbar navbar-default'>
     <div class='container'>
       <div class="navbar-header">
         <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
@@ -105,22 +105,6 @@
       </div><!-- /.navbar-header -->
 
       <nav class='collapse navbar-collapse' role="navigation">
-        <?php
-        if ($secondary_menu): ?>
-            <?php print theme('links__system_secondary_menu', array(
-              'links' => $secondary_menu,
-              'attributes' => array(
-                'id' => 'secondary-menu-links',
-                'class' => array('nav', 'pull-right'),
-              ),
-              'heading' => array(
-                'text' => t('Secondary menu'),
-                'level' => 'h2',
-                'class' => array('element-invisible'),
-              ),
-            )); ?>
-        <?php endif;  ?>
-
         <?php if ($main_menu_expanded): ?>
             <?php print theme('links__system_main_menu', array(
               'links' => $main_menu_expanded,
@@ -130,7 +114,7 @@
                   'navbar-nav',
                   'links',
                   'clearfix',
-                  'pull-right',
+                  'primary-links'
                 ),
               ),
               'heading' => array(
@@ -140,6 +124,22 @@
               ),
             )); ?>
         <?php endif; ?>
+
+        <?php
+        if ($secondary_menu): ?>
+            <?php print theme('links__system_secondary_menu', array(
+              'links' => $secondary_menu,
+              'attributes' => array(
+                'id' => 'secondary-menu-links',
+                'class' => array('nav', 'navbar-nav', 'secondary-links'),
+              ),
+              'heading' => array(
+                'text' => t('Secondary menu'),
+                'level' => 'h2',
+                'class' => array('element-invisible'),
+              ),
+            )); ?>
+        <?php endif;  ?>
       </nav>
 
     </div>

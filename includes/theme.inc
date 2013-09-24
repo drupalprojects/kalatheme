@@ -337,6 +337,7 @@ function kalatheme_links__system_main_menu($variables) {
 
     foreach ($links as $key => $link) {
       $class = array($key);
+      $link['#attributes'] = array();
 
       // Add first/last/active classes to help out themers.
       if ($i == 1) {
@@ -361,23 +362,18 @@ function kalatheme_links__system_main_menu($variables) {
         }
       }
 
-      if (!empty($link['#below'])) {
-        $class[] = 'dropdown';
-        $link['#attributes']['data-toggle'] = 'dropdown';
-        $link['#attributes']['class'][] = 'dropdown-toggle';
-        $link['#href'] = NULL;
-      }
       $options['attributes'] = $link['#attributes'];
 
+      // Make list item a dropdown if we have child items.
+      if (!empty($link['#below'])) {
+        $class[] = 'dropdown';
+        $class[] = 'clearfix';
+      }
       $output .= '<li' . drupal_attributes(array('class' => $class)) . '>';
 
       if (isset($link['#href'])) {
         // Pass in $link as $options, they share the same keys.
         $output .= l($link['#title'], $link['#href'], array('attributes' => $link['#attributes']));
-      }
-      // Put in empty anchor for dropdown.
-      elseif ($link['#attributes']['data-toggle'] && !isset($link['#href'])) {
-        $output .= str_replace('href="/"', 'href="#"', l($link['#title'], $link['#href'], array('attributes' => $link['#attributes'])));
       }
       elseif (!empty($link['#title'])) {
         // Wrap non-<a> links in <span> for adding title and class attributes.
@@ -391,11 +387,16 @@ function kalatheme_links__system_main_menu($variables) {
         $output .= '<span' . $span_attributes . '>' . $link['#title'] . '</span>';
       }
 
+      // If link has child items, print a toggle and dropdown menu.
       if (!empty($link['#below'])) {
+        $dropdown_id = 'main-menu-dropdown-' . $i;
+        $output .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="' . $dropdown_id. '"><span class="caret"></span></a>';
         $output .= theme('links__system_main_menu', array(
           'links' => $link['#below'],
           'attributes' => array(
             'class' => array('dropdown-menu'),
+            'role' => 'menu',
+            'aria-labelledby' => $dropdown_id
           ),
         ));
       }
