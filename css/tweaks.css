@@ -125,7 +125,8 @@ td.checkbox {
   display: table-cell;
 }
 
-.draggable a.tabledrag-handle .handle {
+.draggable a.tabledrag-handle .handle,
+.panopoly-spotlight-label {
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
