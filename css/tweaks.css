@@ -52,8 +52,19 @@ legend {
   padding: 5px;
 }
 
+.views-ui-display-tab-bucket .views-display-setting .label {
+  color: #666;
+  font-size: 100%;
+}
+
+.views-ui-display-tab-actions .ctools-button-processed li a,
+.views-ui-display-tab-actions .ctools-button-processed input {
+  color: #000;
+}
+
 html.js fieldset.collapsed {
   padding: 5px;
+  margin-bottom: 25px;
 }
 
 .collapse-processed .fieldset-wrapper {
@@ -98,6 +109,26 @@ div#admin-toolbar.vertical {
 
 #tabs {
   margin-bottom: 20px;
+}
+
+#admin-menu,
+#admin-menu .dropdown {
+  z-index: 9999;
+}
+
+#edit-module-filter-name {
+  display: inline;
+}
+
+th.checkbox,
+td.checkbox {
+  display: table-cell;
+}
+
+.draggable a.tabledrag-handle .handle {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 /*

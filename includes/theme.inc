@@ -227,7 +227,7 @@ function kalatheme_textarea($variables) {
   _form_set_class($element, array('form-textarea'));
 
   // Add Bootstrap class.
-  $variables['element']['#attributes']['class'][] = 'form-control';
+  $element['#attributes']['class'][] = 'form-control';
 
   $wrapper_attributes = array(
     'class' => array('form-textarea-wrapper'),
@@ -262,6 +262,16 @@ function kalatheme_select($variables) {
   // Add Bootstrap class, then defer to core for the rest.
   $variables['element']['#attributes']['class'][] = 'form-control';
   return theme_select($variables);
+}
+
+/**
+ * Implements theme_password().
+ */
+function kalatheme_password($variables) {
+  _kalatheme_ensure_class($variables['element']);
+  // Add Bootstrap class, then defer to core for the rest.
+  $variables['element']['#attributes']['class'][] = 'form-control';
+  return theme_password($variables);
 }
 
 /**
