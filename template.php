@@ -298,3 +298,38 @@ function kalatheme_libraries_info() {
 
   return $libraries;
 }
+
+/**
+ * This attempts to find and return the Bootstrap library version
+ *
+ * @param $library - The actual library
+ * @param $options - Options to help determine the library version
+ * @return Library version number
+ */
+function _kalatheme_get_version($library, $options) {
+  // Use bootstrap.min.css if exists, if not use normal bootstrap.css
+  $file = (file_exists(DRUPAL_ROOT . '/' . $library['library path'] . '/css/bootstrap.min.css')) ?
+    '/css/bootstrap.min.css' : '/css/bootstrap.css';
+
+  // Provide defaults.
+  $options += array(
+    'file' => $file,
+    'pattern' => '',
+    'lines' => 20,
+    'cols' => 200,
+  );
+
+  $file = DRUPAL_ROOT . '/' . $library['library path'] . '/' . $options['file'];
+  if (empty($options['file']) || !file_exists($file)) {
+    return;
+  }
+  $file = fopen($file, 'r');
+  while ($options['lines'] && $line = fgets($file, $options['cols'])) {
+    if (preg_match($options['pattern'], $line, $version)) {
+      fclose($file);
+      return $version[1];
+    }
+    $options['lines']--;
+  }
+  fclose($file);
+}

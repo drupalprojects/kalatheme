@@ -18,13 +18,13 @@ function _kalatheme_load_dependencies() {
   if (isset($status_function)) {
     return $status_function;
   }
-    
-  // Check some minimal module, variable and bootstrap reqs 
+
+  // Check some minimal module, variable and bootstrap reqs
   $panels = FALSE;
   if (module_exists('panels')) {
     $info = system_get_info('module', 'panels');
     $regex = '/^7\.x-3\.[0-9]+.*$/';
-    
+
     // See if we are running a 3.x version of panels
     if (preg_match($regex, $info['version'])) {
       $panels = TRUE;
@@ -33,12 +33,12 @@ function _kalatheme_load_dependencies() {
   if (!$panels) {
     drupal_set_message('Kalatheme requires a 3.x version of panels.', 'error');
   }
-  
+
   $libs = FALSE;
   if (module_exists('libraries')) {
     $info = system_get_info('module', 'libraries');
     $regex = '/^7\.x-2\.[1-9][0-9]*.*$/';
-    
+
     // See if we are running at least 2.1 of libraries
     if (preg_match($regex, $info['version'])) {
       // Check to see if bootstrap libraries exist
@@ -57,15 +57,15 @@ function _kalatheme_load_dependencies() {
     }
   }
   if (!$libs) {
-    drupal_set_message('Kalatheme requires at least Libraries 2.1 and a bootstrap library. 
+    drupal_set_message('Kalatheme requires at least Libraries 2.1 and a bootstrap library.
       Consult the README for install help.', 'error');
   }
-  
+
   $jq = FALSE;
   if (module_exists('jquery_update')) {
     $info = system_get_info('module', 'jquery_update');
     $regex = '/^7\.x-2\.[0-9]+.*$/';
-    
+
     // See if we are running at least a 2.x branch of jquery_update
     if (preg_match($regex, $info['version'])) {
       // Check to see if we are using jquery 1.7+
@@ -76,7 +76,7 @@ function _kalatheme_load_dependencies() {
     }
   }
   if (!$jq) {
-    drupal_set_message('Kalatheme requires a 2.x version of JQuery Update that uses at 
+    drupal_set_message('Kalatheme requires a 2.x version of JQuery Update that uses at
       least JQuery 1.7', 'error');
   }
 
@@ -171,39 +171,4 @@ function _kalatheme_status_messages($variables) {
     $output .= "</div>\n";
   }
   return $output;
-}
-
-/**
- * This attempts to find and return the Bootstrap library version
- * 
- * @param $library - The actual library
- * @param $options - Options to help determine the library version
- * @return Library version number
- */
-function _kalatheme_get_version($library, $options) {
-  // Use bootstrap.min.css if exists, if not use normal bootstrap.css
-  $file = (file_exists(DRUPAL_ROOT . '/' . $library['library path'] . '/css/bootstrap.min.css')) ? 
-    '/css/bootstrap.min.css' : '/css/bootstrap.css';
-  
-  // Provide defaults.
-  $options += array(
-    'file' => $file,
-    'pattern' => '',
-    'lines' => 20,
-    'cols' => 200,
-  );
-
-  $file = DRUPAL_ROOT . '/' . $library['library path'] . '/' . $options['file'];
-  if (empty($options['file']) || !file_exists($file)) {
-    return;
-  }
-  $file = fopen($file, 'r');
-  while ($options['lines'] && $line = fgets($file, $options['cols'])) {
-    if (preg_match($options['pattern'], $line, $version)) {
-      fclose($file);
-      return $version[1];
-    }
-    $options['lines']--;
-  }
-  fclose($file);
 }
