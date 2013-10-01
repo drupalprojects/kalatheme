@@ -97,8 +97,8 @@ function kalatheme_process_page(&$variables) {
 
   // Always print the site name and slogan, but if they are toggled off, we'll
   // just hide them visually.
-  $variables['hide_site_name']   = theme_get_setting('toggle_name', 'kalatheme') ? FALSE : TRUE;
-  $variables['hide_site_slogan'] = theme_get_setting('toggle_slogan', 'kalatheme') ? FALSE : TRUE;
+  $variables['hide_site_name']   = theme_get_setting('toggle_name') ? FALSE : TRUE;
+  $variables['hide_site_slogan'] = theme_get_setting('toggle_slogan') ? FALSE : TRUE;
   if ($variables['hide_site_name']) {
     // If toggle_name is FALSE, the site_name will be empty, so we rebuild it.
     $variables['site_name'] = filter_xss_admin(variable_get('site_name', 'Drupal'));
@@ -131,7 +131,7 @@ function kalatheme_process_page(&$variables) {
   }
 
   // Check if we're to always print the page title, even on panelized pages.
-  $variables['always_show_page_title'] = theme_get_setting('always_show_page_title', 'kalatheme') ? TRUE : FALSE;
+  $variables['always_show_page_title'] = theme_get_setting('always_show_page_title') ? TRUE : FALSE;
 }
 
 /**
@@ -154,8 +154,8 @@ function kalatheme_preprocess_maintenance_page(&$variables) {
 function kalatheme_process_maintenance_page(&$variables) {
   // Always print the site name and slogan, but if they are toggled off, we'll
   // just hide them visually.
-  $variables['hide_site_name']   = theme_get_setting('toggle_name', 'kalatheme') ? FALSE : TRUE;
-  $variables['hide_site_slogan'] = theme_get_setting('toggle_slogan', 'kalatheme') ? FALSE : TRUE;
+  $variables['hide_site_name']   = theme_get_setting('toggle_name') ? FALSE : TRUE;
+  $variables['hide_site_slogan'] = theme_get_setting('toggle_slogan') ? FALSE : TRUE;
   if ($variables['hide_site_name']) {
     // If toggle_name is FALSE, the site_name will be empty, so we rebuild it.
     $variables['site_name'] = filter_xss_admin(variable_get('site_name', 'Drupal'));

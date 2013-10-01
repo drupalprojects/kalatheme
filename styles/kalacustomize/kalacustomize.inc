@@ -81,7 +81,7 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
 
   $settings_exposed = 0;
 
-  if (theme_get_setting('responsive_toggle', 'kalatheme')) {
+  if (theme_get_setting('responsive_toggle')) {
     $mobile_options = array(t('Desktop'), t('Tablet'), t('Phone'));
     $form['devices'] = array(
       '#prefix' => '<div class="well">',
@@ -94,7 +94,7 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
     $settings_exposed++;
   }
 
-  if (theme_get_setting('pane_styles_toggle', 'kalatheme')) {
+  if (theme_get_setting('pane_styles_toggle')) {
     $pane_style_default_value = isset($style_settings['pane_style']) ? $style_settings['pane_style'] : '';
     $form['pane_style'] = array(
       '#title' => t('Pane Style'),
@@ -104,7 +104,7 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
     $settings_exposed++;
   }
 
-  if (theme_get_setting('extra_styles_toggle', 'kalatheme')) {
+  if (theme_get_setting('extra_styles_toggle')) {
     $element_default_value = isset($style_settings['title']['element']) ? $style_settings['title']['element'] : '';
     $form['title']['element'] = array(
       '#title' => t('Title'),
@@ -141,7 +141,7 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
 function kalatheme_kalacustomize_region_settings_form($style_settings) {
   $settings_exposed = 0;
 
-  if (theme_get_setting('responsive_toggle', 'kalatheme')) {
+  if (theme_get_setting('responsive_toggle')) {
     $mobile_options = array(t('Desktop'), t('Tablet'), t('Phone'));
     $form['devices'] = array(
       '#prefix' => '<div class="well">',
@@ -154,7 +154,7 @@ function kalatheme_kalacustomize_region_settings_form($style_settings) {
     $settings_exposed++;
   }
 
-  if (theme_get_setting('region_styles_toggle', 'kalatheme')) {
+  if (theme_get_setting('region_styles_toggle')) {
     $region_style_default_value = isset($style_settings['region_style']) ? $style_settings['region_style'] : '';
     $form['region_style'] = array(
       '#title' => t('Region Style'),
@@ -215,8 +215,8 @@ function _kalatheme_wrapper_element_options($default_value = '') {
     'h3' => 'H3',
     'blockquote' => 'BLOCKQUOTE',
   );
-  if (theme_get_setting('extra_elements', 'kalatheme')) {
-    $options['#options'] += theme_get_setting('extra_elements', 'kalatheme');
+  if (theme_get_setting('extra_elements')) {
+    $options['#options'] += theme_get_setting('extra_elements');
   }
 
   return $options;
@@ -237,8 +237,8 @@ function _kalatheme_wrapper_pane_options($default_value = '') {
     'hero-unit' => 'HERO UNIT',
     'well' => 'WELL',
   );
-  if (theme_get_setting('pane_classes', 'kalatheme')) {
-    $options['#options'] += theme_get_setting('pane_classes', 'kalatheme');
+  if (theme_get_setting('pane_classes')) {
+    $options['#options'] += theme_get_setting('pane_classes');
   }
 
   return $options;
@@ -259,8 +259,8 @@ function _kalatheme_wrapper_region_options($default_value = '') {
     'hero-unit' => 'HERO UNIT',
     'well' => 'WELL',
   );
-  if (theme_get_setting('region_classes', 'kalatheme')) {
-    $options['#options'] += theme_get_setting('region_classes', 'kalatheme');
+  if (theme_get_setting('region_classes')) {
+    $options['#options'] += theme_get_setting('region_classes');
   }
 
   return $options;
@@ -283,8 +283,8 @@ function _kalatheme_wrapper_attribute_options($default_value = '') {
     'muted' => 'MUTED TEXT',
   );
 
-  if (theme_get_setting('extra_classes', 'kalatheme')) {
-    $options['#options'] += theme_get_setting('extra_classes', 'kalatheme');
+  if (theme_get_setting('extra_classes')) {
+    $options['#options'] += theme_get_setting('extra_classes');
   }
 
   return $options;
