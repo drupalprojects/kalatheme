@@ -33,12 +33,13 @@
 #node-edit .form-item-path-alias label {
   float: left;
   font-weight: 400;
+  font-size: 14px;
 }
 
 #node-edit .form-item-path-alias {
   font-size: .8em;
   margin-bottom: .25em;
-  margin-top: .25em;
+  margin-top: .55em;
   min-height: 1.2em;
   padding: 0;
   vertical-align: middle;
@@ -48,6 +49,7 @@
   margin-left: 4px;
   padding-bottom: 0;
   padding-top: 0;
+  height: 20px;
 }
 
 #node-edit .form-item-path-pathauto {
