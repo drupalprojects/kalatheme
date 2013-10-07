@@ -168,3 +168,8 @@ tr.even, tr.odd {
   border-bottom: inherit;
   padding: inherit;
 }
+
+/* Keep Bootstrap from hiding batch API progress message */
+.batch-processed .progress {
+  height: auto;
+}
