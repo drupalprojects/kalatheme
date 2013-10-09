@@ -409,6 +409,9 @@ function kalatheme_menu_local_tasks(&$variables) {
     $variables['primary']['#prefix'] = '<ul class="nav nav-pills">';
     $variables['primary']['#suffix'] = '</ul>';
     if (!empty($variables['secondary'])) {
+      if (!function_exists("_kalatheme_associate_parent_tasks")) {
+        require_once DRUPAL_ROOT . '/' . drupal_get_path('theme', 'kalatheme') . '/includes/kalatheme.inc';
+      }
       $variables = _kalatheme_associate_parent_tasks($variables);
     }
     $output .= drupal_render($variables['primary']);
