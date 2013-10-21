@@ -42,7 +42,7 @@ function _kalatheme_load_dependencies() {
     // See if we are running at least 2.1 of libraries
     if (preg_match($regex, $info['version'])) {
       // Check to see if bootstrap libraries exist
-      $library = libraries_detect('bootstrap');
+      $library = libraries_detect(KALATHEME_BOOTSTRAP_LIBRARY);
       if ($library && !empty($library['installed'])) {
         $bootstrap_path = DRUPAL_ROOT . '/' . $library['library path'];
         $variant = NULL;
@@ -51,7 +51,7 @@ function _kalatheme_load_dependencies() {
         if ($has_minified_css && $has_minified_js) {
           $variant = 'minified';
         }
-        libraries_load('bootstrap', $variant);
+        libraries_load(KALATHEME_BOOTSTRAP_LIBRARY, $variant);
         $libs = TRUE;
       }
     }
