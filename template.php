@@ -4,6 +4,10 @@
  * Kalatheme's primary theme functions and alterations.
  */
 
+// Constants
+define('KALATHEME_BOOTSTRAP_LIBRARY', variable_get('theme_default', 'kalatheme') . '_bootstrap');
+
+// Load some core things
 $kalatheme_path = drupal_get_path('theme', 'kalatheme');
 require_once $kalatheme_path . '/includes/theme.inc';
 
@@ -240,9 +244,9 @@ function kalatheme_preprocess_views_view_table(&$variables) {
  */
 function kalatheme_libraries_info() {
   $libraries = array();
-  $libraries['bootstrap'] = array(
+  $libraries[KALATHEME_BOOTSTRAP_LIBRARY] = array(
     'name' => 'Twitter Bootstrap',
-    'machine name' => 'bootstrap',
+    'machine name' => KALATHEME_BOOTSTRAP_LIBRARY,
     'vendor url' => 'http://twitter.github.com',
     'download url' => 'http://twitter.github.com',
     'path' => '',
