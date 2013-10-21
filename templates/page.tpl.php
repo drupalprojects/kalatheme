@@ -170,9 +170,13 @@
       <?php endif; ?>
 
       <?php if (($no_panels || $always_show_page_title) && $title): ?>
-        <h1 class="title" id="page-title">
-          <?php print $title; ?>
-        </h1>
+        <div id="title">
+          <div class="section clearfix container">
+            <h1 class="title" id="page-title">
+              <?php print $title; ?>
+            </h1>
+          </div>
+        </div> <!-- /.section, /#title -->
       <?php endif; ?>
 
       <?php print render($page['content']); ?>
