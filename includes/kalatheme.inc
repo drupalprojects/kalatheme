@@ -144,7 +144,7 @@ function _kalatheme_status_messages($variables) {
   // @see http://twitter.github.com/bootstrap/components.html#alerts
   $status_class = array(
     'status' => 'success',
-    'error' => 'danger',
+    'error' => 'error',
     'warning' => 'info',
   );
 
