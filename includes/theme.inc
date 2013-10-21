@@ -155,7 +155,7 @@ function kalatheme_status_report($variables) {
     ),
     REQUIREMENT_ERROR => array(
       'title' => t('Error'),
-      'class' => 'alert alert-error',
+      'class' => 'alert alert-danger',
     ),
   );
   $output = '<table class="system-status-report">';
@@ -555,7 +555,7 @@ function kalatheme_update_report($variables) {
       case UPDATE_NOT_SECURE:
       case UPDATE_REVOKED:
       case UPDATE_NOT_SUPPORTED:
-        $class = 'alert alert-error';
+        $class = 'alert alert-danger';
         $icon = theme('image', array('path' => 'misc/watchdog-error.png', 'width' => 18, 'height' => 18, 'alt' => t('error'), 'title' => t('error')));
         break;
       case UPDATE_NOT_CHECKED:
