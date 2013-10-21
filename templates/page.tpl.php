@@ -84,7 +84,6 @@
 ?>
 <div id="page-wrapper"><div id="page">
 
-
    <!-- Page Header -->
   <header class='navbar navbar-default'>
     <div class='container'>
@@ -95,12 +94,13 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <?php if ($logo): ?>
-        <h1 class='brand navbar-brand'>
-          <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-            <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
-          </a>
-        </h1>
+        <?php if ($logo || $site_name): ?>
+          <h1 class='brand navbar-brand'>
+            <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
+              <?php if ($logo): ?><img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" /><?php endif; ?>
+              <?php if ($site_name): ?><span><?php print $site_name; ?></span><?php endif; ?>
+            </a>
+          </h1>
         <?php endif; ?>
       </div><!-- /.navbar-header -->
 

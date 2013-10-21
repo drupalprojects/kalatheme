@@ -8,14 +8,21 @@ stylesheets[screen][] = css/tweaks.css
 stylesheets[screen][] = css/panopoly.css
 
 features[] = logo
-;features[] = name
+features[] = name
 features[] = slogan
-;features[] = node_user_picture
-;features[] = comment_user_picture
-;features[] = comment_user_verification
 features[] = favicon
 features[] = main_menu
 features[] = secondary_menu
+
+settings[toggle_logo] = 1
+settings[toggle_name] = 0
+settings[toggle_slogan] = 0
+settings[toggle_node_user_picture] = 0
+settings[toggle_comment_user_picture] = 0
+settings[toggle_comment_user_verification] = 0
+settings[toggle_favicon] = 1
+settings[toggle_main_menu] = 1
+settings[toggle_secondary_menu] = 1
 
 settings[responsive_toggle] = 1
 settings[pane_styles_toggle] = 1
