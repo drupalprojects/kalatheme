@@ -150,20 +150,20 @@
     <div id="content" class="column<?php $no_panels ? print ' container' : ''; ?>">
       <a id="main-content"></a>
       <?php if ($tabs): ?>
-        <div id="tabs" class="container">
+        <div id="tabs" class="<?php $no_panels ? print ' ' : ' container'; ?>">
           <?php print render($tabs); ?>
         </div>
       <?php endif; ?>
 
       <?php if ($action_links): ?>
-        <div id="action-links" class="container">
+        <div id="action-links" class="<?php $no_panels ? print ' ' : ' container'; ?>">
           <?php print render($action_links); ?>
         </div>
       <?php endif; ?>
 
       <?php if ($messages): ?>
         <div id="messages">
-          <div class="section clearfix container">
+          <div class="section clearfix <?php $no_panels ? print ' ' : ' container'; ?>">
             <?php print $messages; ?>
           </div>
         </div> <!-- /.section, /#messages -->
@@ -171,7 +171,7 @@
 
       <?php if (($no_panels || $always_show_page_title) && $title): ?>
         <div id="title">
-          <div class="section clearfix container">
+          <div class="section clearfix <?php $no_panels ? print ' ' : ' container'; ?>">
             <h1 class="title" id="page-title">
               <?php print $title; ?>
             </h1>
