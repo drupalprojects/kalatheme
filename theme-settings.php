@@ -13,10 +13,10 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   // isn't the default theme.
   // Also, don't add custom form elements to a subtheme's settings page if it
   // isn't the default theme.
-  global $theme_info;
+  $default_theme = variable_get('theme_default', $GLOBALS['theme_key']);
   $theme_name_matches = array();
   preg_match('/^admin\/appearance\/settings\/([^\/]+)\/?$/', request_path(), $theme_name_matches);
-  if (isset($theme_name_matches[1]) && $theme_info->name != $theme_name_matches[1]) {
+  if (isset($theme_name_matches[1]) && $default_theme != $theme_name_matches[1]) {
     return;
   }
 
