@@ -68,8 +68,9 @@ function theme_kalatheme_kalacustomize_render_pane($vars) {
 function kalatheme_kalacustomize_pane_settings_form($style_settings) {
 
   $settings_exposed = 0;
+  $default_theme = variable_get('theme_default', NULL);
 
-  if (theme_get_setting('responsive_toggle')) {
+  if (theme_get_setting('responsive_toggle', $default_theme)) {
     $mobile_options = array(
       'hidden-xs' => 'Phone',
       'hidden-sm' => 'Tablet',
@@ -87,7 +88,7 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
     $settings_exposed++;
   }
 
-  if (theme_get_setting('pane_styles_toggle')) {
+  if (theme_get_setting('pane_styles_toggle', $default_theme)) {
     $pane_style_default_value = isset($style_settings['pane_style']) ? $style_settings['pane_style'] : '';
     $pane_options = array(
       'pull-left' => 'Float Left',
@@ -96,8 +97,8 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
       'jumbotron' => 'Jumbotron',
       'well' => 'Well',
     );
-    if (theme_get_setting('pane_classes')) {
-      $pane_options += theme_get_setting('pane_classes');
+    if (theme_get_setting('pane_classes', $default_theme)) {
+      $pane_options += theme_get_setting('pane_classes', $default_theme);
     }
 
     $form['pane_style'] = array(
