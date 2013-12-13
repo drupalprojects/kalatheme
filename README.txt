@@ -15,7 +15,7 @@ of requirements are
  * Libraries 2.1+
  * Panels 3.x
  * JQuery Update 2.x (with JQuery version set to 1.7+)
- * A bootstrap 3.0+ library (read below in Installing Bootstrap)
+ * A Bootstrap 3.0+ library (read below in Installing Bootstrap)
 
 The easiest way to ensure these dependencies are met, and for a richer experience
 in general is by downloading and starting with the Panopoly distribution.
@@ -32,7 +32,7 @@ to shop around for one.
  * To get the standard Bootstrap library, or to customize that library:
  http://getbootstrap.com/
 
- * If you are looking for a free and pre-made custom version of Bootstrap :
+ * If you are looking for a free and pre-made custom version of Bootstrap:
  http://bootswatch.com/
 
  * If you don't mind paying for a little extra:
@@ -42,22 +42,27 @@ to shop around for one.
  http://www.google.com/
 
 Kalatheme uses the Libraries API so in order to get Bootstrap working you need
-to put your Bootstrap files in sites/all/libraries/bootstrap. Custom Bootstrap
-libraries can use a non-standard files scheme so you need to make sure that
-your bootstrap directory contains something like the following folders and
-files.
+to put your Bootstrap files in sites/all/libraries/CURRENT-THEME_bootstrap. For
+example, if you have a Kalatheme subtheme enabled called mytheme, you'd put
+Bootstrap's files in sites/all/libraries/mytheme_bootstrap. If you have Kalatheme
+set as your default theme, you'd use sites/all/libraries/kalatheme_bootstrap.
+This is so you can have differently customized installations of Bootstrap for
+different themes.
 
-  /bootstrap
-  /bootstrap/css
-  /bootstrap/css/bootstrap.css
-  /bootstrap/css/bootstrap.min.css
-  /bootstrap/fonts/
-  /bootstrap/js/
-  /bootstrap/js/bootstrap.js
-  /bootstrap/js/bootstrap.min.js
+Custom Bootstrap libraries can use a non-standard files scheme so you need to make sure that
+your bootstrap directory looks like the following folders and files.
 
-IMPORTANT: The only actual requirement here is that either bootstrap.css or
-bootstrap.min.css exist and that they both have some sort of version information
+  /CURRENT-THEME_bootstrap
+  /CURRENT-THEME_bootstrap/css
+  /CURRENT-THEME_bootstrap/css/bootstrap.css
+  /CURRENT-THEME_bootstrap/css/bootstrap.min.css
+  /CURRENT-THEME_bootstrap/fonts/
+  /CURRENT-THEME_bootstrap/js/
+  /CURRENT-THEME_bootstrap/js/bootstrap.js
+  /CURRENT-THEME_bootstrap/js/bootstrap.min.js
+
+IMPORTANT: The only actual requirement here is that either css/bootstrap.css or
+css/bootstrap.min.css exist and that they both have some sort of version information
 at the top like this:
 
   /*!
@@ -69,13 +74,13 @@ at the top like this:
 
 Most themes have this by default and you can use the above as a basis. It is also worth
 noting that while you only need boostrap.(min).css for this to "work" you will likely be
-disappointed if you don't have the JS files as well.
+disappointed if you don't have the JS and font files as well.
 
-If you have more files then what is listed about we recommend putting these files
+If you have more files than what is listed above we recommend putting these files
 in a KalaSUBtheme.
 
 You also do not need to have the minified files to get this to work but they are highly
-recommended.
+recommended for better performance.
 
 CREATING A SUBTHEME
 -------------------
