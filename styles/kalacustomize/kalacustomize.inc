@@ -35,7 +35,7 @@ function theme_kalatheme_kalacustomize_render_region($vars) {
   $settings['content']['attributes'] = '';
 
   if (!empty($vars['settings']['region_style'])) {
-    $settings['content']['attributes'] .= $vars['settings']['region_style'] ? ' ' . $vars['settings']['region_style'] : '';
+    $settings['content']['attributes'] .= $vars['settings']['region_style'] ? $vars['settings']['region_style'] : '';
   }
   $settings['content']['attributes'] .= _kalatheme_get_responsive($vars['settings']);
 
@@ -71,10 +71,9 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
 
   if (theme_get_setting('responsive_toggle')) {
     $mobile_options = array(
-      'hidden-xs' => 'Phone',
-      'hidden-sm' => 'Tablet',
-      'hidden-md' => 'Desktop',
-      'hidden-lg' => 'Large Desktop',
+      'hidden-phone' => 'Phone',
+      'hidden-tablet' => 'Tablet',
+      'hidden-desktop' => 'Desktop',
     );
     $form['devices'] = array(
       '#prefix' => '<div class="well">',
@@ -132,7 +131,7 @@ function _kalatheme_get_styles($styles = array()) {
         unset($styles[$key]);
       }
     }
-   return ' ' . implode(' ', $styles);
+   return $styles ? ' ' . implode(' ', $styles) : '';
   }
 }
 
