@@ -37,7 +37,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#type' => 'checkbox',
     '#title' => t('Always show page title.'),
     '#default_value' => theme_get_setting('always_show_page_title'),
-    '#description' => t('Check here to always print page titles.'),
+    '#description' => t('Check here to always print page titles on panels pages.'),
   );
 
   // Responsive style plugin settings.
