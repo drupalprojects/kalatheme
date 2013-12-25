@@ -22,7 +22,11 @@ function theme_kalatheme_kalacustomize_render_region($vars) {
   $content = $vars['panes'];
   $settings = $vars['settings'];
 
-  // Theme.
+  $settings['attributes'] = '';
+  $settings['attributes'] .= _kalatheme_get_styles($settings['devices']);
+  $settings['attributes'] .= _kalatheme_get_styles($settings['pane_style']);
+
+    // Theme.
   if (!empty($settings['theme']) && $settings['theme']) {
     $output = theme('panels_default_style_render_region', $vars);
   }
@@ -30,17 +34,9 @@ function theme_kalatheme_kalacustomize_render_region($vars) {
     $output = implode(PHP_EOL, $content);
   }
 
-  // Grab settings and set some defaults
-  $settings['content']['element'] = 'div';
-  $settings['content']['attributes'] = '';
-
-  if (!empty($vars['settings']['region_style'])) {
-    $settings['content']['attributes'] .= $vars['settings']['region_style'] ? ' ' . $vars['settings']['region_style'] : '';
-  }
-  $settings['content']['attributes'] .= _kalatheme_get_responsive($vars['settings']);
-
+  // Wrap
   if (!empty($output)) {
-    $content_wrapper = _kalatheme_wrapper_wrap(!empty($settings['content']) ? $settings['content'] : array());
+    $content_wrapper = _kalatheme_wrapper_wrap($settings);
     $output = $content_wrapper['prefix'] . $output . $content_wrapper['suffix'];
   }
 
@@ -135,6 +131,39 @@ function _kalatheme_get_styles($styles = array()) {
     }
    return ' ' . implode(' ', $styles);
   }
+}
+
+/**
+ * Create a region wrapper from provided attributes.
+ *
+ * @return array
+ *   Array with prefix and suffix keys.
+ */
+function _kalatheme_wrapper_wrap($item = array()) {
+  $wrap['prefix'] = NULL;
+  $wrap['suffix'] = NULL;
+  $wrap['attributes'] = NULL;
+
+  if (!empty($item['attributes'])) {
+    $value = $item['attributes'];
+    $wrap['attributes'] .= " class=\"$value\"";
+  }
+
+  $wrap['prefix'] = '<div ' . $wrap['attributes'] . '>';
+  $wrap['suffix'] = '</div>';
+
+  if (!empty($item['prefix'])) {
+    $wrap['prefix'] = $item['prefix'];
+  }
+  if (!empty($item['suffix'])) {
+    $wrap['suffix'] = $item['suffix'];
+
+  }
+
+  $wrap['prefix'] = PHP_EOL . $wrap['prefix'];
+  $wrap['suffix'] = $wrap['suffix'] . PHP_EOL;
+
+  return $wrap;
 }
 
 /**
