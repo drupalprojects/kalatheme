@@ -129,7 +129,7 @@ function _kalatheme_get_styles($styles = array()) {
         unset($styles[$key]);
       }
     }
-   return ' ' . implode(' ', $styles);
+   return $styles ? ' ' . implode(' ', $styles) : '';
   }
 }
 
