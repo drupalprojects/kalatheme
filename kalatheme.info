@@ -15,8 +15,8 @@ features[] = main_menu
 features[] = secondary_menu
 
 settings[toggle_logo] = 1
-settings[toggle_name] = 0
-settings[toggle_slogan] = 0
+settings[toggle_name] = 1
+settings[toggle_slogan] = 1
 settings[toggle_node_user_picture] = 0
 settings[toggle_comment_user_picture] = 0
 settings[toggle_comment_user_verification] = 0

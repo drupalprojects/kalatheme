@@ -85,8 +85,8 @@
 <div id="page-wrapper"><div id="page">
 
    <!-- Page Header -->
-  <header class='navbar navbar-default'>
-    <div class='container'>
+  <header class="navbar navbar-default <?php if ($hide_site_name && $hide_site_slogan && !$logo && !$main_menu && !$secondary_menu) { print ' element-invisible'; } ?>">
+    <div class="container">
       <div class="navbar-header">
         <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
           <span class="sr-only">Toggle navigation</span>
@@ -94,52 +94,80 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <?php if ($logo || $site_name): ?>
-          <h1 class='brand navbar-brand'>
+        <?php if ($logo): ?>
+          <div class='brand navbar-brand'>
             <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
               <?php if ($logo): ?><img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" /><?php endif; ?>
-              <?php if ($site_name): ?><span><?php print $site_name; ?></span><?php endif; ?>
             </a>
-          </h1>
+          </div>
+        <?php endif; ?>
+
+        <?php if ($site_name || $site_slogan): ?>
+          <div id="site-name-slogan" class="brand navbar-brand <?php if ($hide_site_name && $hide_site_slogan) { print ' element-invisible'; } ?>">
+
+            <?php if ($site_name): ?>
+              <h1 id="site-name"<?php if ($hide_site_name) { print ' class="element-invisible"'; } ?>>
+                <strong>
+                  <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"><span><?php print $site_name; ?></span></a>
+                </strong>
+              </h1>
+            <?php endif; ?>
+
+            <?php if ($site_slogan): ?>
+              <div id="site-slogan" <?php if ($hide_site_slogan) { print 'class="element-invisible"'; } ?>>
+                <?php print $site_slogan; ?>
+              </div>
+            <?php endif; ?>
+
+          </div> <!-- /#name-and-slogan -->
         <?php endif; ?>
       </div><!-- /.navbar-header -->
 
-      <nav class='collapse navbar-collapse' role="navigation">
-        <?php if ($main_menu_expanded): ?>
-            <?php print theme('links__system_main_menu', array(
-              'links' => $main_menu_expanded,
-              'attributes' => array(
-                'class' => array(
-                  'nav',
-                  'navbar-nav',
-                  'links',
-                  'clearfix',
-                  'primary-links'
-                ),
-              ),
-              'heading' => array(
-                'text' => t('Main menu'),
-                'level' => 'h2',
-                'class' => array('element-invisible'),
-              ),
-            )); ?>
-        <?php endif; ?>
+      <nav class="collapse navbar-collapse <?php if (!$main_menu && !$secondary_menu) { print 'element-invisible'; } ?>" role="navigation">
+        <?php
+          $pri_attributes = array();
+          $pri_attributes = array(
+            'class' => array(
+              'nav',
+              'navbar-nav',
+              'links',
+              'clearfix',
+            ),
+          );
+          if (!$main_menu) {
+            $pri_attributes['class'][] = 'element-invisible';
+          }
+        ?>
+        <?php print theme('links__system_main_menu', array(
+          'links' => $main_menu_expanded,
+          'attributes' => $pri_attributes,
+          'heading' => array(
+            'text' => t('Main menu'),
+            'level' => 'h2',
+            'class' => array('element-invisible'),
+          ),
+        )); ?>
 
         <?php
-        if ($secondary_menu): ?>
-            <?php print theme('links__system_secondary_menu', array(
-              'links' => $secondary_menu,
-              'attributes' => array(
-                'id' => 'secondary-menu-links',
-                'class' => array('nav', 'navbar-nav', 'secondary-links'),
-              ),
-              'heading' => array(
-                'text' => t('Secondary menu'),
-                'level' => 'h2',
-                'class' => array('element-invisible'),
-              ),
-            )); ?>
-        <?php endif;  ?>
+          $sec_attributes = array();
+          $sec_attributes = array(
+            'id' => 'secondary-menu-links',
+            'class' => array('nav', 'navbar-nav', 'secondary-links'),
+          );
+          if (!$secondary_menu) {
+            $sec_attributes['class'][] = 'element-invisible';
+          }
+        ?>
+
+        <?php print theme('links__system_secondary_menu', array(
+          'links' => $secondary_menu,
+          'attributes' => $sec_attributes,
+          'heading' => array(
+            'text' => t('Secondary menu'),
+            'level' => 'h2',
+            'class' => array('element-invisible'),
+          ),
+        )); ?>
       </nav>
 
     </div>
@@ -179,16 +207,5 @@
     </div> <!-- /.section, /#content -->
 
   </div></div> <!-- /#main, /#main-wrapper -->
-
-  <!-- Page Footer -->
-  <footer class='section' id='footerlower' role='contentinfo'>
-    <div class='container'>
-      <div class='row'>
-        <?php if ($site_slogan): ?>
-            <?php print $site_slogan; ?>
-        <?php endif; ?>
-      </div>
-    </div>
-  </footer>
 
 </div></div> <!-- /#page, /#page-wrapper -->
