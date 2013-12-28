@@ -11,44 +11,31 @@
 ?>
 
 <div class="panel-display hewston clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-
-  <section class='section'>
-    <div class='container'>
-      <div class="hewston-container hewston-top clearfix row">
-        <div class="hewston-top-region hewston-slider panel-panel col-md-9">
-          <div class="hewston-top-region-inner hewston-slider-inner panel-panel-inner">
-            <?php print $content['slider']; ?>
-          </div>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 hewston-slider-area">
+          <?php print $content['slider']; ?>
         </div>
-        <div class="hewston-top-region hewston-slider-gutter panel-panel col-md-3">
-          <div class="hewston-top-region-inner hewston-slider-gutter-inner panel-panel-inner">
-            <?php print $content['slidergutter']; ?>
-          </div>
+        <div class="col-md-4 hewston-slider-gutter-area">
+          <?php print $content['slidergutter']; ?>
         </div>
       </div>
     </div>
   </section>
-
-  <section class='section'>
-    <div class='container'>
-      <div class="hewston-container hewston-middle clearfix row">
-        <div class="hewston-middle-region hewston-column1 panel-panel col-md-4">
-          <div class="hewston-middle-region-inner hewston-column1-inner panel-panel-inner">
-            <?php print $content['column1']; ?>
-          </div>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 hewston-middle-region-1">
+          <?php print $content['column1']; ?>
         </div>
-        <div class="hewston-middle-region hewston-column2 panel-panel col-md-4">
-          <div class="hewston-middle-region-inner hewston-column2-inner panel-panel-inner">
-            <?php print $content['column2']; ?>
-          </div>
+        <div class="col-md-4 hewston-middle-region-2">
+          <?php print $content['column2']; ?>
         </div>
-        <div class="hewston-middle-region hewston-column3 panel-panel col-md-4">
-          <div class="hewston-middle-region-inner hewston-column3-inner panel-panel-inner">
-            <?php print $content['column3']; ?>
-          </div>
+        <div class="col-md-4 hewston-middle-region-3">
+          <?php print $content['column3']; ?>
         </div>
       </div>
     </div>
   </section>
-
 </div><!-- /.hewston -->

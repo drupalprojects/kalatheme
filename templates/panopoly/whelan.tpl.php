@@ -11,27 +11,19 @@
 ?>
 
 <div class="panel-display whelan clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-
-  <section class='section'>
-    <div class='container'>
-      <div class="whelan-container whelan-column-content clearfix row">
-        <div class="whelan-column-content-region whelan-column1 panel-panel col-md-3">
-          <div class="whelan-column-content-region-inner whelan-column1-inner panel-panel-inner">
-            <?php print $content['column1']; ?>
-          </div>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 whelan-column-content-region-1">
+          <?php print $content['column1']; ?>
         </div>
-        <div class="whelan-column-content-region whelan-content panel-panel col-md-6">
-          <div class="whelan-column-content-region-inner whelan-content-inner panel-panel-inner">
-            <?php print $content['contentmain']; ?>
-          </div>
+        <div class="col-md-6 whelan-column-content-region-2">
+          <?php print $content['contentmain']; ?>
         </div>
-        <div class="whelan-column-content-region whelan-column2 panel-panel col-md-3">
-          <div class="whelan-column-content-region-inner whelan-column2-inner panel-panel-inner">
-            <?php print $content['column2']; ?>
-          </div>
+        <div class="col-md-3 whelan-column-content-region-3">
+          <?php print $content['column2']; ?>
         </div>
       </div>
     </div>
   </section>
-
 </div><!-- /.whelan -->

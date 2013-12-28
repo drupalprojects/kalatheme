@@ -11,47 +11,37 @@
 ?>
 
 <div class="panel-display taylor clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-
-  <section class='section alt' id='promo'>
-    <div class='container'>
-      <div class="taylor-container taylor-header clearfix panel-panel ">
-        <div class="taylor-container-inner taylor-header-inner panel-panel-inner">
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 taylor-header-area">
           <?php print $content['header']; ?>
         </div>
       </div>
     </div>
   </section>
-
-  <section class='section'>
-    <div class='container'>
-      <div class="taylor-container taylor-column-content clearfix row">
-        <div class="taylor-column-content-region taylor-half taylor-column panel-panel col-md-6">
-          <div class="taylor-column-content-region-inner taylor-half-inner taylor-column-inner panel-panel-inner">
-            <?php print $content['half']; ?>
-          </div>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 taylor-half-area">
+          <?php print $content['half']; ?>
         </div>
-        <div class="taylor-column-content-region taylor-quarter1 taylor-column panel-panel col-md-3">
-          <div class="taylor-column-content-region-inner taylor-quarter1-inner taylor-column-inner panel-panel-inner">
-            <?php print $content['quarter1']; ?>
-          </div>
+        <div class="col-md-3 taylor-quarter-1-area">
+          <?php print $content['quarter1']; ?>
         </div>
-        <div class="taylor-column-content-region taylor-quarter2 taylor-column panel-panel col-md-3">
-          <div class="taylor-column-content-region-inner taylor-quarter2-inner taylor-column-inner panel-panel-inner">
-            <?php print $content['quarter2']; ?>
-          </div>
+        <div class="col-md-3 taylor-quarter-2-area">
+          <?php print $content['quarter2']; ?>
         </div>
       </div>
     </div>
   </section>
-
-  <footer class='section' id='footer' role='contentinfo'>
-    <div class='container'>
-      <div class="taylor-container taylor-footer clearfix panel-panel">
-        <div class="taylor-container-inner taylor-footer-inner panel-panel-inner">
+  <footer class="section" id="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 taylor-footer-area">
           <?php print $content['footer']; ?>
         </div>
       </div>
     </div>
   </footer>
-
 </div><!-- /.taylor -->

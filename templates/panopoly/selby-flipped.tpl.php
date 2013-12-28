@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Template for Panopoly Selby Flipped.
+ * Template for Panopoly selby-flipped-flipped Flipped.
  *
  * Variables:
  * - $css_id: An optional CSS id to use for the layout.
@@ -10,49 +10,38 @@
  */
 ?>
 
-<div class="panel-display selby-flipped clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-
-  <section class='section'>
-    <div class='container'>
-      <div class="selby-flipped-content-container selby-flipped-container">
-        <div class="selby-flipped-content-container-inner selby-flipped-container-inner">
-
-          <div class="selby-flipped-column-content-region selby-flipped-content-header clearfix panel-panel col-md-8">
-            <div class="selby-flipped-column-content-region-inner selby-flipped-content-header-inner panel-panel-inner">
+<div class="panel-display selby-flipped-flipped-flipped clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 selby-flipped-column-content-region-area">
+          <div class="row">
+            <div class="col-md-12 selby-flipped-column-content-region-area">
               <?php print $content['contentheader']; ?>
             </div>
           </div>
-
-          <div class="selby-flipped-content-container-column-container clearfix row">
-            <div class="selby-flipped-content-container-column-container-inner">
-              <div class="selby-flipped-column-content-region selby-flipped-content-column1 selby-flipped-column panel-panel col-md-4">
-                <div class="selby-flipped-column-content-region-inner selby-flipped-content-column1-inner selby-flipped-column-inner panel-panel-inner">
-                  <?php print $content['contentcolumn1']; ?>
-                </div>
-              </div>
-              <div class="selby-flipped-column-content-region selby-flipped-content-column2 selby-flipped-column panel-panel col-md-4">
-                <div class="selby-flipped-column-content-region-inner selby-flipped-content-column2-inner selby-flipped-column-inner panel-panel-inner">
-                  <?php print $content['contentcolumn2']; ?>
-                </div>
-              </div>
+          <div class="row">
+            <div class="col-md-6 selby-flipped-column-content-region-1">
+              <?php print $content['contentcolumn1']; ?>
             </div>
-          </div><!-- /.selby-flipped-content-container-column-container -->
-
-          <div class="selby-flipped-column-content-region selby-flipped-content-footer clearfix panel-panel col-md-8">
-            <div class="selby-flipped-column-content-region-inner selby-flipped-content-footer-inner panel-panel-inner">
+            <div class="col-md-6 selby-flipped-column-content-region-2">
+              <?php print $content['contentcolumn2']; ?>
+            </div>
+          </div><!-- /.selby-flipped-content-container row-->
+          <div class="row">
+            <div class="col-md-12 selby-flipped-content-footer-area">
               <?php print $content['contentfooter']; ?>
             </div>
           </div>
-
-        </div>
-      </div><!-- /.selby-flipped-content-container -->
-
-      <div class="selby-flipped-sidebar selby-flipped-column-content-region selby-flipped-column selby-flipped-container panel-panel col-md-4">
-        <div class="selby-flipped-sidebar-inner selby-flipped-column-content-region-inner selby-flipped-column-inner selby-flipped-container-inner panel-panel-inner">
-          <?php print $content['sidebar']; ?>
-        </div>
-      </div>
+        </div><!-- /.selby-flipped-content-container -->
+        <div class="col-md-4 selby-flipped-sidebar-main-area">
+          <div class="row">
+            <div class="col-md-12 selby-flipped-sidebar-area">
+              <?php print $content['sidebar']; ?>
+            </div>
+          </div>
+        </div> <!-- /.selby-flipped-sidebar col-md-4-->
+      </div><!-- /.selby-flipped-content-container row-->
     </div>
   </section>
-
-</div><!-- /.selby-flipped -->
+</div><!-- /.selby-flipped-flipped-flipped -->

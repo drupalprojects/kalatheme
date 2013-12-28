@@ -11,32 +11,25 @@
 ?>
 
 <div class="panel-display brenham clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-
-  <section class='section alt' id='promo'>
-    <div class='container'>
-      <div class="brenham-container brenham-header clearfix panel-panel">
-        <div class="brenham-container-inner brenham-header-inner panel-panel-inner">
+  <section class="section alt" id="promo">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 brenham-promo">
           <?php print $content['header']; ?>
         </div>
       </div>
     </div>
   </section>
-
-  <section class='section'>
-    <div class='container'>
-      <div class="brenham-container brenham-column-content clearfix row">
-        <div class="brenham-column-content-region brenham-sidebar panel-panel col-md-4">
-          <div class="brenham-column-content-region-inner brenham-sidebar-inner panel-panel-inner">
-            <?php print $content['sidebar']; ?>
-          </div>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 brenham-main-side">
+          <?php print $content['sidebar']; ?>
         </div>
-        <div class="brenham-column-content-region brenham-content panel-panel col-md-8">
-          <div class="brenham-column-content-region-inner brenham-content-inner panel-panel-inner">
-            <?php print $content['contentmain']; ?>
-          </div>
+        <div class="col-md-8 brenham-main-content">
+          <?php print $content['contentmain']; ?>
         </div>
       </div>
     </div>
   </section>
-
 </div><!-- /.brenham -->

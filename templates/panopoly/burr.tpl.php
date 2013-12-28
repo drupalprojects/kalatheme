@@ -11,22 +11,16 @@
 ?>
 
 <div class="panel-display burr clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-
-  <section class='section'>
-    <div class='container'>
-      <div class="burr-container burr-content-container clearfix row">
-        <div class="burr-sidebar burr-content-region panel-panel col-md-5">
-          <div class="burr-sidebar-inner burr-content-region-inner panel-panel-inner">
-            <?php print $content['sidebar']; ?>
-          </div>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 burr-sidebar-region">
+          <?php print $content['sidebar']; ?>
         </div>
-        <div class="burr-content burr-content-region panel-panel col-md-7">
-          <div class="burr-content-inner burr-content-region-inner panel-panel-inner">
-            <?php print $content['contentmain']; ?>
-          </div>
+        <div class="col-md-8 burr-main-content">
+          <?php print $content['contentmain']; ?>
         </div>
       </div>
     </div>
   </section>
-
 </div><!-- /.burr -->

@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Template for Panopoly Moscone Flipped.
+ * Template for Panopoly moscone-flipped Flipped.
  *
  * Variables:
  * - $css_id: An optional CSS id to use for the layout.
@@ -10,43 +10,35 @@
  */
 ?>
 
-<div class="panel-display moscone-flipped clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-
-  <section class='section alt' id='promo'>
-    <div class='container'>
-      <div class="moscone-container moscone-header clearfix panel-panel">
-        <div class="moscone-container-inner moscone-header-inner panel-panel-inner">
+<div class="panel-display moscone-flipped-flipped clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 moscone-flipped-main-container">
           <?php print $content['header']; ?>
         </div>
       </div>
     </div>
   </section>
-
-  <section class='section'>
-    <div class='container'>
-      <div class="moscone-flipped-container moscone-flipped-column-content clearfix row">
-        <div class="moscone-flipped-column-content-region moscone-flipped-content panel-panel col-md-9">
-          <div class="moscone-flipped-column-content-region-inner moscone-flipped-content-inner panel-panel-inner">
-            <?php print $content['contentmain']; ?>
-          </div>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 moscone-flipped-main-content">
+          <?php print $content['contentmain']; ?>
         </div>
-        <div class="moscone-flipped-column-content-region moscone-flipped-sidebar panel-panel col-md-3">
-          <div class="moscone-flipped-column-content-region-inner moscone-flipped-sidebar-inner panel-panel-inner">
-            <?php print $content['sidebar']; ?>
-          </div>
+        <div class="col-md-4 moscone-flipped-sidebar-area">
+          <?php print $content['sidebar']; ?>
         </div>
       </div>
     </div>
   </section>
-
-  <footer class='section' id='footer' role='contentinfo'>
-    <div class='container'>
-      <div class="moscone-container moscone-footer clearfix panel-panel">
-        <div class="moscone-container-inner moscone-footer-inner panel-panel-inner">
+  <footer class="section" id="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 moscone-flipped-footer-area">
           <?php print $content['footer']; ?>
         </div>
       </div>
     </div>
   </footer>
-
-</div><!-- /.moscone-flipped -->
+</div><!-- /.moscone-flipped-flipped -->
