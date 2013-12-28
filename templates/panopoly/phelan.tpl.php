@@ -11,22 +11,16 @@
 ?>
 
 <div class="panel-display phelan clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-
-  <section class='section'>
-    <div class='container'>
-      <div class="phelan-container phelan-column-content clearfix row">
-        <div class="phelan-column-content-region phelan-column1 phelan-column panel-panel col-md-6">
-          <div class="phelan-column-content-region-inner phelan-column1-inner phelan-column-inner panel-panel-inner">
-            <?php print $content['column1']; ?>
-          </div>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 phelan-column-content-region-1">
+          <?php print $content['column1']; ?>
         </div>
-        <div class="phelan-column-content-region phelan-column2 phelan-column panel-panel col-md-6">
-          <div class="phelan-column-content-region-inner phelan-column2-inner phelan-column-inner panel-panel-inner">
-            <?php print $content['column2']; ?>
-          </div>
+        <div class="col-md-6 phelan-column-content-region-2">
+          <?php print $content['column2']; ?>
         </div>
       </div>
     </div>
   </section>
-
 </div><!-- /.phelan -->

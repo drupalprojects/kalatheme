@@ -11,34 +11,30 @@
 ?>
 
 <div class="panel-display bartlett-flipped clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-  <section class='section'>
-    <div class='container'>
-      <div class="bartlett-flipped-content-container bartlett-flipped-container">
-        <div class="bartlett-flipped-content-container-inner bartlett-flipped-container-inner">
-          <div class="bartlett-flipped-column-content-region bartlett-flipped-content-header clearfix panel-panel col-md-8">
-            <div class="bartlett-flipped-column-content-region-inner bartlett-flipped-content-header-inner panel-panel-inner">
-              <?php print $content['contentheader']; ?>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 bartlett-flipped-everything">
+          <div class="row">
+            <div class="col-md-8 bartlett-flipped-main">
+              <div class="row">
+                <div class="col-md-12 bartlett-flipped-main-header">
+                  <?php print $content['contentheader']; ?>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 bartlett-flipped-main-col-1">
+                  <?php print $content['contentcolumn1']; ?>
+                </div>
+                <div class="col-md-6 bartlett-flipped-main-col-1">
+                  <?php print $content['contentcolumn2']; ?>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 bartlett-flipped-side">
+              <?php print $content['sidebar']; ?>
             </div>
           </div>
-
-          <div class="bartlett-flipped-content-container-column-container clearfix row">
-            <div class="bartlett-flipped-column-content-region bartlett-flipped-content-column1 bartlett-flipped-column panel-panel col-md-4">
-              <div class="bartlett-flipped-column-content-region-inner bartlett-flipped-content-column1-inner bartlett-flipped-column-inner panel-panel-inner">
-                <?php print $content['contentcolumn1']; ?>
-              </div>
-            </div>
-            <div class="bartlett-flipped-column-content-region bartlett-flipped-content-column2 bartlett-flipped-column panel-panel col-md-4">
-              <div class="bartlett-flipped-column-content-region-inner bartlett-flipped-content-column2-inner bartlett-flipped-column-inner panel-panel-inner">
-                <?php print $content['contentcolumn2']; ?>
-              </div>
-            </div>
-          </div><!-- /.bartlett-flipped-content-container-column-container -->
-        </div>
-      </div><!-- /.bartlett-flipped-content-container -->
-
-      <div class="bartlett-flipped-column-content-region bartlett-flipped-column bartlett-flipped-container bartlett-flipped-sidebar panel-panel">
-        <div class="bartlett-flipped-sidebar-inner bartlett-flipped-column-content-region-inner bartlett-flipped-column-inner bartlett-flipped-container-inner panel-panel-inner col-md-4">
-          <?php print $content['sidebar']; ?>
         </div>
       </div>
     </div><!-- /.container -->

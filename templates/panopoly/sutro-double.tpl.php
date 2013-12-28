@@ -11,61 +11,47 @@
 ?>
 
 <div class="panel-display sutro-double clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-
-  <section class='section alt' id='promo'>
-    <div class='container'>
-      <div class="sutro-double-container sutro-double-header clearfix panel-panel ">
-        <div class="sutro-double-container-inner sutro-double-header-inner panel-panel-inner">
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 sutro-double-header-area">
           <?php print $content['header']; ?>
         </div>
       </div>
     </div>
   </section>
-
-  <section class='section'>
-    <div class='container'>
-      <div class="sutro-double-container sutro-double-column-content sutro-double-first-column-content clearfix row">
-        <div class="sutro-double-column-content-region sutro-double-column1 sutro-double-column panel-panel col-md-6">
-          <div class="sutro-double-column-content-region-inner sutro-double-column1-inner sutro-double-column-inner panel-panel-inner">
-            <?php print $content['column1']; ?>
-          </div>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 sutro-double-column-content-region-1">
+          <?php print $content['column1']; ?>
         </div>
-        <div class="sutro-double-column-content-region sutro-double-column2 sutro-double-column panel-panel col-md-6">
-          <div class="sutro-double-column-content-region-inner sutro-double-column2-inner sutro-double-column-inner panel-panel-inner">
-            <?php print $content['column2']; ?>
-          </div>
+        <div class="col-md-6 sutro-double-column-content-region-2">
+          <?php print $content['column2']; ?>
         </div>
       </div>
-
-      <div class="sutro-double-container sutro-double-middle clearfix panel-panel col-md-12">
-        <div class="sutro-double-container-inner sutro-double-middle-inner panel-panel-inner">
+      <div class="row">
+        <div class="col-md-12 sutro-double-middle-area">
           <?php print $content['middle']; ?>
         </div>
       </div>
-
-      <div class="sutro-double-container sutro-double-column-content sutro-double-second-column-content clearfix row">
-        <div class="sutro-double-column-content-region sutro-double-column1 sutro-double-column panel-panel col-md-6">
-          <div class="sutro-double-column-content-region-inner sutro-double-column1-inner sutro-double-column-inner panel-panel-inner">
-            <?php print $content['secondcolumn1']; ?>
-          </div>
+      <div class="row">
+        <div class="col-md-6 sutro-double-column-content-region-3">
+          <?php print $content['secondcolumn1']; ?>
         </div>
-        <div class="sutro-double-column-content-region sutro-double-column2 sutro-double-column panel-panel col-md-6">
-          <div class="sutro-double-column-content-region-inner sutro-double-column2-inner sutro-double-column-inner panel-panel-inner">
-            <?php print $content['secondcolumn2']; ?>
-          </div>
+        <div class="col-md-6 sutro-double-column-content-region-4">
+          <?php print $content['secondcolumn2']; ?>
         </div>
       </div>
     </div>
   </section>
-
-  <footer class='section' id='footer' role='contentinfo'>
-    <div class='container'>
-      <div class="sutro-double-container sutro-double-footer clearfix panel-panel">
-        <div class="sutro-double-container-inner sutro-double-footer-inner panel-panel-inner">
+  <footer class="section" id="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 sutro-double-footer-area">
           <?php print $content['footer']; ?>
         </div>
       </div>
     </div>
   </footer>
-
 </div><!-- /.sutro-double -->

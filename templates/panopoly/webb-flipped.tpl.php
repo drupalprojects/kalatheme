@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Template for Panopoly Webb.
+ * Template for Panopoly webb-flipped.
  *
  * Variables:
  * - $css_id: An optional CSS id to use for the layout.
@@ -10,55 +10,38 @@
  */
 ?>
 
-<div class="panel-display webb-flipped clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-
-  <section class='section alt' id='promo'>
-    <div class='container'>
-      <div class="webb-flipped-container webb-flipped-header clearfix panel-panel ">
-        <div class="webb-flipped-container-inner webb-flipped-header-inner panel-panel-inner">
+<div class="panel-display webb-flipped-flipped clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 webb-flipped-header-area">
           <?php print $content['header']; ?>
         </div>
       </div>
     </div>
   </section>
-
-  <section class='section'>
-    <div class='container'>
-      <div class="webb-flipped-container webb-flipped-column-content clearfix">
-
-        <div class="webb-flipped-content-container">
-          <div class="webb-flipped-content-container-inner">
-
-            <div class="webb-flipped-column-content-region webb-flipped-content-header panel-panel clearfix">
-              <div class="webb-flipped-column-content-region-inner webb-flipped-content-header-inner panel-panel-inner col-md-8">
-                <?php print $content['contentheader']; ?>
-              </div>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 webb-flipped-column-content-region-area">
+          <div class="row">
+            <div class="col-md-12 webb-flipped-column-header-region-area">
+              <?php print $content['contentheader']; ?>
             </div>
-
-            <div class="webb-flipped-content-container-column-container clearfix row">
-              <div class="webb-flipped-column-content-region webb-flipped-content-column1 webb-flipped-column panel-panel col-md-4">
-                <div class="webb-flipped-column-content-region-inner webb-flipped-content-column1-inner webb-flipped-column-inner panel-panel-inner">
-                  <?php print $content['contentcolumn1']; ?>
-                </div>
-              </div>
-              <div class="webb-flipped-column-content-region webb-flipped-content-column2 webb-flipped-column panel-panel col-md-4">
-                <div class="webb-flipped-column-content-region-inner webb-flipped-content-column2-inner webb-flipped-column-inner panel-panel-inner">
-                  <?php print $content['contentcolumn2']; ?>
-                </div>
-              </div>
-            </div><!-- /.webb-flipped-content-container-column-container -->
-
           </div>
-        </div><!-- /.webb-flipped-content-container -->
-
-        <div class="webb-flipped-sidebar webb-flipped-column-content-region webb-flipped-column panel-panel col-md-4">
-          <div class="webb-flipped-sidebar-inner webb-flipped-column-content-region-inner webb-flipped-column-inner panel-panel-inner">
-            <?php print $content['sidebar']; ?>
+          <div class="row">
+            <div class="col-md-6 webb-flipped-column-content-region-1">
+              <?php print $content['contentcolumn1']; ?>
+            </div>
+            <div class="col-md-6 webb-flipped-column-content-region-2">
+              <?php print $content['contentcolumn2']; ?>
+            </div>
           </div>
         </div>
-
-      </div><!-- /.webb-flipped-column-content -->
-    </div>
+        <div class="col-md-4 webb-flipped-sidebar-area">
+          <?php print $content['sidebar']; ?>
+        </div>
+      </div>
+    </div><!-- /.webb-flipped-column-content -->
   </section>
-
-</div><!-- /.webb-flipped -->
+</div><!-- /.webb-flipped-flipped -->

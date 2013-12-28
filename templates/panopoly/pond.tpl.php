@@ -11,69 +11,52 @@
 ?>
 
 <div class="panel-display pond clearfix <?php !empty($class) ? print $class : ''; ?>" <?php !empty($css_id) ? print "id=\"$css_id\"" : ''; ?>>
-
-  <section class='section alt' id='promo'>
-    <div class='container'>
-      <div class="pond-container pond-header clearfix panel-panel ">
-        <div class="pond-container-inner pond-header-inner panel-panel-inner">
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 pond-header-area">
           <?php print $content['header']; ?>
         </div>
       </div>
     </div>
   </section>
-
-  <section class='section'>
-    <div class='container'>
-      <div class="pond-container pond-column-content pond-column-content-row1 clearfix row">
-        <div class="pond-column-content-region pond-column pond-column1 panel-panel col-md-4">
-          <div class="pond-column-content-region-inner pond-column-inner pond-column1-inner panel-panel-inner">
-            <?php print $content['column1']; ?>
-          </div>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 pond-column-content-region-1">
+          <?php print $content['column1']; ?>
         </div>
-        <div class="pond-column-content-region pond-column pond-column2 panel-panel col-md-4">
-          <div class="pond-column-content-region-inner pond-column-inner pond-column2-inner panel-panel-inner">
-            <?php print $content['column2']; ?>
-          </div>
+        <div class="col-md-4 pond-column-content-region-2">
+          <?php print $content['column2']; ?>
         </div>
-        <div class="pond-column-content-region pond-column pond-column3 panel-panel col-md-4">
-          <div class="pond-column-content-region-inner pond-column-inner pond-column3-inner panel-panel-inner">
-            <?php print $content['column3']; ?>
-          </div>
+        <div class="col-md-4 pond-column-content-region-3">
+          <?php print $content['column3']; ?>
         </div>
       </div>
     </div>
   </section>
-
-  <section class='section'>
-    <div class='container'>
-      <div class="pond-container pond-secondary-column-content pond-column-content-row2 clearfix row">
-        <div class="pond-secondary-column-content-region pond-column pond-secondary-column1 panel-panel col-md-4">
-          <div class="pond-secondary-column-content-region-inner pond-column-inner pond-secondary-column1-inner panel-panel-inner">
-            <?php print $content['secondarycolumn1']; ?>
-          </div>
+  <section class="section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 pond-secondary-column-content-region-1">
+          <?php print $content['secondarycolumn1']; ?>
         </div>
-        <div class="pond-secondary-column-content-region pond-column pond-secondary-column2 panel-panel col-md-4">
-          <div class="pond-secondary-column-content-region-inner pond-column-inner pond-secondary-column2-inner panel-panel-inner">
-            <?php print $content['secondarycolumn2']; ?>
-          </div>
+        <div class="col-md-4 pond-secondary-column-content-region-2">
+          <?php print $content['secondarycolumn2']; ?>
         </div>
-        <div class="pond-secondary-column-content-region pond-column pond-secondary-column3 panel-panel col-md-4">
-          <div class="pond-secondary-column-content-region-inner pond-column-inner pond-secondary-column3-inner panel-panel-inner">
-            <?php print $content['secondarycolumn3']; ?>
-          </div>
+        <div class="col-md-4 pond-secondary-column-content-region-3">
+          <?php print $content['secondarycolumn3']; ?>
         </div>
       </div>
     </div>
   </section>
-
-  <footer class='section' id='footer' role='contentinfo'>
-    <div class='container'>
-      <div class="pond-container pond-footer clearfix panel-panel">
-        <div class="pond-container-inner pond-footer-inner panel-panel-inner">
+  <footer class="section" id="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 pond-footer-area">
           <?php print $content['footer']; ?>
         </div>
       </div>
     </div>
   </footer>
-
 </div><!-- /.pond -->
