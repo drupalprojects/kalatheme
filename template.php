@@ -11,6 +11,11 @@ define('KALATHEME_BOOTSTRAP_LIBRARY', variable_get('theme_default', 'kalatheme')
 $kalatheme_path = drupal_get_path('theme', 'kalatheme');
 require_once $kalatheme_path . '/includes/theme.inc';
 require_once $kalatheme_path . '/includes/libraries.inc';
+// Only load if ajax request is being made from setup page
+// Is there a better way to do this sort of sloppy shit?
+if ($_GET['q'] == 'system/ajax' && $_REQUEST['form_id'] == 'kalatheme_setup_form') {
+  require_once $kalatheme_path . '/includes/setup.inc';
+}
 
 /**
  * Implements hook_theme().

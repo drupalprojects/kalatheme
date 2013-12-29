@@ -9,7 +9,6 @@
  * Form for kalatheme setup
  */
 function kalatheme_setup_form($form, &$form_state) {
-
   $form['help_text'] = array(
     '#prefix' => '<p>',
     '#markup' => t('Here you can easily setup a Kalatheme subtheme with the default or a custom Bootstrap library. For more information please consult our <a href="@setup_url">Start Up Guide</a> or just give it a whirl! The following file extensions are supported: %extensions.', array(
@@ -18,19 +17,61 @@ function kalatheme_setup_form($form, &$form_state) {
     )),
     '#suffix' => '</p>',
   );
-
   $form['subtheme_name'] = array(
     '#type' => 'textfield',
     '#title' => t('Name your theme'),
     '#description' => t('Use only lower case letters and underscores. For example: mytheme, mega_awesome_theme'),
+    '#required' => TRUE,
   );
-
+  $form['bootstrap_library'] = array(
+    '#type' => 'select',
+    '#title' => t('Select a Bootstrap library.'),
+    '#description' => t('Select a Bootstrap library to use with your subtheme. Visit <a href="@bootswatch">Bootswatch</a> for more info. Select "custom" to upload a third party Bootstrap library such as one from <a href="@wrapbootstrap">Wrapbootstrap</a> or built using Bootstrap\'s <a href="@bootcustom">Customization Utility</a>.', array(
+      '@bootswatch' => 'http://bootswatch.com/',
+      '@wrapbootstrap' => 'http://wrapbootstrap.com/',
+      '@bootcustom' => 'http://getbootstrap.com/customize/',
+    )),
+    '#options' => array(
+      'default' => t('Default'),
+      'amelia' => t('Amelia'),
+      'cerulean' => t('Cerulean'),
+      'cosmo' => t('Cosmo'),
+      'cyborg' => t('Cyborg'),
+      'flatly' => t('Flatly'),
+      'journal' => t('Journal'),
+      'readable' => t('Readable'),
+      'simplex' => t('Simplex'),
+      'slate' => t('Slate'),
+      'spacelab' => t('Spacelab'),
+      'united' => t('United'),
+      'yeti' => t('Yeti'),
+      'custom' => t('Custom'),
+    ),
+    '#ajax' => array(
+      'callback' => '_kalatheme_bootstrap_preview',
+      'wrapper' => 'kalapreview-image-load-image',
+      'method' => 'replace',
+      'effect' => 'fade',
+      'progress' => array('type' => 'none'),
+    ),
+    // '#required' => TRUE, don't need this because you have to select something!
+  );
+  $form['bootstrap_preview'] = array(
+    '#prefix' => "<div id='kalapreview-image-load-image'>",
+    '#suffix' => "</div>",
+  );
   $form['bootstrap_upload'] = array(
     '#type' => 'file',
-    '#title' => t('Bootstrap library'),
+    '#title' => t('Custom Bootstrap library'),
     '#description' => t('Upload any valid bootstrap library here to complete your install. For example: %filename from your local computer', array('%filename' => 'name.tar.gz')),
+    // This #states rule says that the "file upload" field should only
+    // be shown if the "bootstrap_library" form element is set to "custom".
+    '#states' => array(
+      'visible' => array(
+        ':input[name="bootstrap_library"]' => array('value' => 'custom'),
+      ),
+    )
   );
-
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['submit'] = array(
     '#type' => 'submit',
@@ -51,9 +92,11 @@ function kalatheme_setup_form_validate($form, &$form_state) {
     form_set_error('subtheme_name', t('Please enter a valid machine name'));
   }
   // Validate file exists
+  /*
   if (empty($_FILES['files']['name']['bootstrap_upload'])) {
     form_set_error('bootstrap_upload', t('You must either provide a URL or upload an archive file to install.'));
   }
+  */
 }
 
 /**
@@ -70,6 +113,7 @@ function kalatheme_setup_form_validate($form, &$form_state) {
  * @see kalatheme_setup_form_validate()
  */
 function kalatheme_setup_form_submit($form, &$form_state) {
+  /*
   if ($_FILES['files']['name']['bootstrap_upload']) {
     $validators = array('file_validate_extensions' => array(archiver_get_extensions()));
     $field = 'bootstrap_upload';
@@ -95,6 +139,7 @@ function kalatheme_setup_form_submit($form, &$form_state) {
     form_set_error($field, t('Provided archive contains no files.'));
     return;
   }
+  */
 }
 
 /**
@@ -167,4 +212,25 @@ function _kalatheme_unique_identifier() {
     $id = substr(hash('sha256', drupal_get_hash_salt()), 0, 8);
   }
   return $id;
+}
+
+/**
+ * Ajax callback that returns HTML to the setup form so that the user
+ * can see a preview of the bootstrap library they are selecting.
+ *
+ * @param  [type] $form       Form
+ * @param  [type] $form_state Form state
+ *
+ * @return [type]             Updated form state to be merged back in
+ */
+function _kalatheme_bootstrap_preview($form, &$form_state) {
+  $theme = $form_state['values']['bootstrap_library'];
+  if ($theme == 'default' || $theme == 'custom') {
+    $form['bootstrap_preview']['#markup'] = t('');
+  }
+  else {
+    // @todo: Do this in a way that doesn't suck and maybe incorporate some styles as seen on bootswatch?
+    $form['bootstrap_preview']['#markup'] = t('<img src="@preview">', array('@preview' => 'http://bootswatch.com/' . $theme . '/thumbnail.png'));
+  }
+  return $form['bootstrap_preview'];
 }
