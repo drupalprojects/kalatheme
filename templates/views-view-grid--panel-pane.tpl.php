@@ -33,7 +33,7 @@ $gridsize = count($rows[0]);
   <div class="<?php print $row_class; ?>">
     <?php foreach ($columns as $column_number => $item): ?>
     <div
-      class="gridCol gridborder <?php print 'col-md-' . ($column_number + 1); ?> <?php $span ? print $span : ''; ?>">
+      class="gridCol gridborder <?php print 'col-' . ($column_number + 1); ?> <?php $span ? print $span : ''; ?>">
       <?php if ($item): ?>
       <div class='grid-item'>
         <?php print $item; ?>
