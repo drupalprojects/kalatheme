@@ -784,3 +784,30 @@ function _kalatheme_ensure_class(&$render_array) {
     $render_array['#attributes']['class'] = array();
   }
 }
+
+/**
+ * Calculates a column number based on columns in the total and current grid.
+ *
+ * @param int $percentage
+ *   Whole number version of the percentage to calculate.
+ * @param (optional) integer $total_columns
+ *   The total actual columns in the current row. Defaults to 2.
+ *
+ * @return int
+ *   The column count, rounded if necessary.
+ */
+function kalatheme_grid_size($percentage, $total_columns = 2) {
+  $percentage /= 100;
+  $columns = $percentage * KALATHEME_GRID_SIZE;
+  // Deal with uneven division.
+  if (!is_integer($columns)) {
+    if ($columns > (KALATHEME_GRID_SIZE / $total_columns)) {
+      $columns = floor($columns);
+    }
+    else {
+      $columns = ceil($columns);
+    }
+  }
+
+  return $columns;
+}

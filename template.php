@@ -18,6 +18,11 @@ if ($_GET['q'] == 'system/ajax' && $_REQUEST['form_id'] == 'kalatheme_setup_form
 }
 
 /**
+ * Represents the number of columns in the grid supplied by Bootstrap.
+ */
+define('KALATHEME_GRID_SIZE', kalatheme_get_grid_size());
+
+/**
  * Implements hook_theme().
  */
 function kalatheme_theme($existing, $type, $theme, $path) {
