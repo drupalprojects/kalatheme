@@ -14,7 +14,7 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="boxton-everything col-md-<?php print kalatheme_grid_size(100); ?>">
+        <div class="boxton-everything col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?>">
           <?php print $content['contentmain']; ?>
         </div>
       </div>

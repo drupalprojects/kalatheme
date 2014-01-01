@@ -19,8 +19,17 @@ if ($_GET['q'] == 'system/ajax' && $_REQUEST['form_id'] == 'kalatheme_setup_form
 
 /**
  * Represents the number of columns in the grid supplied by Bootstrap.
+ * And provides some common grid sizes
  */
 define('KALATHEME_GRID_SIZE', kalatheme_get_grid_size());
+define('KALATHEME_GRID_FULL', 1);
+define('KALATHEME_GRID_HALF', 1/2);
+define('KALATHEME_GRID_THIRD', 1/3);
+define('KALATHEME_GRID_FOURTH', 1/4);
+define('KALATHEME_GRID_FIFTH', 1/5);
+define('KALATHEME_GRID_SIXTH', 1/6);
+// Just because we can
+define('KALATHEME_GRID_SILLY', 1/42);
 
 /**
  * Implements hook_theme().

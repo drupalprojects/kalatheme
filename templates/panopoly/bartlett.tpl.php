@@ -14,22 +14,22 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(100); ?> bartlett-everything">
+        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> bartlett-everything">
           <div class="row">
-            <div class="col-md-<?php print kalatheme_grid_size(34); ?> bartlett-side">
+            <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD); ?> bartlett-side">
               <?php print $content['sidebar']; ?>
             </div>
-            <div class="col-md-<?php print kalatheme_grid_size(66); ?> bartlett-main">
+            <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD * 2); ?> bartlett-main">
               <div class="row">
-                <div class="col-md-<?php print kalatheme_grid_size(100); ?> bartlett-main-header">
+                <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> bartlett-main-header">
                   <?php print $content['contentheader']; ?>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-<?php print kalatheme_grid_size(50); ?> bartlett-main-col-1">
+                <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> bartlett-main-col-1">
                   <?php print $content['contentcolumn1']; ?>
                 </div>
-                <div class="col-md-<?php print kalatheme_grid_size(50); ?> bartlett-main-col-1">
+                <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> bartlett-main-col-1">
                   <?php print $content['contentcolumn2']; ?>
                 </div>
               </div>

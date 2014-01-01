@@ -14,10 +14,10 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(34); ?> burr-sidebar-region">
+        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD); ?> burr-sidebar-region">
           <?php print $content['sidebar']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(66); ?> burr-main-content">
+        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD * 2); ?> burr-main-content">
           <?php print $content['contentmain']; ?>
         </div>
       </div>

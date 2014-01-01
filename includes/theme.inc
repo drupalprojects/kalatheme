@@ -771,7 +771,8 @@ function kalatheme_update_report($variables) {
 }
 
 /**
- * Checks that a render array's ['#attribute']['class'] is set, adding it if necessary.
+ * Checks that a render array's ['#attribute']['class'] is set, adding it if
+ * necessary.
  *
  * @param array $render_array
  *   A renderable array.
@@ -797,7 +798,6 @@ function _kalatheme_ensure_class(&$render_array) {
  *   The column count, rounded if necessary.
  */
 function kalatheme_grid_size($percentage, $total_columns = 2) {
-  $percentage /= 100;
   $columns = $percentage * KALATHEME_GRID_SIZE;
   // Deal with uneven division.
   if (!is_integer($columns)) {

@@ -47,13 +47,21 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#weight' => 42,
     '#collapsible' => FALSE,
     '#collapsed' => FALSE,
-    '#description' => t('If toggled on, the kalacustomize style plugin will allow the user to configure device visibilty for regions and panes.'),
+  );
+  $form['responsive']['grid_size'] = array(
+    '#type' => 'markup',
+    '#prefix' => '<p>',
+    '#markup' => t('Kalatheme automatically detects the grid size of your Bootstrap library. That said, please remember that sometimes there are just bad grid size choices. For those occassions
+      Kalatheme will try to handle your bad desicions as best as possible. <strong>Your grid is currently: @grid_size columns.</strong>', array(
+      '@grid_size' => kalatheme_get_grid_size(),
+    )),
+    '#suffix' => '</p>',
   );
   $form['responsive']['responsive_toggle'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use responsive toggling.'),
     '#default_value' => theme_get_setting('responsive_toggle'),
-    '#description' => t('Check here if you want the user to be able to set the responsive visbility of each panels pane and region.'),
+    '#description' => t('Check here if you want the user to be able to set the device visbility of each panels pane and region.'),
   );
 
   // Panels styles style plugin settings.
