@@ -14,7 +14,7 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-12 moscone-main-container">
+        <div class="col-md-<?php print kalatheme_grid_size(100); ?> moscone-main-container">
           <?php print $content['header']; ?>
         </div>
       </div>
@@ -23,10 +23,10 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-4 moscone-sidebar-area">
+        <div class="col-md-<?php print kalatheme_grid_size(34); ?> moscone-sidebar-area">
           <?php print $content['sidebar']; ?>
         </div>
-        <div class="col-md-8 moscone-main-content">
+        <div class="col-md-<?php print kalatheme_grid_size(66); ?> moscone-main-content">
           <?php print $content['contentmain']; ?>
         </div>
       </div>
@@ -35,7 +35,7 @@
   <footer class="section" id="footer">
     <div class="container">
       <div class="row">
-        <div class="col-md-12 moscone-footer-area">
+        <div class="col-md-<?php print kalatheme_grid_size(100); ?> moscone-footer-area">
           <?php print $content['footer']; ?>
         </div>
       </div>

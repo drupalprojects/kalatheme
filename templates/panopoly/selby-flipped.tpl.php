@@ -14,33 +14,33 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-8 selby-flipped-column-content-region-area">
+        <div class="col-md-<?php print kalatheme_grid_size(66); ?> selby-flipped-column-content-region-area">
           <div class="row">
-            <div class="col-md-12 selby-flipped-column-content-region-area">
+            <div class="col-md-<?php print kalatheme_grid_size(100); ?> selby-flipped-column-content-region-area">
               <?php print $content['contentheader']; ?>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 selby-flipped-column-content-region-1">
+            <div class="col-md-<?php print kalatheme_grid_size(50); ?> selby-flipped-column-content-region-1">
               <?php print $content['contentcolumn1']; ?>
             </div>
-            <div class="col-md-6 selby-flipped-column-content-region-2">
+            <div class="col-md-<?php print kalatheme_grid_size(50); ?> selby-flipped-column-content-region-2">
               <?php print $content['contentcolumn2']; ?>
             </div>
           </div><!-- /.selby-flipped-content-container row-->
           <div class="row">
-            <div class="col-md-12 selby-flipped-content-footer-area">
+            <div class="col-md-<?php print kalatheme_grid_size(100); ?> selby-flipped-content-footer-area">
               <?php print $content['contentfooter']; ?>
             </div>
           </div>
         </div><!-- /.selby-flipped-content-container -->
-        <div class="col-md-4 selby-flipped-sidebar-main-area">
+        <div class="col-md-<?php print kalatheme_grid_size(34); ?> selby-flipped-sidebar-main-area">
           <div class="row">
-            <div class="col-md-12 selby-flipped-sidebar-area">
+            <div class="col-md-<?php print kalatheme_grid_size(100); ?> selby-flipped-sidebar-area">
               <?php print $content['sidebar']; ?>
             </div>
           </div>
-        </div> <!-- /.selby-flipped-sidebar col-md-4-->
+        </div> <!-- /.selby-flipped-sidebar -->
       </div><!-- /.selby-flipped-content-container row-->
     </div>
   </section>

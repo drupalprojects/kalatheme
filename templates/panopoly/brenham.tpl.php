@@ -14,7 +14,7 @@
   <section class="section alt" id="promo">
     <div class="container">
       <div class="row">
-        <div class="col-md-12 brenham-promo">
+        <div class="col-md-<?php print kalatheme_grid_size(100); ?> brenham-promo">
           <?php print $content['header']; ?>
         </div>
       </div>
@@ -23,10 +23,10 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-4 brenham-main-side">
+        <div class="col-md-<?php print kalatheme_grid_size(34); ?> brenham-main-side">
           <?php print $content['sidebar']; ?>
         </div>
-        <div class="col-md-8 brenham-main-content">
+        <div class="col-md-<?php print kalatheme_grid_size(66); ?> brenham-main-content">
           <?php print $content['contentmain']; ?>
         </div>
       </div>

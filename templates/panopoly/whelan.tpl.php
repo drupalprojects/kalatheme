@@ -14,13 +14,13 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-3 whelan-column-content-region-1">
+        <div class="col-md-<?php print kalatheme_grid_size(25, 3); ?> whelan-column-content-region-1">
           <?php print $content['column1']; ?>
         </div>
-        <div class="col-md-6 whelan-column-content-region-2">
+        <div class="col-md-<?php print kalatheme_grid_size(50, 3); ?> whelan-column-content-region-2">
           <?php print $content['contentmain']; ?>
         </div>
-        <div class="col-md-3 whelan-column-content-region-3">
+        <div class="col-md-<?php print kalatheme_grid_size(25, 3); ?> whelan-column-content-region-3">
           <?php print $content['column2']; ?>
         </div>
       </div>

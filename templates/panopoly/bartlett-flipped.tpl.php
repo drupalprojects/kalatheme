@@ -14,24 +14,24 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-12 bartlett-flipped-everything">
+        <div class="col-md-<?php print kalatheme_grid_size(100); ?> bartlett-flipped-everything">
           <div class="row">
-            <div class="col-md-8 bartlett-flipped-main">
+            <div class="col-md-<?php print kalatheme_grid_size(66); ?> bartlett-flipped-main">
               <div class="row">
-                <div class="col-md-12 bartlett-flipped-main-header">
+                <div class="col-md-<?php print kalatheme_grid_size(100); ?> bartlett-flipped-main-header">
                   <?php print $content['contentheader']; ?>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-6 bartlett-flipped-main-col-1">
+                <div class="col-md-<?php print kalatheme_grid_size(50); ?> bartlett-flipped-main-col-1">
                   <?php print $content['contentcolumn1']; ?>
                 </div>
-                <div class="col-md-6 bartlett-flipped-main-col-1">
+                <div class="col-md-<?php print kalatheme_grid_size(50); ?> bartlett-flipped-main-col-1">
                   <?php print $content['contentcolumn2']; ?>
                 </div>
               </div>
             </div>
-            <div class="col-md-4 bartlett-flipped-side">
+            <div class="col-md-<?php print kalatheme_grid_size(34); ?> bartlett-flipped-side">
               <?php print $content['sidebar']; ?>
             </div>
           </div>

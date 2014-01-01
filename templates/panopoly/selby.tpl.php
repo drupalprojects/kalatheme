@@ -14,29 +14,29 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-4 selby-sidebar-main-area">
+        <div class="col-md-<?php print kalatheme_grid_size(34); ?> selby-sidebar-main-area">
           <div class="row">
-            <div class="col-md-12 selby-sidebar-area">
+            <div class="col-md-<?php print kalatheme_grid_size(100); ?> selby-sidebar-area">
               <?php print $content['sidebar']; ?>
             </div>
           </div>
-        </div> <!-- /.selby-sidebar col-md-4-->
-        <div class="col-md-8 selby-column-content-region-area">
+        </div> <!-- /.selby-sidebar -->
+        <div class="col-md-<?php print kalatheme_grid_size(66); ?> selby-column-content-region-area">
           <div class="row">
-            <div class="col-md-12 selby-column-content-region-area">
+            <div class="col-md-<?php print kalatheme_grid_size(100); ?> selby-column-content-region-area">
               <?php print $content['contentheader']; ?>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6 selby-column-content-region-1">
+            <div class="col-md-<?php print kalatheme_grid_size(50); ?> selby-column-content-region-1">
               <?php print $content['contentcolumn1']; ?>
             </div>
-            <div class="col-md-6 selby-column-content-region-2">
+            <div class="col-md-<?php print kalatheme_grid_size(50); ?> selby-column-content-region-2">
               <?php print $content['contentcolumn2']; ?>
             </div>
           </div><!-- /.selby-content-container row-->
           <div class="row">
-            <div class="col-md-12 selby-content-footer-area">
+            <div class="col-md-<?php print kalatheme_grid_size(100); ?> selby-content-footer-area">
               <?php print $content['contentfooter']; ?>
             </div>
           </div>
