@@ -8,6 +8,7 @@
 // Constants and stuff
 define('DEFAULT_BOOTSTRAP_URL', 'http://github.com/twbs/bootstrap/releases/download/v3.0.3/bootstrap-3.0.3-dist.zip');
 define('DEFAULT_BOOTSWATCH_URL', 'http://bootswatch.com');
+define('DEFAULT_FONTAWESOME_URL', 'http://fontawesome.io/assets/font-awesome-4.0.3.zip');
 
 /**
  * Form for kalatheme setup
@@ -90,7 +91,6 @@ function kalatheme_setup_form($form, &$form_state) {
       ),
     )
   );
-  /* NOT QUITE AWESOME YET
   $form['font_awesome'] = array(
     '#type' => 'checkbox',
     '#title' => t('Check this to include <a href="@font_awesome">Font Awesome</a> in your subtheme as well.', array(
@@ -98,7 +98,6 @@ function kalatheme_setup_form($form, &$form_state) {
     )),
     '#default_value' => TRUE,
   );
-  */
   if (_kalatheme_backend_check()) {
     $form['enable_theme'] = array(
       '#type' => 'checkbox',
@@ -152,10 +151,8 @@ function kalatheme_setup_form_validate($form, &$form_state) {
 function kalatheme_setup_form_submit($form, &$form_state) {
   // Let's borrow some stuff
   module_load_include('inc', 'update', 'update.manager');
-  // Build basic subtheme
-  $subtheme = _kalatheme_build_subtheme(addslashes($form_state['values']['subtheme_name']));
 
-  // Extract library to tmp to prepare for STUFF
+  // Extract Bootstrap library to tmp to prepare for STUFF
   $bootlib = $form_state['values']['bootstrap_library'];
   if ($bootlib !== 'custom') {
     $local_cache = update_manager_file_get(DEFAULT_BOOTSTRAP_URL);
@@ -176,7 +173,6 @@ function kalatheme_setup_form_submit($form, &$form_state) {
       $local_cache = $finfo->uri;
     }
   }
-
   $machine_name = strtolower(addslashes($form_state['values']['subtheme_name']));
   $machine_name = preg_replace('@[^a-z0-9_]+@', '_', $machine_name);
   $directory = _kalatheme_extract_directory($machine_name);
@@ -187,13 +183,11 @@ function kalatheme_setup_form_submit($form, &$form_state) {
     form_set_error($field, $e->getMessage());
     return;
   }
-
   $files = $archive->listContents();
   if (!$files) {
     form_set_error($field, t('Provided archive contains no files.'));
     return;
   }
-
   // Build basic Bootstrap library from input
   $bootstrap = _kalatheme_build_bootstrap($machine_name, $directory, $files);
   // Customize Bootstrap CSS from Bootswatch if applicable
@@ -206,12 +200,21 @@ function kalatheme_setup_form_submit($form, &$form_state) {
     $bootstrap[$css_dir . 'bootstrap.min.css'] = file_get_contents(system_retrieve_file($bootswatch . '/bootstrap.min.css', 'temporary://bm.css', FALSE, FILE_EXISTS_REPLACE));
     $bootstrap[$css_dir . 'bootstrap.min.css'] = _kalatheme_lib_header() . $bootstrap[$css_dir . 'bootstrap.min.css'];
   }
+
+  // Build basic subtheme
+  $subtheme = _kalatheme_build_subtheme(addslashes($form_state['values']['subtheme_name']));
+  if ($form_state['values']['font_awesome']) {
+    if (!_kalatheme_build_fontawesome($subtheme, $machine_name)) {
+      // form_set_error should happen at a lower level
+      return;
+    }
+  }
   // Get other files from custom bootsrap library for subtheme
   if ($bootlib == 'custom') {
     // @todo: crazy shit
   }
-  // @todo Font Awesome stuff goes here
-  // Try to write the stuff to tmp
+
+  // Try to write the subtheme and bootstrap library to tmp
   if (!_kalatheme_write_subtheme($subtheme) || !_kalatheme_write_bootstrap($bootstrap)) {
     form_set_error('bootstrap_library', t('Could not write stuff to tmp. That is weird.'));
     return;
@@ -225,7 +228,8 @@ function kalatheme_setup_form_submit($form, &$form_state) {
     sys_get_temp_dir() . DIRECTORY_SEPARATOR . $machine_name . '_bootstrap' =>  $library_path . DIRECTORY_SEPARATOR . $machine_name . '_bootstrap',
   );
   if (_kalatheme_backend_check()) {
-    // Move subtheme and bootstrap out of temp and into drupal places
+    // Move subtheme and bootstrap out of temp and into drupal places else
+    // present it to user for download
     // @todo: there has to be a better way?
     foreach ($stuff as $source => $dest) {
       foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST) as $item) {
@@ -249,7 +253,6 @@ function kalatheme_setup_form_submit($form, &$form_state) {
       }
     }
   }
-  // Output to user
   else {
     $zip = new ZipArchive();
     $zip_name = drupal_realpath('public://') . DIRECTORY_SEPARATOR . $machine_name . ".zip";
@@ -266,16 +269,22 @@ function kalatheme_setup_form_submit($form, &$form_state) {
     drupal_goto(variable_get('file_public_path') . DIRECTORY_SEPARATOR . $machine_name . ".zip");
     return;
   }
+
   // Enable theme if applicable
+  $message = '<i class="fa fa-thumbs-up fa-2x">Your new theme is installed but not yet enabled. It should now appear below.</i>';
   if ($form_state['values']['enable_theme'] && $booted) {
     system_rebuild_theme_data();
     drupal_theme_rebuild();
     theme_enable(array($machine_name));
     variable_set('theme_default', $machine_name);
+    $message = '<i class="fa fa-thumbs-up fa-2x">Your new subtheme is enabled! Looking good in the neighborhood!!</i>';
   }
-  // not the best but we want the user to see their new stuff.
+
+  // Not the best but we want the user to see their new stuff.
   cache_clear_all();
+
   // Kick it back
+  drupal_set_message(t($message), 'status', FALSE);
   $form_state['redirect'] = 'admin/appearance';
 }
 
@@ -405,6 +414,46 @@ function _kalatheme_write_bootstrap($bootstrap) {
 }
 
 /**
+ * Build fontawesome support into subtheme
+ *
+ * @param  string  $subtheme The array of subtheme things
+ * @return boolean TRUE is for success, FALSE is for fail
+ *
+ */
+function _kalatheme_build_fontawesome(&$subtheme, $machine_name) {
+  $local_cache = update_manager_file_get(DEFAULT_FONTAWESOME_URL);
+  if (!$local_cache) {
+    form_set_error($field, t('Unable to retrieve Bootstrap from %url.', array('%url' => DEFAULT_BOOTSTRAP_URL)));
+    return;
+  }
+  $directory = _kalatheme_extract_directory('font_awesome');
+  try {
+    $archive = update_manager_archive_extract($local_cache, $directory);
+  }
+  catch (Exception $e) {
+    form_set_error($field, $e->getMessage());
+    return;
+  }
+  $files = $archive->listContents();
+  if (!$files) {
+    form_set_error($field, t('Provided archive contains no files.'));
+    return;
+  }
+  foreach ($files as $file) {
+    if (strpos($file, '.css') !== FALSE && !is_dir($directory . DIRECTORY_SEPARATOR . $file)) {
+      $subtheme[$machine_name . DIRECTORY_SEPARATOR . 'css' . substr($file, strrpos($file, '/'))] = file_get_contents($directory . DIRECTORY_SEPARATOR . $file);
+    }
+    if (strpos($file, '/fonts/') !== FALSE && !is_dir($directory . DIRECTORY_SEPARATOR . $file)) {
+      $subtheme[$machine_name . DIRECTORY_SEPARATOR . 'fonts' . substr($file, strrpos($file, '/'))] = file_get_contents($directory . DIRECTORY_SEPARATOR . $file);
+    }
+  }
+  $output  = "stylesheets[all][] = css/font-awesome.min.css \n";
+  $output .= "\n";
+  $subtheme[$machine_name . DIRECTORY_SEPARATOR . $machine_name . '.info'] .= $output;
+  return $subtheme;
+}
+
+/**
  * Returns a short unique identifier for this Drupal installation.
  *
  * @return
@@ -430,12 +479,9 @@ function _kalatheme_unique_identifier() {
  *   be extracted.
  */
 function _kalatheme_extract_directory($name, $create = TRUE) {
-  $directory = &drupal_static(__FUNCTION__, '');
-  if (empty($directory)) {
-    $directory = 'temporary://kalatheme-' . $name . '-' . 'bootstrap-' . _kalatheme_unique_identifier();
-    if ($create && !file_exists($directory)) {
-      mkdir($directory);
-    }
+  $directory = 'temporary://kalatheme-' . $name . '-' . 'bootstrap-' . _kalatheme_unique_identifier();
+  if ($create && !file_exists($directory)) {
+    mkdir($directory);
   }
   return $directory;
 }
