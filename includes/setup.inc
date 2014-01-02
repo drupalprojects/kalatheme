@@ -13,6 +13,20 @@ define('DEFAULT_BOOTSWATCH_URL', 'http://bootswatch.com');
  * Form for kalatheme setup
  */
 function kalatheme_setup_form($form, &$form_state) {
+  if (_kalatheme_backend_check()) {
+    $form['backend_check'] = array(
+      '#prefix' => '<div class="alert alert-success">',
+      '#markup' => t("Your webserver is correctly configured for Kalatheme to build, install and enable your subtheme for you!"),
+      '#suffix' => '</div>',
+    );
+  }
+  else {
+    $form['backend_check'] = array(
+      '#prefix' => '<div class="alert alert-danger">',
+      '#markup' => t("@backend_check", array('@backend_check' => _kalatheme_backend_check())),
+      '#suffix' => '</div>',
+    );
+  }
   $form['help_text'] = array(
     '#prefix' => '<p>',
     '#markup' => t('Here you can easily setup a Kalatheme subtheme with the default or a custom Bootstrap library. For more information please consult our <a href="@setup_url">Start Up Guide</a> or just give it a whirl! The following file extensions are supported: %extensions.', array(
@@ -76,6 +90,8 @@ function kalatheme_setup_form($form, &$form_state) {
       ),
     )
   );
+  // Font Awesome Awesome
+  // Enable subtheme option (check backend situation)
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['submit'] = array(
     '#type' => 'submit',
@@ -179,9 +195,12 @@ function kalatheme_setup_form_submit($form, &$form_state) {
     $bootstrap_file = system_retrieve_file(DEFAULT_BOOTSWATCH_URL . '/' . $bootlib . '/bootstrap.css' , $directory . DIRECTORY_SEPARATOR . $files[$bootstrap_css], FALSE, FILE_EXISTS_REPLACE);
     $bootstrap_file_min = system_retrieve_file(DEFAULT_BOOTSWATCH_URL . '/' . $bootlib . '/bootstrap.min.css', $directory . DIRECTORY_SEPARATOR . $files[$bootstrap_min_css], FALSE, FILE_EXISTS_REPLACE);
   }
+  elseif ($bootlib == 'custom') {
+    // @todo: crazy shit
+  }
 
-
-  // Font awesome stuff goes here?
+  // @todo Font Awesome stuff goes here
+  //
   // Write subtheme
   // Write bootstrap library
   // Enable subtheme
@@ -272,8 +291,40 @@ function _kalatheme_bootstrap_preview($form, &$form_state) {
     $form['bootstrap_preview']['#markup'] = t('');
   }
   else {
-    // @todo: Do this in a way that doesn't suck and maybe incorporate some styles as seen on bootswatch?
+    // @todo: Do this in a way that doesn't suck and maybe incorporate some
+    // styles as seen on bootswatch?
     $form['bootstrap_preview']['#markup'] = t('<img src="@preview">', array('@preview' => 'http://bootswatch.com/' . $theme . '/thumbnail.png'));
   }
   return $form['bootstrap_preview'];
+}
+
+/**
+ * We want to check if the webserver can write our stuff to the right places.
+ * If it can't then we are going to tell the user what's up.
+ *
+ * @return [mixed] True if all good, message if no good
+ */
+function _kalatheme_backend_check() {
+  $theme_path = drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/')));
+  $library_path = drupal_realpath('sites/all/libraries');
+  // Create paths if needed
+  // $theme_path should already exist
+  if (!$library_path) {
+    if (!mkdir(DRUPAL_ROOT . "/sites/all/libraries", 0777, TRUE)) {
+      return t("If you want Kalatheme to be able to install and enable your subtheme for you please make sure that both @lib_path and @theme_path exist and are writable. ", array(
+        '@lib_path' => $library_path,
+        '@theme_path' => $theme_path,
+      ));;
+    }
+    $library_path = drupal_realpath('sites/all/libraries');
+  }
+  // Check if directories are raedy to receive a payload
+  // @todo this needs a lot more testing, always seems to be true on kalabox
+  if (!file_prepare_directory($theme_path) || !file_prepare_directory($library_path)) {
+    return t("If you want Kalatheme to be able to install and enable your subtheme for you please make sure that both @lib_path and @theme_path exist and are writable. ", array(
+      '@lib_path' => $library_path,
+      '@theme_path' => $theme_path,
+    ));;
+  }
+  return TRUE;
 }
