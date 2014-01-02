@@ -475,7 +475,7 @@ function _kalatheme_backend_check() {
   // $theme_path should already exist
   if (!$library_path) {
     if (!mkdir(DRUPAL_ROOT . "/sites/all/libraries", 0777, TRUE)) {
-      return t("If you want Kalatheme to be able to install and enable your subtheme for you please make sure that both @lib_path and @theme_path exist and are writable. ", array(
+      return t("If you want Kalatheme to be able to install and enable your subtheme for you please make sure that both @lib_path and @theme_path exist and are writable. Otherwise it will just give you an achive to download.", array(
         '@lib_path' => $library_path,
         '@theme_path' => $theme_path,
       ));;
@@ -485,7 +485,7 @@ function _kalatheme_backend_check() {
   // Check if directories are raedy to receive a payload
   // @todo this needs a lot more testing, always seems to be true on kalabox
   if (!file_prepare_directory($theme_path) || !file_prepare_directory($library_path)) {
-    return t("If you want Kalatheme to be able to install and enable your subtheme for you please make sure that both @lib_path and @theme_path exist and are writable. ", array(
+    return t("If you want Kalatheme to be able to install and enable your subtheme for you please make sure that both @lib_path and @theme_path exist and are writable. Otherwise it will just give you an achive to download.", array(
       '@lib_path' => $library_path,
       '@theme_path' => $theme_path,
     ));;
