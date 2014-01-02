@@ -229,6 +229,8 @@ function kalatheme_setup_form_submit($form, &$form_state) {
     drupal_theme_rebuild();
     theme_enable(array($machine_name));
     variable_set('theme_default', $machine_name);
+    // not the best but we want the user to see their new stuff.
+    cache_clear_all();
   }
 
   // Kick it back
