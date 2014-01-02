@@ -222,19 +222,17 @@ function kalatheme_setup_form_submit($form, &$form_state) {
     form_set_error('bootstrap_library', t('Could not write bootstrap to disk.'));
     return;
   }
-
   // Enable theme if applicable
   if ($form_state['values']['enable_theme']) {
     system_rebuild_theme_data();
     drupal_theme_rebuild();
     theme_enable(array($machine_name));
     variable_set('theme_default', $machine_name);
-    // not the best but we want the user to see their new stuff.
-    cache_clear_all();
   }
-
+  // not the best but we want the user to see their new stuff.
+  cache_clear_all();
   // Kick it back
-  drupal_goto("admin/appearance");
+  $form_state['redirect'] = 'admin/appearance';
 }
 
 /**
