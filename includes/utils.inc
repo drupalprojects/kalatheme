@@ -20,55 +20,60 @@ function _kalatheme_load_dependencies() {
   }
 
   // Check some minimal module, variable and bootstrap reqs
+  // See if we are running a 3.x version of panels
   $panels = FALSE;
   if (module_exists('panels')) {
     $info = system_get_info('module', 'panels');
     $regex = '/^7\.x-3\.[0-9]+.*$/';
-
-    // See if we are running a 3.x version of panels
     if (preg_match($regex, $info['version'])) {
       $panels = TRUE;
     }
   }
   if (!$panels) {
-    drupal_set_message('Kalatheme requires a 3.x version of panels.', 'error');
+    drupal_set_message(t('Kalatheme requires a 3.x version of panels.'), 'error');
   }
-
+  // See if we are running at least 2.1 of libraries
   $libs = FALSE;
   if (module_exists('libraries')) {
     $info = system_get_info('module', 'libraries');
     $regex = '/^7\.x-2\.[1-9][0-9]*.*$/';
 
-    // See if we are running at least 2.1 of libraries
     if (preg_match($regex, $info['version'])) {
-      // Check to see if bootstrap libraries exist
-      $library = libraries_detect(KALATHEME_BOOTSTRAP_LIBRARY);
-      if ($library && !empty($library['installed'])) {
-        $bootstrap_path = DRUPAL_ROOT . '/' . $library['library path'];
-        $variant = NULL;
-        $has_minified_css = file_exists($bootstrap_path . '/css/bootstrap.min.css');
-        $has_minified_js = file_exists($bootstrap_path . '/js/bootstrap.min.js');
-        if ($has_minified_css && $has_minified_js) {
-          $variant = 'minified';
-        }
-        libraries_load(KALATHEME_BOOTSTRAP_LIBRARY, $variant);
-        $libs = TRUE;
-      }
+      $libs = TRUE;
     }
   }
   if (!$libs) {
-    drupal_set_message('Kalatheme requires at least Libraries 2.1 and a bootstrap library.
-      Consult the README for install help.', 'error');
+    drupal_set_message(t('Kalatheme requires at least Libraries 2.1.'), 'error');
   }
-
+  // Check to see if bootstrap libraries exist
+  $boot = FALSE;
+  if (module_exists('libraries')) {
+    $bootstrap = libraries_detect(KALATHEME_BOOTSTRAP_LIBRARY);
+    if ($bootstrap && !empty($bootstrap['installed'])) {
+      $bootstrap_path = DRUPAL_ROOT . '/' . $bootstrap['library path'];
+      $variant = NULL;
+      $has_minified_css = file_exists($bootstrap_path . '/css/bootstrap.min.css');
+      $has_minified_js = file_exists($bootstrap_path . '/js/bootstrap.min.js');
+      if ($has_minified_css && $has_minified_js) {
+        $variant = 'minified';
+      }
+      libraries_load(KALATHEME_BOOTSTRAP_LIBRARY, $variant);
+      $boot = TRUE;
+    }
+  }
+  if (!$boot) {
+    drupal_set_message(t('You do not have a Bootstrap library installed but that is ok! To get equipped either check out our <a href="@setup_guide">Start Up Guide</a> or run our <a href="@setup_url">Setup Wizard.</a>', array(
+      '@setup_guide' => 'http://drupal.org/project/kalatheme',
+      '@setup_url' => 'admin/appearance/kalasetup',
+    )), 'error');
+  }
+  // See if we are running at least a 2.x branch of jquery_update
+  // Check to see if we are using jquery 1.7+
   $jq = FALSE;
   if (module_exists('jquery_update')) {
     $info = system_get_info('module', 'jquery_update');
     $regex = '/^7\.x-2\.[0-9]+.*$/';
-
-    // See if we are running at least a 2.x branch of jquery_update
     if (preg_match($regex, $info['version'])) {
-      // Check to see if we are using jquery 1.7+
       $regex = '/^1\.[7-9]+.*$/';
       if (preg_match($regex, variable_get('jquery_update_jquery_version'))) {
         $jq = TRUE;
@@ -76,10 +81,9 @@ function _kalatheme_load_dependencies() {
     }
   }
   if (!$jq) {
-    drupal_set_message('Kalatheme requires a 2.x version of JQuery Update that uses at
-      least JQuery 1.7', 'error');
+    drupal_set_message(t('Kalatheme requires a 2.x version of JQuery Update that uses at
+      least JQuery 1.7'), 'error');
   }
-
   // Return the correct status message function depending on whether
   // we were able to load all of our dependencies.
   if (!$panels || !$libs || !$jq) {
