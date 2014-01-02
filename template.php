@@ -239,8 +239,8 @@ function kalatheme_preprocess_panels_add_content_link(&$vars) {
  * Implements hook_preprocess_views_view_grid().
  */
 function kalatheme_preprocess_views_view_grid(&$variables) {
-  if (12 % $variables['options']['columns'] === 0) {
-    $variables['span'] = 'col-md-' . 12 / $variables['options']['columns'];
+  if (kalatheme_get_grid_size() % $variables['options']['columns'] === 0) {
+    $variables['span'] = 'col-md-' . kalatheme_get_grid_size() / $variables['options']['columns'];
   }
 }
 
