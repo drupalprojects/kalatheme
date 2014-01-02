@@ -210,20 +210,64 @@ function kalatheme_setup_form_submit($form, &$form_state) {
   if ($bootlib == 'custom') {
     // @todo: crazy shit
   }
-
   // @todo Font Awesome stuff goes here
-  // Try to write the subtheme to disk
-  if (!_kalatheme_write_subtheme($subtheme)) {
-    form_set_error('bootstrap_library', t('Could not write subtheme to disk.'));
+  // Try to write the stuff to tmp
+  if (!_kalatheme_write_subtheme($subtheme) || !_kalatheme_write_bootstrap($bootstrap)) {
+    form_set_error('bootstrap_library', t('Could not write stuff to tmp. That is weird.'));
     return;
   }
-    // Try to write the library to disk
-  if (!_kalatheme_write_bootstrap($bootstrap)) {
-    form_set_error('bootstrap_library', t('Could not write bootstrap to disk.'));
+  // Move from temp to legitness or output to the user for DL
+  $booted = TRUE;
+  $theme_path = drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/')));
+  $library_path = drupal_realpath('sites/all/libraries');
+  $stuff = array(
+    sys_get_temp_dir() . DIRECTORY_SEPARATOR . $machine_name =>  $theme_path . DIRECTORY_SEPARATOR . $machine_name,
+    sys_get_temp_dir() . DIRECTORY_SEPARATOR . $machine_name . '_bootstrap' =>  $library_path . DIRECTORY_SEPARATOR . $machine_name . '_bootstrap',
+  );
+  if (_kalatheme_backend_check()) {
+    // Move subtheme and bootstrap out of temp and into drupal places
+    // @todo: there has to be a better way?
+    foreach ($stuff as $source => $dest) {
+      foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST) as $item) {
+        if (is_dir($dest) || mkdir($dest, 0777, TRUE)) {
+          if ($item->isDir()) {
+            if (!is_dir($dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
+              if (!mkdir($dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
+                $booted = FALSE;
+              }
+            }
+          }
+          else {
+            if (!copy($item, $dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName())) {
+              $booted = FALSE;
+            }
+          }
+        }
+        else {
+          $booted = FALSE;
+        }
+      }
+    }
+  }
+  // Output to user
+  else {
+    $zip = new ZipArchive();
+    $zip_name = drupal_realpath('public://') . DIRECTORY_SEPARATOR . $machine_name . ".zip";
+    $zip->open($zip_name,  ZipArchive::CREATE);
+    foreach ($stuff as $source => $dest) {
+      foreach ($iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST) as $item) {
+        if (!$item->isDir()) {
+          $filepath = $source . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
+          $zip->addFile($filepath, str_replace(sys_get_temp_dir(), '/kalasubtheme', $filepath));
+        }
+      }
+    }
+    $zip->close();
+    drupal_goto(variable_get('file_public_path') . DIRECTORY_SEPARATOR . $machine_name . ".zip");
     return;
   }
   // Enable theme if applicable
-  if ($form_state['values']['enable_theme']) {
+  if ($form_state['values']['enable_theme'] && $booted) {
     system_rebuild_theme_data();
     drupal_theme_rebuild();
     theme_enable(array($machine_name));
@@ -249,7 +293,7 @@ function _kalatheme_build_subtheme($name) {
 
   // Basic Info File
   $output  = "name = " . $name . " \n";
-  $output .= "description = A Kalatheme subtheme powered by Twitter Bootstrap & Compass. \n";
+  $output .= "description = A Kalatheme subtheme powered by Twitter Bootstrap & Science. \n";
   $output .= "base theme = kalatheme \n";
   $output .= "core = 7.x \n";
   $output .= "\n";
@@ -276,11 +320,10 @@ function _kalatheme_build_subtheme($name) {
  *
  */
 function _kalatheme_write_subtheme($subtheme) {
-  $theme_path = drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/')));
   foreach ($subtheme as $key => $value) {
     $dir = substr($key, 0, strrpos($key, '/'));
-    if (is_dir($theme_path . DIRECTORY_SEPARATOR . $dir) || mkdir($theme_path . DIRECTORY_SEPARATOR . $dir, 0777, TRUE)) {
-      if (!file_put_contents($theme_path . DIRECTORY_SEPARATOR . $key, $value)) {
+    if (is_dir('temporary://' . $dir) || mkdir('temporary://' . $dir, 0777, TRUE)) {
+      if (!file_put_contents('temporary://' . $key, $value)) {
         return FALSE;
       }
     }
@@ -347,11 +390,10 @@ function _kalatheme_build_bootstrap($subtheme, $directory, $files) {
  *
  */
 function _kalatheme_write_bootstrap($bootstrap) {
-  $library_path = drupal_realpath('sites/all/libraries');
   foreach ($bootstrap as $key => $value) {
     $dir = substr($key, 0, strrpos($key, '/'));
-    if (is_dir($library_path . DIRECTORY_SEPARATOR . $dir) || mkdir($library_path . DIRECTORY_SEPARATOR . $dir, 0777, TRUE)) {
-      if (!file_put_contents($library_path . DIRECTORY_SEPARATOR . $key, $value)) {
+    if (is_dir('temporary://' . $dir) || mkdir('temporary://' . $dir, 0777, TRUE)) {
+      if (!file_put_contents('temporary://' . $key, $value)) {
         return FALSE;
       }
     }
