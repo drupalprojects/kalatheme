@@ -90,8 +90,20 @@ function kalatheme_setup_form($form, &$form_state) {
       ),
     )
   );
-  // Font Awesome Awesome
-  // Enable subtheme option (check backend situation)
+  $form['font_awesome'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Check this to include <a href="@font_awesome">Font Awesome</a> in your subtheme as well.', array(
+      '@font_awesome' => 'http://fontawesome.io/',
+    )),
+    '#default_value' => TRUE,
+  );
+  if (_kalatheme_backend_check()) {
+    $form['enable_theme'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Check this to enable the subtheme after it is built and installed.'),
+      '#default_value' => TRUE,
+    );
+  }
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['submit'] = array(
     '#type' => 'submit',
@@ -192,16 +204,19 @@ function kalatheme_setup_form_submit($form, &$form_state) {
   }
   // Customize Bootstrap CSS from Bootswatch if applicable
   if ($bootlib != 'custom' && $bootlib != 'default') {
-    $bootstrap_file = system_retrieve_file(DEFAULT_BOOTSWATCH_URL . '/' . $bootlib . '/bootstrap.css' , $directory . DIRECTORY_SEPARATOR . $files[$bootstrap_css], FALSE, FILE_EXISTS_REPLACE);
+    $bootstrap_file = system_retrieve_file(DEFAULT_BOOTSWATCH_URL . '/' . $bootlib . '/bootstrap.css', $directory . DIRECTORY_SEPARATOR . $files[$bootstrap_css], FALSE, FILE_EXISTS_REPLACE);
     $bootstrap_file_min = system_retrieve_file(DEFAULT_BOOTSWATCH_URL . '/' . $bootlib . '/bootstrap.min.css', $directory . DIRECTORY_SEPARATOR . $files[$bootstrap_min_css], FALSE, FILE_EXISTS_REPLACE);
+    $test == $test;
   }
   elseif ($bootlib == 'custom') {
     // @todo: crazy shit
   }
-
   // @todo Font Awesome stuff goes here
-  //
-  // Write subtheme
+  // Try to write the subtheme to disk
+  if (!_kalatheme_write_subtheme($subtheme)) {
+    form_set_error('bootstrap_library', t('Could not write subtheme to disk.'));
+    return;
+  }
   // Write bootstrap library
   // Enable subtheme
   // Redirect to apppearances page
@@ -238,6 +253,27 @@ function _kalatheme_build_subtheme($name) {
   $subtheme[$machine_name . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'main.css'] = $output;
 
   return $subtheme;
+}
+
+/**
+ * Translate a subtheme array into writable files.
+ *
+ * @param  array  $subtheme The subtheme stuff
+ * @return boolean TRUE is for success, FALSE is for fail
+ *
+ */
+function _kalatheme_write_subtheme($subtheme) {
+  $theme_path = drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/')));
+  foreach ($subtheme as $key => $value) {
+    $dir = substr($key, 0, strrpos($key, '/'));
+    if (is_dir($theme_path . DIRECTORY_SEPARATOR . $dir) || mkdir($theme_path . DIRECTORY_SEPARATOR . $dir)) {
+      file_put_contents($theme_path . DIRECTORY_SEPARATOR . $key, $value);
+    }
+    else {
+      return FALSE;
+    }
+  }
+  return TRUE;
 }
 
 /**
