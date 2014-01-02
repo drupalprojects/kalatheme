@@ -63,7 +63,7 @@ function kalatheme_setup_form($form, &$form_state) {
       'spacelab' => t('Spacelab'),
       'united' => t('United'),
       'yeti' => t('Yeti'),
-      'custom' => t('Custom'),
+      //'custom' => t('Custom'), // @todo: got some stuff in there but need to improve it
     ),
     '#ajax' => array(
       'callback' => '_kalatheme_bootstrap_preview',
@@ -90,6 +90,7 @@ function kalatheme_setup_form($form, &$form_state) {
       ),
     )
   );
+  /* NOT QUITE AWESOME YET
   $form['font_awesome'] = array(
     '#type' => 'checkbox',
     '#title' => t('Check this to include <a href="@font_awesome">Font Awesome</a> in your subtheme as well.', array(
@@ -97,6 +98,7 @@ function kalatheme_setup_form($form, &$form_state) {
     )),
     '#default_value' => TRUE,
   );
+  */
   if (_kalatheme_backend_check()) {
     $form['enable_theme'] = array(
       '#type' => 'checkbox',
@@ -192,34 +194,45 @@ function kalatheme_setup_form_submit($form, &$form_state) {
     return;
   }
 
-  // Find location of bootstap.css and bootstrap.min.css
-  // @todo: something better?
-  foreach ($files as $key => $value) {
-    if (stripos($value, 'bootstrap.css') !== FALSE) {
-      $bootstrap_css = $key;
-    }
-    if (stripos($value, 'bootstrap.min.css') !== FALSE) {
-      $bootstrap_min_css = $key;
-    }
-  }
+  // Build basic Bootstrap library from input
+  $bootstrap = _kalatheme_build_bootstrap($machine_name, $directory, $files);
   // Customize Bootstrap CSS from Bootswatch if applicable
   if ($bootlib != 'custom' && $bootlib != 'default') {
-    $bootstrap_file = system_retrieve_file(DEFAULT_BOOTSWATCH_URL . '/' . $bootlib . '/bootstrap.css', $directory . DIRECTORY_SEPARATOR . $files[$bootstrap_css], FALSE, FILE_EXISTS_REPLACE);
-    $bootstrap_file_min = system_retrieve_file(DEFAULT_BOOTSWATCH_URL . '/' . $bootlib . '/bootstrap.min.css', $directory . DIRECTORY_SEPARATOR . $files[$bootstrap_min_css], FALSE, FILE_EXISTS_REPLACE);
-    $test == $test;
+    $bootname = $machine_name . "_bootstrap";
+    $css_dir = $bootname . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR;
+    $bootswatch = DEFAULT_BOOTSWATCH_URL . '/' . $bootlib;
+    $bootstrap[$css_dir . 'bootstrap.css'] = file_get_contents(system_retrieve_file($bootswatch . '/bootstrap.css', 'temporary://bs.css', FALSE, FILE_EXISTS_REPLACE));
+    $bootstrap[$css_dir . 'bootstrap.css'] = _kalatheme_lib_header() . $bootstrap[$css_dir . 'bootstrap.css'];
+    $bootstrap[$css_dir . 'bootstrap.min.css'] = file_get_contents(system_retrieve_file($bootswatch . '/bootstrap.min.css', 'temporary://bm.css', FALSE, FILE_EXISTS_REPLACE));
+    $bootstrap[$css_dir . 'bootstrap.min.css'] = _kalatheme_lib_header() . $bootstrap[$css_dir . 'bootstrap.min.css'];
   }
-  elseif ($bootlib == 'custom') {
+  // Get other files from custom bootsrap library for subtheme
+  if ($bootlib == 'custom') {
     // @todo: crazy shit
   }
+
   // @todo Font Awesome stuff goes here
   // Try to write the subtheme to disk
   if (!_kalatheme_write_subtheme($subtheme)) {
     form_set_error('bootstrap_library', t('Could not write subtheme to disk.'));
     return;
   }
-  // Write bootstrap library
-  // Enable subtheme
-  // Redirect to apppearances page
+    // Try to write the library to disk
+  if (!_kalatheme_write_bootstrap($bootstrap)) {
+    form_set_error('bootstrap_library', t('Could not write bootstrap to disk.'));
+    return;
+  }
+
+  // Enable theme if applicable
+  if ($form_state['values']['enable_theme']) {
+    system_rebuild_theme_data();
+    drupal_theme_rebuild();
+    theme_enable(array($machine_name));
+    variable_set('theme_default', $machine_name);
+  }
+
+  // Kick it back
+  drupal_goto("admin/appearance");
 }
 
 /**
@@ -266,8 +279,81 @@ function _kalatheme_write_subtheme($subtheme) {
   $theme_path = drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/')));
   foreach ($subtheme as $key => $value) {
     $dir = substr($key, 0, strrpos($key, '/'));
-    if (is_dir($theme_path . DIRECTORY_SEPARATOR . $dir) || mkdir($theme_path . DIRECTORY_SEPARATOR . $dir)) {
-      file_put_contents($theme_path . DIRECTORY_SEPARATOR . $key, $value);
+    if (is_dir($theme_path . DIRECTORY_SEPARATOR . $dir) || mkdir($theme_path . DIRECTORY_SEPARATOR . $dir, 0777, TRUE)) {
+      if (!file_put_contents($theme_path . DIRECTORY_SEPARATOR . $key, $value)) {
+        return FALSE;
+      }
+    }
+    else {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+/**
+ * Move the bootstrap library from tmp to sites/all/libraries
+ *
+ * @param  string  $bootlib The machine name of the subtheme
+ * @param  string  $directory The location of the temp bootstrap lib
+ * @param  array   $files An array of the bootstral files
+ * @return boolean TRUE is for success, FALSE is for fail
+ *
+ */
+function _kalatheme_build_bootstrap($subtheme, $directory, $files) {
+  $bootname = $subtheme . "_bootstrap";
+  $css_dir = $bootname . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR;
+  $js_dir = $bootname . DIRECTORY_SEPARATOR . "js" . DIRECTORY_SEPARATOR;
+  $fonts_dir = $bootname . DIRECTORY_SEPARATOR . "fonts" . DIRECTORY_SEPARATOR;
+  $bootstrap = array();
+  // @todo: Gotta be a sexier way to do this?
+  foreach ($files as $key => $value) {
+    // CSS
+    if (stripos($value, 'bootstrap.css') !== FALSE) {
+      $bootstrap[$css_dir . 'bootstrap.css'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    if (stripos($value, 'bootstrap.min.css') !== FALSE) {
+      $bootstrap[$css_dir . 'bootstrap.min.css'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    // JS
+    if (stripos($value, 'bootstrap.js') !== FALSE) {
+      $bootstrap[$js_dir . 'bootstrap.js'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    if (stripos($value, 'bootstrap.min.js') !== FALSE) {
+      $bootstrap[$js_dir . 'bootstrap.min.js'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    // FONTS
+    if (stripos($value, 'glyphicons-halflings-regular.woff') !== FALSE) {
+      $bootstrap[$fonts_dir . 'glyphicons-halflings-regular.woff'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    if (stripos($value, 'glyphicons-halflings-regular.ttf') !== FALSE) {
+      $bootstrap[$fonts_dir . 'glyphicons-halflings-regular.ttf'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    if (stripos($value, 'glyphicons-halflings-regular.svg') !== FALSE) {
+      $bootstrap[$fonts_dir . 'glyphicons-halflings-regular.svg'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    if (stripos($value, 'glyphicons-halflings-regular.eot') !== FALSE) {
+      $bootstrap[$fonts_dir . 'glyphicons-halflings-regular.eot'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+  }
+  return $bootstrap;
+}
+
+/**
+ * Translate a bootstrap array into writable files.
+ *
+ * @param  array  $bootstrap The bootstrap stuff
+ * @return boolean TRUE is for success, FALSE is for fail
+ *
+ */
+function _kalatheme_write_bootstrap($bootstrap) {
+  $library_path = drupal_realpath('sites/all/libraries');
+  foreach ($bootstrap as $key => $value) {
+    $dir = substr($key, 0, strrpos($key, '/'));
+    if (is_dir($library_path . DIRECTORY_SEPARATOR . $dir) || mkdir($library_path . DIRECTORY_SEPARATOR . $dir, 0777, TRUE)) {
+      if (!file_put_contents($library_path . DIRECTORY_SEPARATOR . $key, $value)) {
+        return FALSE;
+      }
     }
     else {
       return FALSE;
@@ -363,4 +449,15 @@ function _kalatheme_backend_check() {
     ));;
   }
   return TRUE;
+}
+
+/**
+ * Returns some stuff to append to the top of Bootswatch libraries because
+ * we need version info for the libraries API
+ */
+function _kalatheme_lib_header() {
+  $output  = "/*! \n";
+  $output .= " * Bootstrap v3.0.0 \n";
+  $output .= " */ \n";
+  return $output;
 }
