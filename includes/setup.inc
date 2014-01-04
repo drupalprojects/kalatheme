@@ -64,7 +64,7 @@ function kalatheme_setup_form($form, &$form_state) {
       'spacelab' => t('Spacelab'),
       'united' => t('United'),
       'yeti' => t('Yeti'),
-      //'custom' => t('Custom'), // @todo: got some stuff in there but need to improve it
+      'custom' => t('Custom'),
     ),
     '#ajax' => array(
       'callback' => '_kalatheme_bootstrap_preview',
@@ -82,7 +82,10 @@ function kalatheme_setup_form($form, &$form_state) {
   $form['bootstrap_upload'] = array(
     '#type' => 'file',
     '#title' => t('Custom Bootstrap library'),
-    '#description' => t('Upload any valid bootstrap library here to complete your install. For example: %filename from your local computer', array('%filename' => 'name.tar.gz')),
+    '#description' => t('Upload any <a href="@valid_doc">valid bootstrap library</a> here to complete your install. For example: %filename from your local computer. <strong>DISCLAIMER:</strong> This works pretty good with some libraries but not so great with others. Use this to kick start your project not as a end-all-be-all tool. ', array(
+      '%filename' => 'name.tar.gz',
+      '@valid_doc' => 'http://www.drupal.org/project/kalatheme',
+    )),
     // This #states rule says that the "file upload" field should only
     // be shown if the "bootstrap_library" form element is set to "custom".
     '#states' => array(
@@ -204,14 +207,15 @@ function kalatheme_setup_form_submit($form, &$form_state) {
   // Build basic subtheme
   $subtheme = _kalatheme_build_subtheme(addslashes($form_state['values']['subtheme_name']));
   if ($form_state['values']['font_awesome']) {
-    if (!_kalatheme_build_fontawesome($subtheme, $machine_name)) {
-      // form_set_error should happen at a lower level
+    if (!_kalatheme_build_fontawesome($machine_name, $subtheme)) {
       return;
     }
   }
   // Get other files from custom bootsrap library for subtheme
   if ($bootlib == 'custom') {
-    // @todo: crazy shit
+    if (!_kalatheme_build_custom_stuff($machine_name, $directory, $files, $subtheme)) {
+      return;
+    }
   }
 
   // Try to write the subtheme and bootstrap library to tmp
@@ -352,8 +356,8 @@ function _kalatheme_write_subtheme($subtheme) {
  * @return boolean TRUE is for success, FALSE is for fail
  *
  */
-function _kalatheme_build_bootstrap($subtheme, $directory, $files) {
-  $bootname = $subtheme . "_bootstrap";
+function _kalatheme_build_bootstrap($machine_name, $directory, $files) {
+  $bootname = $machine_name . "_bootstrap";
   $css_dir = $bootname . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR;
   $js_dir = $bootname . DIRECTORY_SEPARATOR . "js" . DIRECTORY_SEPARATOR;
   $fonts_dir = $bootname . DIRECTORY_SEPARATOR . "fonts" . DIRECTORY_SEPARATOR;
@@ -420,11 +424,11 @@ function _kalatheme_write_bootstrap($bootstrap) {
  * @return boolean TRUE is for success, FALSE is for fail
  *
  */
-function _kalatheme_build_fontawesome(&$subtheme, $machine_name) {
+function _kalatheme_build_fontawesome($machine_name, &$subtheme) {
   $local_cache = update_manager_file_get(DEFAULT_FONTAWESOME_URL);
   if (!$local_cache) {
     form_set_error($field, t('Unable to retrieve Bootstrap from %url.', array('%url' => DEFAULT_BOOTSTRAP_URL)));
-    return;
+    return FALSE;
   }
   $directory = _kalatheme_extract_directory('font_awesome');
   try {
@@ -432,12 +436,12 @@ function _kalatheme_build_fontawesome(&$subtheme, $machine_name) {
   }
   catch (Exception $e) {
     form_set_error($field, $e->getMessage());
-    return;
+    return FALSE;
   }
   $files = $archive->listContents();
   if (!$files) {
     form_set_error($field, t('Provided archive contains no files.'));
-    return;
+    return FALSE;
   }
   foreach ($files as $file) {
     if (strpos($file, '.css') !== FALSE && !is_dir($directory . DIRECTORY_SEPARATOR . $file)) {
@@ -451,6 +455,79 @@ function _kalatheme_build_fontawesome(&$subtheme, $machine_name) {
   $output .= "\n";
   $subtheme[$machine_name . DIRECTORY_SEPARATOR . $machine_name . '.info'] .= $output;
   return $subtheme;
+}
+
+/**
+ * Deep magic that goes through a valid custom bootstrap library and tries to
+ * add in the extra stuff files correctly
+ *
+ * @param string $machine_name the name of the subtheme
+ * @param string $directory    the location of the files on disk
+ * @param array  $files        the files in the custom library
+ * @param array  $subtheme     the subtheme to be written
+ *
+ */
+function _kalatheme_build_custom_stuff($machine_name, $directory, $files, &$subtheme) {
+  // Get rid of all the bullshit
+  foreach ($files as $index => $file) {
+    if (_kalatheme_strip_types($file)) {
+      unset($files[$index]);
+    }
+  }
+  foreach ($files as $index => $file) {
+    if (_kalatheme_strip_files($file)) {
+      unset($files[$index]);
+    }
+  }
+  // For now we are going to focus on splitting the rest of the files up into
+  // asset classes. We might want to either abstract these functions in the
+  // future or add more asset classes.
+  $stuff = array(
+    'css/' => 'stylesheets[all][]',
+    'js/'  => 'scripts[]',
+    'img/' => NULL,
+  );
+  foreach ($stuff as $type => $info_prefix) {
+    $type_dir = $machine_name . DIRECTORY_SEPARATOR . $type;
+    foreach ($files as $index => $file) {
+      if (strpos($file, $type) !== FALSE) {
+        $type_file = substr($file, strrpos($file, $type));
+        $type_file = str_replace($type, '', $type_file);
+        $subtheme[$type_dir . $type_file] = file_get_contents($directory . DIRECTORY_SEPARATOR . $file);
+        if ($info_prefix) {
+          $subtheme[$machine_name . DIRECTORY_SEPARATOR . $machine_name . '.info'] .= $info_prefix . " = " . $type . $type_file . " \n";
+        }
+      }
+    }
+  }
+  return $subtheme;
+}
+
+/**
+ * Prune custom library, removing types we don't want
+ */
+function _kalatheme_strip_types($file) {
+  $wanted_types = array('.css', '.js', '.png', '.jpg');
+  foreach ($wanted_types as $type) {
+    if (stripos($file, $type) !== FALSE) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+/**
+ * Prune custom library, removing files we don't want
+ */
+function _kalatheme_strip_files($file) {
+  // @todo might want to update this over time?
+  $unwanted_files = array('bootstrap', 'jquery.js', 'jquery.min.js');
+  foreach ($unwanted_files as $type) {
+    if (stripos($file, $type) !== FALSE) {
+      return TRUE;
+    }
+  }
+  return FALSE;
 }
 
 /**
