@@ -165,7 +165,7 @@ function kalatheme_process_page(&$variables) {
 
   // If panels arent being used at all.
   $variables['no_panels'] = FALSE;
-  if (!isset($variables['page']['content']['system_main']['main']['#markup']) || (strpos($variables['page']['content']['system_main']['main']['#markup'], 'panel-panel') === FALSE)) {
+  if (!isset($variables['page']['content']['system_main']['main']['#markup']) || (strpos($variables['page']['content']['system_main']['main']['#markup'], 'panel-display') === FALSE)) {
     $variables['no_panels'] = TRUE;
   }
 
