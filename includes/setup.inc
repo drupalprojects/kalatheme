@@ -426,6 +426,7 @@ function _kalatheme_write_bootstrap($bootstrap) {
  */
 function _kalatheme_build_fontawesome($machine_name, &$subtheme) {
   $local_cache = update_manager_file_get(DEFAULT_FONTAWESOME_URL);
+  $field = NULL;
   if (!$local_cache) {
     form_set_error($field, t('Unable to retrieve Bootstrap from %url.', array('%url' => DEFAULT_BOOTSTRAP_URL)));
     return FALSE;
