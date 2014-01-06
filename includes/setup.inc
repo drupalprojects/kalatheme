@@ -228,8 +228,8 @@ function kalatheme_setup_form_submit($form, &$form_state) {
   $theme_path = drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/')));
   $library_path = drupal_realpath('sites/all/libraries');
   $stuff = array(
-    sys_get_temp_dir() . DIRECTORY_SEPARATOR . $machine_name =>  $theme_path . DIRECTORY_SEPARATOR . $machine_name,
-    sys_get_temp_dir() . DIRECTORY_SEPARATOR . $machine_name . '_bootstrap' =>  $library_path . DIRECTORY_SEPARATOR . $machine_name . '_bootstrap',
+    file_directory_temp() . DIRECTORY_SEPARATOR . $machine_name =>  $theme_path . DIRECTORY_SEPARATOR . $machine_name,
+    file_directory_temp() . DIRECTORY_SEPARATOR . $machine_name . '_bootstrap' =>  $library_path . DIRECTORY_SEPARATOR . $machine_name . '_bootstrap',
   );
   if (_kalatheme_backend_check()) {
     // Move subtheme and bootstrap out of temp and into drupal places else
