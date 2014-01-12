@@ -8,12 +8,11 @@
 // Constants and stuff
 define('DEFAULT_BOOTSTRAP_URL', 'http://github.com/twbs/bootstrap/releases/download/v3.0.3/bootstrap-3.0.3-dist.zip');
 define('DEFAULT_BOOTSWATCH_URL', 'http://bootswatch.com');
-define('DEFAULT_FONTAWESOME_URL', 'http://fontawesome.io/assets/font-awesome-4.0.3.zip');
 
 /**
  * Form for kalatheme setup
  */
-function kalatheme_setup_form($form, &$form_state) {
+function kalatheme_setup_form() {
   if (_kalatheme_backend_check()) {
     $form['backend_check'] = array(
       '#prefix' => '<div class="alert alert-success">',
@@ -111,7 +110,7 @@ function kalatheme_setup_form($form, &$form_state) {
   $form['actions'] = array('#type' => 'actions');
   $form['actions']['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Set me up!'),
+    '#value' => t('Dress me up!'),
   );
   return $form;
 }
@@ -127,7 +126,6 @@ function kalatheme_setup_form_validate($form, &$form_state) {
   if (!preg_match($regex, $form_state['values']['subtheme_name'])) {
     form_set_error('subtheme_name', t('Please enter a valid machine name'));
   }
-
   // Make sure the user has uploaded an archive
   // @todo validate this is actually a bootstrap library
   if ($form_state['values']['bootstrap_library'] == 'custom') {
@@ -139,6 +137,8 @@ function kalatheme_setup_form_validate($form, &$form_state) {
 
 /**
  * Form submission handler for kalatheme_setup_form().
+ *
+ * Uses BATCH API for file processing and HTTP request stuffs
  *
  * Uploads the file attached to the form, then attempts to extract the archive
  * into a temporary location and verify it. Verifies the archive is a valid
@@ -152,76 +152,396 @@ function kalatheme_setup_form_validate($form, &$form_state) {
  * @see kalatheme_setup_form_validate()
  */
 function kalatheme_setup_form_submit($form, &$form_state) {
-  // Let's borrow some stuff
-  module_load_include('inc', 'update', 'update.manager');
-
-  // Extract Bootstrap library to tmp to prepare for STUFF
-  $bootlib = $form_state['values']['bootstrap_library'];
-  if ($bootlib !== 'custom') {
-    $local_cache = update_manager_file_get(DEFAULT_BOOTSTRAP_URL);
-    if (!$local_cache) {
-      form_set_error($field, t('Unable to retrieve Bootstrap from %url.', array('%url' => DEFAULT_BOOTSTRAP_URL)));
-      return;
-    }
-  }
-  else {
-    if ($_FILES['files']['name']['bootstrap_upload']) {
-      $validators = array('file_validate_extensions' => array(archiver_get_extensions()));
-      $field = 'bootstrap_upload';
-      if (!($finfo = file_save_upload($field, $validators, NULL, FILE_EXISTS_REPLACE))) {
-        // Failed to upload the file. file_save_upload() calls form_set_error() on
-        // failure.
-        return;
-      }
-      $local_cache = $finfo->uri;
-    }
-  }
+  // Let's begin to define some opps
+  $operations = array();
+  $batch = array(
+    'finished' => '_kalatheme_batch_done',
+    'title' => t('Kalasubthemeing...'),
+    'init_message' => t('Starting.'),
+    'progress_message' => t('Kalathemed @current of @total in @elapsed'),
+    'error_message' => t('Kalasubthemeing has resulted in the unspeakable:'),
+    'file' => drupal_get_path('theme', 'kalatheme') . '/includes/setup.inc',
+  );
+  // Grab some vars
+  $enable = $form_state['values']['enable_theme'];
   $machine_name = strtolower(addslashes($form_state['values']['subtheme_name']));
   $machine_name = preg_replace('@[^a-z0-9_]+@', '_', $machine_name);
-  $directory = _kalatheme_extract_directory($machine_name);
-  try {
-    $archive = update_manager_archive_extract($local_cache, $directory);
+  $bootlib = $form_state['values']['bootstrap_library'];
+  // Handle processing of URL vs upload
+  if ($bootlib === 'custom' && $_FILES['files']['name']['bootstrap_upload']) {
+    $validators = array('file_validate_extensions' => array(archiver_get_extensions()));
+    $field = 'bootstrap_upload';
+    $finfo = file_save_upload($field, $validators, NULL, FILE_EXISTS_REPLACE);
+    $local_cache = $finfo->uri;
+    $operations[] = array('_kalatheme_get_bootstrap', array($local_cache, $machine_name, $enable));
   }
-  catch (Exception $e) {
-    form_set_error($field, $e->getMessage());
-    return;
+  else {
+    $operations[] = array('_kalatheme_get_bootstrap', array(FALSE, $machine_name, $enable));
   }
-  $files = $archive->listContents();
-  if (!$files) {
-    form_set_error($field, t('Provided archive contains no files.'));
-    return;
-  }
-  // Build basic Bootstrap library from input
-  $bootstrap = _kalatheme_build_bootstrap($machine_name, $directory, $files);
+  $operations[] = array('_kalatheme_build_bootstrap', array($machine_name, FALSE, FALSE));
   // Customize Bootstrap CSS from Bootswatch if applicable
   if ($bootlib != 'custom' && $bootlib != 'default') {
-    $bootname = $machine_name . "_bootstrap";
-    $css_dir = $bootname . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR;
-    $bootswatch = DEFAULT_BOOTSWATCH_URL . '/' . $bootlib;
-    $bootstrap[$css_dir . 'bootstrap.css'] = file_get_contents(system_retrieve_file($bootswatch . '/bootstrap.css', 'temporary://bs.css', FALSE, FILE_EXISTS_REPLACE));
-    $bootstrap[$css_dir . 'bootstrap.css'] = _kalatheme_lib_header() . $bootstrap[$css_dir . 'bootstrap.css'];
-    $bootstrap[$css_dir . 'bootstrap.min.css'] = file_get_contents(system_retrieve_file($bootswatch . '/bootstrap.min.css', 'temporary://bm.css', FALSE, FILE_EXISTS_REPLACE));
-    $bootstrap[$css_dir . 'bootstrap.min.css'] = _kalatheme_lib_header() . $bootstrap[$css_dir . 'bootstrap.min.css'];
-  }
-
-  // Build basic subtheme
-  $subtheme = _kalatheme_build_subtheme(addslashes($form_state['values']['subtheme_name']));
-  if ($form_state['values']['font_awesome']) {
-    if (!_kalatheme_build_fontawesome($machine_name, $subtheme)) {
-      return;
+    $files = array('bootstrap.css', 'bootstrap.min.css');
+    foreach ($files as $file) {
+      $operations[] = array('_kalatheme_get_bootswatch', array($bootlib, $machine_name, $file));
     }
+  }
+  // Build basic subtheme
+  $operations[] = array('_kalatheme_build_subtheme', array(addslashes($form_state['values']['subtheme_name'])));
+  // Get FontAwesome
+  if ($form_state['values']['font_awesome']) {
+    $operations[] = array('_kalatheme_get_fontawesome', array($machine_name));
+    $operations[] = array('_kalatheme_build_fontawesome', array($machine_name, FALSE, FALSE));
   }
   // Get other files from custom bootsrap library for subtheme
-  if ($bootlib == 'custom') {
-    if (!_kalatheme_build_custom_stuff($machine_name, $directory, $files, $subtheme)) {
-      return;
+  if ($bootlib === 'custom') {
+    $operations[] = array('_kalatheme_build_custom_stuff', array($machine_name, FALSE, FALSE));
+  }
+  // Dress you up in my love
+  $operations[] = array('_kalatheme_dress_you_up', array($machine_name));
+  // Build the batch and cook it
+  $batch['operations'] = $operations;
+  batch_set($batch);
+}
+
+/**
+ * Gets Bootstrap from file upload or the tubes. Sets some other things to be
+ * used later on in the batch.
+ *
+ * @param $file
+ *   The location of Bootstrip lib if uploaded
+ * @param $machine_name
+ *   The machine name of the subtheme
+ * @param $files
+ *   Enable the theme at end of processing or not
+ * @param $context
+ *   Batch things
+ */
+function _kalatheme_get_bootstrap($upload = FALSE, $machine_name, $enable, &$context) {
+  $context['results']['machine_name'] = $machine_name;
+  $context['results']['enable'] = $enable;
+  // Let's borrow some stuff
+  module_load_include('inc', 'update', 'update.manager');
+  $context['message'] = t('Getting Bootstrap Library');
+  // Extract Bootstrap library to tmp to prepare for STUFF
+  $local_file = ($upload == FALSE) ? update_manager_file_get(DEFAULT_BOOTSTRAP_URL) : $upload;
+  $context['results']['bootdir'] = _kalatheme_extract_directory($machine_name);
+  $archive = update_manager_archive_extract($local_file, $context['results']['bootdir']);
+  // Verify the library, kind of
+  $files = $archive->listContents();
+  $valid = FALSE;
+  // Check that it contains needed files
+  foreach ($files as $file) {
+    if (stripos($file, 'bootstrap.min.css') !== FALSE || stripos($file, 'bootstrap.css') !== FALSE) {
+      $check_file = $file;
+      $valid = TRUE;
+      break;
     }
   }
+  // Check that needed file exists
+  if (!file_exists($context['results']['bootdir'] . DIRECTORY_SEPARATOR . $check_file)) {
+    $valid = FALSE;
+  }
+  if (!$valid) {
+    // @todo some sort of dyin and reportin
+  }
+  else {
+    $context['results']['bootfiles'] = $files;
+  }
+}
 
+/**
+ * Builds an array mimicing the Bootstrap archive
+ *
+ * @param $machine_name
+ *   The machine name of the subtheme
+ * @param $directory
+ *   The location of the temp bootstrap lib
+ * @param $files
+ *   An array of files
+ * @param $context
+ *   Batch things
+ *
+ */
+function _kalatheme_build_bootstrap($machine_name, $directory = FALSE, $files = FALSE, &$context) {
+  $context['message'] = t('Building Bootstrap Library');
+  // Get results if in batch and not passed in
+  if (!$directory && isset($context['results']['bootdir'])) {
+    $directory = $context['results']['bootdir'];
+  }
+  if (!$files && isset($context['results']['bootfiles'])) {
+    $files = $context['results']['bootfiles'];
+  }
+  // Define some thing for better readables
+  $bootname = $machine_name . "_bootstrap";
+  $css_dir = $bootname . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR;
+  $js_dir = $bootname . DIRECTORY_SEPARATOR . "js" . DIRECTORY_SEPARATOR;
+  $fonts_dir = $bootname . DIRECTORY_SEPARATOR . "fonts" . DIRECTORY_SEPARATOR;
+  $bootstrap = array();
+  // @todo: Gotta be a sexier way to do this?
+  foreach ($files as $key => $value) {
+    // CSS
+    if (stripos($value, 'bootstrap.css') !== FALSE) {
+      $bootstrap[$css_dir . 'bootstrap.css'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    if (stripos($value, 'bootstrap.min.css') !== FALSE) {
+      $bootstrap[$css_dir . 'bootstrap.min.css'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    // JS
+    if (stripos($value, 'bootstrap.js') !== FALSE) {
+      $bootstrap[$js_dir . 'bootstrap.js'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    if (stripos($value, 'bootstrap.min.js') !== FALSE) {
+      $bootstrap[$js_dir . 'bootstrap.min.js'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    // FONTS
+    if (stripos($value, 'glyphicons-halflings-regular.woff') !== FALSE) {
+      $bootstrap[$fonts_dir . 'glyphicons-halflings-regular.woff'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    if (stripos($value, 'glyphicons-halflings-regular.ttf') !== FALSE) {
+      $bootstrap[$fonts_dir . 'glyphicons-halflings-regular.ttf'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    if (stripos($value, 'glyphicons-halflings-regular.svg') !== FALSE) {
+      $bootstrap[$fonts_dir . 'glyphicons-halflings-regular.svg'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+    if (stripos($value, 'glyphicons-halflings-regular.eot') !== FALSE) {
+      $bootstrap[$fonts_dir . 'glyphicons-halflings-regular.eot'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
+    }
+  }
+  $context['results']['bootstrap'] = $bootstrap;
+}
+
+/**
+ * Gets Bootswatch CSS files and overwrites the defaults
+ *
+ * @param $bootlib
+ *   The machine name of the subtheme
+ * @param $machine_name
+ *   The machine name of the subtheme
+ * @param $file
+ *   File to be added
+ * @param $context
+ *   Batch things
+ *
+ */
+function _kalatheme_get_bootswatch($bootlib, $machine_name, $file, &$context) {
+  // Let's borrow some stuff
+  $context['message'] = t('Customizing Bootstrap Library');
+  $bootname = $machine_name . "_bootstrap";
+  $css_dir = $bootname . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR;
+  $bootswatch = DEFAULT_BOOTSWATCH_URL . '/' . $bootlib . '/';
+  $trying = TRUE;
+  // Try it until it works
+  while ($trying) {
+    $bootswatch_file = system_retrieve_file($bootswatch . $file, 'temporary://' . $file, FALSE, FILE_EXISTS_REPLACE);
+    // We've got a local path
+    if ($bootswatch_file != FALSE) {
+      // Check to make sure we actually got something
+      if (file_exists('temporary://' . $file)) {
+        // Overwrite existing bootstrap file
+        // Add a header with bootstrap 3 info so it is recongized by libraies API
+        // Do some file clean up
+        // Remove error messages that may have accrued in previous attempts
+        $context['results']['bootstrap'][$css_dir . $file] = file_get_contents($bootswatch_file);
+        $context['results']['bootstrap'][$css_dir . $file] = _kalatheme_lib_header() . $context['results']['bootstrap'][$css_dir . $file];
+        unlink('temporary://' . $file);
+        // @todo might want to consider something else here?
+        drupal_get_messages(NULL, TRUE);
+        $trying = FALSE;
+      }
+    }
+  }
+}
+
+/**
+ * Construct an array of subtheme things.
+ *
+ * @param $name
+ *   The subtheme name
+ * @param $context
+ *   Batch things
+ *
+ */
+function _kalatheme_build_subtheme($name, &$context) {
+  $context['message'] = t('Building Subtheme');
+  $subtheme = array();
+  $machine_name = strtolower($name);
+  $machine_name = preg_replace('@[^a-z0-9_]+@', '_', $machine_name);
+  // Basic Info File
+  $output  = "name = " . $name . " \n";
+  $output .= "description = A Kalatheme subtheme powered by Twitter Bootstrap & Science. \n";
+  $output .= "base theme = kalatheme \n";
+  $output .= "core = 7.x \n";
+  $output .= "\n";
+  $output .= "regions[content] = Content \n";
+  $output .= "\n";
+  $output .= "stylesheets[all][] = css/main.css \n";
+  $output .= "\n";
+  $subtheme[$machine_name . DIRECTORY_SEPARATOR . $machine_name . '.info'] = $output;
+  // Basic CSS File
+  $output  = "/*! \n";
+  $output .= " * Kalatheme (http://drupal.org/project/kalatheme) \n";
+  $output .= " */ \n";
+  $subtheme[$machine_name . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'main.css'] = $output;
+  // Basic Template File
+  $output  = "<?php \n";
+  $output .= "/** \n";
+  $output .= " * @file \n";
+  $output .= " * Primary pre/preprocess functions and alterations.\n";
+  $output .= " */ \n";
+  $subtheme[$machine_name . DIRECTORY_SEPARATOR . 'template.php'] = $output;
+  $context['results']['subtheme'] = $subtheme;
+}
+
+/**
+ * Download the FontAwesome library
+ *
+ * @param $machine_name
+ *   The machine name of the subtheme
+ * @param $context
+ *   Batch things
+ *
+ */
+function _kalatheme_get_fontawesome($machine_name, &$context) {
+  $context['message'] = t('Downloading FontAwesome');
+  // Let's borrow some stuff
+  module_load_include('inc', 'update', 'update.manager');
+  $local_file = drupal_realpath(drupal_get_path('theme', 'kalatheme') . '/fonts/font-awesome.zip');
+  $context['results']['fontdir'] = _kalatheme_extract_directory('font_awesome');
+  $archive = update_manager_archive_extract($local_file, $context['results']['fontdir']);
+  // Do some basic validation
+  $files = $archive->listContents();
+  $valid = FALSE;
+  // Check that it contains needed files
+  foreach ($files as $file) {
+    if (stripos($file, 'font-awesome.min.css') !== FALSE || stripos($file, 'FontAwesome.otf') !== FALSE) {
+      $check_file = $file;
+      $valid = TRUE;
+      break;
+    }
+  }
+  // Check that needed file exists
+  if (!file_exists($context['results']['fontdir'] . DIRECTORY_SEPARATOR . $check_file)) {
+    $valid = FALSE;
+  }
+  if (!$valid) {
+    // @todo some sort of dyin and reportin
+  }
+  else {
+    $context['results']['fontfiles'] = $files;
+  }
+}
+
+/**
+ * Build FontAwesome into the subtheme
+ *
+ * @param $machine_name
+ *   The machine name of the subtheme
+ * @param $directory
+ *   The location of the temp bootstrap lib
+ * @param $files
+ *   An array of files
+ * @param $context
+ *   Batch things
+ *
+ */
+function _kalatheme_build_fontawesome($machine_name, $directory = FALSE, $files = FALSE, &$context) {
+  $context['message'] = t('Adding FontAwesome to your subtheme');
+  // Get results if in batch and not passed in
+  if (!$directory && isset($context['results']['fontdir'])) {
+    $directory = $context['results']['fontdir'];
+  }
+  if (!$archive && isset($context['results']['fontfiles'])) {
+    $files = $context['results']['fontfiles'];
+  }
+  foreach ($files as $file) {
+    if (strpos($file, '.css') !== FALSE && !is_dir($directory . DIRECTORY_SEPARATOR . $file)) {
+      $context['results']['subtheme'][$machine_name . DIRECTORY_SEPARATOR . 'css' . substr($file, strrpos($file, '/'))] = file_get_contents($directory . DIRECTORY_SEPARATOR . $file);
+    }
+    if (strpos($file, '/fonts/') !== FALSE && !is_dir($directory . DIRECTORY_SEPARATOR . $file)) {
+      $context['results']['subtheme'][$machine_name . DIRECTORY_SEPARATOR . 'fonts' . substr($file, strrpos($file, '/'))] = file_get_contents($directory . DIRECTORY_SEPARATOR . $file);
+    }
+  }
+  $output  = "stylesheets[all][] = css/font-awesome.min.css \n";
+  $output .= "\n";
+  $context['results']['subtheme'][$machine_name . DIRECTORY_SEPARATOR . $machine_name . '.info'] .= $output;
+}
+
+/**
+ * Deep magic that goes through a valid custom bootstrap library and tries to
+ * add in the extra stuff files correctly
+ *
+ * @param $machine_name
+ *   The machine name of the subtheme
+ * @param $directory
+ *   The location of the temp bootstrap lib
+ * @param $archive
+ *   An archive object of files
+ * @param $context
+ *   Batch things
+ *
+ */
+function _kalatheme_build_custom_stuff($machine_name, $directory = FALSE, $archive = FALSE, &$context) {
+  $context['message'] = t('Pulling in custom stuff');
+  // Get results if in batch and not passed in
+  if (!$directory && isset($context['results']['bootdir'])) {
+    $directory = $context['results']['bootdir'];
+  }
+  if (!$files && isset($context['results']['bootfiles'])) {
+    $files = $context['results']['bootfiles'];
+  }
+  // Get rid of all the bullshit
+  foreach ($files as $index => $file) {
+    if (_kalatheme_strip_types($file)) {
+      unset($files[$index]);
+    }
+  }
+  foreach ($files as $index => $file) {
+    if (_kalatheme_strip_files($file)) {
+      unset($files[$index]);
+    }
+  }
+  // For now we are going to focus on splitting the rest of the files up into
+  // asset classes. We might want to either abstract these functions in the
+  // future or add more asset classes.
+  $stuff = array(
+    'css/' => 'stylesheets[all][]',
+    'js/'  => 'scripts[]',
+    'img/' => NULL,
+  );
+  foreach ($stuff as $type => $info_prefix) {
+    $type_dir = $machine_name . DIRECTORY_SEPARATOR . $type;
+    foreach ($files as $index => $file) {
+      if (strpos($file, $type) !== FALSE) {
+        $type_file = substr($file, strrpos($file, $type));
+        $type_file = str_replace($type, '', $type_file);
+        if (!isset($context['results']['subtheme'][$type_dir . $type_file])) {
+          $context['results']['subtheme'][$type_dir . $type_file] = file_get_contents($directory . DIRECTORY_SEPARATOR . $file);
+          if ($info_prefix) {
+            $context['results']['subtheme'][$machine_name . DIRECTORY_SEPARATOR . $machine_name . '.info'] .= $info_prefix . " = " . $type . $type_file . " \n";
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Complete the subtheme construction by either writing the subtheme and library
+ * to the correct location of providing a download link of the archive. Enables
+ * the theme and sets it to the default theme if option seleted.
+ *
+ * @param $machine_name
+ *   The machine name of the subtheme
+ * @param $context
+ *   Batch things
+ */
+function _kalatheme_dress_you_up($machine_name, &$context) {
+  $context['message'] = t('Dress you up in my love');
+  // Get results if in batch and not passed in
   // Try to write the subtheme and bootstrap library to tmp
-  if (!_kalatheme_write_subtheme($subtheme) || !_kalatheme_write_bootstrap($bootstrap)) {
-    form_set_error('bootstrap_library', t('Could not write stuff to tmp. That is weird.'));
-    return;
+  if (!_kalatheme_write_stuff($context['results']['subtheme']) || !_kalatheme_write_stuff($context['results']['bootstrap'])) {
+    // @todo: Help
   }
   // Move from temp to legitness or output to the user for DL
   $booted = TRUE;
@@ -270,70 +590,40 @@ function kalatheme_setup_form_submit($form, &$form_state) {
       }
     }
     $zip->close();
-    drupal_goto(variable_get('file_public_path') . DIRECTORY_SEPARATOR . $machine_name . ".zip");
-    return;
+    $booted = FALSE;
   }
-
   // Enable theme if applicable
-  $message = '<i class="fa fa-thumbs-up fa-2x">Your new theme is installed but not yet enabled. It should now appear below.</i>';
-  if ($form_state['values']['enable_theme'] && $booted) {
+  if ($context['results']['enable'] && $booted) {
     system_rebuild_theme_data();
     drupal_theme_rebuild();
     theme_enable(array($machine_name));
     variable_set('theme_default', $machine_name);
-    $message = '<i class="fa fa-thumbs-up fa-2x">Your new subtheme is enabled! Looking good in the neighborhood!!</i>';
+    $context['results']['message'] = '<i class="fa fa-thumbs-up fa-2x">Your new subtheme is enabled! Looking good in the neighborhood!!</i>';
+    cache_clear_all();
   }
-
-  // Not the best but we want the user to see their new stuff.
-  cache_clear_all();
-
-  // Kick it back
-  drupal_set_message(t($message), 'status', FALSE);
-  $form_state['redirect'] = 'admin/appearance';
-}
-
-/**
- * Construct an array of subtheme things.
- *
- * @param  string $name The subtehme name
- * @return array  $subtheme An array containng the files for the subtheme
- *
- */
-function _kalatheme_build_subtheme($name) {
-  $subtheme = array();
-  $machine_name = strtolower($name);
-  $machine_name = preg_replace('@[^a-z0-9_]+@', '_', $machine_name);
-
-  // Basic Info File
-  $output  = "name = " . $name . " \n";
-  $output .= "description = A Kalatheme subtheme powered by Twitter Bootstrap & Science. \n";
-  $output .= "base theme = kalatheme \n";
-  $output .= "core = 7.x \n";
-  $output .= "\n";
-  $output .= "regions[content] = Content \n";
-  $output .= "\n";
-  $output .= "stylesheets[all][] = css/main.css \n";
-  $output .= "\n";
-  $subtheme[$machine_name . DIRECTORY_SEPARATOR . $machine_name . '.info'] = $output;
-
-  // Basic CSS File
-  $output  = "/*! \n";
-  $output .= " * Kalatheme (http://drupal.org/project/kalatheme) \n";
-  $output .= " */ \n";
-  $subtheme[$machine_name . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'main.css'] = $output;
-
-  return $subtheme;
+  elseif (!$context['results']['enable'] && $booted) {
+    $context['results']['message'] = '<i class="fa fa-thumbs-up fa-2x">Your new theme is installed but not yet enabled. It should now appear below.</i>';
+  }
+  else {
+    $context['results']['message'] = t('We built your subtheme but you will need to install it <a href="@setup_url">manually</a>. You can download your new subtheme <a href="@download_link">here.</a>' , array(
+      '@setup_url' => 'http://drupal.org/project/kalatheme',
+      '@download_link' => url(variable_get('file_public_path') . DIRECTORY_SEPARATOR . $machine_name . ".zip"),
+    ));
+  }
 }
 
 /**
  * Translate a subtheme array into writable files.
  *
- * @param  array  $subtheme The subtheme stuff
- * @return boolean TRUE is for success, FALSE is for fail
+ * @param $stuff
+ *   Array of stuff to write
+ *
+ * @return
+ *   TRUE is for success, FALSE is for fail
  *
  */
-function _kalatheme_write_subtheme($subtheme) {
-  foreach ($subtheme as $key => $value) {
+function _kalatheme_write_stuff($stuff) {
+  foreach ($stuff as $key => $value) {
     $dir = substr($key, 0, strrpos($key, '/'));
     if (is_dir('temporary://' . $dir) || mkdir('temporary://' . $dir, 0777, TRUE)) {
       if (!file_put_contents('temporary://' . $key, $value)) {
@@ -348,160 +638,22 @@ function _kalatheme_write_subtheme($subtheme) {
 }
 
 /**
- * Move the bootstrap library from tmp to sites/all/libraries
- *
- * @param  string  $bootlib The machine name of the subtheme
- * @param  string  $directory The location of the temp bootstrap lib
- * @param  array   $files An array of the bootstral files
- * @return boolean TRUE is for success, FALSE is for fail
- *
+ * Clean up stuff post batch.
  */
-function _kalatheme_build_bootstrap($machine_name, $directory, $files) {
-  $bootname = $machine_name . "_bootstrap";
-  $css_dir = $bootname . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR;
-  $js_dir = $bootname . DIRECTORY_SEPARATOR . "js" . DIRECTORY_SEPARATOR;
-  $fonts_dir = $bootname . DIRECTORY_SEPARATOR . "fonts" . DIRECTORY_SEPARATOR;
-  $bootstrap = array();
-  // @todo: Gotta be a sexier way to do this?
-  foreach ($files as $key => $value) {
-    // CSS
-    if (stripos($value, 'bootstrap.css') !== FALSE) {
-      $bootstrap[$css_dir . 'bootstrap.css'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
-    }
-    if (stripos($value, 'bootstrap.min.css') !== FALSE) {
-      $bootstrap[$css_dir . 'bootstrap.min.css'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
-    }
-    // JS
-    if (stripos($value, 'bootstrap.js') !== FALSE) {
-      $bootstrap[$js_dir . 'bootstrap.js'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
-    }
-    if (stripos($value, 'bootstrap.min.js') !== FALSE) {
-      $bootstrap[$js_dir . 'bootstrap.min.js'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
-    }
-    // FONTS
-    if (stripos($value, 'glyphicons-halflings-regular.woff') !== FALSE) {
-      $bootstrap[$fonts_dir . 'glyphicons-halflings-regular.woff'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
-    }
-    if (stripos($value, 'glyphicons-halflings-regular.ttf') !== FALSE) {
-      $bootstrap[$fonts_dir . 'glyphicons-halflings-regular.ttf'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
-    }
-    if (stripos($value, 'glyphicons-halflings-regular.svg') !== FALSE) {
-      $bootstrap[$fonts_dir . 'glyphicons-halflings-regular.svg'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
-    }
-    if (stripos($value, 'glyphicons-halflings-regular.eot') !== FALSE) {
-      $bootstrap[$fonts_dir . 'glyphicons-halflings-regular.eot'] = file_get_contents($directory . DIRECTORY_SEPARATOR . $value);
-    }
+function _kalatheme_batch_done($success, $results, $operations) {
+  // Kick it back
+  if ($success) {
+    system_rebuild_theme_data();
+    drupal_theme_rebuild();
+    cache_clear_all();
+    drupal_set_message(t($results['message']), 'status', FALSE);
   }
-  return $bootstrap;
-}
-
-/**
- * Translate a bootstrap array into writable files.
- *
- * @param  array  $bootstrap The bootstrap stuff
- * @return boolean TRUE is for success, FALSE is for fail
- *
- */
-function _kalatheme_write_bootstrap($bootstrap) {
-  foreach ($bootstrap as $key => $value) {
-    $dir = substr($key, 0, strrpos($key, '/'));
-    if (is_dir('temporary://' . $dir) || mkdir('temporary://' . $dir, 0777, TRUE)) {
-      if (!file_put_contents('temporary://' . $key, $value)) {
-        return FALSE;
-      }
-    }
-    else {
-      return FALSE;
-    }
+  else {
+    // @todo need to provide better error handling before this really is
+    // relevant
+    drupal_set_message(t($results['message']), 'warning', FALSE);
   }
-  return TRUE;
-}
-
-/**
- * Build fontawesome support into subtheme
- *
- * @param  string  $subtheme The array of subtheme things
- * @return boolean TRUE is for success, FALSE is for fail
- *
- */
-function _kalatheme_build_fontawesome($machine_name, &$subtheme) {
-  $local_cache = update_manager_file_get(DEFAULT_FONTAWESOME_URL);
-  $field = NULL;
-  if (!$local_cache) {
-    form_set_error($field, t('Unable to retrieve Bootstrap from %url.', array('%url' => DEFAULT_BOOTSTRAP_URL)));
-    return FALSE;
-  }
-  $directory = _kalatheme_extract_directory('font_awesome');
-  try {
-    $archive = update_manager_archive_extract($local_cache, $directory);
-  }
-  catch (Exception $e) {
-    form_set_error($field, $e->getMessage());
-    return FALSE;
-  }
-  $files = $archive->listContents();
-  if (!$files) {
-    form_set_error($field, t('Provided archive contains no files.'));
-    return FALSE;
-  }
-  foreach ($files as $file) {
-    if (strpos($file, '.css') !== FALSE && !is_dir($directory . DIRECTORY_SEPARATOR . $file)) {
-      $subtheme[$machine_name . DIRECTORY_SEPARATOR . 'css' . substr($file, strrpos($file, '/'))] = file_get_contents($directory . DIRECTORY_SEPARATOR . $file);
-    }
-    if (strpos($file, '/fonts/') !== FALSE && !is_dir($directory . DIRECTORY_SEPARATOR . $file)) {
-      $subtheme[$machine_name . DIRECTORY_SEPARATOR . 'fonts' . substr($file, strrpos($file, '/'))] = file_get_contents($directory . DIRECTORY_SEPARATOR . $file);
-    }
-  }
-  $output  = "stylesheets[all][] = css/font-awesome.min.css \n";
-  $output .= "\n";
-  $subtheme[$machine_name . DIRECTORY_SEPARATOR . $machine_name . '.info'] .= $output;
-  return $subtheme;
-}
-
-/**
- * Deep magic that goes through a valid custom bootstrap library and tries to
- * add in the extra stuff files correctly
- *
- * @param string $machine_name the name of the subtheme
- * @param string $directory    the location of the files on disk
- * @param array  $files        the files in the custom library
- * @param array  $subtheme     the subtheme to be written
- *
- */
-function _kalatheme_build_custom_stuff($machine_name, $directory, $files, &$subtheme) {
-  // Get rid of all the bullshit
-  foreach ($files as $index => $file) {
-    if (_kalatheme_strip_types($file)) {
-      unset($files[$index]);
-    }
-  }
-  foreach ($files as $index => $file) {
-    if (_kalatheme_strip_files($file)) {
-      unset($files[$index]);
-    }
-  }
-  // For now we are going to focus on splitting the rest of the files up into
-  // asset classes. We might want to either abstract these functions in the
-  // future or add more asset classes.
-  $stuff = array(
-    'css/' => 'stylesheets[all][]',
-    'js/'  => 'scripts[]',
-    'img/' => NULL,
-  );
-  foreach ($stuff as $type => $info_prefix) {
-    $type_dir = $machine_name . DIRECTORY_SEPARATOR . $type;
-    foreach ($files as $index => $file) {
-      if (strpos($file, $type) !== FALSE) {
-        $type_file = substr($file, strrpos($file, $type));
-        $type_file = str_replace($type, '', $type_file);
-        $subtheme[$type_dir . $type_file] = file_get_contents($directory . DIRECTORY_SEPARATOR . $file);
-        if ($info_prefix) {
-          $subtheme[$machine_name . DIRECTORY_SEPARATOR . $machine_name . '.info'] .= $info_prefix . " = " . $type . $type_file . " \n";
-        }
-      }
-    }
-  }
-  return $subtheme;
+  drupal_goto('admin/appearance');
 }
 
 /**
@@ -568,10 +720,14 @@ function _kalatheme_extract_directory($name, $create = TRUE) {
  * Ajax callback that returns HTML to the setup form so that the user
  * can see a preview of the bootstrap library they are selecting.
  *
- * @param  [type] $form       Form
- * @param  [type] $form_state Form state
+ * @param $form
+ *   Form
+ * @param $form_state
+ *   Form state
  *
- * @return [type]             Updated form state to be merged back in
+ * @return
+ *   Updated form state to be merged back in
+ *
  */
 function _kalatheme_bootstrap_preview($form, &$form_state) {
   $theme = $form_state['values']['bootstrap_library'];
@@ -590,7 +746,8 @@ function _kalatheme_bootstrap_preview($form, &$form_state) {
  * We want to check if the webserver can write our stuff to the right places.
  * If it can't then we are going to tell the user what's up.
  *
- * @return [mixed] True if all good, message if no good
+ * @return
+ *   True if all good, message if no good
  */
 function _kalatheme_backend_check() {
   $theme_path = drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/')));
@@ -620,8 +777,12 @@ function _kalatheme_backend_check() {
 /**
  * Returns some stuff to append to the top of Bootswatch libraries because
  * we need version info for the libraries API
+ *
+ * @return
+ *   Basic header to go on custom libraries so they are detected properly
  */
 function _kalatheme_lib_header() {
+  // @todo get this to actually report the correct version?
   $output  = "/*! \n";
   $output .= " * Bootstrap v3.0.0 \n";
   $output .= " */ \n";
