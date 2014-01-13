@@ -23,7 +23,10 @@ function kalatheme_setup_form() {
   else {
     $form['backend_check'] = array(
       '#prefix' => '<div class="alert alert-danger">',
-      '#markup' => t("@backend_check", array('@backend_check' => _kalatheme_backend_check())),
+      '#markup' => t("If you want Kalatheme to be able to install and enable your subtheme for you please make sure that both @lib_path and @theme_path exist and are writable. Otherwise it will just give you an archive to download.", array(
+        '@lib_path' => is_dir('sites/all/libraries') ? 'sites/all/libraries' : 'sites/all',
+        '@theme_path' => drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/'))),
+      )),
       '#suffix' => '</div>',
     );
   }
@@ -163,7 +166,7 @@ function kalatheme_setup_form_submit($form, &$form_state) {
     'file' => drupal_get_path('theme', 'kalatheme') . '/includes/setup.inc',
   );
   // Grab some vars
-  $enable = $form_state['values']['enable_theme'];
+  $enable = (isset($form_state['values']['enable_theme'])) ? $form_state['values']['enable_theme'] : FALSE;
   $machine_name = strtolower(addslashes($form_state['values']['subtheme_name']));
   $machine_name = preg_replace('@[^a-z0-9_]+@', '_', $machine_name);
   $bootlib = $form_state['values']['bootstrap_library'];
@@ -751,27 +754,8 @@ function _kalatheme_bootstrap_preview($form, &$form_state) {
  */
 function _kalatheme_backend_check() {
   $theme_path = drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/')));
-  $library_path = drupal_realpath('sites/all/libraries');
-  // Create paths if needed
-  // $theme_path should already exist
-  if (!$library_path) {
-    if (!mkdir(DRUPAL_ROOT . "/sites/all/libraries", 0777, TRUE)) {
-      return t("If you want Kalatheme to be able to install and enable your subtheme for you please make sure that both @lib_path and @theme_path exist and are writable. Otherwise it will just give you an achive to download.", array(
-        '@lib_path' => $library_path,
-        '@theme_path' => $theme_path,
-      ));;
-    }
-    $library_path = drupal_realpath('sites/all/libraries');
-  }
-  // Check if directories are raedy to receive a payload
-  // @todo this needs a lot more testing, always seems to be true on kalabox
-  if (!file_prepare_directory($theme_path) || !file_prepare_directory($library_path)) {
-    return t("If you want Kalatheme to be able to install and enable your subtheme for you please make sure that both @lib_path and @theme_path exist and are writable. Otherwise it will just give you an achive to download.", array(
-      '@lib_path' => $library_path,
-      '@theme_path' => $theme_path,
-    ));;
-  }
-  return TRUE;
+  $libraries_dir = (is_dir('sites/all/libraries')) ? 'sites/all/libraries' : 'sites/all';
+  return is_writable(drupal_realpath($libraries_dir)) && is_writable(drupal_realpath($theme_path));
 }
 
 /**
