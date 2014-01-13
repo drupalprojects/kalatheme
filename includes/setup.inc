@@ -8,6 +8,7 @@
 // Constants and stuff
 define('DEFAULT_BOOTSTRAP_URL', 'http://github.com/twbs/bootstrap/releases/download/v3.0.3/bootstrap-3.0.3-dist.zip');
 define('DEFAULT_BOOTSWATCH_URL', 'http://bootswatch.com');
+define('DEFAULT_FONTAWESOME_URL', 'http://fontawesome.io/./assets/font-awesome-4.0.3.zip');
 
 /**
  * Form for kalatheme setup
@@ -227,6 +228,8 @@ function _kalatheme_get_bootstrap($upload = FALSE, $machine_name, $enable, &$con
   module_load_include('inc', 'update', 'update.manager');
   $context['message'] = t('Getting Bootstrap Library');
   // Extract Bootstrap library to tmp to prepare for STUFF
+  // @todo: we might want to move this over to the file_put_contents treatment
+  // we are doing for bootswatch and fontawesome at some point
   $local_file = ($upload == FALSE) ? update_manager_file_get(DEFAULT_BOOTSTRAP_URL) : $upload;
   $context['results']['bootdir'] = _kalatheme_extract_directory($machine_name);
   $archive = update_manager_archive_extract($local_file, $context['results']['bootdir']);
@@ -333,23 +336,22 @@ function _kalatheme_get_bootswatch($bootlib, $machine_name, $file, &$context) {
   $bootname = $machine_name . "_bootstrap";
   $css_dir = $bootname . DIRECTORY_SEPARATOR . "css" . DIRECTORY_SEPARATOR;
   $bootswatch = DEFAULT_BOOTSWATCH_URL . '/' . $bootlib . '/';
+  $local_file = 'temporary://' . $file;
   $trying = TRUE;
   // Try it until it works
   while ($trying) {
-    $bootswatch_file = system_retrieve_file($bootswatch . $file, 'temporary://' . $file, FALSE, FILE_EXISTS_REPLACE);
-    // We've got a local path
-    if ($bootswatch_file != FALSE) {
+    $download = file_put_contents($local_file, fopen($bootswatch . $file, 'r'));
+    // We've got a good DL
+    if ($download != FALSE) {
       // Check to make sure we actually got something
-      if (file_exists('temporary://' . $file)) {
+      if (file_exists($local_file)) {
         // Overwrite existing bootstrap file
         // Add a header with bootstrap 3 info so it is recongized by libraies API
         // Do some file clean up
         // Remove error messages that may have accrued in previous attempts
-        $context['results']['bootstrap'][$css_dir . $file] = file_get_contents($bootswatch_file);
-        $context['results']['bootstrap'][$css_dir . $file] = _kalatheme_lib_header() . $context['results']['bootstrap'][$css_dir . $file];
-        unlink('temporary://' . $file);
+        $context['results']['bootstrap'][$css_dir . $file] = _kalatheme_lib_header() . file_get_contents($local_file);
+        unlink($local_file);
         // @todo might want to consider something else here?
-        drupal_get_messages(NULL, TRUE);
         $trying = FALSE;
       }
     }
@@ -377,6 +379,8 @@ function _kalatheme_build_subtheme($name, &$context) {
   $output .= "core = 7.x \n";
   $output .= "\n";
   $output .= "regions[content] = Content \n";
+  $output .= "\n";
+  $output .= "settings[toggle_logo] = 0 \n";
   $output .= "\n";
   $output .= "stylesheets[all][] = css/main.css \n";
   $output .= "\n";
@@ -409,29 +413,35 @@ function _kalatheme_get_fontawesome($machine_name, &$context) {
   $context['message'] = t('Downloading FontAwesome');
   // Let's borrow some stuff
   module_load_include('inc', 'update', 'update.manager');
-  $local_file = drupal_realpath(drupal_get_path('theme', 'kalatheme') . '/fonts/font-awesome.zip');
-  $context['results']['fontdir'] = _kalatheme_extract_directory('font_awesome');
-  $archive = update_manager_archive_extract($local_file, $context['results']['fontdir']);
-  // Do some basic validation
-  $files = $archive->listContents();
-  $valid = FALSE;
-  // Check that it contains needed files
-  foreach ($files as $file) {
-    if (stripos($file, 'font-awesome.min.css') !== FALSE || stripos($file, 'FontAwesome.otf') !== FALSE) {
-      $check_file = $file;
-      $valid = TRUE;
-      break;
-    }
-  }
-  // Check that needed file exists
-  if (!file_exists($context['results']['fontdir'] . DIRECTORY_SEPARATOR . $check_file)) {
+  // For some strange reason system_file_retrieve throws up when trying to grab
+  // this archive so we are going to take it lower
+  $local_file = 'temporary://font-awesome.zip';
+  $download = file_put_contents($local_file, fopen(DEFAULT_FONTAWESOME_URL, 'r'));
+  if ($download != FALSE) {
+    $context['results']['fontdir'] = _kalatheme_extract_directory('font_awesome');
+    $archive = update_manager_archive_extract($local_file, $context['results']['fontdir']);
+    // Do some basic validation
+    $files = $archive->listContents();
     $valid = FALSE;
-  }
-  if (!$valid) {
-    // @todo some sort of dyin and reportin
-  }
-  else {
-    $context['results']['fontfiles'] = $files;
+    // Check that it contains needed files
+    foreach ($files as $file) {
+      if (stripos($file, 'font-awesome.min.css') !== FALSE || stripos($file, 'FontAwesome.otf') !== FALSE) {
+        $check_file = $file;
+        $valid = TRUE;
+        break;
+      }
+    }
+    // Check that needed file exists
+    if (!file_exists($context['results']['fontdir'] . DIRECTORY_SEPARATOR . $check_file)) {
+      $valid = FALSE;
+    }
+    if (!$valid) {
+      // @todo some sort of dyin and reportin
+    }
+    else {
+      $context['results']['fontfiles'] = $files;
+    }
+    unlink($local_file);
   }
 }
 
@@ -649,6 +659,10 @@ function _kalatheme_batch_done($success, $results, $operations) {
     system_rebuild_theme_data();
     drupal_theme_rebuild();
     cache_clear_all();
+    // We do this to remove the "bootstrap not found error"
+    // @todo something better than this ?
+    drupal_get_messages('error', TRUE);
+    // Show something good?
     drupal_set_message(t($results['message']), 'status', FALSE);
   }
   else {
@@ -753,9 +767,19 @@ function _kalatheme_bootstrap_preview($form, &$form_state) {
  *   True if all good, message if no good
  */
 function _kalatheme_backend_check() {
-  $theme_path = drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/')));
+  $theme_dir = drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/')));
   $libraries_dir = (is_dir('sites/all/libraries')) ? 'sites/all/libraries' : 'sites/all';
-  return is_writable(drupal_realpath($libraries_dir)) && is_writable(drupal_realpath($theme_path));
+  // Create paths if needed
+  // $theme_path should already exist
+  if (!$libraries_dir) {
+    mkdir(DRUPAL_ROOT . "/sites/all/libraries", 0777, TRUE);
+  }
+  // Check if directories are raedy to receive a payload
+  // @todo this needs a lot more testing, always seems to be true on kalabox
+  if (!file_prepare_directory($libraries_dir) || !file_prepare_directory($theme_dir)) {
+    // @todo something
+  }
+  return is_writable(drupal_realpath($libraries_dir)) && is_writable($theme_dir);
 }
 
 /**
