@@ -768,10 +768,11 @@ function _kalatheme_bootstrap_preview($form, &$form_state) {
  */
 function _kalatheme_backend_check() {
   $theme_dir = drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/')));
-  $libraries_dir = (is_dir('sites/all/libraries')) ? 'sites/all/libraries' : 'sites/all';
+  $libraries_dir = 'sites/all/libraries';
   // Create paths if needed
   // $theme_path should already exist
-  if (!$libraries_dir) {
+  // This is probably redundant since file_prepare_directory does this too
+  if (!is_dir($libraries_dir)) {
     mkdir(DRUPAL_ROOT . "/sites/all/libraries", 0777, TRUE);
   }
   // Check if directories are raedy to receive a payload
