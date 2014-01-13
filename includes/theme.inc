@@ -313,7 +313,7 @@ function kalatheme_links__system_main_menu($variables) {
 
     foreach ($links as $key => $link) {
       $class = array($key);
-      $link['#attributes'] = array();
+      $link['#attributes'] = (isset($link['#localized_options']['attributes'])) ? $link['#localized_options']['attributes'] : array();
 
       // Add first/last/active classes to help out themers.
       if ($i == 1) {
