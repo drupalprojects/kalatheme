@@ -25,12 +25,21 @@ function _kalatheme_load_dependencies() {
   if (module_exists('panels')) {
     $info = system_get_info('module', 'panels');
     $regex = '/^7\.x-3\.[0-9]+.*$/';
+    // Check major version
     if (preg_match($regex, $info['version'])) {
-      $panels = TRUE;
+      $minor = substr($info['version'], 6);
+      if (strpos($info['version'], 'dev') !== FALSE) {
+        // Keep commit add for potential future use
+        $dev = substr(substr($minor, strpos($minor, '+')+1), 0, -4);
+        $minor = substr($minor, 0, strpos($minor, '+'));
+      }
+      if ($minor >= 3) {
+        $panels = TRUE;
+      }
     }
   }
   if (!$panels) {
-    drupal_set_message(t('Kalatheme requires a 3.x version of panels.'), 'error');
+    drupal_set_message(t('Kalatheme requires at least Panels 3.3.'), 'error');
   }
   // See if we are running at least 2.1 of libraries
   $libs = FALSE;
