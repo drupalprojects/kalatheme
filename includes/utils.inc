@@ -37,6 +37,9 @@ function _kalatheme_load_dependencies() {
         $panels = TRUE;
       }
     }
+    elseif (!$info['version']) {
+      $panels = TRUE;
+    }
   }
   if (!$panels) {
     drupal_set_message(t('Kalatheme requires at least Panels 3.3.'), 'error');
@@ -46,10 +49,10 @@ function _kalatheme_load_dependencies() {
   if (module_exists('libraries')) {
     $info = system_get_info('module', 'libraries');
     $regex = '/^7\.x-2\.[1-9][0-9]*.*$/';
-
-    if (preg_match($regex, $info['version'])) {
+    if (preg_match($regex, $info['version']) || !$info['version']) {
       $libs = TRUE;
     }
+
   }
   if (!$libs) {
     drupal_set_message(t('Kalatheme requires at least Libraries 2.1.'), 'error');
@@ -82,7 +85,7 @@ function _kalatheme_load_dependencies() {
   if (module_exists('jquery_update')) {
     $info = system_get_info('module', 'jquery_update');
     $regex = '/^7\.x-2\.[0-9]+.*$/';
-    if (preg_match($regex, $info['version'])) {
+    if (preg_match($regex, $info['version']) || !$info['version']) {
       $regex = '/^1\.[7-9]+.*$/';
       if (preg_match($regex, variable_get('jquery_update_jquery_version'))) {
         $jq = TRUE;
