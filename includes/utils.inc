@@ -85,8 +85,8 @@ function _kalatheme_load_dependencies() {
       least JQuery 1.7'), 'error');
   }
   // Return the correct status message function depending on whether
-  // we were able to load all of our dependencies.
-  if (!$panels || !$libs || !$jq) {
+  // we were able to load all of our Bootstrap dependencies.
+  if (!$boot || !$jq) {
     $status_function = 'theme_status_messages';
   }
   else {
