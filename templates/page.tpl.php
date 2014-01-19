@@ -97,7 +97,7 @@
         <?php if ($logo): ?>
           <div class='brand navbar-brand'>
             <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home" id="logo">
-              <?php if ($logo): ?><img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" /><?php endif; ?>
+              <img src="<?php print $logo; ?>" alt="<?php print t('Home'); ?>" />
             </a>
           </div>
         <?php endif; ?>
@@ -125,7 +125,6 @@
 
       <nav class="collapse navbar-collapse <?php if (!$main_menu && !$secondary_menu) { print 'element-invisible'; } ?>" role="navigation">
         <?php
-          $pri_attributes = array();
           $pri_attributes = array(
             'class' => array(
               'nav',
@@ -149,7 +148,6 @@
         )); ?>
 
         <?php
-          $sec_attributes = array();
           $sec_attributes = array(
             'id' => 'secondary-menu-links',
             'class' => array('nav', 'navbar-nav', 'secondary-links'),
