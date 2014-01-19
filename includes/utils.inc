@@ -63,7 +63,7 @@ function _kalatheme_load_dependencies() {
   }
   if (!$boot) {
     drupal_set_message(t('You do not have a Bootstrap library installed but that is ok! To get equipped either check out our <a href="@setup_guide">Start Up Guide</a> or run our <a href="@setup_url">Setup Wizard.</a>', array(
-      '@setup_guide' => 'http://drupal.org/project/kalatheme',
+      '@setup_guide' => 'https://drupal.org/node/2167149',
       '@setup_url' => url('admin/appearance/kalasetup'),
     )), 'error');
   }
