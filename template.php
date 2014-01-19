@@ -160,10 +160,7 @@ function kalatheme_process_page(&$variables) {
   }
 
   // If panels arent being used at all.
-  $variables['no_panels'] = FALSE;
-  if (!isset($variables['page']['content']['system_main']['main']['#markup']) || (strpos($variables['page']['content']['system_main']['main']['#markup'], 'panel-display') === FALSE)) {
-    $variables['no_panels'] = TRUE;
-  }
+  $variables['no_panels'] = !(module_exists('page_manager') && page_manager_get_current_page());
 
   // Check if we're to always print the page title, even on panelized pages.
   $variables['always_show_page_title'] = theme_get_setting('always_show_page_title') ? TRUE : FALSE;
@@ -199,6 +196,16 @@ function kalatheme_process_maintenance_page(&$variables) {
     // If toggle_site_slogan is FALSE, rebuild the empty site slogan.
     $variables['site_slogan'] = filter_xss_admin(variable_get('site_slogan', ''));
   }
+}
+
+/*
+ * Implements hook_panels_default_style_render_region().
+ *
+ * Some magic from @malberts with inspiration from Omega
+ */
+function kalatheme_panels_default_style_render_region(&$variables) {
+  // Remove .panels-separator.
+  return implode('', $variables['panes']);
 }
 
 /**
