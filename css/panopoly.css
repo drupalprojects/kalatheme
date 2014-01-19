@@ -555,8 +555,3 @@ a#navbar-link-admin-apps.active:before {
 #navbar-administration .edit-shortcuts {
   display: none;
 }
-
-.drupal-navbar .navbar-tray-vertical,
-.drupal-navbar .navbar-tray-vertical > .navbar-lining:before {
-  min-width: 225px;
-}
