@@ -50,6 +50,11 @@ function theme_kalatheme_kalacustomize_render_pane($vars) {
   $content = &$vars['content'];
   $settings = $vars['settings'];
 
+  // This is needed to prevent throwing an error in php 5.5+
+  if (!isset($content->css_class)) {
+    $content->css_class = '';
+  }
+
   $content->css_class .= _kalatheme_get_styles($settings['devices']);
   $content->css_class .= _kalatheme_get_styles($settings['pane_style']);
 
