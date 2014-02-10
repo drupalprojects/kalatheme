@@ -48,7 +48,7 @@
 <head profile="<?php print $grddl_profile; ?>">
   <?php print $head; ?>
     <!-- %meta{:content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible"} -->
-    <meta content='width=device-width' name='viewport' />
+    <meta content='width=device-width, initial-scale=1' name='viewport' />
     <!--[if lt IE 9]>
       <script src='http://html5shim.googlecode.com/svn/trunk/html5.js'></script>
     <![endif]-->
