@@ -85,11 +85,9 @@ function _kalatheme_load_dependencies() {
   if (module_exists('jquery_update')) {
     $info = system_get_info('module', 'jquery_update');
     $regex = '/^7\.x-2\.[0-9]+.*$/';
-    if (preg_match($regex, $info['version']) || !$info['version']) {
-      $regex = '/^1\.[7-9]+.*$/';
-      if (preg_match($regex, variable_get('jquery_update_jquery_version'))) {
-        $jq = TRUE;
-      }
+    $version = explode('.', variable_get('jquery_update_jquery_version'));
+    if ($version[0] ==1 && $version >= 7) {
+      $jq = TRUE;
     }
   }
   if (!$jq) {
