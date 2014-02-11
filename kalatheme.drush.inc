@@ -28,6 +28,9 @@ function kalatheme_drush_command() {
     ),
     'examples' => array(
       'drush kalatheme "My Awesome Theme"' => 'Creates a kalatheme subtheme called "My Theme"',
+      'drush kalatheme "My Awesome Theme" --fonts' => 'Creates a kalatheme subtheme called "My Theme" with Font Awesome installed and configured.',
+      'drush kalatheme "My Awesome Theme" --custom=yeti' => 'Creates a kalatheme subtheme called "My Theme" with the Yeti Bootstwatch theme.',
+      'drush kalatheme "My Awesome Theme" --base-theme=kalasubtheme' => 'Creates a kalatheme subtheme called "My Theme" but sets its basetheme to "kalsubtheme"',
     ),
   );
 
