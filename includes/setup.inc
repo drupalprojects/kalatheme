@@ -14,6 +14,8 @@ define('DEFAULT_FONTAWESOME_URL', 'http://fontawesome.io/./assets/font-awesome-4
  * Form for kalatheme setup
  */
 function kalatheme_setup_form() {
+  require_once DRUPAL_ROOT . '/' . drupal_get_path('theme', 'kalatheme') . '/includes/utils.inc';
+
   if (_kalatheme_backend_check()) {
     $form['backend_check'] = array(
       '#prefix' => '<div class="alert alert-success">',
@@ -45,6 +47,26 @@ function kalatheme_setup_form() {
     '#description' => t('No special characters. For example: My Theme, Stuff'),
     '#required' => TRUE,
   );
+
+  $base_themes = _kalatheme_get_base_themes();
+
+  if (count($base_themes) > 1) {
+    $form['subtheme_base'] = array(
+      '#type' => 'select',
+      '#title' => t('Subtheme base'),
+      '#description' => t('The base theme to use for your theme.'),
+      '#required' => TRUE,
+      '#options' => $base_themes,
+      '#default_value' => 'kalatheme',
+    );
+  }
+  else {
+    $form['subtheme_base'] = array(
+      '#type' => 'hidden',
+      '#value' => 'kalatheme',
+    );
+  }
+
   $form['bootstrap_library'] = array(
     '#type' => 'select',
     '#title' => t('Select a Bootstrap library.'),
@@ -126,9 +148,9 @@ function kalatheme_setup_form() {
  */
 function kalatheme_setup_form_validate($form, &$form_state) {
   // Validate machine name
-  $regex = '/^[\da-zA-Z _\']*$/';
+  $regex = '/^[a-zA-Z][\da-zA-Z _\']*$/';
   if (!preg_match($regex, $form_state['values']['subtheme_name'])) {
-    form_set_error('subtheme_name', t('Please enter a valid machine name'));
+    form_set_error('subtheme_name', t('Please enter a valid machine name.'));
   }
   // Make sure the user has uploaded an archive
   // @todo validate this is actually a bootstrap library
@@ -191,7 +213,11 @@ function kalatheme_setup_form_submit($form, &$form_state) {
     }
   }
   // Build basic subtheme
-  $operations[] = array('_kalatheme_build_subtheme', array(addslashes($form_state['values']['subtheme_name'])));
+  $subtheme_params = array(
+    'name' => addslashes($form_state['values']['subtheme_name']),
+    'base' => $form_state['values']['subtheme_base'],
+  );
+  $operations[] = array('_kalatheme_build_subtheme', array($subtheme_params));
   // Get FontAwesome
   if ($form_state['values']['font_awesome']) {
     $operations[] = array('_kalatheme_get_fontawesome', array($machine_name));
@@ -361,13 +387,17 @@ function _kalatheme_get_bootswatch($bootlib, $machine_name, $file, &$context) {
 /**
  * Construct an array of subtheme things.
  *
- * @param $name
- *   The subtheme name
+ * @param $params
+ *   The subtheme parameters including:
+ *    - name: the subtheme name
+ *    - base: the subtheme base theme
  * @param $context
  *   Batch things
  *
  */
-function _kalatheme_build_subtheme($name, &$context) {
+function _kalatheme_build_subtheme($params, &$context) {
+  $name = $params['name'];
+  $base = $params['base'];
   $context['message'] = t('Building Subtheme');
   $subtheme = array();
   $machine_name = strtolower($name);
@@ -375,7 +405,7 @@ function _kalatheme_build_subtheme($name, &$context) {
   // Basic Info File
   $output  = "name = " . $name . " \n";
   $output .= "description = A Kalatheme subtheme powered by Twitter Bootstrap & Science. \n";
-  $output .= "base theme = kalatheme \n";
+  $output .= "base theme = " . $base . " \n";
   $output .= "core = 7.x \n";
   $output .= "\n";
   $output .= "regions[content] = Content \n";

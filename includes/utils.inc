@@ -186,3 +186,17 @@ function _kalatheme_status_messages($variables) {
   }
   return $output;
 }
+
+/**
+ * Returns a list of Kalatheme base themes.
+ */
+function _kalatheme_get_base_themes() {
+  $themes = list_themes();
+
+  $base_themes = array('kalatheme' => 'Kalatheme');
+  if (isset($themes['kalatheme']->sub_themes)) {
+    $base_themes += $themes['kalatheme']->sub_themes;
+  }
+
+  return $base_themes;
+}
