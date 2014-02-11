@@ -6,7 +6,7 @@
  */
 
 // Constants and stuff
-define('DEFAULT_BOOTSTRAP_URL', 'http://github.com/twbs/bootstrap/releases/download/v3.1.0/bootstrap-3.1.0-dist.zip');
+define('DEFAULT_BOOTSTRAP_URL', 'https://github.com/twbs/bootstrap/releases/download/v3.1.0/bootstrap-3.1.0-dist.zip');
 define('DEFAULT_BOOTSWATCH_URL', 'http://bootswatch.com');
 define('DEFAULT_FONTAWESOME_URL', 'http://fontawesome.io/./assets/font-awesome-4.0.3.zip');
 
