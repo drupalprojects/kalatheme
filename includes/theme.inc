@@ -181,22 +181,6 @@ function kalatheme_status_report($variables) {
 }
 
 /**
- * Implements theme_form().
- */
-function kalatheme_form($variables) {
-  $element = $variables['element'];
-  if (isset($element['#action'])) {
-    $element['#attributes']['action'] = drupal_strip_dangerous_protocols($element['#action']);
-  }
-  element_set_attributes($element, array('method', 'id'));
-  if (empty($element['#attributes']['accept-charset'])) {
-    $element['#attributes']['accept-charset'] = "UTF-8";
-  }
-  // Anonymous DIV to satisfy XHTML compliance.
-  return '<form' . drupal_attributes($element['#attributes']) . '><fieldset>' . $element['#children'] . '</fieldset></form>';
-}
-
-/**
  * Implements theme_button().
  */
 function kalatheme_button($variables) {
