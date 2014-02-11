@@ -22,7 +22,8 @@ function kalatheme_drush_command() {
     ),
     'options' => array(
       'destination' => 'The destination of your subtheme. Defaults to sites/all/themes.',
-      'base-theme' => 'This will let you use a different basetheme than kalatheme.'
+      'base-theme' => 'This will let you use a different basetheme than kalatheme.',
+      'custom' => 'The name of a Bootstwatch theme or a URL containing a custom Bootstrap library archive.'
     ),
     'examples' => array(
       'drush kalatheme "My Awesome Theme"' => 'Creates a kalatheme subtheme called "My Theme"',
@@ -48,7 +49,7 @@ function kalatheme_drush_help($section) {
 function drush_kalatheme($name = NULL) {
   // Get arguments
   if (!$name) {
-    drush_print(dt('You need a theme name. See help using drush kalatheme --help.'));
+    drush_print(dt('You need a theme name.'));
     return;
   }
   if (!isset($name)) {
@@ -66,7 +67,12 @@ function drush_kalatheme($name = NULL) {
   $library_path = drush_normalize_path(drush_get_context('DRUSH_DRUPAL_ROOT') . '/sites/all/libraries/' . $machine_name . '_bootstrap');
   $custom = FALSE;
   if (drush_get_option('custom')) {
+    $bootswatch = array('amelia', 'cerulean', 'cosmo', 'cyborg', 'flatly', 'journal', 'readable', 'simplex', 'slate', 'spacelab', 'united', 'yeti');
     $custom = drush_get_option('custom');
+    if (!filter_var($custom, FILTER_VALIDATE_URL) && !in_array($custom, $bootswatch)) {
+      drush_print(dt('Not a valid URL or Bootstwatch theme.'));
+      return;
+    }
   }
   $base_theme = 'kalatheme';
   if (drush_get_option('base-theme')) {
@@ -82,6 +88,13 @@ function drush_kalatheme($name = NULL) {
 
     // Decompress the zip archive.
     drush_tarball_extract($filename, $dirname, TRUE);
+    if ($custom && !filter_var($custom, FILTER_VALIDATE_URL)) {
+      $files = array('bootstrap.css', 'bootstrap.min.css');
+      foreach ($files as $file) {
+        drush_download_file(DEFAULT_BOOTSWATCH_URL . '/' . $custom . '/' . $file, $dirname . '/dist/css/' . $file);
+      }
+
+    }
     drush_move_dir($dirname . '/dist', $library_path, TRUE);
   }
 
@@ -103,10 +116,9 @@ function drush_kalatheme($name = NULL) {
   chdir($current_dir);
 
   // Notify user of the newly created theme.
-  $message = dt('kalatheme subtheme "!name" created in: !path using the "!kit" kit.', array(
+  $message = dt('kalatheme subtheme "!name" created in: !path.', array(
     '!name' => $name,
     '!path' => $subtheme_path,
-    '!kit' => $kit,
   ));
   drush_print($message);
 }
