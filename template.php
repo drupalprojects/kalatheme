@@ -8,7 +8,9 @@
 // We want to use the global here to respect alterations from modules
 // like ThemeKey
 global $theme_key;
-define('KALATHEME_BOOTSTRAP_LIBRARY', $theme_key . '_bootstrap');
+if (!defined('KALATHEME_BOOTSTRAP_LIBRARY')) {
+  define('KALATHEME_BOOTSTRAP_LIBRARY', $theme_key . '_bootstrap');
+}
 
 // Load some core things
 $kalatheme_path = drupal_get_path('theme', 'kalatheme');
