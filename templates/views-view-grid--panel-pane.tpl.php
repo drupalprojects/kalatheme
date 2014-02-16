@@ -10,10 +10,16 @@
  * @ingroup views_templates
  */
 ?>
-
 <?php
-reset($rows);
-$gridsize = count($rows[0]);
+  // Build the bootstrap responsive classes
+  $responsive_tiers = array('xs', 'sm', 'md', 'lg');
+  $responsive = '';
+  foreach ($responsive_tiers as $tier) {
+    if (!empty(${$tier})) {
+      $responsive .= 'col-' . $tier . '-' . ${$tier} . ' ';
+    }
+  }
+  $item_count = 1;
 ?>
 
 <?php if (!empty($title)) : ?>
@@ -22,25 +28,23 @@ $gridsize = count($rows[0]);
 </h3>
 <?php endif; ?>
 
-<div class="views-view-grid grid-<?php print $gridsize ?>">
+<div class="views-view-grid row">
   <?php foreach ($rows as $row_number => $columns): ?>
-  <?php
-    $row_class = 'row-' . ($row_number + 1);
-    $row_class .= ($row_number == 0 && count($rows) > 1) ? ' row-first' : '';
-    $row_class .= (count($rows) == ($row_number + 1)) ? ' row-last' : '';
-    $row_class .= ' row';
-  ?>
-  <div class="<?php print $row_class; ?>">
     <?php foreach ($columns as $column_number => $item): ?>
-    <div
-      class="gridCol gridborder <?php print 'col-' . ($column_number + 1); ?> <?php $span ? print $span : ''; ?>">
       <?php if ($item): ?>
-      <div class='grid-item'>
-        <?php print $item; ?>
-      </div>
+        <div class="gridcol gridborder <?php print 'col-' . ($column_number + 1); ?> <?php print 'col-item-' . ($item_count); ?>  <?php $responsive ? print $responsive : ''; ?>">
+          <div class='grid-item'>
+            <?php print $item; ?>
+          </div>
+        </div>
+        <?php
+        foreach ($responsive_tiers as $tier) {
+          if (!empty(${$tier}) && (($item_count * ${$tier}) % $gridsize) === 0) { ?>
+            <div class="clearfix visible-<?php print $tier; ?>"></div>
+        <?php }
+      } ?>
       <?php endif; ?>
-    </div>
+      <?php $item_count++; ?>
     <?php endforeach; ?>
-  </div>
   <?php endforeach; ?>
 </div>

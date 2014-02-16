@@ -16,6 +16,9 @@ if (!defined('KALATHEME_BOOTSTRAP_LIBRARY')) {
 $kalatheme_path = drupal_get_path('theme', 'kalatheme');
 require_once $kalatheme_path . '/includes/theme.inc';
 require_once $kalatheme_path . '/includes/libraries.inc';
+// We need to do this so that our views plugin class will be loaded correctly
+// since we cant use the files[] directive in a theme .info file
+require_once $kalatheme_path . '/views/plugins/views_plugin_style_grid_bootstrap.inc';
 
 /**
  * Represents the number of columns in the grid supplied by Bootstrap.
@@ -68,6 +71,21 @@ function kalatheme_css_alter(&$css) {
   // Pull out some panopoly CSS, will want to pull more later
   unset($css[drupal_get_path('module', 'panopoly_admin') . '/panopoly-admin.css']);
   unset($css[drupal_get_path('module', 'panopoly_magic') . '/css/panopoly-modal.css']);
+}
+
+/**
+ * Implement hook_views_plugins_alter()
+ *
+ * We are using this so we can add some responsive Bootstrap options to
+ * views grid displays
+ */
+function kalatheme_views_plugins_alter(&$plugins) {
+  if (isset($plugins['style']['grid'])) {
+    $plugins['style']['grid']['handler'] = 'views_plugin_style_grid_bootstrap';
+    $plugins['style']['grid']['path'] = drupal_get_path('theme', 'kalatheme') . '/views/plugins';
+    $plugins['style']['grid']['file'] = 'views_plugin_style_grid_bootstrap.inc';
+  }
+  $plugins = $plugins;
 }
 
 /**
@@ -247,8 +265,19 @@ function kalatheme_preprocess_panels_add_content_link(&$vars) {
  * Implements hook_preprocess_views_view_grid().
  */
 function kalatheme_preprocess_views_view_grid(&$variables) {
-  if (kalatheme_get_grid_size() % $variables['options']['columns'] === 0) {
-    $variables['span'] = 'col-md-' . kalatheme_get_grid_size() / $variables['options']['columns'];
+  $variables['gridsize'] = kalatheme_get_grid_size();
+  $responsive_tiers = array('xs', 'sm', 'lg');
+  foreach ($responsive_tiers as $tier) {
+    if (empty($variables['options']['columns_' . $tier])) {
+      $variables['options']['columns_' . $tier] = 1;
+    }
+    if ($variables['gridsize'] % $variables['options']['columns_' . $tier] === 0) {
+      $variables[$tier] = $variables['gridsize'] / $variables['options']['columns_' . $tier];
+    }
+  }
+  // This is set using the default grid columns value not columns_tier
+  if ($variables['gridsize'] % $variables['options']['columns'] === 0) {
+    $variables['md'] = $variables['gridsize'] / $variables['options']['columns'];
   }
 }
 

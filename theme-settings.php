@@ -91,7 +91,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#type' => 'container',
     '#states' => array(
       'invisible' => array(
-        'input[name="pane_styles_toggle"]' => array('checked' => FALSE),
+        ':input[name="pane_styles_toggle"]' => array('checked' => FALSE),
       ),
     ),
   );
