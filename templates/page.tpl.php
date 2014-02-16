@@ -188,7 +188,7 @@
           </div>
         <?php endif; ?>
 
-        <?php if ($tabs): ?>
+        <?php if (!empty($tabs['#primary']) || !empty($tabs['#secondary'])): ?>
           <div id="tabs">
             <?php print render($tabs); ?>
           </div>
