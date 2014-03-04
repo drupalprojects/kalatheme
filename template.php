@@ -13,12 +13,13 @@ if (!defined('KALATHEME_BOOTSTRAP_LIBRARY')) {
 }
 
 // Load some core things
-$kalatheme_path = drupal_get_path('theme', 'kalatheme');
-require_once $kalatheme_path . '/includes/theme.inc';
-require_once $kalatheme_path . '/includes/libraries.inc';
+// Use this instead of drupal_get_path so we can use this
+// during an install profile without nuking the world
+require_once dirname(__FILE__) . '/includes/theme.inc';
+require_once dirname(__FILE__) . '/includes/libraries.inc';
 // We need to do this so that our views plugin class will be loaded correctly
 // since we cant use the files[] directive in a theme .info file
-require_once $kalatheme_path . '/views/plugins/views_plugin_style_grid_bootstrap.inc';
+require_once dirname(__FILE__) . '/views/plugins/views_plugin_style_grid_bootstrap.inc';
 
 /**
  * Represents the number of columns in the grid supplied by Bootstrap.
@@ -99,7 +100,7 @@ function kalatheme_preprocess_html(&$variables) {
   $variables['path_to_kalatheme'] = drupal_get_path('theme', 'kalatheme');
 
   // Load all dependencies.
-  require_once DRUPAL_ROOT . '/' . $variables['path_to_kalatheme'] . '/includes/utils.inc';
+  require_once dirname(__FILE__) . '/includes/utils.inc';
   _kalatheme_load_dependencies();
 }
 

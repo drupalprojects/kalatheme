@@ -22,8 +22,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   // If a non-kalatheme theme is the admin theme we need to
   // load this stuff again to get grid size info and not throw
   // errors
-  $kalatheme_path = drupal_get_path('theme', 'kalatheme');
-  require_once $kalatheme_path . '/includes/libraries.inc';
+  require_once dirname(__FILE__) . '/includes/libraries.inc';
   if (!defined('KALATHEME_BOOTSTRAP_LIBRARY')) {
     define('KALATHEME_BOOTSTRAP_LIBRARY', variable_get('theme_default', 'kalatheme') . '_bootstrap');
   }

@@ -14,7 +14,7 @@ define('DEFAULT_FONTAWESOME_URL', 'http://fontawesome.io/./assets/font-awesome-4
  * Form for kalatheme setup
  */
 function kalatheme_setup_form() {
-  require_once DRUPAL_ROOT . '/' . drupal_get_path('theme', 'kalatheme') . '/includes/utils.inc';
+  require_once dirname(__FILE__) . '/utils.inc';
 
   if (_kalatheme_backend_check()) {
     $form['backend_check'] = array(
@@ -28,7 +28,7 @@ function kalatheme_setup_form() {
       '#prefix' => '<div class="alert alert-danger">',
       '#markup' => t("If you want Kalatheme to be able to install and enable your subtheme for you please make sure that both @lib_path and @theme_path exist and are writable. Otherwise it will just give you an archive to download.", array(
         '@lib_path' => is_dir('sites/all/libraries') ? 'sites/all/libraries' : 'sites/all',
-        '@theme_path' => drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/'))),
+        '@theme_path' => 'sites/all/themes',
       )),
       '#suffix' => '</div>',
     );
@@ -178,6 +178,28 @@ function kalatheme_setup_form_validate($form, &$form_state) {
  * @see kalatheme_setup_form_validate()
  */
 function kalatheme_setup_form_submit($form, &$form_state) {
+  // Build the batch
+  $batch = kalatheme_setup_batch($form, $form_state);
+  batch_set($batch);
+}
+
+/**
+ * Form submission handler for kalatheme_setup_form().
+ *
+ * Uses BATCH API for file processing and HTTP request stuffs
+ *
+ * Uploads the file attached to the form, then attempts to extract the archive
+ * into a temporary location and verify it. Verifies the archive is a valid
+ * Bootsrap library and if possible installs the library into the libraries API
+ * directory. If not saves it for output to the user.
+ *
+ * Then builds a subtheme using the name provided and tries to install it. If
+ * it cannot it grabs the bootstrap library and outputs both as an archive for
+ * the user to install.
+ *
+ * @see kalatheme_setup_form_validate()
+ */
+function kalatheme_setup_batch($form, &$form_state) {
   // Let's begin to define some opps
   $operations = array();
   $batch = array(
@@ -231,7 +253,8 @@ function kalatheme_setup_form_submit($form, &$form_state) {
   $operations[] = array('_kalatheme_dress_you_up', array($machine_name));
   // Build the batch and cook it
   $batch['operations'] = $operations;
-  batch_set($batch);
+
+  return $batch;
 }
 
 /**
@@ -588,7 +611,7 @@ function _kalatheme_dress_you_up($machine_name, &$context) {
   }
   // Move from temp to legitness or output to the user for DL
   $booted = TRUE;
-  $theme_path = drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/')));
+  $theme_path = drupal_realpath('sites/all/themes');
   $library_path = drupal_realpath('sites/all/libraries');
   $stuff = array(
     file_directory_temp() . DIRECTORY_SEPARATOR . $machine_name =>  $theme_path . DIRECTORY_SEPARATOR . $machine_name,
@@ -700,7 +723,10 @@ function _kalatheme_batch_done($success, $results, $operations) {
     // relevant
     drupal_set_message(t($results['message']), 'warning', FALSE);
   }
-  drupal_goto('admin/appearance');
+  // Only redirect if not an install profile
+  if (isset($GLOBALS['conf']['install_task']) && $GLOBALS['conf']['install_task'] === 'done') {
+    drupal_goto('admin/appearance');
+  }
 }
 
 /**
@@ -797,7 +823,7 @@ function _kalatheme_bootstrap_preview($form, &$form_state) {
  *   True if all good, message if no good
  */
 function _kalatheme_backend_check() {
-  $theme_dir = drupal_realpath(substr(drupal_get_path('theme', 'kalatheme'), 0, strrpos(drupal_get_path('theme', 'kalatheme'), '/')));
+  $theme_dir = 'sites/all/themes';
   $libraries_dir = 'sites/all/libraries';
   // Create paths if needed
   // $theme_path should already exist
@@ -810,7 +836,7 @@ function _kalatheme_backend_check() {
   if (!file_prepare_directory($libraries_dir) || !file_prepare_directory($theme_dir)) {
     // @todo something
   }
-  return is_writable(drupal_realpath($libraries_dir)) && is_writable($theme_dir);
+  return is_writable(drupal_realpath($libraries_dir)) && is_writable(drupal_realpath($theme_dir));
 }
 
 /**

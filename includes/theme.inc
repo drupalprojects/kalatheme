@@ -412,7 +412,7 @@ function kalatheme_links__system_main_menu($variables) {
  */
 function kalatheme_status_messages($variables) {
   // Call correct theme function depending on whether all dependencies loaded.
-  require_once DRUPAL_ROOT . '/' . drupal_get_path('theme', 'kalatheme') . '/includes/utils.inc';
+  require_once dirname(__FILE__) . '/utils.inc';
   $status_function = _kalatheme_load_dependencies();
   return $status_function($variables);
 }
