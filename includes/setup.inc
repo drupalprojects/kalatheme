@@ -16,7 +16,7 @@ define('DEFAULT_FONTAWESOME_URL', 'http://fontawesome.io/./assets/font-awesome-4
 function kalatheme_setup_form() {
   require_once dirname(__FILE__) . '/utils.inc';
 
-  if (_kalatheme_backend_check()) {
+  if (kalatheme_backend_check()) {
     $form['backend_check'] = array(
       '#prefix' => '<div class="alert alert-success">',
       '#markup' => t("Your webserver is correctly configured for Kalatheme to build, install and enable your subtheme for you!"),
@@ -49,6 +49,7 @@ function kalatheme_setup_form() {
   );
 
   $base_themes = _kalatheme_get_base_themes();
+
 
   if (count($base_themes) > 1) {
     $form['subtheme_base'] = array(
@@ -126,7 +127,7 @@ function kalatheme_setup_form() {
     )),
     '#default_value' => TRUE,
   );
-  if (_kalatheme_backend_check()) {
+  if (kalatheme_backend_check()) {
     $form['enable_theme'] = array(
       '#type' => 'checkbox',
       '#title' => t('Check this to enable the subtheme after it is built and installed.'),
@@ -617,7 +618,7 @@ function _kalatheme_dress_you_up($machine_name, &$context) {
     file_directory_temp() . DIRECTORY_SEPARATOR . $machine_name =>  $theme_path . DIRECTORY_SEPARATOR . $machine_name,
     file_directory_temp() . DIRECTORY_SEPARATOR . $machine_name . '_bootstrap' =>  $library_path . DIRECTORY_SEPARATOR . $machine_name . '_bootstrap',
   );
-  if (_kalatheme_backend_check()) {
+  if (kalatheme_backend_check()) {
     // Move subtheme and bootstrap out of temp and into drupal places else
     // present it to user for download
     // @todo: there has to be a better way?
@@ -790,39 +791,13 @@ function _kalatheme_extract_directory($name, $create = TRUE) {
 }
 
 /**
- * Ajax callback that returns HTML to the setup form so that the user
- * can see a preview of the bootstrap library they are selecting.
- *
- * @param $form
- *   Form
- * @param $form_state
- *   Form state
- *
- * @return
- *   Updated form state to be merged back in
- *
- */
-function _kalatheme_bootstrap_preview($form, &$form_state) {
-  $theme = $form_state['values']['bootstrap_library'];
-  if ($theme == 'default' || $theme == 'custom') {
-    $form['bootstrap_preview']['#markup'] = t('');
-  }
-  else {
-    // @todo: Do this in a way that doesn't suck and maybe incorporate some
-    // styles as seen on bootswatch?
-    $form['bootstrap_preview']['#markup'] = t('<img src="@preview">', array('@preview' => 'http://bootswatch.com/' . $theme . '/thumbnail.png'));
-  }
-  return $form['bootstrap_preview'];
-}
-
-/**
  * We want to check if the webserver can write our stuff to the right places.
  * If it can't then we are going to tell the user what's up.
  *
  * @return
  *   True if all good, message if no good
  */
-function _kalatheme_backend_check() {
+function kalatheme_backend_check() {
   $theme_dir = 'sites/all/themes';
   $libraries_dir = 'sites/all/libraries';
   // Create paths if needed

@@ -1,8 +1,7 @@
 <?php
-
 /**
  * @file
- * Kalatheme's overridden theme functions
+ * Theme and hook functions for core things.
  */
 
 
@@ -181,348 +180,51 @@ function kalatheme_status_report($variables) {
 }
 
 /**
- * Implements theme_button().
- */
-function kalatheme_button($variables) {
-  $element = $variables['element'];
-  $element['#attributes']['type'] = 'submit';
-  element_set_attributes($element, array('id', 'name', 'value'));
-
-  $element['#attributes']['class'][] = 'form-' . $element['#button_type'];
-  $element['#attributes']['class'][] = 'btn';
-  $element['#attributes']['class'][] = 'btn-primary';
-  if (!empty($element['#attributes']['disabled'])) {
-    $element['#attributes']['class'][] = 'form-button-disabled';
-  }
-
-  return '<input' . drupal_attributes($element['#attributes']) . ' />';;
-}
-
-/**
- * Implements theme_textarea().
- */
-function kalatheme_textarea($variables) {
-  $element = $variables['element'];
-  _kalatheme_ensure_class($element);
-  $element['#attributes']['name'] = $element['#name'];
-  $element['#attributes']['id'] = $element['#id'];
-  $element['#attributes']['cols'] = $element['#cols'];
-  $element['#attributes']['rows'] = $element['#rows'];
-  _form_set_class($element, array('form-textarea'));
-
-  // Add Bootstrap class.
-  $element['#attributes']['class'][] = 'form-control';
-
-  $wrapper_attributes = array(
-    'class' => array('form-textarea-wrapper'),
-  );
-
-  // Add resizable behavior.
-  if (!empty($element['#resizable'])) {
-    $wrapper_attributes['class'][] = 'resizable';
-  }
-
-  $output = '<div' . drupal_attributes($wrapper_attributes) . '>';
-  $output .= '<textarea' . drupal_attributes($element['#attributes']) . '>' . check_plain($element['#value']) . '</textarea>';
-  $output .= '</div>';
-  return $output;
-}
-
-/**
- * Implements theme_textfield().
- */
-function kalatheme_textfield($variables) {
-  _kalatheme_ensure_class($variables['element']);
-  // Add Bootstrap class, then defer to core for the rest.
-  $variables['element']['#attributes']['class'][] = 'form-control';
-  return theme_textfield($variables);
-}
-
-/**
- * Implements theme_select().
- */
-function kalatheme_select($variables) {
-  _kalatheme_ensure_class($variables['element']);
-  // Add Bootstrap class, then defer to core for the rest.
-  $variables['element']['#attributes']['class'][] = 'form-control';
-  return theme_select($variables);
-}
-
-/**
- * Implements theme_password().
- */
-function kalatheme_password($variables) {
-  _kalatheme_ensure_class($variables['element']);
-  // Add Bootstrap class, then defer to core for the rest.
-  $variables['element']['#attributes']['class'][] = 'form-control';
-  return theme_password($variables);
-}
-
-/**
- * Implements theme_menu_tree().
- */
-function kalatheme_menu_tree($variables) {
-  return '<ul class="menu clearfix">' . $variables['tree'] . '</ul>';
-}
-
-/**
- * Implements theme_field__field_type().
- */
-function kalatheme_field__taxonomy_term_reference($variables) {
-  $output = '';
-
-  // Render the label, if it's not hidden.
-  if (!$variables['label_hidden']) {
-    $output .= '<h3 class="field-label">' . $variables['label'] . ': </h3>';
-  }
-
-  // Render the items.
-  $output .= ($variables['element']['#label_display'] == 'inline') ? '<ul class="links list-inline">' : '<ul class="links">';
-  foreach ($variables['items'] as $delta => $item) {
-    $output .= '<li class="taxonomy-term-reference-' . $delta . '"' . $variables['item_attributes'][$delta] . '>' . drupal_render($item) . '</li>';
-  }
-  $output .= '</ul>';
-
-  // Render the top-level DIV.
-  $output = '<div class="' . $variables['classes'] . (!in_array('clearfix', $variables['classes_array']) ? ' clearfix' : '') . '"' . $variables['attributes'] . '>' . $output . '</div>';
-
-  return $output;
-}
-
-
-/**
- * Implements theme_links__system_main_menu.
- */
-function kalatheme_links__system_main_menu($variables) {
-  $links = $variables['links'];
-  $attributes = $variables['attributes'];
-  $heading = $variables['heading'];
-  unset($links['#sorted']);
-  unset($links['#theme_wrappers']);
-  global $language_url;
-  $output = '';
-
-  if (count($links) > 0) {
-    $output = '';
-
-    // Treat the heading first if it is present to prepend it to the
-    // list of links.
-    if (!empty($heading)) {
-      if (is_string($heading)) {
-        // Prepare the array that will be used when the passed heading
-        // is a string.
-        $heading = array(
-          'text' => $heading,
-          // Set the default level of the heading.
-          'level' => 'h2',
-        );
-      }
-      $output .= '<' . $heading['level'];
-      if (!empty($heading['class'])) {
-        $output .= drupal_attributes(array('class' => $heading['class']));
-      }
-      $output .= '>' . check_plain($heading['text']) . '</' . $heading['level'] . '>';
-    }
-
-    $output .= '<ul' . drupal_attributes($attributes) . '>';
-
-    $num_links = count($links);
-    $i = 1;
-
-    foreach ($links as $key => $link) {
-      $class = array($key);
-      $link['#attributes'] = (isset($link['#localized_options']['attributes'])) ? $link['#localized_options']['attributes'] : array();
-
-      // Add first/last/active classes to help out themers.
-      if ($i == 1) {
-        $class[] = 'first';
-      }
-      if ($i == $num_links) {
-        $class[] = 'last';
-      }
-      if (isset($link['#href']) && ($link['#href'] == $_GET['q'] || ($link['#href'] == '<front>' && drupal_is_front_page()))
-        && (empty($link['#language']) || $link['#language']->language == $language_url->language)) {
-        $class[] = 'active';
-      }
-      // Check for, and honor active states set by context menu reactions
-      if (module_exists('context')) {
-        $contexts = context_active_contexts();
-        foreach ($contexts as $context) {
-          if ((isset($context->reactions['menu']))) {
-            if ($link['#href'] == $context->reactions['menu']) {
-              $class[] = 'active';
-            }
-          }
-        }
-      }
-
-      $options['attributes'] = $link['#attributes'];
-
-      // Make list item a dropdown if we have child items.
-      if (!empty($link['#below'])) {
-        $class[] = 'dropdown';
-        $class[] = 'clearfix';
-      }
-      $output .= '<li' . drupal_attributes(array('class' => $class)) . '>';
-
-      if (isset($link['#href'])) {
-        // Pass in $link as $options, they share the same keys.
-        $output .= l($link['#title'], $link['#href'], array('attributes' => $link['#attributes']));
-      }
-      elseif (!empty($link['#title'])) {
-        // Wrap non-<a> links in <span> for adding title and class attributes.
-        if (empty($link['#html'])) {
-          $link['#title'] = check_plain($link['#title']);
-        }
-        $span_attributes = '';
-        if (isset($link['#attributes'])) {
-          $span_attributes = drupal_attributes($link['#attributes']);
-        }
-        $output .= '<span' . $span_attributes . '>' . $link['#title'] . '</span>';
-      }
-
-      // If link has child items, print a toggle and dropdown menu.
-      if (!empty($link['#below'])) {
-        $dropdown_id = 'main-menu-dropdown-' . $i;
-        $output .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="' . $dropdown_id. '"><span class="caret"></span></a>';
-        $output .= theme('links__system_main_menu', array(
-          'links' => $link['#below'],
-          'attributes' => array(
-            'class' => array('dropdown-menu'),
-            'role' => 'menu',
-            'aria-labelledby' => $dropdown_id
-          ),
-        ));
-      }
-
-      $i++;
-      $output .= "</li>\n";
-    }
-
-    $output .= '</ul>';
-  }
-
-  return $output;
-}
-
-/**
- * Use Bootstrap-styled status messages when appropriate.
- *
- * Implements theme_status_messages().
+ * Returns HTML for status and/or error messages, grouped by type.
  */
 function kalatheme_status_messages($variables) {
-  // Call correct theme function depending on whether all dependencies loaded.
-  require_once dirname(__FILE__) . '/utils.inc';
-  $status_function = _kalatheme_load_dependencies();
-  return $status_function($variables);
-}
-
-/**
- * Returns HTML for primary and secondary local tasks.
- *
- * Implements theme_menu_local_tasks().
- */
-function kalatheme_menu_local_tasks(&$variables) {
+  $display = $variables['display'];
   $output = '';
 
-  if (!empty($variables['primary'])) {
-    $variables['primary']['#prefix'] = '<h2 class="element-invisible">' . t('Primary tabs') . '</h2>';
-    $variables['primary']['#prefix'] = '<ul class="nav nav-pills">';
-    $variables['primary']['#suffix'] = '</ul>';
-    if (!empty($variables['secondary'])) {
-      $variables = _kalatheme_associate_parent_tasks($variables);
+  $status_heading = array(
+    'status' => t('Status message'),
+    'error' => t('Error message'),
+    'warning' => t('Warning message'),
+  );
+
+  // Map Drupal message types to their corresponding Bootstrap classes.
+  // @see http://twitter.github.com/bootstrap/components.html#alerts
+  $status_class = array(
+    'status' => 'success',
+    'error' => 'danger',
+    'warning' => 'info',
+  );
+
+  foreach (drupal_get_messages($display) as $type => $messages) {
+    $class = (isset($status_class[$type])) ? ' alert-' . $status_class[$type] : '';
+    $output .= "<div class=\"alert alert-block$class\">\n";
+    $output .= "  <a class=\"close\" data-dismiss=\"alert\" href=\"#\">x</a>\n";
+
+    if (!empty($status_heading[$type])) {
+      $output .= '<h2 class="element-invisible">' . $status_heading[$type] . "</h2>\n";
     }
-    $output .= drupal_render($variables['primary']);
-  }
 
-  return $output;
-}
-
-/**
- * HTML for individual local task links.
- *
- * Implements theme_menu_local_task().
- */
-function kalatheme_menu_local_task($variables) {
-  $link = $variables['element']['#link'];
-  $children = isset($variables['element']['#children']) ? $variables['element']['#children'] : FALSE;
-  $link_text = $link['title'];
-  $classes = array();
-
-  if (!empty($variables['element']['#active'])) {
-    // Add text to indicate active tab for non-visual users.
-    $active = '<span class="element-invisible">' . t('(active tab)') . '</span>';
-
-    // If the link does not contain HTML already, check_plain() it now.
-    // After we set 'html'=TRUE the link will not be sanitized by l().
-    if (empty($link['localized_options']['html'])) {
-      $link['title'] = check_plain($link['title']);
+    if (count($messages) > 1) {
+      $output .= " <ul>\n";
+      foreach ($messages as $message) {
+        $output .= '  <li>' . $message . "</li>\n";
+      }
+      $output .= " </ul>\n";
     }
-    $link['localized_options']['html'] = TRUE;
-    $link_text = t('!local-task-title!active', array('!local-task-title' => $link['title'], '!active' => $active));
+    else {
+      $output .= $messages[0];
+    }
 
-    $classes[] = 'active';
+    $output .= "</div>\n";
   }
-
-  // If the primary link has children, render them as a dropdown.
-  if ($children) {
-    $classes[] = 'dropdown';
-    $link['localized_options']['attributes']['class'][] = 'dropdown-toggle';
-    $link['localized_options']['attributes']['data-toggle'][] = 'dropdown';
-    $link['href'] = '#';
-    $link_text .= ' <b class="caret"></b>';
-    $output = '<li class="' . implode(' ', $classes) . '">';
-    $output .= l($link_text, $link['href'], $link['localized_options']);
-    $output .= '<ul class="dropdown-menu">';
-    $output .= drupal_render($children);
-    $output .= '</ul>';
-    $output .= '</li>';
-    return $output;
-  }
-  else {
-    return '<li class="' . implode(' ', $classes) . '">' . l($link_text, $link['href'], $link['localized_options']) . "</li>\n";
-  }
-}
-
-/**
- * HTML for all local actions (rendered as dropdown).
- */
-function kalatheme_menu_local_actions($variables) {
-  $container_attributes = isset($variables['attributes']['container']) ? drupal_attributes($variables['attributes']['container']) : FALSE;
-  $toggle_attributes = isset($variables['attributes']['toggle']) ? drupal_attributes($variables['attributes']['toggle']) : FALSE;
-  $content_attributes = isset($variables['attributes']['content']) ? drupal_attributes($variables['attributes']['content']) : FALSE;
-
-  // Render the dropdown.
-  $output = $container_attributes ?  '<li' . $container_attributes . '>' : '<li>';
-  $output .= $toggle_attributes ?  '<a' . $toggle_attributes . '><i class="glyphicon glyphicon-wrench"></i> ' . t('Actions') . '<b class="caret"></b></a>' : '<a>' . t('Actions') . '<b class="caret"></b></a>';
-  $output .= $content_attributes ? '<ul' . $content_attributes . '>' : '<ul>';
-  $output .= drupal_render($variables['menu_actions']);
-  $output .= '</ul>';
-  $output .= '</li>';
-
   return $output;
 }
 
-/**
- * HTML for individual local actions.
- */
-function kalatheme_menu_local_action($variables) {
-  $link = $variables['element']['#link'];
-
-  $output = '<li>';
-  if (isset($link['href'])) {
-    $output .= l($link['title'], $link['href'], isset($link['localized_options']) ? $link['localized_options'] : array());
-  }
-  elseif (!empty($link['localized_options']['html'])) {
-    $output .= $link['title'];
-  }
-  else {
-    $output .= check_plain($link['title']);
-  }
-  $output .= "</li>\n";
-
-  return $output;
-}
 
 /**
  * Returns HTML for the project status report.
@@ -754,44 +456,3 @@ function kalatheme_update_report($variables) {
   return $output;
 }
 
-/**
- * Checks that a render array's ['#attribute']['class'] is set, adding it if
- * necessary.
- *
- * @param array $render_array
- *   A renderable array.
- */
-function _kalatheme_ensure_class(&$render_array) {
-  if (!isset($render_array['#attributes'])) {
-    $render_array['#attributes'] = array();
-  }
-  if (!isset($render_array['#attributes']['class'])) {
-    $render_array['#attributes']['class'] = array();
-  }
-}
-
-/**
- * Calculates a column number based on columns in the total and current grid.
- *
- * @param int $percentage
- *   Whole number version of the percentage to calculate.
- * @param (optional) integer $total_columns
- *   The total actual columns in the current row. Defaults to 2.
- *
- * @return int
- *   The column count, rounded if necessary.
- */
-function kalatheme_grid_size($percentage, $total_columns = 2) {
-  $columns = $percentage * KALATHEME_GRID_SIZE;
-  // Deal with uneven division.
-  if (!is_integer($columns)) {
-    if ($columns > (KALATHEME_GRID_SIZE / $total_columns)) {
-      $columns = floor($columns);
-    }
-    else {
-      $columns = ceil($columns);
-    }
-  }
-
-  return $columns;
-}

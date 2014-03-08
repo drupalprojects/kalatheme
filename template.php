@@ -1,30 +1,17 @@
 <?php
 /**
  * @file
- * Kalatheme's primary pre/preprocess functions and alterations.
+ * Kalatheme's primary magic delivery system (MDS).
  */
+
+// Use DIRNAME instead of drupal_get_path so we can use this
+// during an install profile without nuking the world
+// Load some helper functions
+require_once dirname(__FILE__) . '/includes/utils.inc';
 
 // Constants
-// We want to use the global here to respect alterations from modules
-// like ThemeKey
-global $theme_key;
-if (!defined('KALATHEME_BOOTSTRAP_LIBRARY')) {
-  define('KALATHEME_BOOTSTRAP_LIBRARY', $theme_key . '_bootstrap');
-}
-
-// Load some core things
-// Use this instead of drupal_get_path so we can use this
-// during an install profile without nuking the world
-require_once dirname(__FILE__) . '/includes/theme.inc';
-require_once dirname(__FILE__) . '/includes/libraries.inc';
-// We need to do this so that our views plugin class will be loaded correctly
-// since we cant use the files[] directive in a theme .info file
-require_once dirname(__FILE__) . '/views/plugins/views_plugin_style_grid_bootstrap.inc';
-
-/**
- * Represents the number of columns in the grid supplied by Bootstrap.
- * And provides some common grid sizes
- */
+define('KALATHEME_BOOTSTRAP_VERSION', '3.1.1');
+// Grid size constants
 define('KALATHEME_GRID_SIZE', kalatheme_get_grid_size());
 define('KALATHEME_GRID_FULL', 1);
 define('KALATHEME_GRID_HALF', 1/2);
@@ -35,6 +22,14 @@ define('KALATHEME_GRID_SIXTH', 1/6);
 // Just because we can
 define('KALATHEME_GRID_SILLY', 1/42);
 
+// Load Bootstrap overrides of Drupal theme things
+require_once dirname(__FILE__) . '/includes/core.inc';
+require_once dirname(__FILE__) . '/includes/fapi.inc';
+require_once dirname(__FILE__) . '/includes/fields.inc';
+require_once dirname(__FILE__) . '/includes/menu.inc';
+require_once dirname(__FILE__) . '/includes/panels.inc';
+require_once dirname(__FILE__) . '/includes/views.inc';
+
 /**
  * Implements hook_theme().
  */
@@ -42,24 +37,8 @@ function kalatheme_theme($existing, $type, $theme, $path) {
   return array(
     'menu_local_actions' => array(
       'variables' => array('menu_actions' => NULL, 'attributes' => NULL),
-      'file' => 'includes/theme.inc',
+      'file' => 'includes/menu.inc',
     ),
-  );
-}
-
-/**
- * Implements hook_menu() (via hook menu alter because that is how themes roll).
- */
-function kalatheme_menu_alter(&$items) {
-  $items['admin/appearance/kalasetup'] = array(
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('kalatheme_setup_form'),
-    'access arguments' => array('administer themes'),
-    'weight' => 25,
-    'type' => MENU_LOCAL_ACTION,
-    'file' => 'setup.inc',
-    'file path' => drupal_get_path('theme', 'kalatheme') . '/includes',
-    'title' => 'Setup Kalatheme',
   );
 }
 
@@ -69,24 +48,17 @@ function kalatheme_menu_alter(&$items) {
  * Implements hook_css_alter().
  */
 function kalatheme_css_alter(&$css) {
-  // Pull out some panopoly CSS, will want to pull more later
-  unset($css[drupal_get_path('module', 'panopoly_admin') . '/panopoly-admin.css']);
-  unset($css[drupal_get_path('module', 'panopoly_magic') . '/css/panopoly-modal.css']);
-}
-
-/**
- * Implement hook_views_plugins_alter()
- *
- * We are using this so we can add some responsive Bootstrap options to
- * views grid displays
- */
-function kalatheme_views_plugins_alter(&$plugins) {
-  if (isset($plugins['style']['grid'])) {
-    $plugins['style']['grid']['handler'] = 'views_plugin_style_grid_bootstrap';
-    $plugins['style']['grid']['path'] = drupal_get_path('theme', 'kalatheme') . '/views/plugins';
-    $plugins['style']['grid']['file'] = 'views_plugin_style_grid_bootstrap.inc';
+  // Unset some panopoly css.
+  $panopoly_admin_path = drupal_get_path('module', 'panopoly_admin');
+  if (isset($css[$panopoly_admin_path . '/panopoly-admin.css'])) {
+    unset($css[$panopoly_admin_path . '/panopoly-admin.css']);
   }
-  $plugins = $plugins;
+  $panopoly_magic_path = drupal_get_path('module', 'panopoly_magic');
+  if (isset($css[$panopoly_magic_path . '/css/panopoly-modal.css'])) {
+    unset($css[$panopoly_magic_path . '/css/panopoly-modal.css']);
+  }
+  // Unset some core css.
+  unset($css['modules/system/system.menus.css']);
 }
 
 /**
@@ -95,25 +67,21 @@ function kalatheme_views_plugins_alter(&$plugins) {
  * Implements template_preprocess_html().
  */
 function kalatheme_preprocess_html(&$variables) {
+  // Load all dependencies.
+  _kalatheme_load_dependencies();
   // Add variables for path to theme.
   $variables['base_path'] = base_path();
-  $variables['path_to_kalatheme'] = drupal_get_path('theme', 'kalatheme');
-
-  // Load all dependencies.
-  require_once dirname(__FILE__) . '/includes/utils.inc';
-  _kalatheme_load_dependencies();
-}
-
-/**
- * Override or insert variables into the page template for HTML output.
- *
- * Implements template_process_html().
- */
-function kalatheme_process_html(&$variables) {
-  // Hook into color.module.
-  if (module_exists('color')) {
-    _color_html_alter($variables);
-  }
+  $variables['path_to_kalatheme'] = dirname(__FILE__);
+  // Add meta for Bootstrap Responsive.
+  // <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  $element = array(
+    '#tag' => 'meta',
+    '#attributes' => array(
+      'name' => 'viewport',
+      'content' => 'width=device-width, initial-scale=1.0',
+    ),
+  );
+  drupal_add_html_head($element, 'bootstrap_responsive');
 }
 
 /**
@@ -122,9 +90,21 @@ function kalatheme_process_html(&$variables) {
  * Implements template_process_page().
  */
 function kalatheme_process_page(&$variables) {
-  // Hook into color.module.
-  if (module_exists('color')) {
-    _color_page_alter($variables);
+  // Add Bootstrap JS and stock CSS.
+  global $base_url;
+  $base = parse_url($base_url);
+
+  if (!kalatheme_use_libraries()) {
+    $library = theme_get_setting('bootstrap_library');
+    if ($library !== 'none') {
+      // Add the JS
+      drupal_add_js($base['scheme'] . '://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js', 'external');
+      // Add the CSS
+      $location = '://netdna.bootstrapcdn.com';
+      $location .= (!$library || $library == 'default') ? '/bootstrap/' . KALATHEME_BOOTSTRAP_VERSION .  '/css' : '/bootswatch/' . KALATHEME_BOOTSTRAP_VERSION .  '/' . $library;
+      $location .= '/bootstrap.min.css';
+      drupal_add_css($base['scheme'] . $location, 'external');
+    }
   }
 
   // Define variables to theme local actions as a dropdown.
@@ -191,20 +171,6 @@ function kalatheme_process_page(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_maintenance_page().
- */
-function kalatheme_preprocess_maintenance_page(&$variables) {
-  // By default, site_name is set to Drupal if no db connection is available
-  // or during site installation. Setting site_name to an empty string makes
-  // the site and update pages look cleaner.
-  // @see template_preprocess_maintenance_page()
-  if (!$variables['db_is_active']) {
-    $variables['site_name'] = '';
-  }
-  drupal_add_css(drupal_get_path('theme', 'kalatheme') . '/css/maintenance-page.css');
-}
-
-/**
  * Override or insert variables into the maintenance page template.
  */
 function kalatheme_process_maintenance_page(&$variables) {
@@ -220,16 +186,6 @@ function kalatheme_process_maintenance_page(&$variables) {
     // If toggle_site_slogan is FALSE, rebuild the empty site slogan.
     $variables['site_slogan'] = filter_xss_admin(variable_get('site_slogan', ''));
   }
-}
-
-/*
- * Implements hook_panels_default_style_render_region().
- *
- * Some magic from @malberts with inspiration from Omega
- */
-function kalatheme_panels_default_style_render_region(&$variables) {
-  // Remove .panels-separator.
-  return implode('', $variables['panes']);
 }
 
 /**
@@ -252,62 +208,5 @@ function kalatheme_preprocess_block(&$variables) {
   // In the header region visually hide block titles.
   if ($variables['block']->region == 'header') {
     $variables['title_attributes_array']['class'][] = 'element-invisible';
-  }
-}
-
-/**
- * Implements hook_preprocess_panels_add_content_link().
- */
-function kalatheme_preprocess_panels_add_content_link(&$vars) {
-  $vars['text_button'] = ctools_ajax_text_button($vars['title'], $vars['url'], $vars['description'], 'panels-modal-add-config btn btn-default');
-}
-
-/**
- * Implements hook_preprocess_views_view_grid().
- */
-function kalatheme_preprocess_views_view_grid(&$variables) {
-  $variables['gridsize'] = kalatheme_get_grid_size();
-  $responsive_tiers = array('xs', 'sm', 'lg');
-  foreach ($responsive_tiers as $tier) {
-    if (empty($variables['options']['columns_' . $tier])) {
-      $variables['options']['columns_' . $tier] = 1;
-    }
-    if ($variables['gridsize'] % $variables['options']['columns_' . $tier] === 0) {
-      $variables[$tier] = $variables['gridsize'] / $variables['options']['columns_' . $tier];
-    }
-  }
-  // This is set using the default grid columns value not columns_tier
-  if ($variables['gridsize'] % $variables['options']['columns'] === 0) {
-    $variables['md'] = $variables['gridsize'] / $variables['options']['columns'];
-  }
-}
-
-/**
- * Implements hook_preprocess_views_view_table().
- */
-function kalatheme_preprocess_views_view_table(&$variables) {
-  $rows = array();
-  foreach ($variables['row_classes'] as $row) {
-    // This assume the first element of any row will be the odd/even class which we no longer need
-    array_shift($row);
-    $rows[] = $row;
-  }
-  $variables['row_classes'] = $rows;
-
-  // Add in bootstrap classes
-  $variables['classes_array'] = array('table', 'table-striped', 'table-bordered', 'table-hover');
-
-  // Remove the active class from table cells, as Bootstrap 3 gives them a funky background.
-  $handler = $variables['view']->style_plugin;
-  $active = !empty($handler->active) ? $handler->active : FALSE;
-  if ($active) {
-    foreach ($variables['field_classes'][$active] as &$cell) {
-      $cell_classes = explode(' ', $cell);
-      $active_class_index = array_search('active', $cell_classes);
-      if ($active_class_index !== FALSE) {
-        unset($cell_classes[$active_class_index]);
-        $cell = implode(' ', $cell_classes);
-      }
-    }
   }
 }

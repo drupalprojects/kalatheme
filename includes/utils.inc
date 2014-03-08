@@ -5,6 +5,29 @@
  * Kalatheme's helper functions
  */
 
+// Use Libraries intregration if applicable
+if (kalatheme_use_libraries()) {
+  require_once dirname(__FILE__) . '/../includes/libraries.inc';
+  // We want to use the global here to respect alterations from modules
+  // like ThemeKey
+  global $theme_key;
+  if (!defined('KALATHEME_BOOTSTRAP_LIBRARY')) {
+    define('KALATHEME_BOOTSTRAP_LIBRARY', $theme_key . '_bootstrap');
+  }
+}
+
+/**
+ * Implements hook_updater_info().
+ */
+// Only load if apps module is not around to provide this
+function kalatheme_updater_info_alter(&$updaters) {
+    $updaters['library'] = array(
+      'class' => 'KalathemeUpdater',
+      'name' => t('Update Library'),
+      'weight' => -10,
+    );
+}
+
 /**
  * Loads all dependencies necessary for Kalatheme to operate.
  *
@@ -14,9 +37,9 @@
 function _kalatheme_load_dependencies() {
   // If we've already loaded dependencies, just return the correct function to
   // call for status messages.
-  $status_function = &drupal_static(__FUNCTION__);
-  if (isset($status_function)) {
-    return $status_function;
+  $dependencies_loaded = &drupal_static(__FUNCTION__);
+  if (isset($dependencies_loaded)) {
+    return $dependencies_loaded;
   }
 
   // Check some minimal module, variable and bootstrap reqs
@@ -33,7 +56,7 @@ function _kalatheme_load_dependencies() {
         $dev = substr(substr($minor, strpos($minor, '+')+1), 0, -4);
         $minor = substr($minor, 0, strpos($minor, '+'));
       }
-      if ($minor >= 3) {
+      if ($minor >= 4) {
         $panels = TRUE;
       }
     }
@@ -42,43 +65,9 @@ function _kalatheme_load_dependencies() {
     }
   }
   if (!$panels) {
-    drupal_set_message(t('Kalatheme requires at least Panels 3.3.'), 'error');
+    drupal_set_message(t('Kalatheme requires at least Panels 3.4.'), 'error');
   }
-  // See if we are running at least 2.1 of libraries
-  $libs = FALSE;
-  if (module_exists('libraries')) {
-    $info = system_get_info('module', 'libraries');
-    $regex = '/^7\.x-2\.[1-9][0-9]*.*$/';
-    if (preg_match($regex, $info['version']) || !$info['version']) {
-      $libs = TRUE;
-    }
 
-  }
-  if (!$libs) {
-    drupal_set_message(t('Kalatheme requires at least Libraries 2.1.'), 'error');
-  }
-  // Check to see if bootstrap libraries exist
-  $boot = FALSE;
-  if (module_exists('libraries')) {
-    $bootstrap = libraries_detect(KALATHEME_BOOTSTRAP_LIBRARY);
-    if ($bootstrap && !empty($bootstrap['installed'])) {
-      $bootstrap_path = DRUPAL_ROOT . '/' . $bootstrap['library path'];
-      $variant = NULL;
-      $has_minified_css = file_exists($bootstrap_path . '/css/bootstrap.min.css');
-      $has_minified_js = file_exists($bootstrap_path . '/js/bootstrap.min.js');
-      if ($has_minified_css && $has_minified_js) {
-        $variant = 'minified';
-      }
-      libraries_load(KALATHEME_BOOTSTRAP_LIBRARY, $variant);
-      $boot = TRUE;
-    }
-  }
-  if (!$boot) {
-    drupal_set_message(t('You do not have a Bootstrap library installed but that is ok! To get equipped either check out our <a href="@setup_guide">Start Up Guide</a> or run our <a href="@setup_url">Setup Wizard.</a>', array(
-      '@setup_guide' => 'https://drupal.org/node/2167149',
-      '@setup_url' => url('admin/appearance/kalasetup'),
-    )), 'error');
-  }
   // See if we are running at least a 2.x branch of jquery_update
   // Check to see if we are using jquery 1.7+
   $jq = FALSE;
@@ -91,112 +80,148 @@ function _kalatheme_load_dependencies() {
     }
   }
   if (!$jq) {
-    drupal_set_message(t('Kalatheme requires a 2.x version of JQuery Update that uses at
-      least JQuery 1.7'), 'error');
+    drupal_set_message(t('Kalatheme requires a 2.x version of JQuery Update that uses at least JQuery 1.7'), 'error');
   }
-  // Return the correct status message function depending on whether
-  // we were able to load all of our Bootstrap dependencies.
-  if (!$boot || !$jq) {
-    $status_function = 'theme_status_messages';
+
+  // Check to see if we need libraries integration
+  if (kalatheme_use_libraries()) {
+      // Check to see if we are running at least 2.1 of libraries
+    $libs = FALSE;
+    if (module_exists('libraries')) {
+      $info = system_get_info('module', 'libraries');
+      $regex = '/^7\.x-2\.[1-9][0-9]*.*$/';
+      if (preg_match($regex, $info['version']) || !$info['version']) {
+        $libs = TRUE;
+      }
+    }
+    if (!$libs) {
+      drupal_set_message(t('Kalatheme requires at least Libraries 2.1.'), 'error');
+    }
+    // Check to see if bootstrap libraries exist
+    $boot = FALSE;
+    if (module_exists('libraries')) {
+      $bootstrap = libraries_detect(KALATHEME_BOOTSTRAP_LIBRARY);
+      if ($bootstrap && !empty($bootstrap['installed'])) {
+        $bootstrap_path = DRUPAL_ROOT . '/' . $bootstrap['library path'];
+        $variant = NULL;
+        $has_minified_css = file_exists($bootstrap_path . '/css/bootstrap.min.css');
+        $has_minified_js = file_exists($bootstrap_path . '/js/bootstrap.min.js');
+        if ($has_minified_css && $has_minified_js) {
+          $variant = 'minified';
+        }
+        libraries_load(KALATHEME_BOOTSTRAP_LIBRARY, $variant);
+        $boot = TRUE;
+      }
+    }
+    if (!$boot) {
+      drupal_set_message(t('You do not have a Bootstrap library installed but that is ok! To get equipped either check out our <a href="@setup_guide">Start Up Guide</a> or run our <a href="@setup_url">Setup Wizard.</a>', array(
+        '@setup_guide' => 'https://drupal.org/node/2167149',
+        '@setup_url' => url('admin/appearance/kalasetup'),
+      )), 'error');
+    }
   }
   else {
-    $status_function = '_kalatheme_status_messages';
+    $boot = TRUE;
   }
-  return $status_function;
+
+  // Return the correct status message function depending on whether
+  // we were able to load all of our Bootstrap dependencies.
+  if (!$boot || !$jq || !$panels) {
+    return FALSE;
+  }
+  else {
+    return TRUE;
+  }
 }
 
 /**
- * Helper function to filter element children.
+ * Gets the total column count from the Bootstrap grid in use.
  *
- * See http://api.drupal.org/comment/34713#comment-34713
+ * @return int
+ *   The total number of columns.
  */
-function _kalatheme_element_children($element) {
-  return array_intersect_key(
-    $element,
-    array_flip(element_children($element))
-  );
+function kalatheme_get_grid_size() {
+  // Check for cached result.
+  $cached_size = cache_get('kalatheme_bootstrap_grid_size');
+  if ($cached_size !== FALSE) {
+    return $cached_size->data;
+  }
+  $size = _kalatheme_load_grid_size();
+  cache_set('kalatheme_bootstrap_grid_size', $size, 'cache', CACHE_TEMPORARY);
+  return $size;
 }
 
 /**
- * Associate all the secondary menu tasks as #children of primary tasks.
+ * Parses the main Bootstrap CSS file to determine its grid size.
+ * @todo : fix this so it can probe external css as well
  */
-function _kalatheme_associate_parent_tasks($variables) {
-  // Assign all secondary links as children of their parent primary link.
-  foreach (_kalatheme_element_children($variables['secondary']) as $secondary_index => $secondary_link) {
-    $link = $secondary_link['#link'];
-    foreach (_kalatheme_element_children($variables['primary']) as $primary_index => $primary_link) {
-      if (!isset($primary_link['#markup']) && $primary_link['#link']['path'] == $link['tab_parent']) {
-        $variables['primary'][$primary_index]['#children'][] = $secondary_link;
-        unset($variables['secondary'][$secondary_index]);
+function _kalatheme_load_grid_size() {
+  $default_column_count = 12;
+  // Load in the Bootstrap css file if using a custom library.
+  if (kalatheme_use_libraries()) {
+    $bootstrap_directory = libraries_get_path(KALATHEME_BOOTSTRAP_LIBRARY);
+    if (!$bootstrap_directory) {
+      return $default_column_count;
+    }
+    $bootstrap_file = $bootstrap_directory . '/css/bootstrap.min.css';
+    if (!file_exists($bootstrap_file)) {
+      $bootstrap_file = $bootstrap_directory . '/css/bootstrap.css';
+      if (!file_exists($bootstrap_file)) {
+        return $default_column_count;
       }
     }
+    $bootstrap_contents = file_get_contents($bootstrap_file);
+    // Find the largest column size.
+    $column_sizes = array();
+    preg_match_all('/col-md-(\d{1,2})/', $bootstrap_contents, $column_sizes);
+    if (empty($column_sizes)) {
+      return $default_column_count;
+    }
+    $column_sizes = array_pop($column_sizes);
+    $column_sizes = array_unique($column_sizes);
+    foreach ($column_sizes as &$column_size) {
+      $column_size = (int)$column_size;
+    }
+    sort($column_sizes);
+    return array_pop($column_sizes);
   }
-
-  // If a secondary link hasn't been assigned, make it a primary link.
-  // @todo: this should never happen; consider removing?
-  foreach ($variables['secondary'] as $secondary_link) {
-    $variables['primary'][] = $secondary_link;
+  else {
+    return $default_column_count;
   }
-
-  return $variables;
+  // @todo what do we do if we aren't using CDN or libraries?
 }
 
 /**
- * Returns HTML for status and/or error messages, grouped by type.
+ * Calculates a column number based on columns in the total and current grid.
+ *
+ * @param int $percentage
+ *   Whole number version of the percentage to calculate.
+ * @param (optional) integer $total_columns
+ *   The total actual columns in the current row. Defaults to 2.
+ *
+ * @return int
+ *   The column count, rounded if necessary.
  */
-function _kalatheme_status_messages($variables) {
-  $display = $variables['display'];
-  $output = '';
-
-  $status_heading = array(
-    'status' => t('Status message'),
-    'error' => t('Error message'),
-    'warning' => t('Warning message'),
-  );
-
-  // Map Drupal message types to their corresponding Bootstrap classes.
-  // @see http://twitter.github.com/bootstrap/components.html#alerts
-  $status_class = array(
-    'status' => 'success',
-    'error' => 'danger',
-    'warning' => 'info',
-  );
-
-  foreach (drupal_get_messages($display) as $type => $messages) {
-    $class = (isset($status_class[$type])) ? ' alert-' . $status_class[$type] : '';
-    $output .= "<div class=\"alert alert-block$class\">\n";
-    $output .= "  <a class=\"close\" data-dismiss=\"alert\" href=\"#\">x</a>\n";
-
-    if (!empty($status_heading[$type])) {
-      $output .= '<h2 class="element-invisible">' . $status_heading[$type] . "</h2>\n";
-    }
-
-    if (count($messages) > 1) {
-      $output .= " <ul>\n";
-      foreach ($messages as $message) {
-        $output .= '  <li>' . $message . "</li>\n";
-      }
-      $output .= " </ul>\n";
+function kalatheme_grid_size($percentage, $total_columns = 2) {
+  $columns = $percentage * KALATHEME_GRID_SIZE;
+  // Deal with uneven division.
+  if (!is_integer($columns)) {
+    if ($columns > (KALATHEME_GRID_SIZE / $total_columns)) {
+      $columns = floor($columns);
     }
     else {
-      $output .= $messages[0];
+      $columns = ceil($columns);
     }
-
-    $output .= "</div>\n";
   }
-  return $output;
+
+  return $columns;
 }
 
 /**
- * Returns a list of Kalatheme base themes.
+ * Helper function to return whether we are using libraries integration or not
  */
-function _kalatheme_get_base_themes() {
-  $themes = list_themes();
-
-  $base_themes = array('kalatheme' => 'Kalatheme');
-  if (isset($themes['kalatheme']->sub_themes)) {
-    $base_themes += $themes['kalatheme']->sub_themes;
-  }
-
-  return $base_themes;
+function kalatheme_use_libraries() {
+  $library = theme_get_setting('bootstrap_library');
+  return (isset($library) && $library == 'custom');
 }
+
