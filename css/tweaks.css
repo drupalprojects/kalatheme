@@ -191,3 +191,8 @@ tr.even, tr.odd {
 .batch-processed .progress {
   height: auto;
 }
+
+/* Make bootstrap preview a tolerable size */
+#kalapreview-image-load-image img {
+  width: 50%;
+}
