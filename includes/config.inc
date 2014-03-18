@@ -108,7 +108,7 @@ function kalatheme_subtheme_form() {
     $form['subtheme']['build_subtheme'] = array(
       '#type' => 'checkbox',
       '#title' => t('Build and enable a custom subtheme'),
-      '#default_value' => theme_get_setting('build_subtheme'),
+      '#default_value' => FALSE,
       '#description' => t('Check here to have kalatheme build you a subtheme with the settings on this form.'),
       '#ajax' => array(
         'callback' => 'kalatheme_ajax_submit_submit',
@@ -158,7 +158,7 @@ function kalatheme_subtheme_form() {
 function kalatheme_custom_bootstrap_library_validate(&$form, &$form_state) {
   // Validate subtehme name if exists
   $regex = '/^[a-zA-Z][\da-zA-Z _\']*$/';
-  if (isset($form_state['values']['subtheme_name'])) {
+  if (!empty($form_state['values']['subtheme_name'])) {
     if (!preg_match($regex, $form_state['values']['subtheme_name'])) {
       form_set_error('form', t('Please enter a valid machine name.'));
     }
