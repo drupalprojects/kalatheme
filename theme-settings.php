@@ -129,8 +129,12 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   $form['actions']['submit']['#suffix'] = "</div>";
   // Add custom submit and validate functions to handle custom bootstrap
   // libraries
-  $form['#submit'][] = 'kalatheme_custom_bootstrap_library_submit';
-  $form['#submit'][] = 'kalatheme_custom_bootstrap_library_validate';
+  if (isset($form['#submit']) && is_array($form['#submit']) && !in_array('kalatheme_custom_bootstrap_library_submit', $form['#submit'])) {
+    $form['#submit'][] = 'kalatheme_custom_bootstrap_library_submit';
+  }
+  if (isset($form['#validate']) && is_array($form['#validate']) && !in_array('kalatheme_custom_bootstrap_library_validate', $form['#validate'])) {
+    $form['#validate'][] = 'kalatheme_custom_bootstrap_library_validate';
+  }
   // Make sure the callback function and other fun things are actually loaded
   $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/includes/config.inc';
   $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/kalatheme.updater.inc';

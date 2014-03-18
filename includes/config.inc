@@ -156,10 +156,12 @@ function kalatheme_subtheme_form() {
  * Handle custom Bootstrap library validation
  */
 function kalatheme_custom_bootstrap_library_validate(&$form, &$form_state) {
-  // Validate subtehme name ig exists
+  // Validate subtehme name if exists
   $regex = '/^[a-zA-Z][\da-zA-Z _\']*$/';
-  if (!preg_match($regex, $form_state['values']['subtheme_name'])) {
-    form_set_error('subtheme_name', t('Please enter a valid machine name.'));
+  if (isset($form_state['values']['subtheme_name'])) {
+    if (!preg_match($regex, $form_state['values']['subtheme_name'])) {
+      form_set_error('form', t('Please enter a valid machine name.'));
+    }
   }
   // Make sure the user has uploaded an archive
   // We handle validation of the archive in the submit handler
