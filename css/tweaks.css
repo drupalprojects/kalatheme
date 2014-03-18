@@ -196,3 +196,7 @@ tr.even, tr.odd {
 #kalapreview-image-load-image img {
   width: 50%;
 }
+
+#kala-submit-change-title {
+  display: inline;
+}

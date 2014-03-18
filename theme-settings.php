@@ -36,10 +36,12 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   // Subtheme backend checks
   $form = array_merge($form, kalatheme_backend_check_form());
 
-  // Bootstrap Library settings
+  // Kalatheme settings
   $form = array_merge($form, kalatheme_bootstrap_library_form());
   $form['bootstrap']['bootstrap_library']['#default_value'] = theme_get_setting('bootstrap_library');
   $form['bootstrap']['bootstrap_upload']['#default_value'] = theme_get_setting('bootstrap_upload');
+  // Subtheme settings
+  $form = array_merge($form, kalatheme_subtheme_form());
 
   // Need to pass this through to use list_allowed_values_string without errors.
   $field = array('type' => 'list_text');
@@ -122,13 +124,16 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
   );
 
+  // Wrap submit in dix for ajaxification
+  $form['actions']['submit']['#prefix'] = "<div id='kala-submit-change-title'>";
+  $form['actions']['submit']['#suffix'] = "</div>";
   // Add custom submit and validate functions to handle custom bootstrap
   // libraries
   $form['#submit'][] = 'kalatheme_custom_bootstrap_library_submit';
   $form['#submit'][] = 'kalatheme_custom_bootstrap_library_validate';
-  // Make sure the callback function is actually loaded
+  // Make sure the callback function and other fun things are actually loaded
   $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/includes/config.inc';
-    $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/kalatheme.updater.inc';
+  $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/kalatheme.updater.inc';
 }
 
 

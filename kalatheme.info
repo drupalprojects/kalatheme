@@ -28,5 +28,6 @@ settings[toggle_secondary_menu] = 1
 settings[responsive_toggle] = 1
 settings[pane_styles_toggle] = 1
 settings[always_show_page_title] = 0
+settings[build_subtheme] = 0
 
 plugins[panels][styles] = styles

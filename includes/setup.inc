@@ -14,112 +14,7 @@ define('DEFAULT_FONTAWESOME_URL', 'http://fontawesome.io/./assets/font-awesome-4
  * Form for kalatheme setup
  */
 function kalatheme_setup_form() {
-  require_once dirname(__FILE__) . '/utils.inc';
 
-  if (kalatheme_backend_check()) {
-    $form['backend_check'] = array(
-      '#prefix' => '<div class="alert alert-success">',
-      '#markup' => t("Your webserver is correctly configured for Kalatheme to build, install and enable your subtheme for you!"),
-      '#suffix' => '</div>',
-    );
-  }
-  else {
-    $form['backend_check'] = array(
-      '#prefix' => '<div class="alert alert-danger">',
-      '#markup' => t("If you want Kalatheme to be able to install and enable your subtheme for you please make sure that both @lib_path and @theme_path exist and are writable. Otherwise it will just give you an archive to download.", array(
-        '@lib_path' => is_dir('sites/all/libraries') ? 'sites/all/libraries' : 'sites/all',
-        '@theme_path' => 'sites/all/themes',
-      )),
-      '#suffix' => '</div>',
-    );
-  }
-  $form['help_text'] = array(
-    '#prefix' => '<p>',
-    '#markup' => t('Here you can easily setup a Kalatheme subtheme with the default or a custom Bootstrap library. For more information please consult our <a href="@setup_url">Start Up Guide</a> or just give it a whirl! The following file extensions are supported: %extensions.', array(
-      '@setup_url' => 'http://drupal.org/project/kalatheme',
-      '%extensions' => archiver_get_extensions(),
-    )),
-    '#suffix' => '</p>',
-  );
-  $form['subtheme_name'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Name your theme'),
-    '#description' => t('No special characters. For example: My Theme, Stuff'),
-    '#required' => TRUE,
-  );
-
-  $base_themes = _kalatheme_get_base_themes();
-
-
-  if (count($base_themes) > 1) {
-    $form['subtheme_base'] = array(
-      '#type' => 'select',
-      '#title' => t('Subtheme base'),
-      '#description' => t('The base theme to use for your theme.'),
-      '#required' => TRUE,
-      '#options' => $base_themes,
-      '#default_value' => 'kalatheme',
-    );
-  }
-  else {
-    $form['subtheme_base'] = array(
-      '#type' => 'hidden',
-      '#value' => 'kalatheme',
-    );
-  }
-
-  $form['bootstrap_library'] = array(
-    '#type' => 'select',
-    '#title' => t('Select a Bootstrap library.'),
-    '#description' => t('Select a Bootstrap library to use with your subtheme. Visit <a href="@bootswatch">Bootswatch</a> for more info. Select "custom" to upload a third party Bootstrap library such as one from <a href="@wrapbootstrap">Wrapbootstrap</a> or built using Bootstrap\'s <a href="@bootcustom">Customization Utility</a>.', array(
-      '@bootswatch' => 'http://bootswatch.com/',
-      '@wrapbootstrap' => 'http://wrapbootstrap.com/',
-      '@bootcustom' => 'http://getbootstrap.com/customize/',
-    )),
-    '#options' => array(
-      'default' => t('Default'),
-      'amelia' => t('Amelia'),
-      'cerulean' => t('Cerulean'),
-      'cosmo' => t('Cosmo'),
-      'cyborg' => t('Cyborg'),
-      'flatly' => t('Flatly'),
-      'journal' => t('Journal'),
-      'readable' => t('Readable'),
-      'simplex' => t('Simplex'),
-      'slate' => t('Slate'),
-      'spacelab' => t('Spacelab'),
-      'united' => t('United'),
-      'yeti' => t('Yeti'),
-      'custom' => t('Custom'),
-    ),
-    '#ajax' => array(
-      'callback' => '_kalatheme_bootstrap_preview',
-      'wrapper' => 'kalapreview-image-load-image',
-      'method' => 'replace',
-      'effect' => 'fade',
-      'progress' => array('type' => 'none'),
-    ),
-    // '#required' => TRUE, don't need this because you have to select something!
-  );
-  $form['bootstrap_preview'] = array(
-    '#prefix' => "<div id='kalapreview-image-load-image'>",
-    '#suffix' => "</div>",
-  );
-  $form['bootstrap_upload'] = array(
-    '#type' => 'file',
-    '#title' => t('Custom Bootstrap library'),
-    '#description' => t('Upload any <a href="@valid_doc">valid bootstrap library</a> here to complete your install. For example: %filename from your local computer. <strong>DISCLAIMER:</strong> This works pretty good with some libraries but not so great with others. Use this to kick start your project not as a end-all-be-all tool. ', array(
-      '%filename' => 'name.tar.gz',
-      '@valid_doc' => 'http://www.drupal.org/project/kalatheme',
-    )),
-    // This #states rule says that the "file upload" field should only
-    // be shown if the "bootstrap_library" form element is set to "custom".
-    '#states' => array(
-      'visible' => array(
-        ':input[name="bootstrap_library"]' => array('value' => 'custom'),
-      ),
-    )
-  );
   $form['font_awesome'] = array(
     '#type' => 'checkbox',
     '#title' => t('Check this to include <a href="@font_awesome">Font Awesome</a> in your subtheme as well.', array(
@@ -127,18 +22,7 @@ function kalatheme_setup_form() {
     )),
     '#default_value' => TRUE,
   );
-  if (kalatheme_backend_check()) {
-    $form['enable_theme'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Check this to enable the subtheme after it is built and installed.'),
-      '#default_value' => TRUE,
-    );
-  }
-  $form['actions'] = array('#type' => 'actions');
-  $form['actions']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Dress me up!'),
-  );
+
   return $form;
 }
 

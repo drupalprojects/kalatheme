@@ -5,20 +5,6 @@
  */
 
 /**
- * Returns a list of Kalatheme base themes.
- */
-function _kalatheme_get_base_themes() {
-  $themes = list_themes();
-
-  $base_themes = array('kalatheme' => 'Kalatheme');
-  if (isset($themes['kalatheme']->sub_themes)) {
-    $base_themes += $themes['kalatheme']->sub_themes;
-  }
-
-  return $base_themes;
-}
-
-/**
  * Form constructor for Bootstrap library selection form
  *
  * @return array
@@ -28,7 +14,7 @@ function kalatheme_bootstrap_library_form() {
 
   $form['bootstrap'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Bootstrap Library'),
+    '#title' => t('Kalatheme Settings'),
     '#weight' => -99,
     '#collapsible' => FALSE,
     '#collapsed' => FALSE,
@@ -42,7 +28,7 @@ function kalatheme_bootstrap_library_form() {
       '@bootcustom' => 'http://getbootstrap.com/customize/',
     )),
     '#ajax' => array(
-      'callback' => 'kalatheme_ajax_bootstrap_preview',
+      'callback' => 'kalatheme_ajax_bootstrap_preview_submit',
       'wrapper' => 'kalapreview-image-load-image',
       'method' => 'replace',
       'effect' => 'fade',
@@ -72,6 +58,7 @@ function kalatheme_bootstrap_library_form() {
       ),
     )
   );
+
   return $form;
 }
 
@@ -100,13 +87,80 @@ function kalatheme_backend_check_form() {
       '#suffix' => '</div>',
     );
   }
+  return $form;
+}
+
+/**
+ * Form constructor for subtheme selection form
+ *
+ * @return array
+ */
+function kalatheme_subtheme_form() {
+  $form = array();
+
+  if (kalatheme_backend_check()) {
+    $form['subtheme'] = array(
+      '#type' => 'fieldset',
+      '#weight' => -98,
+      '#collapsible' => FALSE,
+      '#collapsed' => FALSE,
+    );
+    $form['subtheme']['build_subtheme'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Build and enable a custom subtheme'),
+      '#default_value' => theme_get_setting('build_subtheme'),
+      '#description' => t('Check here to have kalatheme build you a subtheme with the settings on this form.'),
+      '#ajax' => array(
+        'callback' => 'kalatheme_ajax_submit_submit',
+        'wrapper' => 'kala-submit-change-title',
+        'progress' => array('type' => 'none'),
+      ),
+    );
+    $form['subtheme']['subtheme_name'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Name your theme'),
+      '#description' => t('No special characters. For example: My Theme, Stuff. If you input nothing it will use your sitename.'),
+      '#states' => array(
+        'visible' => array(
+          ':input[name="build_subtheme"]' => array('checked' => TRUE),
+        ),
+      ),
+    );
+    $base_themes = _kalatheme_get_base_themes();
+    if (count($base_themes) > 1) {
+      $form['subtheme']['subtheme_base'] = array(
+        '#type' => 'select',
+        '#title' => t('Subtheme base'),
+        '#description' => t('The base theme to use for your theme.'),
+        '#options' => $base_themes,
+        '#default_value' => 'kalatheme',
+        '#states' => array(
+          'visible' => array(
+            ':input[name="build_subtheme"]' => array('checked' => TRUE),
+          ),
+        ),
+      );
+    }
+    else {
+      $form['subtheme']['subtheme_base'] = array(
+        '#type' => 'hidden',
+        '#value' => 'kalatheme',
+      );
+    }
+  }
 
   return $form;
 }
+
 /**
  * Handle custom Bootstrap library validation
  */
 function kalatheme_custom_bootstrap_library_validate(&$form, &$form_state) {
+  // Validate subtehme name ig exists
+  $regex = '/^[a-zA-Z][\da-zA-Z _\']*$/';
+  if (!preg_match($regex, $form_state['values']['subtheme_name'])) {
+    form_set_error('subtheme_name', t('Please enter a valid machine name.'));
+  }
   // Make sure the user has uploaded an archive
   // We handle validation of the archive in the submit handler
   if ($form_state['values']['bootstrap_library'] == 'custom') {
@@ -178,6 +232,7 @@ function kalatheme_custom_bootstrap_library_submit(&$form, &$form_state) {
       'local_url' => $project_real_location,
     );
 
+
     // If the owner of the directory we extracted is the same as the
     // owner of our configuration directory (e.g. sites/default) where we're
     // trying to install the code, there's no need to prompt for FTP/SSH
@@ -225,9 +280,6 @@ function kalatheme_run_install($filetransfer, $project, $updater_name, $local_ur
     'file' => drupal_get_path('theme', 'kalatheme') . '/includes/kalatheme.authorize.inc',
   );
   batch_set($batch);
-
-  // Invoke the batch via authorize.php.
-  //system_authorized_batch_process();
 }
 
 /**
@@ -274,7 +326,7 @@ function kalatheme_available_bootstrap_libraries() {
  *   Updated form state to be merged back in
  *
  */
-function kalatheme_ajax_bootstrap_preview($form, &$form_state) {
+function kalatheme_ajax_bootstrap_preview_submit($form, &$form_state) {
   $theme = $form_state['values']['bootstrap_library'];
   if ($theme == 'default' || $theme == 'custom' || $theme == 'none') {
     $form['bootstrap']['bootstrap_preview']['#markup'] = t('');
@@ -286,6 +338,26 @@ function kalatheme_ajax_bootstrap_preview($form, &$form_state) {
   }
   return $form['bootstrap']['bootstrap_preview'];
 }
+
+/**
+ * Ajax callback that returns HTML to the submit button so that the user
+ * has clearer UX actions based on form selection
+ *
+ * @param $form
+ *   Form
+ * @param $form_state
+ *   Form state
+ *
+ * @return
+ *   Updated form state to be merged back in
+ *
+ */
+function kalatheme_ajax_submit_submit($form, &$form_state) {
+  $subtheme = $form_state['values']['build_subtheme'];
+  $form['actions']['submit']['#value'] = ($subtheme) ? t('Build and enable subtheme') : t('Save configuration');
+  return $form['actions']['submit'];
+}
+
 
 /**
  * We want to check if the webserver can write our stuff to the right places.
@@ -341,4 +413,18 @@ function kalatheme_extract_directory($type = '') {
     }
   }
   return $directory;
+}
+
+/**
+ * Returns a list of Kalatheme base themes.
+ */
+function _kalatheme_get_base_themes() {
+  $themes = list_themes();
+
+  $base_themes = array('kalatheme' => 'Kalatheme');
+  if (isset($themes['kalatheme']->sub_themes)) {
+    $base_themes += $themes['kalatheme']->sub_themes;
+  }
+
+  return $base_themes;
 }
