@@ -222,7 +222,7 @@ function kalatheme_run_install($filetransfer, $project, $updater_name, $local_ur
     'operations' => $operations,
     // @todo Use a different finished callback for different messages?
     'finished' => 'update_authorize_install_batch_finished',
-    'file' => drupal_get_path('theme', 'kalatheme') . '/kalatheme.authorize.inc',
+    'file' => drupal_get_path('theme', 'kalatheme') . '/includes/kalatheme.authorize.inc',
   );
   batch_set($batch);
 

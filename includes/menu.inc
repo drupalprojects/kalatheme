@@ -5,22 +5,6 @@
  */
 
 /**
- * Implements hook_menu() (via hook menu alter because that is how themes roll).
- */
-function kalatheme_menu_alter(&$items) {
-  $items['admin/appearance/kalasetup'] = array(
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('kalatheme_setup_form'),
-    'access arguments' => array('administer themes'),
-    'weight' => 25,
-    'type' => MENU_LOCAL_ACTION,
-    'file' => 'setup.inc',
-    'file path' => drupal_get_path('theme', 'kalatheme') . '/includes',
-    'title' => 'Setup Kalatheme',
-  );
-}
-
-/**
  * Implements theme_menu_tree().
  */
 function kalatheme_menu_tree($variables) {

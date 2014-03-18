@@ -14,7 +14,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   // errors
   require_once dirname(__FILE__) . '/includes/utils.inc';
   // Get some extra stuff to help with our config
-  require_once dirname(__FILE__) . '/includes/config.form.inc';
+  require_once dirname(__FILE__) . '/includes/config.inc';
   // Don't add custom form elements to Kalatheme's settings page if Kalatheme
   // isn't the default theme.
   // Also, don't add custom form elements to a subtheme's settings page if it
@@ -127,7 +127,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   $form['#submit'][] = 'kalatheme_custom_bootstrap_library_submit';
   $form['#submit'][] = 'kalatheme_custom_bootstrap_library_validate';
   // Make sure the callback function is actually loaded
-  $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/includes/config.form.inc';
+  $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/includes/config.inc';
     $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/kalatheme.updater.inc';
 }
 
