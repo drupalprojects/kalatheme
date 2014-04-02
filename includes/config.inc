@@ -176,65 +176,21 @@ function kalatheme_custom_bootstrap_library_validate(&$form, &$form_state) {
  * Handle custom Bootstrap library submission
  */
 function kalatheme_custom_bootstrap_library_submit(&$form, &$form_state) {
-  // Save the uploaded file
+  // Summon the powerz of update manager
+  module_load_include("inc", "update", "update.manager");
+  // Generate subtheme with correct settings
+  // put subtheme files into tmp directory
+  // put in settings and save settings
+  // queue up some args for batching
+  $projects = array();
+
+  // Use a custom bootstrap library
   if ($_FILES['files']['name']['bootstrap_upload']) {
-    // Summon the power of update manager
-    module_load_include("inc", "update", "update.manager");
-    $validators = array('file_validate_extensions' => array(archiver_get_extensions()));
-    $field = 'bootstrap_upload';
-    if (!($finfo = file_save_upload($field, $validators, NULL, FILE_EXISTS_REPLACE))) {
-      // Failed to upload the file. file_save_upload() calls form_set_error() on
-      // failure.
-      return;
-    }
-    $local_cache = $finfo->uri;
+    $projects[][] = kalatheme_custom_bootstrap_library_build();
+  }
 
-    $project = 'kalatheme_bootstrap';
-    $directory = kalatheme_extract_directory('library') . '/' . $project;
-    try {
-      $archive = update_manager_archive_extract($local_cache, $directory);
-    }
-    catch (Exception $e) {
-      form_set_error($field, $e->getMessage());
-      return;
-    }
-
-    $files = $archive->listContents();
-    if (!$files) {
-      form_set_error($field, t('Provided archive contains no files.'));
-      return;
-    }
-    foreach ($files as $file) {
-      if (stripos($file, 'bootstrap.min.css') !== FALSE || stripos($file, 'bootstrap.css') !== FALSE) {
-        $check_file = $file;
-        break;
-      }
-    }
-    if (!file_exists($directory . '/' . $check_file)) {
-      form_set_error($field, t('Provided archive contains no files.'));
-      return;
-    }
-
-    // Make sure the Updater registry is loaded.
-    require_once dirname(__FILE__) . '/../kalatheme.updater.inc';
-
-    drupal_get_updaters();
-    try {
-      $updater = Updater::factory($directory);
-    }
-    catch (Exception $e) {
-      form_set_error($field, $e->getMessage());
-      return;
-    }
-
-    $project_real_location = drupal_realpath($directory);
-    $arguments = array(
-      'project' => $project,
-      'updater_name' => get_class($updater),
-      'local_url' => $project_real_location,
-    );
-
-
+  // Run the batch operation if we have things to move
+  if ($projects) {
     // If the owner of the directory we extracted is the same as the
     // owner of our configuration directory (e.g. sites/default) where we're
     // trying to install the code, there's no need to prompt for FTP/SSH
@@ -242,16 +198,83 @@ function kalatheme_custom_bootstrap_library_submit(&$form, &$form_state) {
     // update_authorize_run_install() directly.
     if (kalatheme_has_write_access()) {
       $filetransfer = new FileTransferLocal(DRUPAL_ROOT);
-      call_user_func_array('kalatheme_run_install', array_merge(array($filetransfer), $arguments));
+      call_user_func_array('kalatheme_run_install', array_merge(array($filetransfer), $projects));
     }
     // Otherwise, go through the regular workflow to prompt for FTP/SSH
     // credentials and invoke update_authorize_run_install() indirectly with
     // whatever FileTransfer object authorize.php creates for us.
     else {
-      system_authorized_init('kalatheme_run_install', drupal_get_path('module', 'update') . '/update.authorize.inc', $arguments, t('Update manager'));
+      system_authorized_init('kalatheme_run_install', drupal_get_path('module', 'update') . '/update.authorize.inc', $projects, t('Update manager'));
       $form_state['redirect'] = system_authorized_get_url();
     }
   }
+}
+
+
+/**
+ * Handle custom Bootstrap library submission
+ */
+function kalatheme_custom_bootstrap_library_build() {
+  // Save the file to tmp
+  $validators = array('file_validate_extensions' => array(archiver_get_extensions()));
+  $field = 'bootstrap_upload';
+  if (!($finfo = file_save_upload($field, $validators, NULL, FILE_EXISTS_REPLACE))) {
+    // Failed to upload the file. file_save_upload() calls form_set_error() on
+    // failure.
+    return;
+  }
+  $local_cache = $finfo->uri;
+
+  // extract file to tmp
+  // @todo: this needs to be based on subtheme
+  $project = 'kalatheme_bootstrap';
+  $directory = kalatheme_extract_directory('library') . '/' . $project;
+  try {
+    $archive = update_manager_archive_extract($local_cache, $directory);
+  }
+  catch (Exception $e) {
+    form_set_error($field, $e->getMessage());
+    return;
+  }
+
+  // validate archive
+  $files = $archive->listContents();
+  if (!$files) {
+    form_set_error($field, t('Provided archive contains no files.'));
+    return;
+  }
+  foreach ($files as $file) {
+    if (stripos($file, 'bootstrap.min.css') !== FALSE || stripos($file, 'bootstrap.css') !== FALSE) {
+      $check_file = $file;
+      break;
+    }
+  }
+  if (!file_exists($directory . '/' . $check_file)) {
+    form_set_error($field, t('Provided archive contains no files.'));
+    return;
+  }
+
+  // Loop of projects
+  // set projects that need to be moved
+  // Do this per project
+  // Make sure the Updater registry is loaded.
+  require_once dirname(__FILE__) . '/../kalatheme.updater.inc';
+  drupal_get_updaters();
+  try {
+    $updater = Updater::factory($directory);
+  }
+  catch (Exception $e) {
+    form_set_error($field, $e->getMessage());
+    return;
+  }
+  $project_real_location = drupal_realpath($directory);
+  $arguments = array(
+    'project' => $project,
+    'updater_name' => get_class($updater),
+    'local_url' => $project_real_location,
+  );
+
+  return $arguments;
 }
 
 
@@ -261,25 +284,28 @@ function kalatheme_custom_bootstrap_library_submit(&$form, &$form_state) {
  * taken from update_authorize_run_update
  * builds a batch and process it for installing modules from the templocation
  */
-function kalatheme_run_install($filetransfer, $project, $updater_name, $local_url) {
-  $operations[] = array(
-    'kalatheme_authorize_batch_copy_project',
-    array(
-      $project,
-      $updater_name,
-      $local_url,
-      $filetransfer,
-    ),
-  );
+function kalatheme_run_install($filetransfer, $projects) {
+  $operations = array();
+  foreach ($projects as $project_info) {
+    $operations[] = array(
+      'kalatheme_authorize_batch_copy_project',
+      array(
+        $project_info['project'],
+        $project_info['updater_name'],
+        $project_info['local_url'],
+        $filetransfer,
+      ),
+    );
+  }
 
   // @todo Instantiate our Updater to set the human-readable title?
   $batch = array(
-    'title' => t('Installing %project', array('%project' => $project)),
-    'init_message' => t('Preparing to install'),
+    'title' => t('Installing Kalatheme'),
+    'init_message' => t('Preparing to Kalatheme'),
     'operations' => $operations,
     // @todo Use a different finished callback for different messages?
     'finished' => 'update_authorize_install_batch_finished',
-    'file' => drupal_get_path('theme', 'kalatheme') . '/includes/kalatheme.authorize.inc',
+    'file' => drupal_get_path('theme', 'kalatheme') . '/kalatheme.authorize.inc',
   );
   batch_set($batch);
 }
