@@ -19,7 +19,7 @@
  * @param array $context
  *   Reference to an array used for Batch API storage.
  */
-function kalatheme_authorize_batch_copy_project($project, $updater_name, $local_url, $filetransfer, &$context) {
+function kalatheme_authorize_batch_copy_project($project, $updater_name, $local_url, $subtheme, $filetransfer, &$context) {
   module_load_include('inc', 'update', 'update.authorize');
   // Initialize some variables in the Batch API $context array.
   if (!isset($context['results']['log'])) {
@@ -28,10 +28,14 @@ function kalatheme_authorize_batch_copy_project($project, $updater_name, $local_
   if (!isset($context['results']['log'][$project])) {
     $context['results']['log'][$project] = array();
   }
-
   if (!isset($context['results']['tasks'])) {
     $context['results']['tasks'] = array();
   }
+  // Add some information about what to do when we finish
+  if ($subtheme) {
+    $context['results']['tasks']['log']['subtheme'] = $project;
+  }
+
 
   // The batch API uses a session, and since all the arguments are serialized
   // and unserialized between requests, although the FileTransfer object itself
@@ -75,4 +79,81 @@ function kalatheme_authorize_batch_copy_project($project, $updater_name, $local_
   // This particular operation is now complete, even though the batch might
   // have other operations to perform.
   $context['finished'] = 1;
+}
+
+/**
+ * Batch callback: Performs actions when the authorized install batch is done.
+ *
+ * This processes the results and stashes them into SESSION such that
+ * authorize.php will render a report. Also responsible for putting the site
+ * back online after a successful install if necessary.
+ *
+ * @param $success
+ *   TRUE if the batch operation was a success; FALSE if there were errors.
+ * @param $results
+ *   An associative array of results from the batch operation.
+ */
+function kalatheme_authorize_install_batch_finished($success, $results) {
+  foreach ($results['log'] as $project => $messages) {
+    if (!empty($messages['#abort'])) {
+      $success = FALSE;
+    }
+  }
+  $offline = variable_get('maintenance_mode', FALSE);
+  if ($success) {
+    // Take the site out of maintenance mode if it was previously that way.
+    if ($offline && isset($_SESSION['maintenance_mode']) && $_SESSION['maintenance_mode'] == FALSE) {
+      variable_set('maintenance_mode', FALSE);
+      $page_message = array(
+        'message' => t('Installation was completed successfully. Your site has been taken out of maintenance mode.'),
+        'type' => 'status',
+      );
+    }
+    else {
+      $page_message = array(
+        'message' => t('Installation was completed successfully.'),
+        'type' => 'status',
+      );
+    }
+  }
+  elseif (!$success && !$offline) {
+    $page_message = array(
+      'message' => t('Installation failed! See the log below for more information.'),
+      'type' => 'error',
+    );
+  }
+  else {
+    $page_message = array(
+      'message' => t('Installation failed! See the log below for more information. Your site is still in maintenance mode.'),
+      'type' => 'error',
+    );
+  }
+
+  // Unset the variable since it is no longer needed.
+  unset($_SESSION['maintenance_mode']);
+
+  // Set all these values into the SESSION so authorize.php can display them.
+  $_SESSION['authorize_results']['success'] = $success;
+  $_SESSION['authorize_results']['page_message'] = $page_message;
+  $_SESSION['authorize_results']['messages'] = $results['log'];
+  $_SESSION['authorize_results']['tasks'] = $results['tasks'];
+  $_SESSION['authorize_operation']['page_title'] = t('Update manager');
+
+  // Enable and redirect if required
+  if (isset($results['tasks']['log']['subtheme'])) {
+    // Rebuild theme registry stuff
+    system_rebuild_theme_data();
+    drupal_theme_rebuild();
+    // Enable new theme
+    theme_enable(array($results['tasks']['log']['subtheme']));
+    variable_set('theme_default', $results['tasks']['log']['subtheme']);
+    // REfresh everythging and set a message
+    // @todo: make this abstract in the future
+    drupal_set_message(t('<i class="fa fa-thumbs-up fa-2x">Your new subtheme is enabled! Looking good in the neighborhood!!</i>'), 'status', FALSE);
+    cache_clear_all();
+    // Redirect to new settings page but only if not an install profile
+    if (!drupal_installation_attempted()) {
+      drupal_goto('admin/appearance/settings/' . $results['tasks']['log']['subtheme']);
+    }
+  }
 }
