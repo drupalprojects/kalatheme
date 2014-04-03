@@ -9,9 +9,11 @@
 // Load some helper functions
 require_once dirname(__FILE__) . '/includes/utils.inc';
 
-// Constants
-define('KALATHEME_BOOTSTRAP_VERSION', '3.1.1');
-define('KALATHEME_FONTAWESOME_VERSION', '4.0.3');
+// Asset stuff
+define('KALATHEME_BOOTSTRAP_CSS', '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css');
+define('KALATHEME_BOOTSTRAP_JS', '//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js');
+define('KALATHEME_FONTAWESOME_CSS', '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css');
+
 // Grid size constants
 define('KALATHEME_GRID_SIZE', kalatheme_get_grid_size());
 define('KALATHEME_GRID_FULL', 1);
@@ -94,28 +96,20 @@ function kalatheme_process_page(&$variables) {
   // Add Bootstrap JS and stock CSS.
   global $base_url;
   $base = parse_url($base_url);
-
   // Use the CDN if not using libraries
   if (!kalatheme_use_libraries()) {
     $library = theme_get_setting('bootstrap_library');
     if ($library !== 'none') {
       // Add the JS
-      drupal_add_js($base['scheme'] . '://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js', 'external');
+      drupal_add_js($base['scheme'] . ":" . KALATHEME_BOOTSTRAP_JS, 'external');
       // Add the CSS
-      $location = '://netdna.bootstrapcdn.com';
-      $location .= (!$library || $library == 'default') ? '/bootstrap/' . KALATHEME_BOOTSTRAP_VERSION .  '/css' : '/bootswatch/' . KALATHEME_BOOTSTRAP_VERSION .  '/' . $library;
-      $location .= '/bootstrap.min.css';
-      drupal_add_css($base['scheme'] . $location, 'external');
+      $css = ($library === 'default') ? KALATHEME_BOOTSTRAP_CSS : kalatheme_get_bootswatch_theme($library)->cssCdn;
+      drupal_add_css($base['scheme'] . ":" . $css, 'external');
     }
   }
-
   // Use Font Awesome
   if (theme_get_setting('fontawesome')) {
-    // Add the CSS
-    $location = '://netdna.bootstrapcdn.com/font-awesome/';
-    $location .= KALATHEME_FONTAWESOME_VERSION;
-    $location .= '/css/font-awesome.min.css';
-    drupal_add_css($base['scheme'] . $location, 'external');
+    drupal_add_css($base['scheme'] . ":" . KALATHEME_FONTAWESOME_CSS, 'external');
   }
 
   // Define variables to theme local actions as a dropdown.

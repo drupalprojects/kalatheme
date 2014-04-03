@@ -12,8 +12,6 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   // If a non-kalatheme theme is the admin theme we need to
   // load this stuff again to get grid size info and not throw
   // errors
-  require_once dirname(__FILE__) . '/includes/utils.inc';
-  // Get some extra stuff to help with our config
   require_once dirname(__FILE__) . '/includes/config.inc';
   // Don't add custom form elements to Kalatheme's settings page if Kalatheme
   // isn't the default theme.

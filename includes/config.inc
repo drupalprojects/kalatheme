@@ -4,6 +4,9 @@
  * Kalatheme's subtheme config form stuff
  */
 
+// Load utilities
+require_once dirname(__FILE__) . '/utils.inc';
+
 /**
  * Form constructor for Bootstrap library selection form
  *
@@ -35,8 +38,8 @@ function kalatheme_bootstrap_library_form() {
       'progress' => array('type' => 'none'),
     ),
   );
-  foreach (kalatheme_available_bootstrap_libraries() as $theme) {
-    $form['bootstrap']['bootstrap_library']['#options'][$theme] = ucfirst($theme);
+  foreach (kalatheme_get_bootswatch_themes() as $theme) {
+    $form['bootstrap']['bootstrap_library']['#options'][strtolower($theme->name)] = $theme->name;
   }
   $form['bootstrap']['bootstrap_preview'] = array(
     '#type' => 'markup',
@@ -469,37 +472,6 @@ function kalatheme_custom_subtheme_skeleton($theme_settings) {
 }
 
 /**
- * List of all themes available from bootswatch; only scalar values can be
- * constants.
- *
- * @return array
- */
-function kalatheme_available_bootstrap_libraries() {
-  $libs =  array(
-    'default',
-    'amelia',
-    'cerulean',
-    'cosmo',
-    'cyborg',
-    'flatly',
-    'journal',
-    'lumen',
-    'readable',
-    'simplex',
-    'slate',
-    'spacelab',
-    'superhero',
-    'united',
-    'yeti',
-    'none'
-  );
-  if (kalatheme_backend_check()){
-    array_push($libs, 'custom');
-  }
-  return $libs;
-}
-
-/**
  * Ajax callback that returns HTML to the setup form so that the user
  * can see a preview of the bootstrap library they are selecting.
  *
@@ -518,9 +490,8 @@ function kalatheme_ajax_bootstrap_preview_submit($form, &$form_state) {
     $form['bootstrap']['bootstrap_preview']['#markup'] = t('');
   }
   else {
-    // @todo: Do this in a way that doesn't suck and maybe incorporate some
-    // styles as seen on bootswatch?
-    $form['bootstrap']['bootstrap_preview']['#markup'] = t('<img src="@preview">', array('@preview' => 'http://bootswatch.com/' . $theme . '/thumbnail.png'));
+    $bootswatch = kalatheme_get_bootswatch_theme($theme);
+    $form['bootstrap']['bootstrap_preview']['#markup'] = t('<h2>@text</h2><img src="@preview">', array('@preview' => $bootswatch->thumbnail, '@text' => $bootswatch->description));
   }
   return $form['bootstrap']['bootstrap_preview'];
 }
@@ -682,8 +653,6 @@ function kalatheme_strip_files($file) {
  * Return the correct asset class for a file
  */
 function kalatheme_get_asset_class($file) {
-  // @todo might want to update this over time?
-  // $wanted_types = array('.css', '.js', '.png', '.jpg', '.woff', '.ttf', '.svg', '.eot', '.json');
   $asset_classes = array(
     'img' => array('.png', '.jpg', '.gif'),
     'fonts' => array('.svg', '.woff', '.ttf', '.eot'),
@@ -715,4 +684,3 @@ function kalatheme_get_bootstrap_files() {
     'glyphicons-halflings-regular.eot',
   );
 }
-

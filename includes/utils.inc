@@ -5,6 +5,9 @@
  * Kalatheme's helper functions
  */
 
+// Constants
+define('KALATHEME_BOOTSWATCH_API', 'http://api.bootswatch.com/3/');
+
 // Use Libraries intregration if applicable
 if (kalatheme_use_libraries()) {
   require_once dirname(__FILE__) . '/../includes/libraries.inc';
@@ -142,12 +145,12 @@ function _kalatheme_load_dependencies() {
  */
 function kalatheme_get_grid_size() {
   // Check for cached result.
-  $cached_size = cache_get('kalatheme_bootstrap_grid_size');
+  $cached_size = cache_get('kalatheme:grid_size');
   if ($cached_size !== FALSE) {
     return $cached_size->data;
   }
   $size = _kalatheme_load_grid_size();
-  cache_set('kalatheme_bootstrap_grid_size', $size, 'cache', CACHE_TEMPORARY);
+  cache_set('kalatheme:grid_size', $size, 'cache', CACHE_TEMPORARY);
   return $size;
 }
 
@@ -215,6 +218,54 @@ function kalatheme_grid_size($percentage, $total_columns = 2) {
   }
 
   return $columns;
+}
+
+/**
+ * Returns the list of Bootwatch themes.
+ */
+function kalatheme_get_bootswatch_themes() {
+  // Grab Bootstwatches from API or Drupal Cache
+  if (($bootswatches = cache_get('kalatheme:bootswatches', 'cache')) === FALSE) {
+    $bootswatch_info = drupal_http_request(KALATHEME_BOOTSWATCH_API);
+    if ($bootswatch_info && $bootswatch_info->code == 200) {
+      $data = json_decode($bootswatch_info->data);
+      if (isset($data->themes) && is_array($data->themes)) {
+        cache_set('kalatheme:bootswatches', $data->themes, 'cache', CACHE_TEMPORARY);
+        $bootswatches = $data->themes;
+      }
+    }
+  }
+  else {
+    $bootswatches = $bootswatches->data;
+  }
+  // For the default option
+  // add to the front
+  $default = new stdClass();
+  $default->name = 'Default';
+  array_unshift($bootswatches, $default);
+  // For the null option
+  $none = new stdClass();
+  $none->name = 'None';
+  $bootswatches[] = $none;
+  // If the user can use a custom theme
+  if (kalatheme_backend_check()){
+    $custom = new stdClass();
+    $custom->name = 'Custom';
+    $bootswatches[] = $custom;
+  }
+  return $bootswatches;
+}
+
+/**
+ * Get specific information about a bootswatch theme
+ */
+function kalatheme_get_bootswatch_theme($theme) {
+  $bootswatches = kalatheme_get_bootswatch_themes();
+  foreach ($bootswatches as $bootswatch) {
+    if ($bootswatch->name == ucfirst($theme)) {
+      return $bootswatch;
+    }
+  }
 }
 
 /**
