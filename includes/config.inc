@@ -43,6 +43,12 @@ function kalatheme_bootstrap_library_form() {
     '#prefix' => "<div id='kalapreview-image-load-image'>",
     '#suffix' => "</div>",
   );
+  $form['bootstrap']['fontawesome'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use Font Awesome'),
+    '#default_value' => FALSE,
+    '#description' => t('Check here if you want to use the Font Awesome icon set with your theme.'),
+  );
   $form['bootstrap']['bootstrap_upload'] = array(
     '#type' => 'file',
     '#title' => t('Custom Bootstrap library'),

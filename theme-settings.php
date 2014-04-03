@@ -39,6 +39,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   // Kalatheme settings
   $form = array_merge($form, kalatheme_bootstrap_library_form());
   $form['bootstrap']['bootstrap_library']['#default_value'] = theme_get_setting('bootstrap_library');
+  $form['bootstrap']['fontawesome']['#default_value'] = theme_get_setting('fontawesome');
   $form['bootstrap']['bootstrap_upload']['#default_value'] = theme_get_setting('bootstrap_upload');
   // Subtheme settings
   $form = array_merge($form, kalatheme_subtheme_form());

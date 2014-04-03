@@ -11,6 +11,7 @@ require_once dirname(__FILE__) . '/includes/utils.inc';
 
 // Constants
 define('KALATHEME_BOOTSTRAP_VERSION', '3.1.1');
+define('KALATHEME_FONTAWESOME_VERSION', '4.0.3');
 // Grid size constants
 define('KALATHEME_GRID_SIZE', kalatheme_get_grid_size());
 define('KALATHEME_GRID_FULL', 1);
@@ -94,6 +95,7 @@ function kalatheme_process_page(&$variables) {
   global $base_url;
   $base = parse_url($base_url);
 
+  // Use the CDN if not using libraries
   if (!kalatheme_use_libraries()) {
     $library = theme_get_setting('bootstrap_library');
     if ($library !== 'none') {
@@ -105,6 +107,15 @@ function kalatheme_process_page(&$variables) {
       $location .= '/bootstrap.min.css';
       drupal_add_css($base['scheme'] . $location, 'external');
     }
+  }
+
+  // Use Font Awesome
+  if (theme_get_setting('fontawesome')) {
+    // Add the CSS
+    $location = '://netdna.bootstrapcdn.com/font-awesome/';
+    $location .= KALATHEME_FONTAWESOME_VERSION;
+    $location .= '/css/font-awesome.min.css';
+    drupal_add_css($base['scheme'] . $location, 'external');
   }
 
   // Define variables to theme local actions as a dropdown.
