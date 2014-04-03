@@ -148,12 +148,15 @@ function kalatheme_authorize_install_batch_finished($success, $results) {
     theme_enable(array($results['tasks']['log']['subtheme']));
     variable_set('theme_default', $results['tasks']['log']['subtheme']);
     // REfresh everythging and set a message
-    // @todo: make this abstract in the future
+    // @todo: make this abstract in the future, piped in from $context?
     drupal_set_message(t('<i class="fa fa-thumbs-up fa-2x">Your new subtheme is enabled! Looking good in the neighborhood!!</i>'), 'status', FALSE);
-    cache_clear_all();
+
     // Redirect to new settings page but only if not an install profile
     if (!drupal_installation_attempted()) {
       drupal_goto('admin/appearance/settings/' . $results['tasks']['log']['subtheme']);
     }
   }
+  // We need to do the big dump
+  // @todo: should figure out the actual caches we need to clear
+  drupal_flush_all_caches();
 }

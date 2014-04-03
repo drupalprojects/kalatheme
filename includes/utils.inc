@@ -21,11 +21,11 @@ if (kalatheme_use_libraries()) {
  */
 // Only load if apps module is not around to provide this
 function kalatheme_updater_info_alter(&$updaters) {
-    $updaters['library'] = array(
-      'class' => 'KalathemeUpdater',
-      'name' => t('Update Library'),
-      'weight' => -10,
-    );
+  $updaters['library'] = array(
+    'class' => 'KalathemeUpdater',
+    'name' => t('Update Library'),
+    'weight' => -10,
+  );
 }
 
 /**

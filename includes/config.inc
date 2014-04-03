@@ -167,7 +167,8 @@ function kalatheme_custom_bootstrap_library_validate(&$form, &$form_state) {
   // We handle validation of the archive in the submit handler
   if ($form_state['values']['bootstrap_library'] == 'custom') {
     if (empty($_FILES['files']['name']['bootstrap_upload'])) {
-      form_set_error('bootstrap_upload', t('You must provide a custom Bootstrap library.'));
+      // @todo this is awkward if you just want to edit other parts of your custom
+      //form_set_error('bootstrap_upload', t('You must provide a custom Bootstrap library.'));
     }
   }
   // Add the default system_form_submit back into the mix if we aren't building
@@ -185,21 +186,16 @@ function kalatheme_custom_bootstrap_library_submit(&$form, &$form_state) {
   module_load_include("inc", "update", "update.manager");
   $projects = array();
 
-  // Use a custom bootstrap library
-  if ($_FILES['files']['name']['bootstrap_upload']) {
-    $projects[] = kalatheme_custom_bootstrap_library_build($form_state['values']['subtheme_name']);
-  }
-
-  // Generate subtheme with correct settings
-  // put subtheme files into tmp directory
-  // put in settings and save settings
-  // queue up some args for batching
+  // Generate subtheme and build its settings var
   if ($form_state['values']['build_subtheme']) {
     // Trim things
     form_state_values_clean($form_state);
     $projects[] = kalatheme_custom_subtheme_build($form_state['values']);
   }
-
+  // Use a custom bootstrap library
+  if ($_FILES['files']['name']['bootstrap_upload']) {
+    $projects[] = kalatheme_custom_bootstrap_library_build($form_state['values']['subtheme_name']);
+  }
   // Run the batch operation if we have things to move
   if ($projects) {
     // If the owner of the directory we extracted is the same as the
@@ -300,6 +296,138 @@ function kalatheme_custom_subtheme_build($theme_settings) {
   return;
 }
 
+/**
+ * Handle custom Bootstrap library submission
+ */
+function kalatheme_custom_bootstrap_library_build($subtheme_name = NULL) {
+  // Save the file to tmp
+  $validators = array('file_validate_extensions' => array(archiver_get_extensions()));
+  $field = 'bootstrap_upload';
+  if (!($finfo = file_save_upload($field, $validators, NULL, FILE_EXISTS_REPLACE))) {
+    // Failed to upload the file. file_save_upload() calls form_set_error() on
+    // failure.
+    return;
+  }
+  $local_cache = $finfo->uri;
+
+  // Extract file to tmp
+  global $theme_key;
+  $project = (!empty($subtheme_name)) ? kalatheme_get_machine_name($subtheme_name . '_bootstrap') : $theme_key . '_bootstrap';;
+  $subtheme_directory = (!empty($subtheme_name)) ? kalatheme_extract_directory('theme') . '/' . kalatheme_get_machine_name($subtheme_name) : NULL;
+  $tmp_directory = kalatheme_extract_directory('library-tmp') . '/' . $project;
+  try {
+    $archive = update_manager_archive_extract($local_cache, $tmp_directory);
+  }
+  catch (Exception $e) {
+    form_set_error($field, $e->getMessage());
+    return;
+  }
+
+  $files = $archive->listContents();
+  // Validate archive
+  if (!$files) {
+    form_set_error($field, t('Provided archive contains no files.'));
+    return;
+  }
+  foreach ($files as $file) {
+    if (stripos($file, 'bootstrap.min.css') !== FALSE || stripos($file, 'bootstrap.css') !== FALSE) {
+      $check_file = $file;
+      break;
+    }
+  }
+  if (!file_exists($tmp_directory . '/' . $check_file)) {
+    form_set_error($field, t('Provided archive contains no files.'));
+    return;
+  }
+  // Get rid of all the bullshit
+  foreach ($files as $key => $value) {
+    if (kalatheme_strip_types($value) || kalatheme_strip_files($value)) {
+      unset($files[$key]);
+    }
+  }
+  // Pull from the archive
+  $directory = kalatheme_extract_directory('library') . '/' . $project;
+  foreach ($files as $key => $value) {
+    $filename = basename($value);
+    $is_bootstrap = in_array($filename, kalatheme_get_bootstrap_files());
+    $dir = kalatheme_get_asset_class($filename);
+    $old_file = $tmp_directory . DIRECTORY_SEPARATOR . $value;
+    $new_base_dir = ($is_bootstrap) ? $directory : $subtheme_directory;
+    $new_file = (!empty($new_base_dir)) ? $new_base_dir . DIRECTORY_SEPARATOR . $dir . DIRECTORY_SEPARATOR . $filename : NULL;
+    // do stuff
+    if (!empty($new_file) && (is_dir(dirname($new_file)) || mkdir(dirname($new_file), 0777, TRUE))) {
+      // Move the file
+      copy($old_file, $new_file);
+      // Add some none bootstrap stuff to the info file
+      if (!$is_bootstrap && in_array($dir, array('css', 'js'))) {
+        $info_file = $subtheme_directory . DIRECTORY_SEPARATOR . kalatheme_get_machine_name($subtheme_name) . '.info';
+        $contents = file_get_contents($info_file);
+        switch ($dir) {
+          case 'css':
+            $contents .= "stylesheets[all][]";
+            break;
+          case 'js':
+            $contents .= "scripts[]";
+            break;
+        }
+        $contents .= " = " . $dir . DIRECTORY_SEPARATOR . $filename . "\n";
+        file_put_contents($info_file, $contents);
+      }
+    }
+  }
+
+  // Make sure the Updater registry is loaded.
+  require_once dirname(__FILE__) . '/../kalatheme.updater.inc';
+  drupal_get_updaters();
+  try {
+    $updater = Updater::factory($directory);
+  }
+  catch (Exception $e) {
+    form_set_error($field, $e->getMessage());
+    return;
+  }
+  $project_real_location = drupal_realpath($directory);
+  $arguments = array(
+    'project' => $project,
+    'updater_name' => get_class($updater),
+    'local_url' => $project_real_location,
+    'subtheme' => FALSE,
+  );
+
+  return $arguments;
+}
+
+/**
+ * The batch builder and processor for moving files to drupal
+ *
+ * taken from update_authorize_run_update
+ * builds a batch and process it for installing modules from the templocation
+ */
+function kalatheme_run_install($filetransfer, $projects) {
+  $operations = array();
+  foreach ($projects as $project_info) {
+    $operations[] = array(
+      'kalatheme_authorize_batch_copy_project',
+      array(
+        $project_info['project'],
+        $project_info['updater_name'],
+        $project_info['local_url'],
+        $project_info['subtheme'],
+        $filetransfer,
+      ),
+    );
+  }
+
+  $batch = array(
+    'title' => t('Installing Kalatheme'),
+    'init_message' => t('Preparing to Kalatheme'),
+    'operations' => $operations,
+    // @todo Use a different finished callback for different messages?
+    'finished' => 'kalatheme_authorize_install_batch_finished',
+    'file' => drupal_get_path('theme', 'kalatheme') . '/kalatheme.authorize.inc',
+  );
+  batch_set($batch);
+}
 
 /**
  * Return basic subtheme skeleton to be written
@@ -332,109 +460,6 @@ function kalatheme_custom_subtheme_skeleton($theme_settings) {
   $subtheme[DIRECTORY_SEPARATOR . 'template.php'] = $output;
 
   return $subtheme;
-}
-
-/**
- * Handle custom Bootstrap library submission
- */
-function kalatheme_custom_bootstrap_library_build($subtheme_name) {
-  // Save the file to tmp
-  $validators = array('file_validate_extensions' => array(archiver_get_extensions()));
-  $field = 'bootstrap_upload';
-  if (!($finfo = file_save_upload($field, $validators, NULL, FILE_EXISTS_REPLACE))) {
-    // Failed to upload the file. file_save_upload() calls form_set_error() on
-    // failure.
-    return;
-  }
-  $local_cache = $finfo->uri;
-
-  // extract file to tmp
-  $project = 'kalatheme_bootstrap';
-  if ($subtheme_name) {
-    $project = kalatheme_get_machine_name($subtheme_name . '_bootstrap');
-  }
-  $directory = kalatheme_extract_directory('library') . '/' . $project;
-  try {
-    $archive = update_manager_archive_extract($local_cache, $directory);
-  }
-  catch (Exception $e) {
-    form_set_error($field, $e->getMessage());
-    return;
-  }
-
-  // validate archive
-  $files = $archive->listContents();
-  if (!$files) {
-    form_set_error($field, t('Provided archive contains no files.'));
-    return;
-  }
-  foreach ($files as $file) {
-    if (stripos($file, 'bootstrap.min.css') !== FALSE || stripos($file, 'bootstrap.css') !== FALSE) {
-      $check_file = $file;
-      break;
-    }
-  }
-  if (!file_exists($directory . '/' . $check_file)) {
-    form_set_error($field, t('Provided archive contains no files.'));
-    return;
-  }
-
-  // Loop of projects
-  // set projects that need to be moved
-  // Do this per project
-  // Make sure the Updater registry is loaded.
-  require_once dirname(__FILE__) . '/../kalatheme.updater.inc';
-  drupal_get_updaters();
-  try {
-    $updater = Updater::factory($directory);
-  }
-  catch (Exception $e) {
-    form_set_error($field, $e->getMessage());
-    return;
-  }
-  $project_real_location = drupal_realpath($directory);
-  $arguments = array(
-    'project' => $project,
-    'updater_name' => get_class($updater),
-    'local_url' => $project_real_location,
-    'subtheme' => FALSE,
-  );
-
-  return $arguments;
-}
-
-
-/**
- * The batch builder and processor for moving files to drupal
- *
- * taken from update_authorize_run_update
- * builds a batch and process it for installing modules from the templocation
- */
-function kalatheme_run_install($filetransfer, $projects) {
-  $operations = array();
-  foreach ($projects as $project_info) {
-    $operations[] = array(
-      'kalatheme_authorize_batch_copy_project',
-      array(
-        $project_info['project'],
-        $project_info['updater_name'],
-        $project_info['local_url'],
-        $project_info['subtheme'],
-        $filetransfer,
-      ),
-    );
-  }
-
-  // @todo Instantiate our Updater to set the human-readable title?
-  $batch = array(
-    'title' => t('Installing Kalatheme'),
-    'init_message' => t('Preparing to Kalatheme'),
-    'operations' => $operations,
-    // @todo Use a different finished callback for different messages?
-    'finished' => 'kalatheme_authorize_install_batch_finished',
-    'file' => drupal_get_path('theme', 'kalatheme') . '/kalatheme.authorize.inc',
-  );
-  batch_set($batch);
 }
 
 /**
@@ -607,7 +632,7 @@ function kalatheme_get_machine_name($name) {
 function kalatheme_write_stuff($subtheme, $directory) {
   foreach ($subtheme as $key => $value) {
     $filename = $directory . $key;
-    $dir = substr($filename, 0, strrpos($filename, '/'));
+    $dir = dirname($filename);
     if (is_dir($dir) || mkdir($dir, 0777, TRUE)) {
       if (!file_put_contents($filename, $value)) {
         return FALSE;
@@ -619,3 +644,69 @@ function kalatheme_write_stuff($subtheme, $directory) {
   }
   return TRUE;
 }
+
+/**
+ * Prune custom library, removing types we don't want
+ */
+function kalatheme_strip_types($file) {
+  $wanted_types = array('.css', '.js', '.png', '.jpg', '.woff', '.ttf', '.svg', '.eot', '.json');
+  foreach ($wanted_types as $type) {
+    if (stripos($file, $type) !== FALSE) {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
+/**
+ * Prune custom library, removing files we don't want
+ */
+function kalatheme_strip_files($file) {
+  // @todo might want to update this over time?
+  $unwanted_files = array('jquery.js', 'jquery.min.js', '._');
+  foreach ($unwanted_files as $type) {
+    if (stripos($file, $type) !== FALSE) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Return the correct asset class for a file
+ */
+function kalatheme_get_asset_class($file) {
+  // @todo might want to update this over time?
+  // $wanted_types = array('.css', '.js', '.png', '.jpg', '.woff', '.ttf', '.svg', '.eot', '.json');
+  $asset_classes = array(
+    'img' => array('.png', '.jpg', '.gif'),
+    'fonts' => array('.svg', '.woff', '.ttf', '.eot'),
+    'js' => array('.js'),
+    'css' => array('.css'),
+  );
+  // Return the correct asset class
+  foreach ($asset_classes as $class => $types) {
+    foreach ($types as $type) {
+      if (stripos($file, $type) !== FALSE) {
+        return $class;
+      }
+    }
+  }
+}
+
+/**
+ * Return the files that make up a standard bootstrap library
+ */
+function kalatheme_get_bootstrap_files() {
+  return array(
+    'bootstrap.css',
+    'bootstrap.min.css',
+    'bootstrap.js',
+    'bootstrap.min.js',
+    'glyphicons-halflings-regular.woff',
+    'glyphicons-halflings-regular.ttf',
+    'glyphicons-halflings-regular.svg',
+    'glyphicons-halflings-regular.eot',
+  );
+}
+
