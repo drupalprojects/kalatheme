@@ -125,6 +125,19 @@ function kalatheme_subtheme_form() {
         'progress' => array('type' => 'none'),
       ),
     );
+    $form['subtheme']['magic'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Autoload extra assets'),
+      '#default_value' => TRUE,
+      '#description' => t('Check here to have kalatheme add extra stuff from a custom third party Bootstrap library into your subtheme info file.'),
+      '#states' => array(
+        'visible' => array(
+          ':input[name="build_subtheme"]' => array('checked' => TRUE),
+          ':input[name="bootstrap_library"]' => array('value' => 'custom'),
+        ),
+      ),
+
+    );
     $form['subtheme']['subtheme_name'] = array(
       '#type' => 'textfield',
       '#title' => t('Name your theme'),
@@ -205,7 +218,7 @@ function kalatheme_custom_bootstrap_library_submit(&$form, &$form_state) {
   // This can either be a file upload or a URL although the URL option really
   // only works with drush
   if ($_FILES['files']['name']['bootstrap_upload'] || !empty($form_state['values']['bootstrap_upload'])) {
-    $projects[] = kalatheme_custom_bootstrap_library_build($form_state['values']['subtheme_name']);
+    $projects[] = kalatheme_custom_bootstrap_library_build($form_state['values']);
   }
   // Run the batch operation if we have things to move
   if ($projects) {
@@ -267,8 +280,12 @@ function kalatheme_custom_subtheme_build($theme_settings) {
 /**
  * Handle custom Bootstrap library submission
  */
-function kalatheme_custom_bootstrap_library_build($subtheme_name = NULL) {
+function kalatheme_custom_bootstrap_library_build($theme_settings) {
   // Save the file to tmp
+  $subtheme_name = NULL;
+  if (!empty($theme_settings['subtheme_name'])) {
+    $subtheme_name = $theme_settings['subtheme_name'];
+  }
   $validators = array('file_validate_extensions' => array(archiver_get_extensions()));
   $field = 'bootstrap_upload';
   if (!($finfo = file_save_upload($field, $validators, NULL, FILE_EXISTS_REPLACE))) {
@@ -310,7 +327,7 @@ function kalatheme_custom_bootstrap_library_build($subtheme_name = NULL) {
 
   // Go through the library and do some magic
   $lib_dir = kalatheme_extract_directory('library') . DIRECTORY_SEPARATOR . $project . '_bootstrap';
-  kalatheme_custom_bootstrap_library_integrate($files, $project, $tmp_directory, $lib_dir, $subtheme_directory);
+  kalatheme_custom_bootstrap_library_integrate($files, $project, $tmp_directory, $lib_dir, $subtheme_directory, $theme_settings['magic']);
 
   // Make sure the Updater registry is loaded.
   require_once dirname(__FILE__) . '/../kalatheme.updater.inc';
@@ -386,7 +403,7 @@ function kalatheme_custom_subtheme_vars($theme_settings) {
 /**
  * Parse custom bootstrap library
  */
-function kalatheme_custom_bootstrap_library_integrate($files, $project, $tmp_directory, $lib_dir, $theme_dir) {
+function kalatheme_custom_bootstrap_library_integrate($files, $project, $tmp_directory, $lib_dir, $theme_dir, $magic) {
   // Get rid of all the bullshit
   foreach ($files as $key => $value) {
     if (kalatheme_strip_types($value) || kalatheme_strip_files($value)) {
@@ -406,19 +423,21 @@ function kalatheme_custom_bootstrap_library_integrate($files, $project, $tmp_dir
       // Move the file
       copy($old_file, $new_file);
       // Add some none bootstrap stuff to the info file
-      if (!$is_bootstrap && in_array($dir, array('css', 'js'))) {
-        $info_file = $theme_dir . DIRECTORY_SEPARATOR . $project . '.info';
-        $contents = file_get_contents($info_file);
-        switch ($dir) {
-          case 'css':
-            $contents .= "stylesheets[all][]";
-            break;
-          case 'js':
-            $contents .= "scripts[]";
-            break;
+      if ($magic) {
+        if (!$is_bootstrap && in_array($dir, array('css', 'js'))) {
+          $info_file = $theme_dir . DIRECTORY_SEPARATOR . $project . '.info';
+          $contents = file_get_contents($info_file);
+          switch ($dir) {
+            case 'css':
+              $contents .= "stylesheets[all][]";
+              break;
+            case 'js':
+              $contents .= "scripts[]";
+              break;
+          }
+          $contents .= " = " . $dir . DIRECTORY_SEPARATOR . $filename . "\n";
+          file_put_contents($info_file, $contents);
         }
-        $contents .= " = " . $dir . DIRECTORY_SEPARATOR . $filename . "\n";
-        file_put_contents($info_file, $contents);
       }
     }
   }

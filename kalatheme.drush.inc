@@ -23,8 +23,7 @@ function kalatheme_drush_command() {
       'base-theme' => 'This will let you use a different basetheme than kalatheme.',
       'custom' => 'The name of a Bootstwatch theme or a URL containing a custom Bootstrap library archive. Can also use "none" if you hate bootstrap but are still using this theme for some reason.',
       'fonts' => 'Add FontAwesome 4 support.',
-      //'no-magic' => 'Stop Kalatheme from trying to load additional assets into
-      // your subtheme from a custom third party Bootstrap Library',
+      'no-magic' => 'Stop Kalatheme from autoloading the additional assets from a custom third party Bootstrap Library into your subtheme',
     ),
     'examples' => array(
       'drush kalatheme "My Awesome Theme"' => 'Creates a kalatheme subtheme called "My Theme"',
@@ -106,6 +105,11 @@ function drush_kalatheme($name = NULL) {
   if (drush_get_option('fonts')) {
     $theme_settings['fontawesome'] = drush_get_option('fonts');
   }
+  // Autoload assets?
+  $no_magic = FALSE;
+  if (drush_get_option('no-magic')) {
+    $no_magic = drush_get_option('no-magic');
+  }
 
   // Write the subtheme and then move it to the right spot
   $dtemp = drush_tempdir();
@@ -131,8 +135,9 @@ function drush_kalatheme($name = NULL) {
 
     // Decompress the zip archive.
     drush_tarball_extract($filename, $dirname, TRUE);
+    // Import additional third party bootstrap library assets into your subtheme
     $files = array_keys(drush_scan_directory($dirname, '(.*)'));
-    drush_op('kalatheme_custom_bootstrap_library_integrate', $files, $machine_name, $dtemp, $lib_tmp_directory, $sub_tmp_directory);
+    drush_op('kalatheme_custom_bootstrap_library_integrate', $files, $machine_name, $dtemp, $lib_tmp_directory, $sub_tmp_directory, !$no_magic);
     drush_move_dir($lib_tmp_directory, $library_path, FILE_EXISTS_OVERWRITE);
   }
   else {
@@ -141,7 +146,6 @@ function drush_kalatheme($name = NULL) {
   }
   // Return
   chdir($current_dir);
-
   // Move the subtheme into the right directory
   drush_move_dir(drush_normalize_path($sub_tmp_directory), $subtheme_path , FILE_EXISTS_OVERWRITE);
   // Notify user of the new polution
