@@ -225,7 +225,6 @@ function kalatheme_status_messages($variables) {
   return $output;
 }
 
-
 /**
  * Returns HTML for the project status report.
  *

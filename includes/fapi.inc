@@ -61,6 +61,7 @@ function kalatheme_process_input(&$element, &$form_state) {
     'password_confirm',
     'select',
     'machine_name',
+    'webform_email',
     'emailfield',
     'numberfield',
     'rangefield',
