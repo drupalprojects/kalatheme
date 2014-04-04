@@ -4,10 +4,8 @@
  * Drushhhhhhhh
  */
 
-// Constants and stuff
-define('DEFAULT_BOOTSTRAP_URL', 'https://github.com/twbs/bootstrap/releases/download/v3.1.0/bootstrap-3.1.0-dist.zip');
-define('DEFAULT_BOOTSWATCH_URL', 'http://bootswatch.com');
-define('DEFAULT_FONTAWESOME_URL', 'http://fontawesome.io/./assets/font-awesome-4.0.3.zip');
+// Pull in the setup magic
+require_once 'includes/config.inc';
 
 /**
  * Implements hook_drush_command().
@@ -23,14 +21,17 @@ function kalatheme_drush_command() {
     'options' => array(
       'destination' => 'The destination of your subtheme. Defaults to sites/all/themes.',
       'base-theme' => 'This will let you use a different basetheme than kalatheme.',
-      'custom' => 'The name of a Bootstwatch theme or a URL containing a custom Bootstrap library archive.',
+      'custom' => 'The name of a Bootstwatch theme or a URL containing a custom Bootstrap library archive. Can also use "none" if you hate bootstrap but are still using this theme for some reason.',
       'fonts' => 'Add FontAwesome 4 support.',
+      //'no-magic' => 'Stop Kalatheme from trying to load additional assets into
+      // your subtheme from a custom third party Bootstrap Library',
     ),
     'examples' => array(
       'drush kalatheme "My Awesome Theme"' => 'Creates a kalatheme subtheme called "My Theme"',
       'drush kalatheme "My Awesome Theme" --fonts' => 'Creates a kalatheme subtheme called "My Theme" with Font Awesome installed and configured.',
       'drush kalatheme "My Awesome Theme" --custom=yeti' => 'Creates a kalatheme subtheme called "My Theme" with the Yeti Bootstwatch theme.',
       'drush kalatheme "My Awesome Theme" --base-theme=kalasubtheme' => 'Creates a kalatheme subtheme called "My Theme" but sets its basetheme to "kalsubtheme"',
+      'drush kalatheme "My Awesome Theme" --custom=http://www.mywebsite.com/mycustombootstraparchive.zip' => 'Creates a kalatheme subtheme called "My Theme" but uses the custom bootlibrary',
     ),
   );
 
@@ -51,109 +52,98 @@ function kalatheme_drush_help($section) {
  * Implements drush_hook_command().
  */
 function drush_kalatheme($name = NULL) {
+  // Let's get it started
+  $theme_settings = drush_kalatheme_default_settings();
   // Get arguments and parse the machine name
   if (!$name) {
     drush_print(dt('You need a theme name.'));
     return;
   }
-  if (!isset($name)) {
-    $name = drush_get_option('name');
+  if (!empty($name)) {
+    $theme_settings['subtheme_name'] = $name;
   }
-  $machine_name = strtolower(addslashes($name));
-  $machine_name = preg_replace('@[^a-z0-9_]+@', '_', $machine_name);
+  $machine_name = kalatheme_get_machine_name($name);
+
   // Get options
-  // Get paths to theme and libraries folders
+  // Get paths to theme folder
   $subtheme_path = 'sites/all/themes';
   if ($destination = drush_get_option('destination')) {
     $subtheme_path = drush_trim_path($destination);
   }
-  $subtheme_path = drush_normalize_path(drush_get_context('DRUSH_DRUPAL_ROOT') . '/' . $subtheme_path);
-  $library_path = drush_normalize_path(drush_get_context('DRUSH_DRUPAL_ROOT') . '/sites/all/libraries/' . $machine_name . '_bootstrap');
   // See if we are going to use a custom bootswatch theme or pull in a custom
   // bootstrap library from a URL archive
   $custom = FALSE;
-  if (drush_get_option('custom')) {
-    $bootswatch = array('amelia', 'cerulean', 'cosmo', 'cyborg', 'flatly', 'journal', 'readable', 'simplex', 'slate', 'spacelab', 'united', 'yeti');
-    $custom = drush_get_option('custom');
-    if (!filter_var($custom, FILTER_VALIDATE_URL) && !in_array($custom, $bootswatch)) {
-      drush_print(dt('Not a valid URL or Bootstwatch theme.'));
+  if ($custom = drush_get_option('custom')) {
+    $bootswatch = array();
+    foreach (kalatheme_get_bootswatch_themes() as $theme) {
+      $bootswatch[] = strtolower($theme->name);
+    }
+    // @todo handle custom libaries
+    if (filter_var($custom, FILTER_VALIDATE_URL)) {
+      $theme_settings['bootstrap_library'] = 'custom';
+    }
+    elseif (in_array($custom, $bootswatch) && $custom != "custom") {
+      $theme_settings['bootstrap_library'] = $custom;
+    }
+    elseif (!filter_var($custom, FILTER_VALIDATE_URL) && !in_array($custom, $bootswatch)) {
+      drush_print(dt('Not a valid URL or Bootswatch theme!'));
       return;
     }
   }
   // Use a custom subtehme basetheme instead of kalatheme
-  // @todo: we might want to check to see if the users input is actually
-  // a kalatheme basetheme
-  $base_theme = 'kalatheme';
-  if (drush_get_option('base-theme')) {
-    $base_theme = drush_get_option('base-theme');
+  if ($basetheme = drush_get_option('base-theme')) {
+    $base_themes = array_keys(kalatheme_get_base_themes());
+    if (in_array($basetheme, $base_themes)) {
+      $theme_settings['subtheme_base'] = drush_get_option('base-theme');
+    }
+    else {
+      drush_print(dt('This is not a valid Kalatheme subtheme!'));
+      return;
+    }
   }
   // Get FONT AWESOME
   $fonts = FALSE;
   if (drush_get_option('fonts')) {
-    $fonts = drush_get_option('fonts');
+    $theme_settings['fontawesome'] = drush_get_option('fonts');
   }
 
-  // Begin the science
-  // Download all the stuff we need
+  // Write the subtheme and then move it to the right spot
+  $dtemp = drush_tempdir();
+  $sub_tmp_directory = drush_normalize_path($dtemp . '/' . $machine_name);
+  if (kalatheme_write_stuff(kalatheme_custom_subtheme_skeleton($theme_settings), $sub_tmp_directory)) {
+    kalatheme_custom_subtheme_vars($theme_settings);
+    $subtheme_path = drush_normalize_path(drush_get_context('DRUSH_DRUPAL_ROOT') . '/' . $subtheme_path . '/' . $machine_name);
+  }
+  else {
+    drush_print(dt('Could not write to temp directory!'));
+    return;
+  }
+
+  // Write the custom bootstrap library if applicable
   $current_dir = getcwd();
-  chdir(drush_tempdir());
-  // Get default bootstrap library
-  // @todo check to see if we have a custom URL first
-  if ($filepath = drush_download_file(DEFAULT_BOOTSTRAP_URL)) {
+  chdir($dtemp);
+  if (($theme_settings['bootstrap_library'] == 'custom') && ($filepath = drush_download_file($custom))) {
     $filename = basename($filepath);
     $dirname =  basename($filepath, '.zip');
-    // Extract the archive.
+    $library_name = $machine_name . '_bootstrap';
+    $library_path = drush_normalize_path(drush_get_context('DRUSH_DRUPAL_ROOT') . '/' . 'sites/all/libraries' . '/' . $library_name);
+    $lib_tmp_directory = drush_normalize_path($dtemp . '/' . $library_name);
+
+    // Decompress the zip archive.
     drush_tarball_extract($filename, $dirname, TRUE);
-    // Pull in bootstwatch if we have a custom theme
-    if ($custom && !filter_var($custom, FILTER_VALIDATE_URL)) {
-      $files = array('bootstrap.css', 'bootstrap.min.css');
-      foreach ($files as $file) {
-        drush_download_file(DEFAULT_BOOTSWATCH_URL . '/' . $custom . '/' . $file, $dirname . '/dist/css/' . $file);
-      }
-    }
-    // Move out of temp and into your life
-    // copy and overwrite so we can toggle themes
-    drush_copy_dir($dirname . '/dist', $library_path, FILE_EXISTS_OVERWRITE);
+    $files = array_keys(drush_scan_directory($dirname, '(.*)'));
+    drush_op('kalatheme_custom_bootstrap_library_integrate', $files, $machine_name, $dtemp, $lib_tmp_directory, $sub_tmp_directory);
+    drush_move_dir($lib_tmp_directory, $library_path, FILE_EXISTS_OVERWRITE);
   }
-  // Build basic subtheme files
-  $subtheme_files = drush_op('_kalatheme_drush_build_subtheme', $name, $machine_name, $base_theme);
-  // Add font awesome CSS
-  if ($fonts) {
-    $output  = "stylesheets[all][] = css/font-awesome.min.css \n";
-    $output .= "\n";
-    $subtheme_files[$machine_name . '/' . $machine_name . '.info'] .= $output;
+  else {
+    drush_print(dt('Could not download custom library.'));
+    return;
   }
-  foreach ($subtheme_files as $key => $value) {
-    $dir = substr($key, 0, strrpos($key, '/'));
-    if (is_dir($dir) || mkdir($dir, 0777, TRUE)) {
-      if (!file_put_contents($key, $value)) {
-        return FALSE;
-      }
-    }
-    else {
-      return FALSE;
-    }
-  }
-  // Use copy because we want to merge
-  drush_move_dir($machine_name, $subtheme_path . '/' . $machine_name, TRUE);
-
-  // Add Font Awesome assets
-  if ($fonts) {
-    if ($filepath = drush_download_file(DEFAULT_FONTAWESOME_URL)) {
-      $filename = basename($filepath);
-      $dirname =  basename($filepath, '.zip');
-      // Extract the archive.
-      drush_tarball_extract($filename, $dirname, TRUE);
-      // Move out of temp and into your life
-      $fonts_dir = $dirname . '/' . $dirname . '/fonts';
-      $css_dir = $dirname . '/' . $dirname . '/css';
-      drush_copy_dir($fonts_dir, $subtheme_path . '/' . $machine_name . '/fonts', FILE_EXISTS_MERGE);
-      drush_copy_dir($css_dir, $subtheme_path . '/' . $machine_name . '/css', FILE_EXISTS_MERGE);
-    }
-  }
-
-  // Switch back to current dir
+  // Return
   chdir($current_dir);
+
+  // Move the subtheme into the right directory
+  drush_move_dir(drush_normalize_path($sub_tmp_directory), $subtheme_path , FILE_EXISTS_OVERWRITE);
   // Notify user of the new polution
   $message = dt('kalatheme subtheme "!name" created in: !path.', array(
     '!name' => $name,
@@ -163,43 +153,22 @@ function drush_kalatheme($name = NULL) {
 }
 
 /**
- * Construct an array of subtheme things.
- *
- * @param $params
- *   The subtheme parameters including:
- *    - name: the subtheme name
- *    - base: the subtheme base theme
- * @param $context
- *   Batch things
- *
+ * Returns an array of default settings;
  */
-function _kalatheme_drush_build_subtheme($name, $machine_name, $base_theme = 'kalatheme') {
-  $subtheme = array();
-  // Basic Info File
-  $output  = "name = " . $name . " \n";
-  $output .= "description = A Kalatheme subtheme powered by Twitter Bootstrap & Science. \n";
-  $output .= "base theme = " . $base_theme . " \n";
-  $output .= "core = 7.x \n";
-  $output .= "\n";
-  $output .= "regions[content] = Content \n";
-  $output .= "\n";
-  $output .= "settings[toggle_logo] = 0 \n";
-  $output .= "\n";
-  $output .= "stylesheets[all][] = css/main.css \n";
-  $output .= "\n";
-  $subtheme[$machine_name . '/' . $machine_name . '.info'] = $output;
-  // Basic CSS File
-  $output  = "/*! \n";
-  $output .= " * Kalatheme (http://drupal.org/project/kalatheme) \n";
-  $output .= " */ \n";
-  $subtheme[$machine_name . '/' . 'css' . '/' . 'main.css'] = $output;
-  // Basic Template File
-  $output  = "<?php \n";
-  $output .= "/** \n";
-  $output .= " * @file \n";
-  $output .= " * Primary pre/preprocess functions and alterations.\n";
-  $output .= " */ \n";
-  $subtheme[$machine_name . '/' . 'template.php'] = $output;
-
-  return $subtheme;
+function drush_kalatheme_default_settings() {
+  return array(
+    'var' => NULL,
+    'bootstrap_library' => 'default',
+    'fontawesome' => 1,
+    'bootstrap_upload' => NULL,
+    'build_subtheme' => 1,
+    'subtheme_name' => NULL,
+    'subtheme_base' => 'kalatheme',
+    'default_logo' => 1,
+    'default_favicon' => 1,
+    'toggle_logo' => 0,
+    'toggle_favicon' => 1,
+    'responsive_toggle' => 1,
+    'pane_styles_toggle' => 1,
+  );
 }

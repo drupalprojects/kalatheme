@@ -202,7 +202,9 @@ function kalatheme_custom_bootstrap_library_submit(&$form, &$form_state) {
     $projects[] = kalatheme_custom_subtheme_build($form_state['values']);
   }
   // Use a custom bootstrap library
-  if ($_FILES['files']['name']['bootstrap_upload']) {
+  // This can either be a file upload or a URL although the URL option really
+  // only works with drush
+  if ($_FILES['files']['name']['bootstrap_upload'] || !empty($form_state['values']['bootstrap_upload'])) {
     $projects[] = kalatheme_custom_bootstrap_library_build($form_state['values']['subtheme_name']);
   }
   // Run the batch operation if we have things to move
@@ -229,17 +231,12 @@ function kalatheme_custom_bootstrap_library_submit(&$form, &$form_state) {
 /**
  * Construct an array of subtheme things.
  *
- * @param $params
- *   The subtheme parameters including:
- *    - name: the subtheme name
- *    - base: the subtheme base theme
- * @param $context
- *   Batch things
+ * @param $theme_settings
  *
  */
 function kalatheme_custom_subtheme_build($theme_settings) {
   $machine_name = kalatheme_get_machine_name($theme_settings['subtheme_name']);
-  $directory = kalatheme_extract_directory('theme') . '/' . $machine_name;
+  $directory = kalatheme_extract_directory('theme') . DIRECTORY_SEPARATOR . $machine_name;
   if (kalatheme_write_stuff(kalatheme_custom_subtheme_skeleton($theme_settings), $directory)) {
     // Make sure the Updater registry is loaded.
     drupal_get_updaters();
@@ -258,46 +255,8 @@ function kalatheme_custom_subtheme_build($theme_settings) {
       'subtheme' => TRUE,
     );
 
-    // Move settings over
-    $key = 'theme_' . $machine_name . '_settings';
-    // Remove unneeded vars
-    unset($theme_settings['var']);
-    unset($theme_settings['build_subtheme']);
-    unset($theme_settings['bootstrap_upload']);
-    unset($theme_settings['subtheme_name']);
-    unset($theme_settings['subtheme_base']);
-
-    // If the user uploaded a new logo or favicon, save it to a permanent location
-    // and use it in place of the default theme-provided file.
-    if ($file = $theme_settings['logo_upload']) {
-      unset($theme_settings['logo_upload']);
-      $filename = file_unmanaged_copy($file->uri);
-      $theme_settings['default_logo'] = 0;
-      $theme_settings['logo_path'] = $filename;
-      $theme_settings['toggle_logo'] = 1;
-    }
-    if ($file = $theme_settings['favicon_upload']) {
-      unset($theme_settings['favicon_upload']);
-      $filename = file_unmanaged_copy($file->uri);
-      $theme_settings['default_favicon'] = 0;
-      $theme_settings['favicon_path'] = $filename;
-      $theme_settings['toggle_favicon'] = 1;
-    }
-
-    // If the user entered a path relative to the system files directory for
-    // a logo or favicon, store a public:// URI so the theme system can handle it.
-    if (!empty($theme_settings['logo_path'])) {
-      $theme_settings['logo_path'] = _system_theme_settings_validate_path($theme_settings['logo_path']);
-    }
-    if (!empty($theme_settings['favicon_path'])) {
-      $theme_settings['favicon_path'] = _system_theme_settings_validate_path($theme_settings['favicon_path']);
-    }
-
-    if (empty($theme_settings['default_favicon']) && !empty($theme_settings['favicon_path'])) {
-      $theme_settings['favicon_mimetype'] = file_get_mimetype($theme_settings['favicon_path']);
-    }
-    // Save the new stuff
-    variable_set($key, $theme_settings);
+    // Build some magic
+    kalatheme_custom_subtheme_vars($theme_settings);
 
     // Return the batch
     return $arguments;
@@ -321,9 +280,9 @@ function kalatheme_custom_bootstrap_library_build($subtheme_name = NULL) {
 
   // Extract file to tmp
   global $theme_key;
-  $project = (!empty($subtheme_name)) ? kalatheme_get_machine_name($subtheme_name . '_bootstrap') : $theme_key . '_bootstrap';;
-  $subtheme_directory = (!empty($subtheme_name)) ? kalatheme_extract_directory('theme') . '/' . kalatheme_get_machine_name($subtheme_name) : NULL;
-  $tmp_directory = kalatheme_extract_directory('library-tmp') . '/' . $project;
+  $project = (!empty($subtheme_name)) ? kalatheme_get_machine_name($subtheme_name) : $theme_key;
+  $subtheme_directory = (!empty($subtheme_name)) ? kalatheme_extract_directory('theme') . DIRECTORY_SEPARATOR . kalatheme_get_machine_name($subtheme_name) : NULL;
+  $tmp_directory = kalatheme_extract_directory('library-tmp') . DIRECTORY_SEPARATOR . $project;
   try {
     $archive = update_manager_archive_extract($local_cache, $tmp_directory);
   }
@@ -344,10 +303,90 @@ function kalatheme_custom_bootstrap_library_build($subtheme_name = NULL) {
       break;
     }
   }
-  if (!file_exists($tmp_directory . '/' . $check_file)) {
+  if (!file_exists($tmp_directory . DIRECTORY_SEPARATOR . $check_file)) {
     form_set_error($field, t('Provided archive contains no files.'));
     return;
   }
+
+  // Go through the library and do some magic
+  $lib_dir = kalatheme_extract_directory('library') . DIRECTORY_SEPARATOR . $project . '_bootstrap';
+  kalatheme_custom_bootstrap_library_integrate($files, $project, $tmp_directory, $lib_dir, $subtheme_directory);
+
+  // Make sure the Updater registry is loaded.
+  require_once dirname(__FILE__) . '/../kalatheme.updater.inc';
+  drupal_get_updaters();
+  try {
+    $updater = Updater::factory($lib_dir);
+  }
+  catch (Exception $e) {
+    form_set_error($field, $e->getMessage());
+    return;
+  }
+  $project_real_location = drupal_realpath($lib_dir);
+  $arguments = array(
+    'project' => $project,
+    'updater_name' => get_class($updater),
+    'local_url' => $project_real_location,
+    'subtheme' => FALSE,
+  );
+
+  return $arguments;
+}
+
+/**
+ * Set the subtheme vars
+ *
+ * @param $theme_settings
+ *
+ */
+function kalatheme_custom_subtheme_vars($theme_settings) {
+  // Get the machine name
+  $machine_name = kalatheme_get_machine_name($theme_settings['subtheme_name']);
+  // remove unneded Vars
+  unset($theme_settings['var']);
+  unset($theme_settings['build_subtheme']);
+  unset($theme_settings['bootstrap_upload']);
+  unset($theme_settings['subtheme_name']);
+  unset($theme_settings['subtheme_base']);
+
+  // If the user uploaded a new logo or favicon, save it to a permanent location
+  // and use it in place of the default theme-provided file.
+  if ($file = $theme_settings['logo_upload']) {
+    unset($theme_settings['logo_upload']);
+    $filename = file_unmanaged_copy($file->uri);
+    $theme_settings['default_logo'] = 0;
+    $theme_settings['logo_path'] = $filename;
+    $theme_settings['toggle_logo'] = 1;
+  }
+  if ($file = $theme_settings['favicon_upload']) {
+    unset($theme_settings['favicon_upload']);
+    $filename = file_unmanaged_copy($file->uri);
+    $theme_settings['default_favicon'] = 0;
+    $theme_settings['favicon_path'] = $filename;
+    $theme_settings['toggle_favicon'] = 1;
+  }
+
+  // If the user entered a path relative to the system files directory for
+  // a logo or favicon, store a public:// URI so the theme system can handle it.
+  if (!empty($theme_settings['logo_path'])) {
+    $theme_settings['logo_path'] = _system_theme_settings_validate_path($theme_settings['logo_path']);
+  }
+  if (!empty($theme_settings['favicon_path'])) {
+    $theme_settings['favicon_path'] = _system_theme_settings_validate_path($theme_settings['favicon_path']);
+  }
+
+  if (empty($theme_settings['default_favicon']) && !empty($theme_settings['favicon_path'])) {
+    $theme_settings['favicon_mimetype'] = file_get_mimetype($theme_settings['favicon_path']);
+  }
+  // Save the new stuff
+  $key = 'theme_' . $machine_name . '_settings';
+  variable_set($key, $theme_settings);
+}
+
+/**
+ * Parse custom bootstrap library
+ */
+function kalatheme_custom_bootstrap_library_integrate($files, $project, $tmp_directory, $lib_dir, $theme_dir) {
   // Get rid of all the bullshit
   foreach ($files as $key => $value) {
     if (kalatheme_strip_types($value) || kalatheme_strip_files($value)) {
@@ -355,13 +394,12 @@ function kalatheme_custom_bootstrap_library_build($subtheme_name = NULL) {
     }
   }
   // Pull from the archive
-  $directory = kalatheme_extract_directory('library') . '/' . $project;
   foreach ($files as $key => $value) {
     $filename = basename($value);
     $is_bootstrap = in_array($filename, kalatheme_get_bootstrap_files());
     $dir = kalatheme_get_asset_class($filename);
     $old_file = $tmp_directory . DIRECTORY_SEPARATOR . $value;
-    $new_base_dir = ($is_bootstrap) ? $directory : $subtheme_directory;
+    $new_base_dir = ($is_bootstrap) ? $lib_dir : $theme_dir;
     $new_file = (!empty($new_base_dir)) ? $new_base_dir . DIRECTORY_SEPARATOR . $dir . DIRECTORY_SEPARATOR . $filename : NULL;
     // do stuff
     if (!empty($new_file) && (is_dir(dirname($new_file)) || mkdir(dirname($new_file), 0777, TRUE))) {
@@ -369,7 +407,7 @@ function kalatheme_custom_bootstrap_library_build($subtheme_name = NULL) {
       copy($old_file, $new_file);
       // Add some none bootstrap stuff to the info file
       if (!$is_bootstrap && in_array($dir, array('css', 'js'))) {
-        $info_file = $subtheme_directory . DIRECTORY_SEPARATOR . kalatheme_get_machine_name($subtheme_name) . '.info';
+        $info_file = $theme_dir . DIRECTORY_SEPARATOR . $project . '.info';
         $contents = file_get_contents($info_file);
         switch ($dir) {
           case 'css':
@@ -384,26 +422,6 @@ function kalatheme_custom_bootstrap_library_build($subtheme_name = NULL) {
       }
     }
   }
-
-  // Make sure the Updater registry is loaded.
-  require_once dirname(__FILE__) . '/../kalatheme.updater.inc';
-  drupal_get_updaters();
-  try {
-    $updater = Updater::factory($directory);
-  }
-  catch (Exception $e) {
-    form_set_error($field, $e->getMessage());
-    return;
-  }
-  $project_real_location = drupal_realpath($directory);
-  $arguments = array(
-    'project' => $project,
-    'updater_name' => get_class($updater),
-    'local_url' => $project_real_location,
-    'subtheme' => FALSE,
-  );
-
-  return $arguments;
 }
 
 /**
@@ -437,6 +455,8 @@ function kalatheme_run_install($filetransfer, $projects) {
   );
   batch_set($batch);
 }
+
+
 
 /**
  * Return basic subtheme skeleton to be written
@@ -515,46 +535,6 @@ function kalatheme_ajax_submit_submit($form, &$form_state) {
   return $form['actions']['submit'];
 }
 
-
-/**
- * We want to check if the webserver can write our stuff to the right places.
- * If it can't then we are going to tell the user what's up.
- *
- * @return
- *   True if all good, message if no good
- */
-function kalatheme_backend_check() {
-  // Verify FTP support
-  $ftp_installed = extension_loaded('ftp');
-  // Verify SSH support
-  $ssh_installed = extension_loaded('ssh2');
-  // Verify web server write permissions
-  $install_permissions = kalatheme_has_write_access();
-  // Verify update module is enabled
-  $updates_module = module_exists('update');
-
-  return (($ftp_installed || $ssh_installed || $install_permissions) && $updates_module);
-}
-
-/**
- * Check whether Kalatheme has write access to libraries and modules directories.
- *
- * @return boolean
- */
-function kalatheme_has_write_access() {
-  return is_writable(drupal_realpath(kalatheme_lib_dir())) && is_writable(drupal_realpath('sites/all/modules'));
-}
-
-/**
- * Return the libraries dir to check
- */
-function kalatheme_lib_dir() {
-  if (!is_dir('sites/all/libraries')) {
-    mkdir(DRUPAL_ROOT . '/sites/all/libraries');
-  }
-  return is_dir('sites/all/libraries') ? 'sites/all/libraries' : 'sites/all';
-}
-
 /**
  * Wrapper for _update_manager_extract_directory()
  *
@@ -564,7 +544,7 @@ function kalatheme_lib_dir() {
 function kalatheme_extract_directory($type = '') {
   $directory = _update_manager_extract_directory();
   if ($type) {
-    $directory .= '/' . $type;
+    $directory .= DIRECTORY_SEPARATOR . $type;
     if (!file_exists($directory)) {
       mkdir($directory);
     }

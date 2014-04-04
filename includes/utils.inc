@@ -276,3 +276,42 @@ function kalatheme_use_libraries() {
   return (isset($library) && $library == 'custom');
 }
 
+/**
+ * We want to check if the webserver can write our stuff to the right places.
+ * If it can't then we are going to tell the user what's up.
+ *
+ * @return
+ *   True if all good, message if no good
+ */
+function kalatheme_backend_check() {
+  // Verify FTP support
+  $ftp_installed = extension_loaded('ftp');
+  // Verify SSH support
+  $ssh_installed = extension_loaded('ssh2');
+  // Verify web server write permissions
+  $install_permissions = kalatheme_has_write_access();
+  // Verify update module is enabled
+  $updates_module = module_exists('update');
+
+  return (($ftp_installed || $ssh_installed || $install_permissions) && $updates_module);
+}
+
+/**
+ * Check whether Kalatheme has write access to libraries and modules directories.
+ *
+ * @return boolean
+ */
+function kalatheme_has_write_access() {
+  return is_writable(drupal_realpath(kalatheme_lib_dir())) && is_writable(drupal_realpath('sites/all/modules'));
+}
+
+/**
+ * Return the libraries dir to check
+ */
+function kalatheme_lib_dir() {
+  if (!is_dir('sites/all/libraries')) {
+    mkdir(DRUPAL_ROOT . '/sites/all/libraries');
+  }
+  return is_dir('sites/all/libraries') ? 'sites/all/libraries' : 'sites/all';
+}
+
