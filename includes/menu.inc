@@ -52,8 +52,21 @@ function kalatheme_links__system_main_menu($variables) {
 
     foreach ($links as $key => $link) {
       $class = array('mid-' . $key);
-      $link['#attributes'] = (isset($link['#localized_options']['attributes'])) ? $link['#localized_options']['attributes'] : array();
 
+      //Pass in the original link options to include attributes and fragments
+      $link['#options'] = $link['#original_link']['options'];
+      //Makes sure the attributes are set
+      if( empty($link['#options']['attributes']) ){
+        $link['#options']['attributes'] = array();
+      }
+
+      // Merge in the attributes
+      $link['#options']['attributes'] += $link['#attributes'];
+
+      // Merge in more attributes if they are set
+      if ( isset($link['#localized_options']['attributes'])){
+        $link['#options']['attributes'] += $link['#localized_options']['attributes'];
+      }
       // Add first/last/active classes to help out themers.
       if ($i == 1) {
         $class[] = 'first';
@@ -77,8 +90,6 @@ function kalatheme_links__system_main_menu($variables) {
         }
       }
 
-      $options['attributes'] = $link['#attributes'];
-
       // Make list item a dropdown if we have child items.
       if (!empty($link['#below'])) {
         $class[] = 'dropdown';
@@ -87,8 +98,8 @@ function kalatheme_links__system_main_menu($variables) {
       $output .= '<li' . drupal_attributes(array('class' => $class)) . '>';
 
       if (isset($link['#href'])) {
-        // Pass in $link as $options, they share the same keys.
-        $output .= l($link['#title'], $link['#href'], array('attributes' => $link['#attributes']));
+        // Pass in $link with the path and the options set to the l() function
+        $output .= l($link['#title'], $link['#href'], $link['#options']);
       }
       elseif (!empty($link['#title'])) {
         // Wrap non-<a> links in <span> for adding title and class attributes.
