@@ -102,6 +102,7 @@ function kalatheme_links__system_main_menu($variables) {
         $output .= '<span' . $span_attributes . '>' . $link['#title'] . '</span>';
       }
 
+      $clearfix = '';
       // If link has child items, print a toggle and dropdown menu.
       if (!empty($link['#below'])) {
         $dropdown_id = 'main-menu-dropdown-' . $i;
@@ -114,10 +115,11 @@ function kalatheme_links__system_main_menu($variables) {
             'aria-labelledby' => $dropdown_id
           ),
         ));
+        $clearfix = "<div class='clearfix visible-xs'></div>";
       }
 
       $i++;
-      $output .= "</li>\n";
+      $output .= "</li>" . $clearfix . "\n";
     }
 
     $output .= '</ul>';

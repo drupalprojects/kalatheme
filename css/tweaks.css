@@ -1,14 +1,12 @@
-input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input {
-  margin-bottom: 0;
-}
-
-input[type="radio"], input[type="checkbox"] {
-  margin: 0;
-  margin-bottom: 2px;
-}
-
+/* Node edit form */
 #node-edit #edit-title {
   height: auto;
+}
+
+/* Navbar */
+#navbar {
+  position: absolute;
+  z-index: 9999;
 }
 
 .navbar-fixed-top {
@@ -47,25 +45,12 @@ input[type="radio"], input[type="checkbox"] {
   .navbar-default nav {
     float: right;
   }
+  .navbar .nav > .dropdown > .dropdown-toggle {
+    float: right;
+  }
 }
 
-html.js input.form-autocomplete {
-  background: transparent;
-}
-
-#main-wrapper {
-  margin-bottom: 50px;
-  margin-top: 20px;
-}
-
-.pane-content .container {
-  width: auto;
-}
-
-legend {
-  border-bottom: 0;
-}
-
+/* Views */
 .views-ajax-popup .scroll fieldset {
   padding: 5px;
 }
@@ -80,83 +65,20 @@ legend {
   color: #000;
 }
 
-html.js fieldset.collapsed {
-  padding: 5px;
-  margin-bottom: 25px;
-}
-
-.collapse-processed .fieldset-wrapper {
-  margin-left: 25px;
-  margin-bottom: 10px;
-}
-
-.form-actions .btn,
-.form-submit {
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
-@media (min-width: 480px) {
-  .form-control {
-    width: auto;
-  }
-}
-
-label.option {
-  display: inline;
-  font-weight: normal;
-}
-
-.radio input[type="radio"],
-.checkbox input[type="checkbox"] {
-  margin-left: 0px;
-}
-
-.media-list-thumbnails .form-type-checkbox {
-  bottom: 0;
-}
-
-div#admin-toolbar.vertical {
-  z-index: 9999;
-}
-
-#navbar {
-  position: absolute;
-  z-index: 9999;
-}
-
-#tabs {
-  margin-bottom: 20px;
-}
-
 #admin-menu,
 #admin-menu .dropdown {
   z-index: 9999;
 }
 
-#edit-module-filter-name {
-  display: inline;
+/* Tables */
+table .active {
+  background-color: transparent;
 }
 
 th.checkbox,
 td.checkbox {
   display: table-cell;
 }
-
-.draggable a.tabledrag-handle .handle,
-.panopoly-spotlight-label {
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
-}
-
-/*
-.update tbody > tr:nth-child(even) > td, .table-striped tbody > tr:nth-child(even) > th,
-  .update tbody > tr:nth-child(odd) > td, .table-striped tbody > tr:nth-child(odd) > th,
-  table.update, .update table.version {
-  background-color: transparent;
-}
-*/
 
 .update tbody > tr:nth-child(odd) > td, .update tbody > tr:nth-child(odd) > th,
   .update tbody > tr:nth-child(even) > td, .update tbody > tr:nth-child(even) > th {
@@ -168,12 +90,118 @@ table.package tr.enabling, tr.selected td, tr.dblog-error, tr.dblog-notice, tr.d
   background: transparent;
 }
 
-.version-links .links {
-  list-style-type: none;
+tr.even, tr.odd {
+  background-color: transparent;
+  border-bottom: inherit;
+  padding: inherit;
 }
 
-table .active {
-  background-color: transparent;
+table th.checkbox input, table td.checkbox input {
+  float: none !important;
+  margin-left: 0 !important;
+}
+
+/* Fieldsets */
+fieldset legend {
+  float: left;
+  line-height: 1em;
+  margin: 0;
+}
+
+fieldset .panel-body {
+  clear: both;
+}
+
+.collapse-processed .fieldset-wrapper {
+  margin-left: 25px;
+  margin-bottom: 10px;
+}
+
+/* Vertical Tabs */
+div.vertical-tabs {
+  border: none;
+  border: 1px solid #DDD;
+  outline: none;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+}
+
+div.vertical-tabs ul.vertical-tabs-list {
+  border: none;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  outline: none;
+}
+
+div.vertical-tabs ul.vertical-tabs-list li {
+  border: none;
+  background: none;
+  outline: none !important;
+  -webkit-border-radius: 4px 0 0 4px;
+  -moz-border-radius: 4px 0 0 4px;
+  -ms-border-radius: 4px 0 0 4px;
+  -o-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
+  border: 1px solid;
+  border-color: #fff #ddd #fff #fff;
+}
+
+div.vertical-tabs ul.vertical-tabs-list li.selected {
+  border-color: #ddd #fff #ddd #ddd;
+}
+
+div.vertical-tabs ul.vertical-tabs-list li a {
+  outline: none !important;
+  -webkit-border-radius: 4px 0 0 4px;
+  -moz-border-radius: 4px 0 0 4px;
+  -ms-border-radius: 4px 0 0 4px;
+  -o-border-radius: 4px 0 0 4px;
+  border-radius: 4px 0 0 4px;
+}
+
+div.vertical-tabs .vertical-tabs-panes {
+  padding: 20px 10px;
+}
+
+div.vertical-tabs .form-type-textfield input {
+  width: 90%;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+/* Misc */
+ul.links {
+  padding: 0;
+  list-style: none outside none;
+}
+
+html.js input.form-autocomplete {
+  background: transparent;
+}
+
+form .form-actions .btn {
+  margin-right: 10px;
+}
+
+/* Make sure fieldsets collapse nicely */
+html.js fieldset.collapsed {
+  border-bottom-width: 0px;
+  border-left-width: 1px;
+  border-right-width: 1px;
+  height: inherit;
+}
+
+#main-wrapper {
+  margin-bottom: 50px;
+  margin-top: 20px;
+}
+
+.pane-content .container {
+  width: auto;
 }
 
 #module-filter-squeeze {
@@ -181,10 +209,36 @@ table .active {
   border: 0;
 }
 
-tr.even, tr.odd {
-  background-color: transparent;
-  border-bottom: inherit;
-  padding: inherit;
+.version-links .links {
+  list-style-type: none;
+}
+
+.draggable a.tabledrag-handle .handle,
+.panopoly-spotlight-label {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+#edit-module-filter-name {
+  display: inline;
+}
+
+label.option {
+  display: inline;
+  font-weight: normal;
+}
+
+.media-list-thumbnails .form-type-checkbox {
+  bottom: 0;
+}
+
+div#admin-toolbar.vertical {
+  z-index: 9999;
+}
+
+#tabs {
+  margin-bottom: 20px;
 }
 
 /* Keep Bootstrap from hiding batch API progress message */
@@ -204,4 +258,17 @@ tr.even, tr.odd {
 /* Make IPE region buttons inline */
 ul.panels-ipe-linkbar {
   list-style: none outside none;
+}
+
+/* Cramped features display */
+#features-export-form .features-export-parent {
+  margin: 0 0 20px;
+}
+
+.features-export-component .checkbox label {
+  margin-left: 10px;
+}
+
+.features-export-component .radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
+  margin-left: 0px;
 }
