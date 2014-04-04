@@ -251,262 +251,202 @@ ul#media-browser-library-list {
   position: relative;
   /* fixes positioning for auto complete items in firefox - http://drupal.org/node/1218684 */
 }
-/**
- * Modal stylings
- */
-#modal-content input.form-text {
-  max-width: 98%; /* Handle fixed width form elements in the IPE */
-}
 
-#modal-content .form-item-exposed-widget-title input,#modal-content .form-item-title input
-  {
-  font-size: 1.5em;
-}
-
-#modalContent div.ctools-modal-content {
-  border: none;
-  border-radius: 10px 10px 0 0;
-  -moz-border-radius: 10px 10px 0 0;
-  -webkit-border-radius: 10px 10px 0 0;
-}
-
-#modalContent div.ctools-modal-content .modal-header {
-  border-radius: 5px 5px 0 0;
-  color: #fff;
-  font: bold 16px/50px 'Open Sans', 'Lucida Sans', 'Lucida Grande',
-    verdana sans-serif;
-  height: 50px;
-  padding: 0 14px 0 24px;
-  vertical-align: middle;
-  -webkit-border-radius: 5px 5px 0 0;
-  -moz-border-radius: 5px 5px 0 0;
-}
-
-#modalContent div.ctools-modal-content .modal-title {
-  font: bold 16px/50px 'Open Sans', 'Lucida Sans', 'Lucida Grande',
-    verdana sans-serif;
-  padding: 0;
-  text-shadow: none;
-}
-
-#modalContent div.ctools-modal-content a.close {
-  display: block;
-  height: 15px;
-  margin-top: 15px;
-  opacity: 1;
-  outline: none;
+body.ctools-modal-open {
   overflow: hidden;
-  padding: 0;
-  text-indent: -99999em;
-  width: 16px;
+}
+
+#modalContent .modal-content {
+  width: 100%;
+  overflow: hidden;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+#modalContent #modal-content {
+  overflow: auto;
+  width: 100% !important;
+  background: white;
 }
 
 #modalContent .panels-add-content-modal {
-  background: #fff;
-  padding-top: .9em;
-}
-
-#modalContent .panels-add-content-modal a.panels-modal-add-category {
-  background: #eaeaec;
-  border-bottom: none;
-  color: #333;
-  font: bold 11px/30px 'Open Sans', 'Lucida Sans', 'Lucida Grande',
-    verdana sans-serif;
-  margin-left: 10px;
-  padding: 0 12px;
-  text-decoration: none;
-}
-
-#modalContent .panels-add-content-modal a.panels-modal-add-category:active,#modalContent .panels-add-content-modal a.panels-modal-add-category.active
-  {
-  background: #fff;
-  border: 1px solid #cececa;
-  border-right: none;
-  margin-right: -1px;
-}
-
-#modal-content .option-text-aligner {
-  float: left;
-  width: auto;
-}
-
-/**
- * Pane configuration preview styling
- *
- * Much of the fieldset-related css is ripped directly from Bartik to give
- * IPE a more consistent look
- * @see https://drupal.org/node/1717644
- */
-#modal-content fieldset.widget-preview {
-  border-top-right-radius: 0;
-  margin-bottom: 4em;
-  margin-top: 3em;
-  -moz-border-topright-radius: 0;
-  -webkitborder-top-right-radius: 0;
-  position: relative;
-  border: 1px #ccc solid;
-}
-
-#modal-content fieldset.widget-preview-single {
-  margin-bottom: 1em;
-  margin-top: 0em;
-}
-
-#modal-content fieldset.widget-preview-single .fieldset-wrapper {
-  font-size: 100%;
-  max-height: 375px;
-  max-width: 100%;
-  min-height: 75px;
-  overflow-y: auto;
-}
-
-#modal-content fieldset.widget-preview-single .fieldset-wrapper .panopoly-spotlight img
-  {
-  width: 100%;
-}
-
-#modal-content .fieldset-legend {
-  margin-left: 10px;
-}
-
-#modal-content fieldset legend a {
-  color: #3b3b3b;
-}
-
-#modal-content fieldset legend a:hover,#modal-content fieldset legend a:focus,#modal-content fieldset legend a:active
-  {
-  color: #000;
-}
-
-#modal-content .fieldset-wrapper {
-  margin-top: 2.25em;
-  padding: 0 10px;
-}
-
-#modal-content .widget-preview .fieldset-wrapper {
-  font-size: 75%;
-  max-height: 200px;
-  max-width: 100%;
-  min-height: 200px;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-#modal-content .widget-preview .fieldset-wrapper table tr.even td,#modal-content .widget-preview .fieldset-wrapper table tr.odd td
-  {
-  padding: 3px 5px;
-}
-
-#modal-content .widget-preview .fieldset-wrapper h2 {
-  font-size: 150%;
-  margin-top: .25em;
-}
-
-#modal-content .widget-preview-single {
-  float: right;
-  margin-left: 1em;
-  margin-top: 0;
-  width: 48%;
-}
-
-#modal-content .form-actions {
-  clear: right;
-  float: right;
-  margin-left: 1em;
-  text-align: right;
-  width: 48%;
-}
-
-#modal-content .widget-preview-title {
-  font: bold 11px/23px 'Open Sans', 'Lucida Sans', 'Lucida Grande',
-    verdana sans-serif;
-  position: absolute;
-  right: -1px;
-  top: -24px;
-}
-
-#modal-content .widget-preview-title .content-type-button div {
-  float: none;
-  left: 0;
+  background: none;
   padding: 0;
-  top: 0;
-  width: 60px;
-}
-
-#modal-content .panels-section-columns,#modal-content .panels-categories-description
-  {
-  border: 1px solid #cececa;
-  border-right: none;
   height: 100%;
-  margin: 0;
-  margin-top: 1px;
-  overflow: visible;
-  overflow-y: auto;
+  margin: -20px -20px 0;
+  width: 100%;
+  position: absolute;
 }
 
-#modal-content .panels-categories-description {
-  color: #fff;
-}
-
-/**
- * Misc Modal Stylings
- */
-#modal-content .form-type-textarea .form-type-select,#modal-content .field-type-text-long .form-type-select
-  {
-  float: right;
-  margin-bottom: 5px;
-  margin-top: 5px;
-}
-
-#modal-content .form-type-textarea .form-type-select label,#modal-content .field-type-text-long .form-type-select label
-  {
-  display: block;
-  float: left;
-  font-weight: normal;
-  margin-right: .5em;
-  margin-top: .5em;
-  width: auto;
-}
-
-#modal-content .view-settings-wrapper .form-radios {
-  display: inline;
-  padding-right: 5px;
-}
-
-.panels-section-column .content-type-button {
-  font-size: 1em;
-  position: relative;
-  top: 29px;
-}
-
-#modal-content .widget-preview-title .content-type-button img,#modal-content .panels-add-content-modal>.panels-modal-add-category
-  {
-  display: none;
-}
-
-#modal-content #edit-widget-preview {
-  margin-top: 0;
-}
-
-#modalContent .panels-section-column-categories .content-type-button img:hover
-  {
+#modalContent .panels-section-columns,
+#modalContent .panels-categories-description {
   border: none;
 }
 
-#modal-content .widget-preview .fieldset-wrapper table img,#modal-content .widget-preview .panopoly-image-featured
-  {
+#modalContent .panels-section-column-categories {
+  margin-left: 0;
+  border-right: 1px solid #ccc;
+  height: 100%;
+  background: white;
+  overflow: auto;
+  padding-bottom: 20px;
+}
+
+#modalContent .panels-section-column-categories .btn {
+  border: 1px solid #999999 !important;
+  line-height: inherit;
+  margin: 0;
+  text-align: left;
+}
+
+#modalContent .panels-categories-box {
+  border: 0;
+}
+
+#modalContent .panels-categories-box a.btn {
+  padding: 5px 10px;
+}
+
+#modalContent .panels-categories-box a.active {
+  background: #eeeeee;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+#modalContent .panels-root-content-box a.btn {
+  padding: 5px 10px;
+}
+
+#modalContent .panels-categories-description {
+  padding: 20px;
+}
+
+#modalContent .panels-section-columns {
+  padding-bottom: 20px;
+}
+
+#modal-content fieldset.widget-preview {
+  margin-top: 18px;
+  margin-bottom: 0;
+  position: static;
+  border: 1px solid #ddd;
+}
+
+#modal-content fieldset.widget-preview .panel-heading {
+  position: relative;
+}
+
+#modal-content fieldset.widget-preview .panel-heading .btn {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+
+#modal-content .ctools-auto-submit-full-form fieldset {
+  width: 48%;
+  display: block !important;
+}
+
+#modal-content .ctools-auto-submit-full-form fieldset fieldset {
   width: 100%;
 }
 
-#modal-content legend {
-  background-color: #ccc;
-  border: 1px #ccc solid;
-  position: relative;
-  left: -1px;
+#modal-content .ctools-auto-submit-full-form fieldset.widget-preview-single {
+  float: right;
+  margin-left: 1em;
+  margin-top: 0;
+  width: 48%;
+  max-width: 48% !important;
 }
 
-.pane-content .create-links,.pane-categories .categories-links,.pane-menus .menu-links,.pane-users .user-links {
+#modal-content .ctools-auto-submit-full-form .form-actions {
   float: right;
+  clear: right;
+  width: 48%;
+  max-width: 48%;
+  text-align: right;
+}
+
+#modal-content .form-item-view-settings {
+  display: block;
+}
+
+#modal-content .form-item-exposed-use-pager {
+  display: block;
+}
+
+ul.nav > li.dropdown:after {
+  width: 100%;
+  height: 2px;
+  background: none;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  content: '';
+}
+
+.panel-display > .row {
+  margin-bottom: 20px;
+}
+
+.panel-flexible .panel-separator {
+  display: none;
+}
+
+div#panels-ipe-control-container {
+  width: auto;
+  left: 0;
+  right: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+div#panels-ipe-control-container .panels-ipe-button-container {
+  text-align: center;
+}
+
+div#panels-ipe-control-container .panels-ipe-button-container .panels-ipe-pseudobutton-container {
+  margin: 0 5px;
+}
+
+div#panels-ipe-control-container .panels-ipe-button-container .panels-ipe-pseudobutton-container a {
+  padding: 0px 10px 0px 34px;
+}
+
+div#panels-ipe-control-container .panels-ipe-button-container .panels-ipe-pseudobutton-container a:hover {
+  text-decoration: none;
+}
+
+div#panels-ipe-control-container .panels-ipe-form-container form > div {
+  text-align: center;
+}
+
+div#panels-ipe-control-container .panels-ipe-form-container form .form-submit {
+  margin: 0 5px;
+  padding: 0px 10px 0px 34px;
+}
+
+div#panels-ipe-control-container .panels-ipe-form-container form .form-submit:hover {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+ul.panels-ipe-linkbar {
+  list-style: none outside none;
+}
+
+ul.panels-ipe-linkbar > li {
+  display: inline-block;
+  margin: 0 0 0 5px;
+}
+
+ul.panels-ipe-linkbar > li a {
+  margin: 0 !important;
+}
+
+.form-item {
+  margin-top: 0;
 }
 
 /**

@@ -200,3 +200,8 @@ tr.even, tr.odd {
 #kala-submit-change-title {
   display: inline;
 }
+
+/* Make IPE region buttons inline */
+ul.panels-ipe-linkbar {
+  list-style: none outside none;
+}

@@ -29,5 +29,6 @@ settings[responsive_toggle] = 1
 settings[pane_styles_toggle] = 1
 settings[always_show_page_title] = 0
 settings[build_subtheme] = 0
+settings[fontawesome] = 1
 
 plugins[panels][styles] = styles

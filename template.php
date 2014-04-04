@@ -65,6 +65,22 @@ function kalatheme_css_alter(&$css) {
 }
 
 /**
+ * Implements hook_js_alter().
+ *
+ * Borrowed from Radix :)
+ *
+ */
+function kalatheme_js_alter(&$javascript) {
+  // Add kalatheme-modal only when required.
+  $ctools_modal = drupal_get_path('module', 'ctools') . '/js/modal.js';
+  $kalatheme_modal = drupal_get_path('theme', 'kalatheme') . '/js/kalatheme-modal.js';
+  if (!empty($javascript[$ctools_modal]) && empty($javascript[$kalatheme_modal])) {
+    $javascript[$kalatheme_modal] = array_merge(
+      drupal_js_defaults(), array('group' => JS_THEME, 'data' => $kalatheme_modal));
+  }
+}
+
+/**
  * Load Kalatheme dependencies.
  *
  * Implements template_preprocess_html().
