@@ -6,51 +6,62 @@
 
 /**
  * Implements hook_libraries_info().
+ *
+ * Libraries API 2.2 requires this function to be prefixed with the
+ * current theme. You can't use the base theme anymore.
+ *
+ * @todo assess the security of this... seems probably sketchy?
+ *
  */
-function kalatheme_libraries_info() {
-  $libraries = array();
-  $libraries[KALATHEME_BOOTSTRAP_LIBRARY] = array(
-    'name' => 'Twitter Bootstrap',
-    'machine name' => KALATHEME_BOOTSTRAP_LIBRARY,
-    'vendor url' => 'http://twitter.github.com',
-    'download url' => 'http://twitter.github.com',
-    'path' => '',
-    'version arguments' => array(
-      'pattern' => '@v+([0-9a-zA-Z\.-]+)@',
-      'lines' => 100,
-      'cols' => 200,
-    ),
-    'version callback' => '_kalatheme_get_version',
-    'versions' => array(
-      '3' => array(
-        'files' => array(
-          'js' => array(
-            'js/bootstrap.js',
-          ),
-          'css' => array(
-            'css/bootstrap.css',
-          ),
-        ),
-        'variants' => array(
-          'minified' => array(
-            'files' => array(
-              'js' => array(
-                'js/bootstrap.min.js',
-              ),
-              'css' => array(
-                'css/bootstrap.min.css',
-              ),
+global $theme_key;
+$function = $theme_key . '_libraries_info';
+if (!function_exists($function)) {
+  $code = "function " . $function . "() {
+    \$libraries = array();
+    \$libraries[KALATHEME_BOOTSTRAP_LIBRARY] = array(
+      'name' => 'Twitter Bootstrap',
+      'machine name' => KALATHEME_BOOTSTRAP_LIBRARY,
+      'vendor url' => 'http://twitter.github.com',
+      'download url' => 'http://twitter.github.com',
+      'path' => '',
+      'version arguments' => array(
+        'pattern' => '@v+([0-9a-zA-Z\.-]+)@',
+        'lines' => 100,
+        'cols' => 200,
+      ),
+      'version callback' => '_kalatheme_get_version',
+      'versions' => array(
+        '3' => array(
+          'files' => array(
+            'js' => array(
+              'js/bootstrap.js',
             ),
-            'variant arguments' => array(
-              'variant' => 'minified',
+            'css' => array(
+              'css/bootstrap.css',
+            ),
+          ),
+          'variants' => array(
+            'minified' => array(
+              'files' => array(
+                'js' => array(
+                  'js/bootstrap.min.js',
+                ),
+                'css' => array(
+                  'css/bootstrap.min.css',
+                ),
+              ),
+              'variant arguments' => array(
+                'variant' => 'minified',
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
 
-  return $libraries;
+    return \$libraries;
+  }";
+  eval($code);
 }
 
 /**
