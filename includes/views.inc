@@ -75,7 +75,7 @@ function kalatheme_preprocess_views_view_table(&$variables) {
   // Remove the active class from table cells, as Bootstrap 3 gives them a funky background.
   $handler = $variables['view']->style_plugin;
   $active = !empty($handler->active) ? $handler->active : FALSE;
-  if ($active) {
+  if ($active && array_key_exists($active, $variables['field_classes']) ) {
     foreach ($variables['field_classes'][$active] as &$cell) {
       $cell_classes = explode(' ', $cell);
       $active_class_index = array_search('active', $cell_classes);
