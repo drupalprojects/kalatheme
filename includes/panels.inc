@@ -127,10 +127,24 @@ function kalatheme_process_panels_add_content_modal(&$vars) {
 }
 
 /**
- * Implements hook_preprocess_panels_add_content_link().
+ * Implements template_preprocess_panels_add_content_link().
  */
 function kalatheme_preprocess_panels_add_content_link(&$vars) {
-  $vars['text_button'] = ctools_ajax_text_button($vars['title'], $vars['url'], $vars['description'], 'panels-modal-add-config btn btn-default');
+  $vars['title'] = filter_xss_admin($vars['content_type']['title']);
+  $vars['description'] = isset($vars['content_type']['description']) ? $vars['content_type']['description'] : $vars['title'];
+  $vars['icon'] = ctools_content_admin_icon($vars['content_type']);
+  $vars['url'] = $vars['renderer']->get_url('add-pane', $vars['region'], $vars['content_type']['type_name'], $vars['content_type']['subtype_name']);
+
+  $icon = theme('image', array('path' => $vars['icon']));
+  $title = $icon . ' ' . $vars['title'];
+  $button_classes = 'panels-modal-add-config btn btn-default btn-sm';
+  $vars['button'] = ctools_ajax_text_button($title, $vars['url'], $vars['description'], $button_classes);
+
+  if ($vars['title'] == t('Add')) {
+    $title = '<i class="fa fa-plus"></i> ' . $vars['title'];
+    $button_classes = 'panels-modal-add-config btn btn-success btn-sm pull-right';
+    $vars['button'] = ctools_ajax_text_button($title, $vars['url'], $vars['description'], $button_classes);
+  }
 }
 
 /**
