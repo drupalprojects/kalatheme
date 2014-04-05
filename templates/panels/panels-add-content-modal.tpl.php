@@ -5,7 +5,7 @@
  */
 ?>
 <div class="panels-add-content-modal row">
-  <div class="panels-section-column panels-section-column-categories col-md-2">
+  <div class="panels-section-column panels-section-column-categories col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_SIXTH); ?>">
     <div class="inside">
       <div class="panels-categories-box">
         <h5><?php print t('Add existing content'); ?></h5>
@@ -29,7 +29,7 @@
   <?php print $messages; ?>
 
   <?php if (!empty($header)): ?>
-    <div class="panels-categories-description col-md-10">
+    <div class="panels-categories-description col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_SIXTH * 5); ?>">
       <div class="inner">
         <?php print $header; ?>
       </div>
@@ -37,10 +37,10 @@
   <?php endif; ?>
 
   <?php if (!empty($columns)): ?>
-  <div class="panels-section-columns col-md-10">
+  <div class="panels-section-columns col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_SIXTH * 5); ?>">
     <div class="row">
       <?php foreach ($columns as $column_id => $column): ?>
-        <div class="panels-section-column col-md-6 col-sm-12 col-xs-12">
+        <div class="panels-section-column col-col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> col-sm-col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> col-xs-col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?>">
           <div class="inside">
             <?php print $column; ?>
           </div>
