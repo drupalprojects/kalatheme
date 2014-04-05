@@ -55,9 +55,12 @@ function theme_kalatheme_kalacustomize_render_pane($vars) {
     $content->css_class = '';
   }
 
-  $content->css_class .= _kalatheme_get_styles($settings['devices']);
-  $content->css_class .= _kalatheme_get_styles($settings['pane_style']);
-
+  if (isset($settigs['devices'])) {
+    $content->css_class .= _kalatheme_get_styles($settings['devices']);
+  }
+  if (isset($settigs['pane_style'])) {
+    $content->css_class .= _kalatheme_get_styles($settings['pane_style']);
+  }
   $output = theme('panels_pane', $vars);
 
   return $output;
