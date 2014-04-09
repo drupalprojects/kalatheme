@@ -450,6 +450,19 @@ ul.panels-ipe-linkbar > li a {
 }
 
 /**
+ * Themer toggle
+ */
+
+.panels-ipe #themer-toggle{
+  bottom: 55px;
+}
+
+.navbar-tray-open.navbar-vertical #themer-toggle{
+  right: 0;
+  left: auto;
+}
+
+/**
  * Navbar Styling
  */
 a#navbar-link-admin-panopoly:before {

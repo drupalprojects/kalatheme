@@ -212,9 +212,15 @@ html.js fieldset.collapsed {
 .version-links .links {
   list-style-type: none;
 }
-
+/**
+ * Box Sizing Resets
+ * Provides a basic reset class as well.
+ */
 .draggable a.tabledrag-handle .handle,
-.panopoly-spotlight-label {
+.panopoly-spotlight-label,
+.mceEditor,
+#pane-library table,
+.box-sizing-content-box {
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
