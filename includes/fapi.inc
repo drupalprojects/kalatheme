@@ -236,10 +236,18 @@ function kalatheme_button($variables) {
 function kalatheme_textarea($variables) {
   $element = $variables['element'];
   // Set only if they are set
-  $element['#attributes']['name'] = isset($element['#name']) ? $element['#name'] : '';
-  $element['#attributes']['id'] = isset($element['#id']) ? $element['#id'] :$element['#id'];
-  $element['#attributes']['cols'] = isset($element['#cols']) ? $element['#cols'] : '' ;
-  $element['#attributes']['rows'] = isset($element['#rows']) ? $element['#rows'] :'' ;
+  if(isset($element['#name'])){
+    $element['#attributes']['name'] = $element['#name'];
+  }
+  if(isset($element['#id'])){
+    $element['#attributes']['id'] = $element['#id'];
+  }
+  if(isset($element['#cols'])){
+    $element['#attributes']['cols'] = $element['#cols'];
+  }
+  if(isset($element['#rows'])){
+    $element['#attributes']['rows'] = $element['#rows'];
+  }
   _form_set_class($element, array('form-textarea'));
 
   $wrapper_attributes = array(
