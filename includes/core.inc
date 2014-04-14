@@ -637,7 +637,6 @@ function kalatheme_pager($variables) {
  * Implements theme_progress_bar().
  */
 function kalatheme_progress_bar($variables) {
-  dpm($variables);
   $output =  '<div id="progress" class="progress active progress-striped">';
   $output .= '<div class="progress-bar" role="progressbar" aria-describedby="progressMessage" ';
   $output .= 'aria-valuenow="' . $variables['percent'] . '" ';
