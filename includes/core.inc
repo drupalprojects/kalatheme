@@ -632,3 +632,18 @@ function kalatheme_pager($variables) {
   }
 }
 
+
+/**
+ * Implements theme_progress_bar().
+ */
+function kalatheme_progress_bar($variables) {
+  dpm($variables);
+  $output =  '<div id="progress" class="progress active progress-striped">';
+  $output .= '<div class="progress-bar" role="progressbar" aria-describedby="progressMessage" ';
+  $output .= 'aria-valuenow="' . $variables['percent'] . '" ';
+  $output .= 'aria-valuemin="0" aria-valuemax="100" style="width: ' . $variables['percent'] . '%;">';
+  $output .=  $variables['percent'] . '% Complete</div></div>';
+  $output .= '<p class="help-block" id="progressMessage">' . $variables['message'] . '</p>';
+  $output = '<div class="progress-wrapper">' . $output . '</div>';
+  return $output;
+}
