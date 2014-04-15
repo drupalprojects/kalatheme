@@ -172,42 +172,44 @@
   </header>
 
   <!-- Page Main -->
-  <div id="main-wrapper" class="clearfix"><div id="main" class="clearfix">
-    <div id="top-content">
-      <div class="column container">
-        <a id="main-content"></a>
-        <?php if (($no_panels || $always_show_page_title) && $title): ?>
-          <h1 id="page-title" class="title">
-            <?php print $title; ?>
-          </h1>
-        <?php endif; ?>
+  <div id="main-wrapper" class="clearfix">
+    <main id="main" class="clearfix" role="main">
+      <div id="top-content">
+        <div class="column container">
+          <a id="main-content"></a>
+          <?php if (($no_panels || $always_show_page_title) && $title): ?>
+            <h1 id="page-title" class="title">
+              <?php print $title; ?>
+            </h1>
+          <?php endif; ?>
 
-        <?php if ($messages): ?>
-          <div id="messages">
-            <?php print $messages; ?>
-          </div>
-        <?php endif; ?>
+          <?php if ($messages): ?>
+            <div id="messages">
+              <?php print $messages; ?>
+            </div>
+          <?php endif; ?>
 
-        <?php if (!empty($tabs['#primary']) || !empty($tabs['#secondary'])): ?>
-          <div id="tabs">
-            <?php print render($tabs); ?>
-          </div>
-        <?php endif; ?>
+          <?php if (!empty($tabs['#primary']) || !empty($tabs['#secondary'])): ?>
+            <div id="tabs">
+              <?php print render($tabs); ?>
+            </div>
+          <?php endif; ?>
 
-        <?php if ($action_links): ?>
-          <div id="action-links">
-            <?php print render($action_links); ?>
-          </div>
-        <?php endif; ?>
-      </div>
-    </div> <!-- /.section, /#top-content -->
+          <?php if ($action_links): ?>
+            <div id="action-links">
+              <?php print render($action_links); ?>
+            </div>
+          <?php endif; ?>
+        </div>
+      </div> <!-- /.section, /#top-content -->
 
-    <div id="content">
-      <div class="column <?php $no_panels ? print 'container' : ''; ?>">
-        <?php print render($page['content']); ?>
-      </div>
-    </div> <!-- /.section, /#content -->
+      <div id="content">
+        <div class="column <?php $no_panels ? print 'container' : ''; ?>">
+          <?php print render($page['content']); ?>
+        </div>
+      </div> <!-- /.section, /#content -->
 
-  </div></div> <!-- /#main, /#main-wrapper -->
+    </main><!-- /#main -->
+  </div> <!-- /#main-wrapper -->
 
 </div></div> <!-- /#page, /#page-wrapper -->
