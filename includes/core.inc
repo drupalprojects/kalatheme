@@ -580,8 +580,8 @@ function kalatheme_pager($variables) {
     if ($i != $pager_max) {
       if ($i > 1) {
         $items[] = array(
-          'class' => array('pager-ellipsis'),
-          'data' => '…',
+          'class' => array('pager-ellipsis', 'disabled'),
+          'data' => '<span aria-hidden="true">…<span>'
         );
       }
       // Now generate the actual pager piece.
@@ -595,7 +595,7 @@ function kalatheme_pager($variables) {
         if ($i == $pager_current) {
           $items[] = array(
             'class' => array('pager-current', 'active'),
-            'data' => '<span>' . $i . '</span>',
+            'data' => '<span>' . $i . ' <span class="sr-only">(current)</span></span>',
           );
         }
         if ($i > $pager_current) {
@@ -607,8 +607,8 @@ function kalatheme_pager($variables) {
       }
       if ($i < $pager_max) {
         $items[] = array(
-          'class' => array('pager-ellipsis'),
-          'data' => '…',
+          'class' => array('pager-ellipsis','disabled'),
+          'data' => '<span aria-hidden="true">&#x2026;</span>',
         );
       }
     }
@@ -625,10 +625,11 @@ function kalatheme_pager($variables) {
         'data' => $li_last,
       );
     }
-    return '<div class="text-center">' . theme('item_list', array(
+    return '<nav role="navigation" class="text-center pagination-wrapper">' . theme('item_list', array(
+      'plain' => true,
       'items' => $items,
       'attributes' => array('class' => array('pagination')),
-    )) . '</div>';
+    )) . '</nav>';
   }
 }
 
@@ -644,5 +645,68 @@ function kalatheme_progress_bar($variables) {
   $output .=  $variables['percent'] . '% Complete</div></div>';
   $output .= '<p class="help-block" id="progressMessage">' . $variables['message'] . '</p>';
   $output = '<div class="progress-wrapper">' . $output . '</div>';
+  return $output;
+}
+
+
+/**
+ * Implements theme_item_list().
+ */
+
+function kalatheme_item_list($variables) {
+  $items = $variables['items'];
+  $title = $variables['title'];
+  $type = $variables['type'];
+  $attributes = $variables['attributes'];
+
+  // Only output the list container and title, if there are any list items.
+  // Check to see whether the block title exists before adding a header.
+  // Empty headers are not semantic and present accessibility challenges.
+  if (isset($title) && $title !== '') {
+    $output .= '<h3>' . $title . '</h3>';
+  }
+
+  if (!empty($items)) {
+    $output .= "<$type" . drupal_attributes($attributes) . '>';
+    $num_items = count($items);
+    $i = 0;
+    foreach ($items as $item) {
+      $attributes = array();
+      $children = array();
+      $data = '';
+      $i++;
+      if (is_array($item)) {
+        foreach ($item as $key => $value) {
+          if ($key == 'data') {
+            $data = $value;
+          }
+          elseif ($key == 'children') {
+            $children = $value;
+          }
+          else {
+            $attributes[$key] = $value;
+          }
+        }
+      }
+      else {
+        $data = $item;
+      }
+      if (count($children) > 0) {
+        // Render nested list.
+        $data .= theme_item_list(array('items' => $children, 'title' => NULL, 'type' => $type, 'attributes' => $attributes));
+      }
+      if ($i == 1) {
+        $attributes['class'][] = 'first';
+      }
+      if ($i == $num_items) {
+        $attributes['class'][] = 'last';
+      }
+      $output .= '<li' . drupal_attributes($attributes) . '>' . $data . "</li>\n";
+    }
+    $output .= "</$type>";
+  }
+  if(!isset($variables['plain'])){
+    $output = '<div class="item-list">' . $output . '</div>';
+  }
   return $output;
 }
