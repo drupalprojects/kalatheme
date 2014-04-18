@@ -1,0 +1,32 @@
+{
+  "name": "kalatheme",
+  "version": "3.0.0+dev",
+  "description": "Kalatheme is designed for people who want to get to work quickly so they can make things happen.",
+  "homepage": "https://drupal.org/project/kalatheme",
+  "bugs": {
+    "url":"https://drupal.org/project/issues/kalatheme"
+  },
+  "main": "template.php",
+  "scripts": {
+    "test": "grunt tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": " http://git.drupal.org/project/kalatheme.git"
+  },
+  "keywords": [
+    "Drupal",
+    "Bootstrap",
+    "Panopoly"
+  ],
+  "author": "Kalamuna LLC <info@kalamuna.com> (http://www.kalamuna.com/)",
+  "license": "GPL-2.0",
+  "config":{
+    "src": {
+      "coffee" : [".src/**/*.coffee"]
+    },
+    "dist" : {
+      "js" : "js"
+    }
+  }
+}
