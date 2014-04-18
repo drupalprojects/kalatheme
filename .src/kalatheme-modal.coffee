@@ -4,14 +4,15 @@ Overrides for CTools modal.
 See ctools/js/modal.js
 ###
 (($) ->
-  
+
   ###
-  Override CTools modal show function so it can recognize the Bootstrap modal classes correctly
+  Override CTools modal show function so it can recognize
+  the Bootstrap modal classes correctly
   ###
   Drupal.CTools.Modal.show = (choice) ->
     opts = {}
     if choice and typeof choice is "string" and Drupal.settings[choice]
-      
+
       # This notation guarantees we are actually copying it.
       $.extend true, opts, Drupal.settings[choice]
     else $.extend true, opts, choice  if choice
@@ -26,7 +27,7 @@ See ctools/js/modal.js
         height: 0.8
         addWidth: 0
         addHeight: 0
-        
+
         # How much to remove from the inner content to make space for the
         # theming.
         contentRight: 25
@@ -43,7 +44,7 @@ See ctools/js/modal.js
       Drupal.CTools.Modal.modal = null
     Drupal.CTools.Modal.currentSettings = settings
     resize = (e) ->
-      
+
       # When creating the modal, it actually exists only in a theoretical
       # place that is not in the DOM. But once the modal exists, it is in the
       # DOM so the context must be set appropriately.
@@ -54,7 +55,7 @@ See ctools/js/modal.js
       else
         width = Drupal.CTools.Modal.currentSettings.modalSize.width
         height = Drupal.CTools.Modal.currentSettings.modalSize.height
-      
+
       # Use the additionol pixels for creating the width and height.
       $("div.ctools-modal-dialog", context).css
         width: width + Drupal.CTools.Modal.currentSettings.modalSize.addWidth + "px"
@@ -69,7 +70,7 @@ See ctools/js/modal.js
     unless Drupal.CTools.Modal.modal
       Drupal.CTools.Modal.modal = $(Drupal.theme(settings.modalTheme))
       $(window).bind "resize", resize  if settings.modalSize.type is "scale"
-    
+
     # First, let's get rid of the body overflow.
     $("body").addClass "modal-open"
     resize()
@@ -85,7 +86,7 @@ See ctools/js/modal.js
       Drupal.CTools.Modal.unmodalContent Drupal.CTools.Modal.modal
     return
 
-  
+
   ###
   Provide the HTML for the Modal.
   ###
@@ -105,7 +106,7 @@ See ctools/js/modal.js
     html += "  </div>"
     html
 
-  
+
   ###
   Provide the HTML for Modal Throbber.
   ###

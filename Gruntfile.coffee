@@ -5,4 +5,8 @@ see .grunt for tasks
 ###
 
 
-module.exports(grunt) ->
+module.exports = (grunt) ->
+  # Autoloads tasks and config
+  require('load-grunt-config')( grunt, {
+    configPath: path.join(process.cwd(), '.grunt')
+  })
