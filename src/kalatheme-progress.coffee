@@ -1,6 +1,6 @@
 ###*
 * @file
-* Overrides for Batch Progressbar
+* Overrides for Progressbar function
 * See misc/batch.js
 * Thanks to @link https://drupal.org/project/bootstrap
 ###
@@ -33,7 +33,7 @@
     modalHtml += "</div>\n<div class=\"percentage pull-right\"></div>\n"
     modalHtml += "<p class=\"message\ help-block\" id=\"message#{id}\"></p>"
 
-    @element.html modalHtmml
+    @element.html modalHtml
 
 
   ###

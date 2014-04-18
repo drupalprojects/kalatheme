@@ -3,125 +3,6 @@
 * Copyright (c) 2014 ; Licensed  */
 /**
 * @file
-* Overrides for Batch Progressbar
-* See misc/batch.js
-* Thanks to @link https://drupal.org/project/bootstrap
- */
-(function($) {
-  if (window.Drupal == null) {
-    window.Drupal = {};
-  }
-
-  /*
-  A progressbar object. Initialized with the given id. Must be inserted into
-  the DOM afterwards through progressBar.element.
-  
-  method is the function which will perform the HTTP request to get the
-  progress bar state. Either "GET" or "POST".
-  
-  e.g. pb = new progressBar('myProgressBar');
-  some_element.appendChild(pb.element);
-   */
-  Drupal.progressBar = function(id, updateCallback, method, errorCallback) {
-    var modalHtml, pb;
-    pb = this;
-    this.id = id;
-    this.method = method || "GET";
-    this.updateCallback = updateCallback;
-    this.errorCallback = errorCallback;
-    this.element = $("<div class=\"progress-wrapper\" aria-live=\"polite\"></div>");
-    modalHtml = "<div id =\"" + id + "\" class=\"progress progress-striped active\"";
-    modalHtml += "aria-describedby=\"message" + id + "\">\n<div class=\"progress-bar\"";
-    modalHtml += " role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" ";
-    modalHtml += "aria-valuenow=\"0\">\n<div class=\"percentage\">\n</div>\n</div>\n</div>";
-    modalHtml += "</div>\n<div class=\"percentage pull-right\"></div>\n";
-    modalHtml += "<p class=\"message\ help-block\" id=\"message" + id + "\"></p>";
-    return this.element.html(modalHtmml);
-  };
-
-  /*
-  Set the percentage and status message for the progressbar.
-   */
-  Drupal.progressBar.prototype.setProgress = function(percentage, message) {
-    if (percentage >= 0 && percentage <= 100) {
-      $("div.progress-bar", this.element).css("width", percentage + "%");
-      $("div.progress-bar", this.element).attr("aria-valuenow", percentage);
-      $("div.percentage", this.element).html(percentage + "%");
-    }
-    $("div.message", this.element).html(message);
-    if (this.updateCallback) {
-      this.updateCallback(percentage, message, this);
-    }
-  };
-
-  /*
-  Start monitoring progress via Ajax.
-   */
-  Drupal.progressBar.prototype.startMonitoring = function(uri, delay) {
-    this.delay = delay;
-    this.uri = uri;
-    this.sendPing();
-  };
-
-  /*
-  Stop monitoring progress via Ajax.
-   */
-  Drupal.progressBar.prototype.stopMonitoring = function() {
-    clearTimeout(this.timer);
-    this.uri = null;
-  };
-
-  /*
-  Request progress data from server.
-   */
-  Drupal.progressBar.prototype.sendPing = function() {
-    var pb;
-    if (this.timer) {
-      clearTimeout(this.timer);
-    }
-    if (this.uri) {
-      pb = this;
-      return $.ajax({
-        type: this.method,
-        url: this.uri,
-        data: "",
-        dataType: "json",
-        success: function(progress) {
-          if (progress.status === 0) {
-            pb.displayError(progress.data);
-          }
-          pb.setProgress(progress.percentage, progress.message);
-          return pb.timer = setTimeout(function() {
-            return pb.sendPing();
-          }, pb.delay);
-        },
-        error: function(xmlhttp) {
-          return pb.displayError(Drupal.ajaxError(xmlhttp, pb.uri));
-        }
-      });
-    }
-  };
-
-  /*
-  Display errors on the page.
-   */
-  return Drupal.progressBar.prototype.displayError = function(string) {
-    var error, errorHtml;
-    errorHtml = "<div class=\"alert alert-block alert-error\" role=\"alert\">";
-    errorHtml += "<button type=\"button\" class=\"close\"";
-    errorHtml += " data-dismiss=\"alert\">&times;</button>";
-    errorHtml += "<h4>Error message</h4></div>";
-    error = $(errorHtml).append(string);
-    $(this.element).before(error).hide();
-    if (this.errorCallback) {
-      return this.errorCallback(this);
-    }
-  };
-})(jQuery);
-
-
-/**
-* @file
 * Overrides for CTools modal.
 * See ctools/js/modal.js
  */
@@ -131,6 +12,16 @@
   Override CTools modal show function so it can recognize
   the Bootstrap modal classes correctly
    */
+  if (window.Drupal == null) {
+    window.Drupal = {};
+  }
+  if (Drupal.CTools == null) {
+    Drupal.CTools = {
+      Modal: {
+        show: null
+      }
+    };
+  }
   Drupal.CTools.Modal.show = function(choice) {
     var defaults, opts, resize, settings;
     opts = {};
@@ -237,5 +128,124 @@
     html += "    <i class=\"fa fa-cog fa-spin fa-3x\"></i>";
     html += "  </div>";
     return html;
+  };
+})(jQuery);
+
+
+/**
+* @file
+* Overrides for Progressbar function
+* See misc/batch.js
+* Thanks to @link https://drupal.org/project/bootstrap
+ */
+(function($) {
+  if (window.Drupal == null) {
+    window.Drupal = {};
+  }
+
+  /*
+  A progressbar object. Initialized with the given id. Must be inserted into
+  the DOM afterwards through progressBar.element.
+  
+  method is the function which will perform the HTTP request to get the
+  progress bar state. Either "GET" or "POST".
+  
+  e.g. pb = new progressBar('myProgressBar');
+  some_element.appendChild(pb.element);
+   */
+  Drupal.progressBar = function(id, updateCallback, method, errorCallback) {
+    var modalHtml, pb;
+    pb = this;
+    this.id = id;
+    this.method = method || "GET";
+    this.updateCallback = updateCallback;
+    this.errorCallback = errorCallback;
+    this.element = $("<div class=\"progress-wrapper\" aria-live=\"polite\"></div>");
+    modalHtml = "<div id =\"" + id + "\" class=\"progress progress-striped active\"";
+    modalHtml += "aria-describedby=\"message" + id + "\">\n<div class=\"progress-bar\"";
+    modalHtml += " role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" ";
+    modalHtml += "aria-valuenow=\"0\">\n<div class=\"percentage\">\n</div>\n</div>\n</div>";
+    modalHtml += "</div>\n<div class=\"percentage pull-right\"></div>\n";
+    modalHtml += "<p class=\"message\ help-block\" id=\"message" + id + "\"></p>";
+    return this.element.html(modalHtml);
+  };
+
+  /*
+  Set the percentage and status message for the progressbar.
+   */
+  Drupal.progressBar.prototype.setProgress = function(percentage, message) {
+    if (percentage >= 0 && percentage <= 100) {
+      $("div.progress-bar", this.element).css("width", percentage + "%");
+      $("div.progress-bar", this.element).attr("aria-valuenow", percentage);
+      $("div.percentage", this.element).html(percentage + "%");
+    }
+    $("div.message", this.element).html(message);
+    if (this.updateCallback) {
+      this.updateCallback(percentage, message, this);
+    }
+  };
+
+  /*
+  Start monitoring progress via Ajax.
+   */
+  Drupal.progressBar.prototype.startMonitoring = function(uri, delay) {
+    this.delay = delay;
+    this.uri = uri;
+    this.sendPing();
+  };
+
+  /*
+  Stop monitoring progress via Ajax.
+   */
+  Drupal.progressBar.prototype.stopMonitoring = function() {
+    clearTimeout(this.timer);
+    this.uri = null;
+  };
+
+  /*
+  Request progress data from server.
+   */
+  Drupal.progressBar.prototype.sendPing = function() {
+    var pb;
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+    if (this.uri) {
+      pb = this;
+      return $.ajax({
+        type: this.method,
+        url: this.uri,
+        data: "",
+        dataType: "json",
+        success: function(progress) {
+          if (progress.status === 0) {
+            pb.displayError(progress.data);
+          }
+          pb.setProgress(progress.percentage, progress.message);
+          return pb.timer = setTimeout(function() {
+            return pb.sendPing();
+          }, pb.delay);
+        },
+        error: function(xmlhttp) {
+          return pb.displayError(Drupal.ajaxError(xmlhttp, pb.uri));
+        }
+      });
+    }
+  };
+
+  /*
+  Display errors on the page.
+   */
+  return Drupal.progressBar.prototype.displayError = function(string) {
+    var error, errorHtml;
+    errorHtml = "<div class=\"alert alert-block alert-error\" role=\"alert\">";
+    errorHtml += "<button type=\"button\" class=\"close\"";
+    errorHtml += " data-dismiss=\"alert\">&times;</button>";
+    errorHtml += "<h4>Error message</h4></div>";
+    error = $(errorHtml).append(string);
+    $(this.element).before(error).hide();
+    if (this.errorCallback) {
+      return this.errorCallback(this);
+    }
   };
 })(jQuery);

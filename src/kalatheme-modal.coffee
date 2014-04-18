@@ -9,7 +9,11 @@
   Override CTools modal show function so it can recognize
   the Bootstrap modal classes correctly
   ###
-
+  window.Drupal ?= {}
+  Drupal.CTools ?= {
+    Modal:
+      show: null
+  }
   Drupal.CTools.Modal.show = (choice) ->
     opts = {}
     if choice and typeof choice is "string" and Drupal.settings[choice]

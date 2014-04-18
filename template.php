@@ -44,6 +44,24 @@ function kalatheme_theme($existing, $type, $theme, $path) {
     ),
   );
 }
+/**
+ * Utitlity function to remove conflicting scripts
+ */
+function _kalatheme_remove_by_key(array $keys, array $target){
+  foreach($keys as $key){
+    if(array_key_exists( $key, $target)){
+      unset($target[$key]);
+    }
+  }
+}
+
+/**
+ * Implements hook_js_alter().
+ */
+function kalatheme_js_alter(&$javascript){
+  $excludes = array('misc/progress.js');
+  _kalatheme_remove_by_key($excludes, $javascript);
+}
 
 /**
  * Remove conflicting CSS.
@@ -51,34 +69,18 @@ function kalatheme_theme($existing, $type, $theme, $path) {
  * Implements hook_css_alter().
  */
 function kalatheme_css_alter(&$css) {
-  // Unset some panopoly css.
-  $panopoly_admin_path = drupal_get_path('module', 'panopoly_admin');
-  if (isset($css[$panopoly_admin_path . '/panopoly-admin.css'])) {
-    unset($css[$panopoly_admin_path . '/panopoly-admin.css']);
-  }
+  // Unset some core css & panopoly css.
   $panopoly_magic_path = drupal_get_path('module', 'panopoly_magic');
-  if (isset($css[$panopoly_magic_path . '/css/panopoly-modal.css'])) {
-    unset($css[$panopoly_magic_path . '/css/panopoly-modal.css']);
-  }
-  // Unset some core css.
-  unset($css['modules/system/system.menus.css']);
+  $excludes = array(
+    drupal_get_path('module', 'panopoly_admin') . '/panopoly-admin.css',
+    $panopoly_magic_path . '/css/panopoly-modal.css',
+    $panopoly_magic_path . '/css/panopoly-modal.css',
+    'modules/system/system.menus.css'
+  );
+  _kalatheme_remove_by_key($excludes, $css);
+
 }
 
-/**
- * Implements hook_js_alter().
- *
- * Borrowed from Radix :)
- *
- */
-function kalatheme_js_alter(&$javascript) {
-  // Add kalatheme-modal only when required.
-  $ctools_modal = drupal_get_path('module', 'ctools') . '/js/modal.js';
-  $kalatheme_modal = drupal_get_path('theme', 'kalatheme') . '/js/kalatheme-modal.js';
-  if (!empty($javascript[$ctools_modal]) && empty($javascript[$kalatheme_modal])) {
-    $javascript[$kalatheme_modal] = array_merge(
-      drupal_js_defaults(), array('group' => JS_THEME, 'data' => $kalatheme_modal));
-  }
-}
 
 /**
  * Load Kalatheme dependencies.

@@ -8,6 +8,11 @@ regions[content] = content
 stylesheets[screen][] = css/tweaks.css
 stylesheets[screen][] = css/panopoly.css
 
+scripts[] = dist/js/kalatheme.pkg.min.js
+
+;Uncomment if needed
+;scripts[] = dist/js/kalatheme.pkg.js
+
 features[] = logo
 features[] = name
 features[] = slogan
@@ -33,4 +38,4 @@ settings[fontawesome] = 1
 
 plugins[panels][styles] = styles
 
-exclude[js][] = 'misc/batch.js' ;replaced by kalatheme batch implementation
+exclude[js][] = misc/progress.js
