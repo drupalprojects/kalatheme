@@ -8,10 +8,5 @@ module.exports =
       sourcemap: true
       sourceMapName: 'dist/js/<%=  pkg.name %>.map'
       banner: '<%= banner %>'
-    files: [{
-      expand: true
-      cwd: 'dist/js'
-      src: ['**/*.js', '**/*.min.js']
-      dest: 'dist/js'
-      ext: '.min.js'
-    }]
+    files:
+      'dist/js/<%= pkg.name %>.pkg.min.js' : 'dist/js/<%= pkg.name %>.pkg.js'

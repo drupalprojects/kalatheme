@@ -5,6 +5,6 @@ module.exports =
     'clean:temp'
     'coffeelint'
     'coffee'
-    'concat'
-    'uglify'
+    'concat:js'
+    'uglify:js'
   ]
