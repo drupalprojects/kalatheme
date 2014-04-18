@@ -142,5 +142,9 @@ KEY FEATURES
  https://drupal.org/node/2167223
  https://drupal.org/node/2167225
 
- * SASS and COMPASS Support
+ * Accessibility (Coming soon!)
+ Kalatheme strives to provide and improve accessibiltiy for all users. Please
+ report issues with the tag a11y.
+ 
+* SASS and COMPASS Support
  https://drupal.org/node/2167227

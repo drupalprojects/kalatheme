@@ -4,7 +4,7 @@
   "description": "Kalatheme is designed for people who want to get to work quickly so they can make things happen.",
   "homepage": "https://drupal.org/project/kalatheme",
   "bugs": {
-    "url":"https://drupal.org/project/issues/kalatheme"
+    "url": "https://drupal.org/project/issues/kalatheme"
   },
   "main": "template.php",
   "scripts": {
@@ -21,12 +21,25 @@
   ],
   "author": "Kalamuna LLC <info@kalamuna.com> (http://www.kalamuna.com/)",
   "license": "GPL-2.0",
-  "config":{
+  "config": {
     "src": {
-      "coffee" : [".src/**/*.coffee"]
+      "coffee": [
+        ".src/**/*.coffee"
+      ]
     },
-    "dist" : {
-      "js" : "js"
+    "dist": {
+      "js": "js"
     }
+  },
+  "devDependencies": {
+    "grunt": "^0.4.4",
+    "load-grunt-config": "^0.8.0",
+    "grunt-contrib-coffee": "^0.10.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-coffeelint": "0.0.10",
+    "grunt-contrib-uglify": "^0.4.0",
+    "grunt-sass": "^0.12.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-autoprefixer": "^0.7.2"
   }
 }
