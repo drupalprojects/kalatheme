@@ -98,6 +98,9 @@
         Drupal.CTools.Modal.unmodalContent(Drupal.CTools.Modal.modal);
       }
     };
+    if (Drupal.theme == null) {
+      Drupal.theme = function() {};
+    }
 
     /*
     Provide the HTML for the Modal.

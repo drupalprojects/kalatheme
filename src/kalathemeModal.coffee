@@ -91,7 +91,7 @@
       Drupal.CTools.Modal.unmodalContent Drupal.CTools.Modal.modal
     return
 
-
+  Drupal.theme ?= ->
   ###
   Provide the HTML for the Modal.
   ###
