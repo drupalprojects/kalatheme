@@ -4,6 +4,6 @@ module.exports =
       bare: true
     expand: true
     flatten: true
-    src: ".src/**/*.coffee"
-    dest: "js"
+    src: "src/**/*.coffee"
+    dest: "temp"
     ext: ".js"

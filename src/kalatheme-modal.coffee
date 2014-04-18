@@ -1,7 +1,7 @@
-###
-@file
-Overrides for CTools modal.
-See ctools/js/modal.js
+###*
+* @file
+* Overrides for CTools modal.
+* See ctools/js/modal.js
 ###
 (($) ->
 
@@ -9,6 +9,7 @@ See ctools/js/modal.js
   Override CTools modal show function so it can recognize
   the Bootstrap modal classes correctly
   ###
+
   Drupal.CTools.Modal.show = (choice) ->
     opts = {}
     if choice and typeof choice is "string" and Drupal.settings[choice]

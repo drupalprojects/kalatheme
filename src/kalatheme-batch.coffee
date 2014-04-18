@@ -1,8 +1,8 @@
-###
-@file
-Overrides for Batch Progressbar
-See misc/batch.js
-Thanks to @link https://drupal.org/project/bootstrap
+###*
+* @file
+* Overrides for Batch Progressbar
+* See misc/batch.js
+* Thanks to @link https://drupal.org/project/bootstrap
 ###
 (($) ->
   window.Drupal ?= {}
@@ -31,7 +31,7 @@ Thanks to @link https://drupal.org/project/bootstrap
     modalHtml += " role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" "
     modalHtml += "aria-valuenow=\"0\">\n<div class=\"percentage\">\n</div>\n</div>\n</div>"
     modalHtml += "</div>\n<div class=\"percentage pull-right\"></div>\n"
-    modalHtml += "<p class=\"message\ help-block" id=\"message#{id}\"></p>"
+    modalHtml += "<p class=\"message\ help-block\" id=\"message#{id}\"></p>"
 
     @element.html modalHtmml
 

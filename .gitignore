@@ -1,4 +1,3 @@
-
 # Ignore default text files
 .htaccess
 
@@ -12,3 +11,6 @@
 # Packages
 node_modules
 bower_components
+
+# Build directories
+temp
