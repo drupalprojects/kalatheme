@@ -5,5 +5,5 @@ module.exports =
     expand: true
     flatten: true
     src: "src/**/*.coffee"
-    dest: "temp"
+    dest: "temp/js"
     ext: ".js"

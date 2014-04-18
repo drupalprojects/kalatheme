@@ -1,7 +1,3 @@
 module.exports =
-  dist: "dist"
+  dist: "dist/*"
   temp: "temp"
-  sample: [
-    "test/snapshots/*"
-    "reports/"
-  ]

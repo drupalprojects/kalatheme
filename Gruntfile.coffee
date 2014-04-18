@@ -7,4 +7,9 @@ see .grunt for tasks
 
 module.exports = (grunt) ->
   # Autoloads tasks and config
-  require('load-grunt-config') grunt
+
+  require('load-grunt-config')( grunt, {
+    data: {
+      pkg: grunt.file.readJSON('package.json')
+    }
+  })
