@@ -8,6 +8,8 @@ module.exports =
     'concat:js'
     'uglify:js'
     'tests'
+    'sass:theme'
+    'autoprefixer:theme'
   ]
   tests: [
     'coffeelint:tests'

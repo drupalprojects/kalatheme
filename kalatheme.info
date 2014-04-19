@@ -5,8 +5,8 @@ php = 5.3
 
 regions[content] = content
 
-stylesheets[screen][] = css/tweaks.css
-stylesheets[screen][] = css/panopoly.css
+
+stylesheets[] = dist/css/kalatheme.css
 
 scripts[] = dist/js/kalatheme.pkg.min.js
 
