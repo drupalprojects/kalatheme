@@ -6,7 +6,7 @@ php = 5.3
 regions[content] = content
 
 
-stylesheets[] = dist/css/kalatheme.css
+stylesheets[] = dist/css/kalatheme.min.css
 
 scripts[] = dist/js/kalatheme.pkg.min.js
 
