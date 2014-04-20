@@ -1,6 +1,6 @@
 module.exports =
   specs:
-    src: "dist/js/kalatheme.pkg.min.js"
+    src: "dist/js/kalatheme.pkg.js"
     options:
       specs: 'test/specs/**/*Spec.js'
       vendor: [
