@@ -1,7 +1,14 @@
 module.exports =
-  theme:
+  develop:
     options:
-      imagePath: '<%= imagemin.theme.dest %>'
-      sourceComments: 'map'
+      sourceMap: true
+      trace: true
+      lineNumbers: true
+    files:
+      'dist/css/kalatheme.css' : 'scss/kalatheme.scss'
+  dist:
+    options:
+      sourceMap: true
+      trace: true
     files:
       'dist/css/kalatheme.css' : 'scss/kalatheme.scss'

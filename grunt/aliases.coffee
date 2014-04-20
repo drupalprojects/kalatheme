@@ -23,7 +23,7 @@ module.exports =
     'imagemin:theme'
   ]
   css: [
-    'sass:theme'
+    'sass:dist'
     'autoprefixer:theme'
     'cssmin:theme'
   ]
