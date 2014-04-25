@@ -39,7 +39,7 @@
         contentBottom: 45
 
       modalOptions:
-        opacity: .55
+        opacity: 0.55
         background: "#fff"
 
     settings = {}

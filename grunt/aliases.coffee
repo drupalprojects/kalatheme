@@ -27,3 +27,7 @@ module.exports =
     'autoprefixer:theme'
     'cssmin:theme'
   ]
+  develop: [
+    'connect:tests'
+    'watch'
+  ]

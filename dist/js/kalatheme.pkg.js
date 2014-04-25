@@ -1,4 +1,4 @@
-/*! kalatheme - v3.0.0+dev - 2014-04-18
+/*! kalatheme - v3.0.0+dev - 2014-04-25
 * https://drupal.org/project/kalatheme
 * Copyright (c) 2014 ; Licensed  */
 /**
@@ -49,7 +49,7 @@
           contentBottom: 45
         },
         modalOptions: {
-          opacity: .55,
+          opacity: 0.55,
           background: "#fff"
         }
       };

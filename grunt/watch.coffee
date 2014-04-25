@@ -1,7 +1,7 @@
 ##* Grunt Contrib Watch
 module.exports =
   tests:
-    files: ['test/spec/**/*.coffee']
+    files: ['test/specs/**/*.coffee']
     tasks: ['tests']
   styles:
     files: ['sass/**/*.scss']
