@@ -138,6 +138,35 @@ function _kalatheme_load_dependencies() {
 }
 
 /**
+ * Modifies the config form to contain the required subtheme building stuff
+ *
+ * @return form
+ *   The modified form
+ */
+function kalatheme_prepare_config_form(&$form) {
+  // Provide needed ajax wrappers
+  $form['actions']['submit']['#prefix'] = "<div id='kala-submit-change-title'>";
+  $form['actions']['submit']['#suffix'] = "</div>";
+  // Add custom submit and validate functions to handle custom bootstrap
+  // libraries
+  if (isset($form['#submit']) && is_array($form['#submit']) && !in_array('kalatheme_custom_bootstrap_library_submit', $form['#submit'])) {
+    // Add our submit function first
+    array_unshift($form['#submit'], 'kalatheme_custom_bootstrap_library_submit');
+    // Remove system_theme_settings_submit here to prevent form_execute_handlers
+    // from adding the submit function to the control batch
+    // We will add it back in later if needed
+    if (($key = array_search('system_theme_settings_submit', $form['#submit'])) !== FALSE) {
+      unset($form['#submit'][$key]);
+    }
+  }
+  if (isset($form['#validate']) && is_array($form['#validate']) && !in_array('kalatheme_custom_bootstrap_library_validate', $form['#validate'])) {
+    $form['#validate'][] = 'kalatheme_custom_bootstrap_library_validate';
+  }
+
+  return $form;
+}
+
+/**
  * Gets the total column count from the Bootstrap grid in use.
  *
  * @return int
