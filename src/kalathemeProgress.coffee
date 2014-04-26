@@ -26,7 +26,7 @@
       modalHtml += "aria-describedby=\"message#{@id}\">\n<div class=\"progress-bar\""
       modalHtml += " role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" "
       modalHtml += "aria-valuenow=\"0\">\n<div class=\"percentage\">\n</div>\n</div>\n</div>"
-      modalHtml += "</div>\n<div class=\"percentage pull-right\"></div>\n"
+      modalHtml += "</div>\n"
       modalHtml += "<p class=\"message\ help-block\" id=\"message#{@id}\"></p>"
       el.html(modalHtml)
       @element = el
@@ -36,11 +36,11 @@
     ###
     setProgress: (percentage, message) ->
       if percentage >= 0 and percentage <= 100
-        $("div.progress-bar", @element).css "width", percentage + "%"
-        $("div.progress-bar", @element).attr "aria-valuenow", percentage
-        $("div.percentage", @element).html percentage + "%"
+        $(".progress-bar", @element).css "width", percentage + "%"
+        $(".progress-bar", @element).attr "aria-valuenow", percentage
+        $(".percentage", @element).html percentage + "%"
 
-      $("div.message", @element).html( message )
+      $(".message", @element).html( message )
       if this.updateCallback
         @updateCallback( percentage, message, this )
 

@@ -179,7 +179,7 @@
         modalHtml += "aria-describedby=\"message" + this.id + "\">\n<div class=\"progress-bar\"";
         modalHtml += " role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" ";
         modalHtml += "aria-valuenow=\"0\">\n<div class=\"percentage\">\n</div>\n</div>\n</div>";
-        modalHtml += "</div>\n<div class=\"percentage pull-right\"></div>\n";
+        modalHtml += "</div>\n";
         modalHtml += "<p class=\"message\ help-block\" id=\"message" + this.id + "\"></p>";
         el.html(modalHtml);
         this.element = el;
@@ -192,11 +192,11 @@
 
       ProgressBar.prototype.setProgress = function(percentage, message) {
         if (percentage >= 0 && percentage <= 100) {
-          $("div.progress-bar", this.element).css("width", percentage + "%");
-          $("div.progress-bar", this.element).attr("aria-valuenow", percentage);
-          $("div.percentage", this.element).html(percentage + "%");
+          $(".progress-bar", this.element).css("width", percentage + "%");
+          $(".progress-bar", this.element).attr("aria-valuenow", percentage);
+          $(".percentage", this.element).html(percentage + "%");
         }
-        $("div.message", this.element).html(message);
+        $(".message", this.element).html(message);
         if (this.updateCallback) {
           return this.updateCallback(percentage, message, this);
         }
