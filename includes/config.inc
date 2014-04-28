@@ -125,6 +125,7 @@ function kalatheme_subtheme_form() {
         'progress' => array('type' => 'none'),
       ),
     );
+    // Wrap submit in dix for ajaxification
     $form['subtheme']['magic'] = array(
       '#type' => 'checkbox',
       '#title' => t('Autoload extra assets'),
@@ -195,7 +196,7 @@ function kalatheme_custom_bootstrap_library_validate(&$form, &$form_state) {
   }
   // Add the default system_form_submit back into the mix if we aren't building
   // a custom subtheme
-  if (!$form_state['values']['build_subtheme']) {
+  if (isset($form_state['values']['build_subtheme']) && !$form_state['values']['build_subtheme']) {
     $form['#submit'][] = 'system_theme_settings_submit';
   }
 }
@@ -209,7 +210,7 @@ function kalatheme_custom_bootstrap_library_submit(&$form, &$form_state) {
   $projects = array();
 
   // Generate subtheme and build its settings var
-  if ($form_state['values']['build_subtheme']) {
+  if (isset($form_state['values']['build_subtheme']) && $form_state['values']['build_subtheme']) {
     // Trim things
     form_state_values_clean($form_state);
     $projects[] = kalatheme_custom_subtheme_build($form_state['values']);
@@ -368,14 +369,14 @@ function kalatheme_custom_subtheme_vars($theme_settings) {
 
   // If the user uploaded a new logo or favicon, save it to a permanent location
   // and use it in place of the default theme-provided file.
-  if ($file = $theme_settings['logo_upload']) {
+  if (isset($theme_settings['logo_upload']) && $file = $theme_settings['logo_upload']) {
     unset($theme_settings['logo_upload']);
     $filename = file_unmanaged_copy($file->uri);
     $theme_settings['default_logo'] = 0;
     $theme_settings['logo_path'] = $filename;
     $theme_settings['toggle_logo'] = 1;
   }
-  if ($file = $theme_settings['favicon_upload']) {
+  if (isset($theme_settings['favicon_upload']) && $file = $theme_settings['favicon_upload']) {
     unset($theme_settings['favicon_upload']);
     $filename = file_unmanaged_copy($file->uri);
     $theme_settings['default_favicon'] = 0;
@@ -464,13 +465,22 @@ function kalatheme_run_install($filetransfer, $projects) {
     );
   }
 
+  // We have to do this because drupal_get_path doesnt really work
+  // in an install profile when this happens. We need a relative path
+  // but _batch_process prepends DRUPAL_ROOT so we need to strip that
+  // out here as well
+  $file = dirname(__FILE__) . '/../kalatheme.authorize.inc';
+  $file = str_replace(DRUPAL_ROOT . '/', '', $local);
+
+  // Set the batch up!
   $batch = array(
     'title' => t('Installing Kalatheme'),
     'init_message' => t('Preparing to Kalatheme'),
     'operations' => $operations,
     // @todo Use a different finished callback for different messages?
     'finished' => 'kalatheme_authorize_install_batch_finished',
-    'file' => drupal_get_path('theme', 'kalatheme') . '/kalatheme.authorize.inc',
+    // @todo this doesnt seem to point to the correct location?
+    'file' => $file,
   );
   batch_set($batch);
 }
