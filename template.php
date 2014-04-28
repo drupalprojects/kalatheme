@@ -45,6 +45,9 @@ function kalatheme_theme($existing, $type, $theme, $path) {
     'navbar_static_top' => array(
       'template' => 'templates/core/navbar-static-top',
     ),
+    'navbar_and_header' => array(
+      'template' => 'templates/core/navbar-and-header'
+    ),
   );
 }
 /**

@@ -137,7 +137,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#default_value' => theme_get_setting('navbar_style'),
     '#options' => array(
       'navbar_static_top' => t('Static Top'),
-      'none' => t('None')
+      'navbar_and_header' => t('Seperate Header / Navbar')
       )
   );
 
