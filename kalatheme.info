@@ -37,5 +37,3 @@ settings[build_subtheme] = 0
 settings[fontawesome] = 1
 
 plugins[panels][styles] = styles
-
-exclude[js][] = misc/progress.js

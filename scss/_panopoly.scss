@@ -466,20 +466,20 @@ ul.panels-ipe-linkbar > li a {
  * Navbar Styling
  */
 a#navbar-link-admin-panopoly:before {
-  $icon-panopoly-active
+  @include sprite($icon-panopoly-active);
 
 }
 
 a#navbar-link-admin-panopoly.active:before {
-  @mixin sprite($icon-apps-active);
+  @include sprite($icon-panopoly-active);
 }
 
 a#navbar-link-admin-apps:before {
-  background-image: url("../images/icon/icon-apps.png");
+  @include sprite($icon-apps);
 }
 
 a#navbar-link-admin-apps.active:before {
-  @mixin sprite($icon-apps);
+  @include sprite($icon-apps-active);
 }
 
 #navbar-administration .edit-shortcuts {

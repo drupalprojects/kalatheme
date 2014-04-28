@@ -6,6 +6,7 @@ module.exports =
       vendor: [
         "bower_components/jquery/dist/jquery.js"
         "bower_components/bootstrap/dist/js/bootstrap.js"
+        "bower_components/jasmine-ajax/lib/mock-ajax.js"
         "bower_components/jasmine-jquery/lib/jasmine-jquery.js"
         # this is not a great thing, but I need the tests to be semi independent.
         "https://drupal.org/misc/drupal.js"

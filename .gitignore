@@ -14,6 +14,7 @@ bower_components
 
 # Build directories
 temp
+.sass-cache
 
 # Grunt
 .grunt

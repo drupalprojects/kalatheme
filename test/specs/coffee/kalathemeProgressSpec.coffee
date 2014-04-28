@@ -5,7 +5,7 @@
     updateCallback = (percentage, message, obj)->
       console.log 'update called', e
     errorCallback = (e)->
-      console.log( e)
+      return e
     testProgressBar = new Drupal.progressBar 'testProgressBar', updateCallback, 'post', errorCallback
     window._testObjs ?= {}
     it 'adds a constructor on Drupal.progressBar', ->
@@ -50,15 +50,29 @@
         .toHaveBeenCalledWith(10,message,testProgressBar)
 
     describe 'startMonitoring method',->
-      url = null
+      uri = null
       delay = null
-      responses = {}
       beforeEach ->
-        jasmine.Ajax.install()
-
-
-
+        spyOn(testProgressBar, 'sendPing')
+      it 'sets a delay and uri to ping and calls Send Ping', ->
+        uri = "http://example.com"
+        delay = 2000
+        expect(testProgressBar.delay).toBeUndefined()
+        expect(testProgressBar.uri).toBeUndefined()
+        testProgressBar.startMonitoring(uri, delay)
+        expect(testProgressBar.uri).toEqual(uri)
+        expect(testProgressBar.delay).toEqual(delay)
+        expect(testProgressBar.sendPing).toHaveBeenCalled()
     describe 'stopMonitoring method', ->
+      it 'clears the uri and timeout', ->
+        uri = "http://example.com"
+        delay = 2000
+        testProgressBar.startMonitoring(uri, delay)
+        expect(testProgressBar.uri).toEqual(uri)
+        expect(testProgressBar.delay).toEqual(delay)
+        testProgressBar.stopMonitoring()
+        expect(testProgressBar.uri).not.toEqual(uri)
+        expect(testProgressBar.timer).toBeFalsy()
 
     describe 'sendPing method', ->
       beforeEach ->
@@ -67,9 +81,10 @@
         testProgressBar.timer = setTimeout(foobar,500 )
       it 'clears the current current timer if set' , ->
         spyOn($,'ajax')
+        testProgressBar.startMonitoring('http://example.com', 200)
         testProgressBar.sendPing()
-        expect(testProgressBar.timer).toBeNull()
-
+        expect(testProgressBar.timer).toBeDefined()
+        expect($.ajax).toHaveBeenCalled()
 
     describe 'displayError method', ->
       errorMessage = null
