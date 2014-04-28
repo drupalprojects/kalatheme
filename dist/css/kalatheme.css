@@ -413,10 +413,6 @@ a#navbar-link-admin-apps.active:before {
 .navbar-fixed-top {
   position: static; }
 
-.navbar-brand {
-  height: inherit;
-  padding-top: 5px; }
-
 .navbar-brand h1 {
   margin-top: 5px; }
 

@@ -2,8 +2,8 @@
 /**
  * @file
  * Kalatheme's static header and navigation bar template file
- * 
- * 
+ *
+ *
  */
 ?>
 <header class="navbar navbar-default <?php if ($hide_site_name && $hide_site_slogan && !$logo && !$main_menu && !$secondary_menu) { print ' element-invisible'; } ?>">
@@ -63,7 +63,7 @@
         'attributes' => $pri_attributes,
         'heading' => array(
           'text' => t('Main menu'),
-          'level' => 'h2',
+          'level' => 'h3',
           'class' => array('element-invisible'),
         ),
       )); ?>
@@ -83,7 +83,7 @@
         'attributes' => $sec_attributes,
         'heading' => array(
           'text' => t('Secondary menu'),
-          'level' => 'h2',
+          'level' => 'h3',
           'class' => array('element-invisible'),
         ),
       )); ?>
