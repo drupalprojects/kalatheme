@@ -42,6 +42,9 @@ function kalatheme_theme($existing, $type, $theme, $path) {
       'variables' => array('menu_actions' => NULL, 'attributes' => NULL),
       'file' => 'includes/menu.inc',
     ),
+    'navbar_static_top' => array(
+      'template' => 'templates/core/navbar-static-top',
+    ),
   );
 }
 
