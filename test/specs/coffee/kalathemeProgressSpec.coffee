@@ -5,7 +5,7 @@
     updateCallback = (percentage, message, obj)->
       console.log 'update called', e
     errorCallback = (e)->
-      conso
+      console.log( e)
     testProgressBar = new Drupal.progressBar 'testProgressBar', updateCallback, 'post', errorCallback
     window._testObjs ?= {}
     it 'adds a constructor on Drupal.progressBar', ->
@@ -55,12 +55,36 @@
       responses = {}
       beforeEach ->
         jasmine.Ajax.install()
-        
+
+
 
     describe 'stopMonitoring method', ->
 
     describe 'sendPing method', ->
+      beforeEach ->
+        foobar = ->
+          return true
+        testProgressBar.timer = setTimeout(foobar,500 )
+      it 'clears the current current timer if set' , ->
+        spyOn($,'ajax')
+        testProgressBar.sendPing()
+        expect(testProgressBar.timer).toBeNull()
+
 
     describe 'displayError method', ->
+      errorMessage = null
+      box = null
+      beforeEach ->
+        errorMessage = 'A test error has occured'
+        box = sandbox()
+        box.append testProgressBar.element
+        spyOn testProgressBar, 'errorCallback'
+        testProgressBar.displayError(errorMessage)
+      it 'displays an eror mesage in bootstrap block', ->
+        expect(box.find('.alert')).toExist()
+        text = box.find('.alert').text()
+        expect(text.indexOf(errorMessage)).toBeTruthy()
+      it 'should call an error callback', ->
+        expect(testProgressBar.errorCallback).toHaveBeenCalled()
 
 )(jQuery)

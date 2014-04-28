@@ -1,4 +1,6 @@
 module.exports =
+  options:
+    sourceMap: true
   theme:
     expand: true
     flatten: true
