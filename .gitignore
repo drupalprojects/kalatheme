@@ -1,4 +1,3 @@
-
 # Ignore default text files
 .htaccess
 
@@ -8,3 +7,14 @@
 ._*
 .DS_Store
 .settings/*
+
+# Packages
+node_modules
+bower_components
+
+# Build directories
+temp
+.sass-cache
+
+# Grunt
+.grunt

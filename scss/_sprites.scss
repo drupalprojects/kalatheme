@@ -1,0 +1,66 @@
+  $icon-apps-active-x: 0px;
+  $icon-apps-active-y: 0px;
+  $icon-apps-active-offset-x: 0px;
+  $icon-apps-active-offset-y: 0px;
+  $icon-apps-active-width: 20px;
+  $icon-apps-active-height: 20px;
+  $icon-apps-active-total-width: 20px;
+  $icon-apps-active-total-height: 80px;
+  $icon-apps-active-image: '../img/kalatheme-sprite.png';
+  $icon-apps-active: 0px 0px 0px 0px 20px 20px 20px 80px '../img/kalatheme-sprite.png';
+  $icon-apps-x: 0px;
+  $icon-apps-y: 20px;
+  $icon-apps-offset-x: 0px;
+  $icon-apps-offset-y: -20px;
+  $icon-apps-width: 20px;
+  $icon-apps-height: 20px;
+  $icon-apps-total-width: 20px;
+  $icon-apps-total-height: 80px;
+  $icon-apps-image: '../img/kalatheme-sprite.png';
+  $icon-apps: 0px 20px 0px -20px 20px 20px 20px 80px '../img/kalatheme-sprite.png';
+  $icon-panopoly-active-x: 0px;
+  $icon-panopoly-active-y: 40px;
+  $icon-panopoly-active-offset-x: 0px;
+  $icon-panopoly-active-offset-y: -40px;
+  $icon-panopoly-active-width: 20px;
+  $icon-panopoly-active-height: 20px;
+  $icon-panopoly-active-total-width: 20px;
+  $icon-panopoly-active-total-height: 80px;
+  $icon-panopoly-active-image: '../img/kalatheme-sprite.png';
+  $icon-panopoly-active: 0px 40px 0px -40px 20px 20px 20px 80px '../img/kalatheme-sprite.png';
+  $icon-panopoly-x: 0px;
+  $icon-panopoly-y: 60px;
+  $icon-panopoly-offset-x: 0px;
+  $icon-panopoly-offset-y: -60px;
+  $icon-panopoly-width: 20px;
+  $icon-panopoly-height: 20px;
+  $icon-panopoly-total-width: 20px;
+  $icon-panopoly-total-height: 80px;
+  $icon-panopoly-image: '../img/kalatheme-sprite.png';
+  $icon-panopoly: 0px 60px 0px -60px 20px 20px 20px 80px '../img/kalatheme-sprite.png';
+
+  @mixin sprite-width($sprite) {
+    width: nth($sprite, 5);
+  }
+
+  @mixin sprite-height($sprite) {
+    height: nth($sprite, 6);
+  }
+
+  @mixin sprite-position($sprite) {
+    $sprite-offset-x: nth($sprite, 3);
+    $sprite-offset-y: nth($sprite, 4);
+    background-position: $sprite-offset-x  $sprite-offset-y;
+  }
+
+  @mixin sprite-image($sprite) {
+    $sprite-image: nth($sprite, 9);
+    background-image: url(#{$sprite-image});
+  }
+
+  @mixin sprite($sprite) {
+    @include sprite-image($sprite);
+    @include sprite-position($sprite);
+    @include sprite-width($sprite);
+    @include sprite-height($sprite);
+  }

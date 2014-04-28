@@ -1,0 +1,35 @@
+{
+  "name": "kalatheme",
+  "version": "0.3.0+dev",
+  "authors": [
+    "Kalamuna LLC <info@kalamuna.com> (http://www.kalamuna.com/)"
+  ],
+  "description": "Kalatheme is designed for people who want to get to work quickly so they can make things happen.",
+  "main": "dist/js/kalatheme.pkg.min.js",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "Drupal",
+    "Bootstrap",
+    "Panopoly",
+    "Theme"
+  ],
+  "license": "GPL-2.0",
+  "homepage": "https://drupal.org/project/kalatheme",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "fontawesome": "~4.0.3"
+  },
+  "devDependencies": {
+    "jasmine-jquery": "~2.0.3",
+    "jasmine-ajax": "master"
+  }
+}

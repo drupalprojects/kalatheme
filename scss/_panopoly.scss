@@ -466,19 +466,23 @@ ul.panels-ipe-linkbar > li a {
  * Navbar Styling
  */
 a#navbar-link-admin-panopoly:before {
-  background-image: url("../images/icon/icon-panopoly.png");
+  @include sprite($icon-panopoly-active);
+  margin-top: 9px;
 }
 
 a#navbar-link-admin-panopoly.active:before {
-  background-image: url("../images/icon/icon-panopoly-active.png");
+  @include sprite($icon-panopoly-active);
+  margin-top: 9px;
 }
 
 a#navbar-link-admin-apps:before {
-  background-image: url("../images/icon/icon-apps.png");
+  @include sprite($icon-apps);
+  margin-top: 9px;
 }
 
 a#navbar-link-admin-apps.active:before {
-  background-image: url("../images/icon/icon-apps-active.png");
+  @include sprite($icon-apps-active);
+  margin-top: 9px;
 }
 
 #navbar-administration .edit-shortcuts {
