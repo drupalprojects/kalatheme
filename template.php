@@ -194,6 +194,9 @@ function kalatheme_process_page(&$variables) {
 
   // Check if we're to always print the page title, even on panelized pages.
   $variables['always_show_page_title'] = theme_get_setting('always_show_page_title') ? TRUE : FALSE;
+
+  // Check for the navbar style
+  $variables['navbar_style'] = theme_get_setting('navbar_style') ? theme_get_setting('navbar_style') : 'navbar_static_top';
 }
 
 /**

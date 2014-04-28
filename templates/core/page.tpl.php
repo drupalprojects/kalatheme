@@ -36,6 +36,7 @@
  *   make the site slogan visually hidden, but still accessible.
  *
  * Navigation:
+ * - $navbar_style (string): Theme settings for which type of navbar to use in the theme.
  * - $main_menu (array): An array containing the Main menu links for the
  *   site, if they have been configured.
  * - $main_menu_expanded (array): An array containing 2 depths of the Main
@@ -85,7 +86,7 @@
 <div id="page-wrapper"><div id="page">
 
   <!-- Page Header -->
-  <?php print theme('navbar_static_top', $variables); ?>
+  <?php print theme($navbar_style, $variables); ?>
 
   <!-- Page Main -->
   <div id="main-wrapper" class="clearfix">

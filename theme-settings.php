@@ -122,6 +122,24 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#field_type' => $field['type'],
     '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
   );
+  // Select navbar style and placement
+  $form['navbar_style_fieldset'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Navbar Style'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#description' => t('The navbar\'s style is configurable.')
+  );
+
+  $form['navbar_style_fieldset']['navbar_style'] = array(
+    '#type' => 'select',
+    '#title' => 'Navbar Style',
+    '#default_value' => theme_get_setting('navbar_style'),
+    '#options' => array(
+      'navbar_static_top' => t('Static Top'),
+      'none' => t('None')
+      )
+  );
 
   // Prepare the form with kalatheme things
   $form = kalatheme_prepare_config_form($form);
