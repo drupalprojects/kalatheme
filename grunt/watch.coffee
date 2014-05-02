@@ -4,8 +4,14 @@ module.exports =
     files: ['test/specs/**/*.coffee']
     tasks: ['tests']
   styles:
-    files: ['sass/**/*.scss']
-    tasks: ['csscss:theme','sass:develop']
+    files: ['scss/**/*.scss']
+    tasks: [
+      'sass:develop'
+      'autoprefixer:theme'
+      # 'csscss:theme'
+      # 'csslint:theme'
+      'cssmin:theme'
+    ]
   coffee:
     files: ['src/**/*.coffee']
     tasks: [

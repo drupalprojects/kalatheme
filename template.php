@@ -48,6 +48,14 @@ function kalatheme_theme($existing, $type, $theme, $path) {
     'navbar_and_header' => array(
       'template' => 'templates/core/navbar-and-header'
     ),
+    'font_icon' => array(
+      'variables' => array(
+        'keys' => array( 'flag' ),
+        'alt_text' => Null,
+        'attributes' => Null
+      ),
+      'file' => 'includes/utils.inc'
+    )
   );
 }
 /**
@@ -59,6 +67,7 @@ function _kalatheme_remove_by_key(array $keys, array $target){
       unset($target[$key]);
     }
   }
+  return $target;
 }
 
 /**
@@ -66,7 +75,7 @@ function _kalatheme_remove_by_key(array $keys, array $target){
  */
 function kalatheme_js_alter(&$javascript){
   $excludes = array('misc/progress.js');
-  _kalatheme_remove_by_key($excludes, $javascript);
+  $javascript = _kalatheme_remove_by_key($excludes, $javascript);
 }
 
 /**
@@ -80,10 +89,10 @@ function kalatheme_css_alter(&$css) {
   $excludes = array(
     drupal_get_path('module', 'panopoly_admin') . '/panopoly-admin.css',
     $panopoly_magic_path . '/css/panopoly-modal.css',
-    $panopoly_magic_path . '/css/panopoly-modal.css',
+    $panopoly_magic_path . '/css/panopoly-magic.css',
     'modules/system/system.menus.css'
   );
-  _kalatheme_remove_by_key($excludes, $css);
+  $css = _kalatheme_remove_by_key($excludes, $css);
 
 }
 
@@ -133,6 +142,8 @@ function kalatheme_process_page(&$variables) {
   }
   // Use Font Awesome
   if (theme_get_setting('fontawesome')) {
+    // let JS know that we have this enabled
+    drupal_add_js(array('kalatheme' => array('fontawesome' => true) ), 'setting');
     drupal_add_css($base['scheme'] . ":" . KALATHEME_FONTAWESOME_CSS, 'external');
   }
 

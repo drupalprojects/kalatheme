@@ -1,0 +1,10 @@
+// Mixins for kalatheme
+///////////////////////////////
+
+@mixin box-sizing-reset($box-model: content-box){
+  &,
+  &:before,
+  &:after{
+    @include box-sizing($box-model);
+  }
+}

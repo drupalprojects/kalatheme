@@ -410,6 +410,218 @@
 
 /**
 * @file
+* Overrides for core AJAX functionality.
+* See misc/ajax.js
+*
+* Thanks bootstrap theme for insperation
+* @link https://drupal.org/project/bootstrap
+ */
+
+(function() {
+  (function($) {
+    var _base;
+    if ((_base = window.Drupal).ajax == null) {
+      _base.ajax = function() {};
+    }
+    return Drupal.ajax.prototype.beforeSend = function(xmlhttprequest, options) {
+      var iconClasses, markup, progressBar, v;
+      if (this.form) {
+        options.extraData = options.extraData || {};
+        options.extraData.ajax_iframe_upload = "1";
+        v = $.fieldValue(this.element);
+        if (v !== null) {
+          options.extraData[this.element.name] = v;
+        }
+      }
+      $(this.element).addClass("progress-disabled").attr("disabled", true);
+      if (this.progress.type === "bar") {
+        progressBar = new Drupal.progressBar("ajax-progress-" + this.element.id, eval_(this.progress.update_callback), this.progress.method, eval_(this.progress.error_callback));
+        if (this.progress.message) {
+          progressBar.setProgress(-1, this.progress.message);
+        }
+        if (this.progress.url) {
+          progressBar.startMonitoring(this.progress.url, this.progress.interval || 1500);
+        }
+        this.progress.element = $(progressBar.element).addClass("ajax-progress ajax-progress-bar");
+        this.progress.object = progressBar;
+        return $(this.element).after(this.progress.element);
+      } else if (this.progress.type === "throbber") {
+        iconClasses = Drupal.settings.kalatheme.fontawesome === true ? "fa fa-refresh fa-spin" : "glyphicon glyphicon-refresh glyphicon-spin";
+        markup = "<div class=\"ajax-progress ajax-progress-throbber\">";
+        markup += "<span class=\"" + iconClasses + "\" aria-hidden=\"true\"></span><span class=\"sr-only\">Loading</span></div>";
+        this.progress.element = $(markup);
+        if ($(this.element).is("input")) {
+          if (this.progress.message) {
+            $(".throbber", this.progress.element).after("<div class=\"message\">" + this.progress.message + "</div>");
+          }
+          return $(this.element).after(this.progress.element);
+        } else {
+          if (this.progress.message) {
+            $(".throbber", this.progress.element).append("<div class=\"message\">" + this.progress.message + "</div>");
+          }
+          return $(this.element).append(this.progress.element);
+        }
+      }
+    };
+  })(jQuery);
+
+}).call(this);
+
+//# sourceMappingURL=kalathemeAjax.js.map
+
+
+/**
+* @file
+* Overrides for core autocomplete themeing.
+* See misc/autocomplete.js
+*
+* Thanks bootstrap theme for insperation
+* @link https://drupal.org/project/bootstrap
+ */
+
+(function() {
+  (function($) {
+    var _base;
+    if (window.Drupal == null) {
+      window.Drupal = {};
+    }
+
+    /**
+    *Attaches the autocomplete behavior to all required fields.
+     */
+    Drupal.behaviors.autocomplete = {
+      attach: function(context, settings) {
+        var acdb;
+        acdb = [];
+        return $("input.autocomplete", context).once("autocomplete", function() {
+          var $input, ariaLive, uri;
+          uri = this.value;
+          if (!acdb[uri]) {
+            acdb[uri] = new Drupal.ACDB(uri);
+          }
+          $input = $("#" + this.id.substr(0, this.id.length - 13)).attr("autocomplete", "OFF").attr("aria-autocomplete", "list");
+          $($input[0].form).submit(Drupal.autocompleteSubmit);
+          ariaLive = $("<span class=\"element-invisible\" aria-live=\"assertive\"/>").attr("id", "" + ($input.attr("id")) + "-autocomplete-aria-live");
+          $input.after;
+          $input.parent().parent().attr("role", "application");
+          return new Drupal.jsAC($input, acdb[uri]);
+        });
+      }
+    };
+
+    /*
+    Prevents the form from submitting if the suggestions popup is open
+    and closes the suggestions popup when doing so.
+     */
+    Drupal.autocompleteSubmit = function() {
+      return $(".form-autocomplete > .dropdown").each(function() {
+        return this.owner.hidePopup();
+      }).length === 0;
+    };
+    if ((_base = window.Drupal).jsAC == null) {
+      _base.jsAC = function() {};
+    }
+
+    /*
+    Highlights a suggestion.
+     */
+    Drupal.jsAC.prototype.highlight = function(node) {
+      if (this.selected) {
+        $(this.selected).removeClass("active");
+      }
+      $(node).addClass("active");
+      this.selected = node;
+      return $(this.ariaLive).html($(this.selected).html());
+    };
+
+    /*
+    Unhighlights a suggestion.
+     */
+    Drupal.jsAC.prototype.unhighlight = function(node) {
+      $(node).removeClass("active");
+      this.selected = false;
+      return $(this.ariaLive).empty();
+    };
+
+    /*
+    Positions the suggestions popup and starts a search.
+     */
+    Drupal.jsAC.prototype.populatePopup = function() {
+      var $input;
+      $input = $(this.input);
+      if (this.popup) {
+        $(this.popup).remove();
+      }
+      this.selected = false;
+      this.popup = $("<div class=\"dropdown\"></div>")[0];
+      this.popup.owner = this;
+      $input.parent().after(this.popup);
+      this.db.owner = this;
+      this.db.search(this.input.value);
+    };
+
+    /*
+    Fills the suggestion popup with any matches received.
+     */
+    Drupal.jsAC.prototype.found = function(matches) {
+      var ac, key, ul;
+      if (!this.input.value.length) {
+        return false;
+      }
+      ul = $("<ul class=\"dropdown-menu\" role=\"menu\"></ul>");
+      ac = this;
+      ul.css({
+        display: "block",
+        right: 0
+      });
+      for (key in matches) {
+        $("<li role=\"presentation\"></li>").html($("<a href=\"#\" role=\"menuitem\"/>").html(matches[key]).click(function(e) {
+          return e.preventDefault();
+        })).mousedown(function() {
+          return ac.select(this);
+        }).mouseover(function() {
+          return ac.highlight(this);
+        }).mouseout(function() {
+          return ac.unhighlight(this);
+        }).data("autocompleteValue", key).appendTo(ul);
+      }
+      if (this.popup) {
+        if (ul.children().length) {
+          $(this.popup).empty().append(ul).show();
+          return $(this.ariaLive).html(Drupal.t("Autocomplete popup"));
+        } else {
+          $(this.popup).css({
+            visibility: "hidden"
+          });
+          return this.hidePopup();
+        }
+      }
+    };
+    return Drupal.jsAC.prototype.setStatus = function(status) {
+      var $throbber, fontAwesome, iconSpin, throbbingClass;
+      fontAwesome = Drupal.settings.kalatheme.fontawesome ? true : false;
+      iconSpin = fontAwesome ? 'fa-spin' : 'glyphicon-spin';
+      $throbber = $(".fa-refresh, .glyphicon-refresh, .autocomplete-throbber", $("#" + this.input.id).parent()).first();
+      throbbingClass = ($throbber.is(".autocomplete-throbber") ? "throbbing" : iconSpin);
+      switch (status) {
+        case "begin":
+          $throbber.addClass(throbbingClass);
+          return $(this.ariaLive).html(Drupal.t("Searching for matches..."));
+        case "cancel":
+        case "error":
+        case "found":
+          return $throbber.removeClass(throbbingClass);
+      }
+    };
+  })(jQuery);
+
+}).call(this);
+
+//# sourceMappingURL=kalathemeAutocomplete.js.map
+
+
+/**
+* @file
 * Overrides for CTools modal.
 * See ctools/js/modal.js
  */

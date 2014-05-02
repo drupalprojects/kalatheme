@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "0.10"
+before_install:
+  - rvm use 1.9.3 --fuzzy
+  - export GEMDIR=$(rvm gemdir)
+install:
+  - time npm install -g grunt-cli bower
+  - gem install bundler
+  - bundle
+  - bower install
+  - npm install
+  - grunt --force

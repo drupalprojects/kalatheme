@@ -48,6 +48,8 @@
     "grunt-csscss": "^0.6.1",
     "grunt-contrib-sass": "^0.7.3",
     "grunt-spritesmith": "^1.26.0",
-    "grunt-contrib-connect": "^0.7.1"
+    "grunt-contrib-connect": "^0.7.1",
+    "grunt-curl": "^1.5.1",
+    "grunt-contrib-csslint": "^0.2.0"
   }
 }

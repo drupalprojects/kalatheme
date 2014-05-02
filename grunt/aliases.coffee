@@ -4,11 +4,12 @@ module.exports =
     'clean:dist'
     'img'
     'js'
-    'tests'
     'css'
+    'curl-dir:drupaljs'
+    'tests'
   ]
   js: [
-    'clean:temp'
+    'clean:tempjs'
     'coffeelint:theme'
     'coffee:theme'
     'concat:js'
@@ -26,6 +27,8 @@ module.exports =
   css: [
     'sass:dist'
     'autoprefixer:theme'
+    # 'csscss:theme'
+    # 'csslint:theme'
     'cssmin:theme'
   ]
   develop: [

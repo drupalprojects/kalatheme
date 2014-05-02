@@ -1,14 +1,15 @@
 module.exports =
+  options:
+    sourcemap: true
+    trace: true
+    loadPath: [
+      'bower_components'
+    ]
   develop:
     options:
-      sourcemap: true
-      trace: true
       lineNumbers: true
     files:
       'dist/css/kalatheme.css' : 'scss/kalatheme.scss'
   dist:
-    options:
-      sourcemap: true
-      trace: true
     files:
       'dist/css/kalatheme.css' : 'scss/kalatheme.scss'

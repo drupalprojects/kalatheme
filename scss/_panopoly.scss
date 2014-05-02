@@ -465,22 +465,22 @@ ul.panels-ipe-linkbar > li a {
 /**
  * Navbar Styling
  */
-a#navbar-link-admin-panopoly:before {
+#navbar-link-admin-panopoly:before {
+  @include sprite($icon-panopoly);
+  margin-top: 9px;
+}
+
+#navbar-link-admin-panopoly.active:before {
   @include sprite($icon-panopoly-active);
   margin-top: 9px;
 }
 
-a#navbar-link-admin-panopoly.active:before {
-  @include sprite($icon-panopoly-active);
-  margin-top: 9px;
-}
-
-a#navbar-link-admin-apps:before {
+#navbar-link-admin-apps:before {
   @include sprite($icon-apps);
   margin-top: 9px;
 }
 
-a#navbar-link-admin-apps.active:before {
+#navbar-link-admin-apps.active:before {
   @include sprite($icon-apps-active);
   margin-top: 9px;
 }
