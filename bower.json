@@ -1,6 +1,6 @@
 {
   "name": "kalatheme",
-  "version": "0.3.0+dev",
+  "version": "3.0.0+dev",
   "authors": [
     "Kalamuna LLC <info@kalamuna.com> (http://www.kalamuna.com/)"
   ],
@@ -24,6 +24,9 @@
     "test",
     "tests"
   ],
+  "optionalDependencies":{
+    "drupal7": "4.7.11"
+  }
   "dependencies": {
     "bootstrap": "~3.1.1",
     "fontawesome": "~4.0.3",
