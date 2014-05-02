@@ -27,11 +27,8 @@
   "dependencies": {
     "bootstrap": "~3.1.1",
     "fontawesome": "~4.0.3",
-<<<<<<< HEAD
-    "bootstrap-accessibility-plugin": "paypal/bootstrap-accessibility-plugin"
-=======
+    "bootstrap-accessibility-plugin": "paypal/bootstrap-accessibility-plugin",
     "bootstrap-sass": "~3.0.2"
->>>>>>> autocomplete
   },
   "devDependencies": {
     "jasmine-jquery": "~2.0.3",
