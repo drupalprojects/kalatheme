@@ -22,7 +22,16 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "scss",
+    "src",
+    "Gruntfile.*",
+    "grunt",
+    "package.json",
+    "coffeelint.json",
+    "jshint.rc",
+    "img-src"
+
   ],
   "optionalDependencies":{
     "drupal7": "4.7.11"
