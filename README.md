@@ -1,6 +1,6 @@
 
-CONTENTS OF THIS FILE
----------------------
+## CONTENTS OF THIS FILE
+
 
  * Installing Kalatheme
  * Automatic Setup and Subthemes
@@ -8,8 +8,8 @@ CONTENTS OF THIS FILE
  * Creating a Subtheme
  * Key Features
 
-INSTALLING KALATHEME
---------------------
+### INSTALLING KALATHEME
+
 Unlike other Drupal themes Kalatheme requires some other modules to work
 properly. Please verify you have the following before proceeding with
 installation. If you fail to do as Kalatheme has requested it will bug
@@ -34,8 +34,8 @@ Some people having troubles using the Kalacustomize plugin were helped by
 Patch #5 here: https://drupal.org/node/2024441
 which was rolled against Panels 3.3+41-dev
 
-AUTOMATIC SETUP & SUBTHEMES
----------------------------
+### AUTOMATIC SETUP & SUBTHEMES
+
 Kalatheme is meant to be a base theme that is used to build more powerful
 subthemes. Subthemes inherit almost all of the propoerties of their base theme
 so you can reduce theme clutter and start on the 10th floor. Here is some
@@ -47,8 +47,8 @@ subtheme.
 https://drupal.org/node/2167149
 
 
-MANUALLY INSTALLING BOOTSTRAP
------------------------------
+### MANUALLY INSTALLING BOOTSTRAP
+
 Kalatheme doesn't do much without a Bootstrap Library so you are going to need
 to shop around for one.
 
@@ -80,7 +80,7 @@ different themes.
 Custom Bootstrap libraries can use a non-standard files scheme so you need to
 make sure that your bootstrap directory looks like the following folders and
 files.
-
+```
   /CURRENT-THEME_bootstrap
   /CURRENT-THEME_bootstrap/css
   /CURRENT-THEME_bootstrap/css/bootstrap.css
@@ -89,11 +89,13 @@ files.
   /CURRENT-THEME_bootstrap/js/
   /CURRENT-THEME_bootstrap/js/bootstrap.js
   /CURRENT-THEME_bootstrap/js/bootstrap.min.js
+```
 
-IMPORTANT: The only actual requirement here is that either css/bootstrap.css or
+**IMPORTANT** The only actual requirement here is that either css/bootstrap.css or
 css/bootstrap.min.css exist and that they both have some sort of version
 information at the top like this:
 
+```js
   /*!
    * Bootstrap v3.0.0
    *
@@ -101,6 +103,7 @@ information at the top like this:
    * Licensed under the Apache License v2.0
    * http://www.apache.org/licenses/LICENSE-2.0
 
+```
 Most themes have this by default and you can use the above as a basis. It is
 also worth noting that while you only need boostrap.(min).css for this to "work"
 you will likely be disappointed if you don't have the JS and font files as well.
@@ -111,8 +114,8 @@ files in a KalaSUBtheme.
 You also do not need to have the minified files to get this to work but they are
 highly recommended for better performance.
 
-KEY FEATURES
-------------
+### KEY FEATURES
+
  * Settings
  On the settings page for Kalatheme you can configure how you want the style
  plugin to work.
@@ -144,7 +147,11 @@ KEY FEATURES
 
  * Accessibility (Coming soon!)
  Kalatheme strives to provide and improve accessibiltiy for all users. Please
- report issues with the tag a11y.
- 
+ report issues with the tag `a11y`.
+
+* Moving to hosting releases on github and Drupal.org.
+  * Github hosts the source on master and releases on the release branch.
+  * Post issues ot Drupal.org, but develop against source on github.
+
 * SASS and COMPASS Support
  https://drupal.org/node/2167227
