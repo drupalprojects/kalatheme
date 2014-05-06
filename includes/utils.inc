@@ -301,8 +301,10 @@ function kalatheme_get_bootswatch_theme($theme) {
  * Helper function to return whether we are using libraries integration or not
  */
 function kalatheme_use_libraries() {
-  $library = theme_get_setting('bootstrap_library');
-  return (isset($library) && $library == 'custom');
+  if( function_exists(theme_get_setting)){
+    $library = theme_get_setting('bootstrap_library');
+    return (isset($library) && $library == 'custom');
+  }
 }
 
 /**
@@ -342,32 +344,4 @@ function kalatheme_lib_dir() {
     mkdir(DRUPAL_ROOT . '/sites/all/libraries');
   }
   return is_dir('sites/all/libraries') ? 'sites/all/libraries' : 'sites/all';
-}
-
-
-/**
- * Theme function for icon fonts.
- */
-function kalatheme_font_icon($variables){
-  $attr = isset($variables['attributes']) ? $variables['attributes'] : array();
-  $attr += array('aria-hidden' => 'true' );
-  $attr['class'] = array();
-  $icon_font_prefix = 'glyicon-';
-
-  if( theme_get_setting('fontawesome') ){
-    $icon_font_prefix = 'fa-';
-    $attr['class'][] = 'fa';
-  }
-  else{
-    $attr['class'][] = 'glyphicon';
-  }
-
-  foreach($variables['keys'] as $class){
-    $attr['class'][] = $icon_font_prefix . $class;
-  }
-  $stub = '<span '. drupal_attributes($attr) . '></span>';
-  if(isset($variables['alt_text'])){
-    $stub .= '<span class="element-invisible">'.$variables['alt_text'].'</span>';
-  }
-  return $stub;
 }
