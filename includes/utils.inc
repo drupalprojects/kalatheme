@@ -301,7 +301,7 @@ function kalatheme_get_bootswatch_theme($theme) {
  * Helper function to return whether we are using libraries integration or not
  */
 function kalatheme_use_libraries() {
-  if( function_exists(theme_get_setting)){
+  if( function_exists('theme_get_setting')){
     $library = theme_get_setting('bootstrap_library');
     return (isset($library) && $library == 'custom');
   }
