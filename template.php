@@ -27,6 +27,7 @@ define('KALATHEME_GRID_SILLY', 1/42);
 
 // Load Bootstrap overrides of Drupal theme things
 require_once dirname(__FILE__) . '/includes/core.inc';
+require_once dirname(__FILE__) . '/includes/icons.inc';
 require_once dirname(__FILE__) . '/includes/fapi.inc';
 require_once dirname(__FILE__) . '/includes/fields.inc';
 require_once dirname(__FILE__) . '/includes/menu.inc';
