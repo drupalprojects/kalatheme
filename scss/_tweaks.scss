@@ -22,28 +22,7 @@
   z-index: 999;
 }
 
-.navbar .nav > .dropdown > a { /* Dropdowns in main menu */
-  float: left;
-  padding-right: 0;
-}
 
-.navbar .nav > .dropdown > .dropdown-toggle {
-  padding-left: 5px;
-  padding-right: 17px;
-}
-
-.navbar .nav > .open {
-  background-color: rgba(0, 0, 0, 0);
-}
-
-@media (min-width: 768px) {
-  .navbar-default nav {
-    float: right;
-  }
-  .navbar .nav > .dropdown > .dropdown-toggle {
-    float: right;
-  }
-}
 
 /* Views */
 .views-ajax-popup .scroll fieldset {

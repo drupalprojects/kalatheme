@@ -120,6 +120,7 @@ function kalatheme_links__system_main_menu($variables) {
       // Make list item a dropdown if we have child items.
       if (!empty($link['#below'])) {
         $class[] = 'dropdown';
+        $class[] = 'dropdown-kt';
         $class[] = 'clearfix';
       }
       $output .= '<li' . drupal_attributes(array('class' => $class, 'role' =>'presentation')) . '>';
@@ -144,23 +145,20 @@ function kalatheme_links__system_main_menu($variables) {
       // If link has child items, print a toggle and dropdown menu.
       if (!empty($link['#below'])) {
         $dropdown_id = 'main-menu-dropdown-' . $i;
-        $output .= '<a href="#"  role="button" class="dropdown-toggle" data-toggle="dropdown" id="' . $dropdown_id. '" aria-haspopup="true">';
+        $output .= '<a href="#"  role="button" class="dropdown-toggle dropdown-toggle-kt" data-toggle="dropdown" id="' . $dropdown_id. '" aria-haspopup="true" aria-expanded="false">';
         //Add in text to be available for AT
         $output .= '<span class="element-invisible">Toggle submenu for ' . $link['#title'] . '</span><span class="caret" aria-hidden="true"></span></a>';
         $output .= theme('links__system_main_menu', array(
           'links' => $link['#below'],
           'attributes' => array(
-            'class' => array('dropdown-menu'),
+            'class' => array('dropdown-menu', 'dropdown-kt'),
             'role' => 'menu',
-            'aria-labelledby' => $dropdown_id,
-            'aria-expanded' => 'false'
+            'aria-labelledby' => $dropdown_id
           ),
         ));
-        $clearfix = "<div class='clearfix visible-xs'></div>";
       }
 
       $i++;
-      $output .= "</li>" . $clearfix . "\n";
     }
 
     $output .= '</ul>';

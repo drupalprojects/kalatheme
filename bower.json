@@ -31,11 +31,7 @@
     "coffeelint.json",
     "jshint.rc",
     "img-src"
-
   ],
-  "optionalDependencies":{
-    "drupal7": "4.7.11"
-  },
   "dependencies": {
     "bootstrap": "~3.1.1",
     "fontawesome": "~4.0.3",
