@@ -31,3 +31,29 @@ function kalatheme_font_icon($variables){
   }
   return $stub;
 }
+
+
+
+/**
+ * Implements hook_icon_providers().
+ */
+function kalatheme_icon_providers() {
+  $providers['fontawesome'] = array(
+    'title' => t('fontawesome'),
+    'url' => 'http://fontawesome.io',
+    'default bundle' => array(
+      'render' => 'html_tag',
+      //'settings' => kalatheme_default_settings(),
+    ),
+  );
+
+  $providers['bootstrap_gyphicons'] = array(
+    'title' => t('Bootstrap Gypicons'),
+    'url' => 'http://getbootstrap.com/components/#glyphicons',
+    'default bundle' => array(
+      'render' => 'html_tag',
+      //'settings' => kalatheme_default_settings(),
+    ),
+  );
+  return $providers;
+}
