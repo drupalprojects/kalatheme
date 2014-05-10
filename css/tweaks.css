@@ -13,6 +13,11 @@
   position: static;
 }
 
+.navbar-brand {
+  height: inherit;
+  padding-top: 5px;
+}
+
 .navbar-brand h1 {
   margin-top: 5px;
 }
@@ -113,23 +118,32 @@ fieldset .panel-body {
 }
 
 /* Vertical Tabs */
-.vertical-tabs {
+div.vertical-tabs {
   border: none;
   border: 1px solid #DDD;
   outline: none;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
   border-radius: 4px;
 }
 
-.vertical-tabs ul.vertical-tabs-list {
+div.vertical-tabs ul.vertical-tabs-list {
   border: none;
   margin-top: 20px;
   margin-bottom: 20px;
   outline: none;
 }
 
-.vertical-tabs .vertical-tabs-list li {
+div.vertical-tabs ul.vertical-tabs-list li {
   border: none;
   background: none;
+  outline: none !important;
+  -webkit-border-radius: 4px 0 0 4px;
+  -moz-border-radius: 4px 0 0 4px;
+  -ms-border-radius: 4px 0 0 4px;
+  -o-border-radius: 4px 0 0 4px;
   border-radius: 4px 0 0 4px;
   border: 1px solid;
   border-color: #fff #ddd #fff #fff;
@@ -140,6 +154,11 @@ div.vertical-tabs ul.vertical-tabs-list li.selected {
 }
 
 div.vertical-tabs ul.vertical-tabs-list li a {
+  outline: none !important;
+  -webkit-border-radius: 4px 0 0 4px;
+  -moz-border-radius: 4px 0 0 4px;
+  -ms-border-radius: 4px 0 0 4px;
+  -o-border-radius: 4px 0 0 4px;
   border-radius: 4px 0 0 4px;
 }
 
@@ -159,10 +178,9 @@ ul.links {
   padding: 0;
   list-style: none outside none;
 }
-html.js {
-  input.form-autocomplete {
-    background-image: none;
-  }
+
+html.js input.form-autocomplete {
+  background: transparent;
 }
 
 form .form-actions .btn {
@@ -202,10 +220,10 @@ html.js fieldset.collapsed {
 .panopoly-spotlight-label,
 .mceEditor,
 #pane-library table,
-.box-sizing-content-box,
-.mceToolbar,
-.mceButton{
-  @include box-sizing-reset;
+.box-sizing-content-box {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 #edit-module-filter-name {

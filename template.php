@@ -27,7 +27,6 @@ define('KALATHEME_GRID_SILLY', 1/42);
 
 // Load Bootstrap overrides of Drupal theme things
 require_once dirname(__FILE__) . '/includes/core.inc';
-require_once dirname(__FILE__) . '/includes/icons.inc';
 require_once dirname(__FILE__) . '/includes/fapi.inc';
 require_once dirname(__FILE__) . '/includes/fields.inc';
 require_once dirname(__FILE__) . '/includes/menu.inc';
@@ -43,40 +42,7 @@ function kalatheme_theme($existing, $type, $theme, $path) {
       'variables' => array('menu_actions' => NULL, 'attributes' => NULL),
       'file' => 'includes/menu.inc',
     ),
-    'navbar_static_top' => array(
-      'template' => 'templates/core/navbar-static-top',
-    ),
-    'navbar_and_header' => array(
-      'template' => 'templates/core/navbar-and-header'
-    ),
-    'font_icon' => array(
-      'variables' => array(
-        'keys' => array( 'flag' ),
-        'alt_text' => Null,
-        'attributes' => Null
-      ),
-      'file' => 'includes/utils.inc'
-    )
   );
-}
-/**
- * Utitlity function to remove conflicting scripts
- */
-function _kalatheme_remove_by_key(array $keys, array $target){
-  foreach($keys as $key){
-    if(array_key_exists( $key, $target)){
-      unset($target[$key]);
-    }
-  }
-  return $target;
-}
-
-/**
- * Implements hook_js_alter().
- */
-function kalatheme_js_alter(&$javascript){
-  $excludes = array('misc/progress.js');
-  $javascript = _kalatheme_remove_by_key($excludes, $javascript);
 }
 
 /**
@@ -85,18 +51,34 @@ function kalatheme_js_alter(&$javascript){
  * Implements hook_css_alter().
  */
 function kalatheme_css_alter(&$css) {
-  // Unset some core css & panopoly css.
+  // Unset some panopoly css.
+  $panopoly_admin_path = drupal_get_path('module', 'panopoly_admin');
+  if (isset($css[$panopoly_admin_path . '/panopoly-admin.css'])) {
+    unset($css[$panopoly_admin_path . '/panopoly-admin.css']);
+  }
   $panopoly_magic_path = drupal_get_path('module', 'panopoly_magic');
-  $excludes = array(
-    drupal_get_path('module', 'panopoly_admin') . '/panopoly-admin.css',
-    $panopoly_magic_path . '/css/panopoly-modal.css',
-    $panopoly_magic_path . '/css/panopoly-magic.css',
-    'modules/system/system.menus.css'
-  );
-  $css = _kalatheme_remove_by_key($excludes, $css);
-
+  if (isset($css[$panopoly_magic_path . '/css/panopoly-modal.css'])) {
+    unset($css[$panopoly_magic_path . '/css/panopoly-modal.css']);
+  }
+  // Unset some core css.
+  unset($css['modules/system/system.menus.css']);
 }
 
+/**
+ * Implements hook_js_alter().
+ *
+ * Borrowed from Radix :)
+ *
+ */
+function kalatheme_js_alter(&$javascript) {
+  // Add kalatheme-modal only when required.
+  $ctools_modal = drupal_get_path('module', 'ctools') . '/js/modal.js';
+  $kalatheme_modal = drupal_get_path('theme', 'kalatheme') . '/js/kalatheme-modal.js';
+  if (!empty($javascript[$ctools_modal]) && empty($javascript[$kalatheme_modal])) {
+    $javascript[$kalatheme_modal] = array_merge(
+      drupal_js_defaults(), array('group' => JS_THEME, 'data' => $kalatheme_modal));
+  }
+}
 
 /**
  * Load Kalatheme dependencies.
@@ -143,8 +125,6 @@ function kalatheme_process_page(&$variables) {
   }
   // Use Font Awesome
   if (theme_get_setting('fontawesome')) {
-    // let JS know that we have this enabled
-    drupal_add_js(array('kalatheme' => array('fontawesome' => true) ), 'setting');
     drupal_add_css($base['scheme'] . ":" . KALATHEME_FONTAWESOME_CSS, 'external');
   }
 
@@ -209,9 +189,6 @@ function kalatheme_process_page(&$variables) {
 
   // Check if we're to always print the page title, even on panelized pages.
   $variables['always_show_page_title'] = theme_get_setting('always_show_page_title') ? TRUE : FALSE;
-
-  // Check for the navbar style
-  $variables['navbar_style'] = theme_get_setting('navbar_style') ? theme_get_setting('navbar_style') : 'navbar_static_top';
 }
 
 /**
