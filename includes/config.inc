@@ -470,7 +470,7 @@ function kalatheme_run_install($filetransfer, $projects) {
   // but _batch_process prepends DRUPAL_ROOT so we need to strip that
   // out here as well
   $file = dirname(__FILE__) . '/../kalatheme.authorize.inc';
-  $file = str_replace(DRUPAL_ROOT . '/', '', $local);
+  $file = str_replace(DRUPAL_ROOT . '/', '', $file);
 
   // Set the batch up!
   $batch = array(
