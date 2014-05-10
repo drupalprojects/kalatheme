@@ -36,7 +36,7 @@ which was rolled against Panels 3.3+41-dev
 
 AUTOMATIC SETUP & SUBTHEMES
 ---------------------------
-Kalatheme is meant to be the base theme that is used to build more powerful
+Kalatheme is meant to be a base theme that is used to build more powerful
 subthemes. Subthemes inherit almost all of the propoerties of their base theme
 so you can reduce theme clutter and start on the 10th floor. Here is some
 documentation on creating a basic subtheme
@@ -58,7 +58,7 @@ to shop around for one.
  * If you are looking for a free and pre-made custom version of Bootstrap:
  http://bootswatch.com/
 
- * If you are looking to rool with a custom version of Bootstrap try out
+ * If you are looking to roll with a custom version of Bootstrap try out
  http://getbootstrap.com/customize/
  https://drupal.org/node/2167149
 
