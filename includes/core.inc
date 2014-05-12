@@ -658,7 +658,7 @@ function kalatheme_item_list($variables) {
   $title = $variables['title'];
   $type = $variables['type'];
   $attributes = $variables['attributes'];
-
+  $output='';
   // Only output the list container and title, if there are any list items.
   // Check to see whether the block title exists before adding a header.
   // Empty headers are not semantic and present accessibility challenges.
