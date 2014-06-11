@@ -21,8 +21,11 @@ module.exports =
     'jasmine:specs'
   ]
   img: [
-    'imagemin:theme'
+    'imagemin:png'
+    'imagemin:jpg'
+    'imagemin:gif'
     'sprite:icons'
+    'imagemin:icons'
   ]
   css: [
     'sass:dist'
