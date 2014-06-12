@@ -124,7 +124,7 @@
           <?php endif; ?>
 
           <?php if ($messages): ?>
-            <div class="messages">
+            <div class="alerts">
               <?php print $messages; ?>
             </div>
           <?php endif; ?>
