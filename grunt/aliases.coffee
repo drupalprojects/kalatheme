@@ -43,3 +43,9 @@ module.exports =
     'clean:build'
     'copy:buildfiles'
   ]
+  devrelease: [
+    'bump:git'
+    'build'
+    'buildcontrol:dev'
+    'clean:build'
+  ]
