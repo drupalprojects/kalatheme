@@ -8,7 +8,7 @@ module.exports =
       'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
   dev:
     options:
-      branch: '<%= package.drupalversion =>'
+      branch: '7.x-4.x'
   release:
     options:
       branch: '<%= package.drupalversion =>'
