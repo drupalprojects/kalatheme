@@ -41,24 +41,20 @@
  * @see template_preprocess_html()
  * @see template_process()
  */
-?><!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php print $language->language; ?>" version="XHTML+RDFa 1.0" dir="<?php print $language->dir; ?>"<?php print $rdf_namespaces; ?>>
-
-<head profile="<?php print $grddl_profile; ?>">
+?>
+<!doctype html>
+<html lang="<?php print $language->language; ?>" <?php print $rdf_namespaces; ?> dir="<?php print $language->dir; ?>">
+<head>
+  <link rel="profile" href="<?php print $grddl_profile; ?>">
+  <meta charset="utf-8">
   <?php print $head; ?>
   <title><?php print $head_title; ?></title>
   <?php print $styles; ?>
-  <?php print $scripts; ?>
+  <!-- HTML5 element support for IE6-8 -->
   <!--[if lt IE 9]>
-   <script>
-      document.createElement('header');
-      document.createElement('nav');
-      document.createElement('section');
-      document.createElement('article');
-      document.createElement('aside');
-      document.createElement('footer');
-   </script>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
+  <?php print $scripts; ?>
 </head>
 <body class="<?php print $classes; ?>" <?php print $attributes;?>>
   <div id="skip-link">

@@ -111,7 +111,7 @@ function kalatheme_links__system_main_menu($variables) {
         $class[] = 'dropdown';
         $class[] = 'clearfix';
       }
-      $output .= '<li' . drupal_attributes(array('class' => $class, 'role' =>'presentation')) . '>';
+      $output .= '<li' . drupal_attributes(array('class' => $class)) . '>';
 
       if (isset($link['#href'])) {
         // Pass in $link with the path and the options set to the l() function
@@ -140,7 +140,6 @@ function kalatheme_links__system_main_menu($variables) {
           'links' => $link['#below'],
           'attributes' => array(
             'class' => array('dropdown-menu'),
-            'role' => 'menu',
             'aria-labelledby' => $dropdown_id
           ),
         ));
@@ -164,8 +163,8 @@ function kalatheme_menu_local_tasks(&$variables) {
   $output = '';
 
   if (!empty($variables['primary'])) {
-    $variables['primary']['#prefix'] = '<h3 class="element-invisible">' . t('Primary tabs') . '</h3>';
-    $variables['primary']['#prefix'] = '<ul class="nav nav-pills" role="menu">';
+    $variables['primary']['#prefix'] = '<span class="element-invisible">' . t('Primary tabs') . '</span>';
+    $variables['primary']['#prefix'] = '<ul class="nav nav-pills">';
     $variables['primary']['#suffix'] = '</ul>';
     if (!empty($variables['secondary'])) {
       $variables = _kalatheme_associate_parent_tasks($variables);
