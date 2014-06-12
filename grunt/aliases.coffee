@@ -11,8 +11,8 @@ module.exports =
   js: [
     'clean:tempjs'
     'coffeelint:theme'
-    'coffee:theme'
-    'concat:js'
+    'browserify:theme'
+    'concat:banner'
     'uglify:js'
   ]
   tests: [

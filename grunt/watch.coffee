@@ -13,10 +13,10 @@ module.exports =
       'cssmin:theme'
     ]
   coffee:
-    files: ['src/**/*.coffee']
+    files: ['src/**/*.{coffee,js}']
     tasks: [
-      'clean:temp'
       'coffeelint:theme'
-      'coffee:theme'
-      'concat:js'
+      'browserify:theme'
+      'concat:banner'
+      'uglify:js'
     ]
