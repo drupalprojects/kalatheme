@@ -6,7 +6,7 @@
 
 ?>
 
-<nav class="navbar navbar-default" id="main-navigation" role="navigation"<?php if ($main_menu && !$secondary_menu) { print ' element-invisible'; } ?>">
+<nav class="navbar navbar-default" id="main-navigation" role="navigation">
   <div class="container-fluid">
     <div class="navbar-header">
       <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">

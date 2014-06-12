@@ -19,11 +19,6 @@ function kalatheme_menu_tree($variables) {
 function kalatheme_menu_link($variables) {
   $element = $variables['element'];
   $sub_menu = '';
-  $element['#attributes']['role'] = 'presentation';
-  // Enforce aria-role="menuitem"
-  $role = array('role'=> 'menuitem' );
-  $element['#localized_options']['attributes'] = isset($element['#localized_options']['attributes']) ? $element['#localized_options']['attributes']
-   +=  $role : $role;
   if ($element['#below']) {
     $sub_menu = drupal_render($element['#below']);
   }
@@ -37,10 +32,6 @@ function kalatheme_links__system_main_menu($variables) {
   $links = $variables['links'];
   $attributes = $variables['attributes'];
 
-  // Navbar best described by menubar, only add attribute if role="menu" isn't set
-  if(!isset($attributes['role'])){
-    $attributes['role'] = 'menubar';
-  }
   $heading = $variables['heading'];
   unset($links['#sorted']);
   unset($links['#theme_wrappers']);
@@ -91,8 +82,7 @@ function kalatheme_links__system_main_menu($variables) {
       if ( isset($link['#localized_options']['attributes'])){
         $link['#options']['attributes'] += $link['#localized_options']['attributes'];
       }
-      // lastly add in the role=menuitem for links
-      $link['#options']['attributes']['role'] = 'menuitem';
+
       // Add first/last/active classes to help out themers.
       if ($i == 1) {
         $class[] = 'first';
@@ -143,7 +133,7 @@ function kalatheme_links__system_main_menu($variables) {
       // If link has child items, print a toggle and dropdown menu.
       if (!empty($link['#below'])) {
         $dropdown_id = 'main-menu-dropdown-' . $i;
-        $output .= '<a href="#"  role="button" class="dropdown-toggle" data-toggle="dropdown" id="' . $dropdown_id. '" aria-haspopup="true">';
+        $output .= '<a href="#"  role="button" class="dropdown-toggle" data-toggle="dropdown" id="' . $dropdown_id. '" aria-haspopup="true" aria-expanded="false">';
         //Add in text to be available for AT
         $output .= '<span class="element-invisible">Toggle submenu for ' . $link['#title'] . '</span><span class="caret" aria-hidden="true"></span></a>';
         $output .= theme('links__system_main_menu', array(
@@ -151,15 +141,12 @@ function kalatheme_links__system_main_menu($variables) {
           'attributes' => array(
             'class' => array('dropdown-menu'),
             'role' => 'menu',
-            'aria-labelledby' => $dropdown_id,
-            'aria-expanded' => 'false'
+            'aria-labelledby' => $dropdown_id
           ),
         ));
-        $clearfix = "<div class='clearfix visible-xs'></div>";
       }
 
       $i++;
-      $output .= "</li>" . $clearfix . "\n";
     }
 
     $output .= '</ul>';
@@ -223,9 +210,9 @@ function kalatheme_menu_local_task($variables) {
     $link['localized_options']['attributes']['role'] = 'button';
     $link['href'] = '#';
     $link_text .= ' <span class="caret" aria-hidden="true"></span>';
-    $output = '<li class="' . implode(' ', $classes) . '" role="presentation">';
+    $output = '<li class="' . implode(' ', $classes) . '">';
     $output .= l($link_text, $link['href'], $link['localized_options']);
-    $output .= '<ul class="dropdown-menu" role="menu">';
+    $output .= '<ul class="dropdown-menu">';
     $output .= drupal_render($children);
     $output .= '</ul>';
     $output .= '</li>';
@@ -233,9 +220,7 @@ function kalatheme_menu_local_task($variables) {
   }
   else {
     $options = $link['localized_options'];
-    $role= array('role'=> 'menuitem');
-    $options['attributes'] = isset( $options['attributes'] ) ? $options['attributes'] += $role : $role;
-    return '<li class="' . implode(' ', $classes) . '" role="presentation">' . l($link_text, $link['href'], $link['localized_options']) . "</li>\n";
+    return '<li class="' . implode(' ', $classes) . '">' . l($link_text, $link['href'], $link['localized_options']) . "</li>\n";
   }
 }
 
@@ -250,7 +235,7 @@ function kalatheme_menu_local_actions($variables) {
   // Render the dropdown.
   $output = $container_attributes ?  '<li' . $container_attributes . '>' : '<li>';
   $output .= $toggle_attributes ?  '<a role="button"' . $toggle_attributes . '><span class="glyphicon glyphicon-wrench fa fa-wrench" aria-hidden="true"></span> ' . t('Actions') . '<span class="caret" aria-hidden="true"></span></a>' : '<a role="button">' . t('Actions') . '<span class="caret" aria-hidden="true"></span></a>';
-  $output .= $content_attributes ? '<ul' . $content_attributes . ' role="menu">' : '<ul role="menu">';
+  $output .= $content_attributes ? '<ul' . $content_attributes . '>' : '<ul>';
   $output .= drupal_render($variables['menu_actions']);
   $output .= '</ul>';
   $output .= '</li>';
@@ -264,16 +249,9 @@ function kalatheme_menu_local_actions($variables) {
 function kalatheme_menu_local_action($variables) {
   $link = $variables['element']['#link'];
 
-  $output = "<li role=\"presenation\">";
+  $output = "<li>";
   if (isset($link['href'])) {
     $options = isset($link['localized_options']) ? $link['localized_options'] : array();
-    // Adding ARIA Attributes for the link as a menuitem
-    // @link http://www.w3.org/TR/wai-aria/roles#menuitem
-    $a11y_attr =  array(
-      'role'=>'menuitem',
-      'tab-index' => '-1'
-    );
-    $options['attributes'] = isset($options['attributes']) ? $options['attributes'] += $a11y_attr : $a11y_attr;
 
     $output .= l($link['title'], $link['href'], $options);
   }
