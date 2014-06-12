@@ -36,6 +36,9 @@ require_once dirname(__FILE__) . '/includes/views.inc';
 
 /**
  * Implements hook_theme().
+ *
+ * Theme specific compontents can be namespaced kt_<component>
+ * to avoid conflicts with other projects.
  */
 function kalatheme_theme($existing, $type, $theme, $path) {
   return array(
@@ -43,11 +46,27 @@ function kalatheme_theme($existing, $type, $theme, $path) {
       'variables' => array('menu_actions' => NULL, 'attributes' => NULL),
       'file' => 'includes/menu.inc',
     ),
-    'navbar_static_top' => array(
-      'template' => 'templates/core/navbar-static-top',
+    'kt_site_header' => array(
+      'template' => 'templates/sections/kt-site-header',
+      'variables' => array(
+        'front_page' => false,
+        'logo' => '',
+        'site_name' => '',
+        'hide_site_name' => false,
+        'site_slogan' => '',
+        'hide_site_slogan' => false
+      )
     ),
-    'navbar_and_header' => array(
-      'template' => 'templates/core/navbar-and-header'
+    'kt_navbar' => array(
+      'template' => 'templates/bootstrap/kt-navbar',
+      'variables' => array(
+        'main_menu' => NULL,
+        'main_menu_expanded' => NULL,
+        'secondary_menu'=> NULL,
+        'site_name' => NULL,
+        'front_page' => NULL,
+        'site_name' => NULL
+      )
     ),
     'font_icon' => array(
       'variables' => array(
@@ -210,8 +229,6 @@ function kalatheme_process_page(&$variables) {
   // Check if we're to always print the page title, even on panelized pages.
   $variables['always_show_page_title'] = theme_get_setting('always_show_page_title') ? TRUE : FALSE;
 
-  // Check for the navbar style
-  $variables['navbar_style'] = theme_get_setting('navbar_style') ? theme_get_setting('navbar_style') : 'navbar_static_top';
 }
 
 /**

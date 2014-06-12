@@ -8,8 +8,7 @@
  * Implements theme_menu_tree().
  */
 function kalatheme_menu_tree($variables) {
-  // Set the aria role to menu
-  return '<ul class="menu clearfix" role="menu">' . $variables['tree'] . '</ul>';
+  return '<ul class="menu clearfix">' . $variables['tree'] . '</ul>';
 }
 
 
