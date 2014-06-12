@@ -1,6 +1,6 @@
 {
   "name": "kalatheme",
-  "version": "4.0.0+dev",
+  "version": "4.0.0",
   "description": "Kalatheme is designed for people who want to get to work quickly so they can make things happen.",
   "homepage": "https://drupal.org/project/kalatheme",
   "bugs": {
@@ -31,7 +31,6 @@
   },
   "author": "Kalamuna LLC <info@kalamuna.com> (http://www.kalamuna.com/)",
   "license": "GPL-2.0",
-  "drupalversion": "7.x-4.x",
   "devDependencies": {
     "grunt": "^0.4.4",
     "load-grunt-config": "^0.8.0",
