@@ -8,7 +8,7 @@ module.exports =
   dev:
     options:
       remote: 'git@github.com:drupalprojects/kalatheme.git'
-      branch: '7.x-4.x-dev'
+      branch: '<%= package.drupalversion =>'
   release:
     options:
       tag: '<%= package.drupalversion +"-"+ package.version =>'
