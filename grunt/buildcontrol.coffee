@@ -3,12 +3,13 @@ module.exports =
     dir: 'build'
     commit: true
     push: true
+    remote: 'git@github.com:drupalprojects/kalatheme.git'
     build:
       'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
   dev:
     options:
-      remote: 'git@github.com:drupalprojects/kalatheme.git'
       branch: '<%= package.drupalversion =>'
   release:
     options:
+      branch: '<%= package.drupalversion =>'
       tag: '<%= package.drupalversion +"-"+ package.version =>'
