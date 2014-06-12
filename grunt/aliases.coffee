@@ -38,3 +38,8 @@ module.exports =
     'connect:tests'
     'watch'
   ]
+  build: [
+    'default'
+    'clean:build'
+    'copy:buildfiles'
+  ]
