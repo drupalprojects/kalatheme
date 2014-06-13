@@ -36,7 +36,6 @@
  *   make the site slogan visually hidden, but still accessible.
  *
  * Navigation:
- * - $navbar_style (string): Theme settings for which type of navbar to use in the theme.
  * - $main_menu (array): An array containing the Main menu links for the
  *   site, if they have been configured.
  * - $main_menu_expanded (array): An array containing 2 depths of the Main
@@ -85,23 +84,47 @@
 ?>
 <div id="page-wrapper"><div id="page">
 
-  <!-- Page Header -->
-  <?php print theme($navbar_style, $variables); ?>
+  <!-- Site Header -->
+  <?php print theme('kt_site_header', array(
+      'front_page' => $front_page,
+      'logo' => $logo,
+      'site_name' => $site_name,
+      'hide_site_name' => $hide_site_name,
+      'site_slogan' => $site_slogan,
+      'hide_site_slogan' => $hide_site_slogan,
+      )
+    );
+
+  ?>
+
+  <!-- Site Navigation -->
+  <div class="container">
+    <?php print theme('kt_navbar', array(
+      'main_menu' => $main_menu,
+      'main_menu_expanded' => $main_menu_expanded,
+      'secondary_menu'=> $secondary_menu,
+      'site_name' => $site_name,
+      'front_page' => $front_page,
+      'site_name' => $site_name
+    ));
+
+    ?>
+  </div>
+
 
   <!-- Page Main -->
   <div id="main-wrapper" class="clearfix">
     <main id="main" class="clearfix" role="main">
       <div id="top-content">
         <div class="column container">
-          <a id="main-content"></a>
           <?php if (($no_panels || $always_show_page_title) && $title): ?>
-            <h1 id="page-title" class="title">
+            <h1 class="page-header title">
               <?php print $title; ?>
             </h1>
           <?php endif; ?>
 
           <?php if ($messages): ?>
-            <div id="messages">
+            <div class="alerts">
               <?php print $messages; ?>
             </div>
           <?php endif; ?>

@@ -22,7 +22,6 @@ function kalatheme_form($variables) {
   return '<form' . drupal_attributes($element['#attributes']) . '><div>' . $element['#children'] . '</div></form>';
 }
 
-
 /**
  * Implements hook_element_info_alter().
  */
@@ -54,6 +53,16 @@ function kalatheme_process_element(&$element, &$form_state) {
  * Process input elements.
  */
 function kalatheme_process_input(&$element, &$form_state) {
+  if (isset($element['#required']) && $element['#required'] == TRUE ){
+    if(!isset($element['#attributes'])){
+      $element['#attributes'] = array();
+    }
+    // Doubling up on required
+    // @link http://john.foliot.ca/required-inputs/
+    $element['#attributes']['required'] = 'true';
+    $element['#attributes']['aria-required'] = 'true';
+  }
+
   $types = array(
     'textfield',
     'textarea',
@@ -160,7 +169,7 @@ function kalatheme_form_element($variables) {
   }
 
   if (!empty($element['#description'])) {
-    $output .= '<span class="help-block">' . $element['#description'] . "</span>\n";
+    $output .= '<p class="help-block">' . $element['#description'] . "</p>\n";
   }
 
   $output .= "</div>\n";

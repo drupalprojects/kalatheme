@@ -1,3 +1,7 @@
+# Unignore everything
+!**/*
+
+
 # Ignore default text files
 .htaccess
 
@@ -18,6 +22,3 @@ temp
 
 # Grunt
 .grunt
-
-dist
-build

@@ -131,15 +131,6 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#description' => t('The navbar\'s style is configurable.')
   );
 
-  $form['navbar_style_fieldset']['navbar_style'] = array(
-    '#type' => 'select',
-    '#title' => 'Navbar Style',
-    '#default_value' => theme_get_setting('navbar_style'),
-    '#options' => array(
-      'navbar_static_top' => t('Static Top'),
-      'navbar_and_header' => t('Seperate Header / Navbar')
-      )
-  );
 
   // Prepare the form with kalatheme things
   $form = kalatheme_prepare_config_form($form);
@@ -148,5 +139,3 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/includes/config.inc';
   $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/kalatheme.updater.inc';
 }
-
-
