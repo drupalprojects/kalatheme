@@ -89,41 +89,6 @@ function kalatheme_icon_bundle_configure(&$settings, &$form_state, &$complete_fo
   }
 }
 
-/**
- *
- */
-function kalatheme_preprocess_icon_html_tag(&$variables) {
-  $bundle = &$variables['bundle'];
-  $icon = &$variables['icon'];
-  $icon_font_prefix = '';
-  if( $bundle === 'font_awesome' ){
-    $icon_font_prefix = 'fa-';
-  }
-  elseif($bundle === 'bootstrap_glyphicon' ){
-    $icon_font_prefix = 'glyicon-';
-  }
-}
-
-/**
- * @desc return HTML tag emement with fontawesome icon classed
- * @param <type> $variables
- * @return <type>
- */
-function theme_icon_html_tag($variables) {
-  $output = '';
-  $bundle = $variables['bundle'];
-  $icon = $variables['icon'];
-  $output = theme('html_tag', array(
-    'element' => array(
-      '#tag' => isset($bundle['settings']['tag']) ? $bundle['settings']['tag'] : 'span',
-      '#attributes' => $variables['attributes'],
-      '#value' =>'',
-    ),
-  ));
-  return $output;
-}
-
-
 
 /**
  * @desc return HTML tag emement with fontawesome icon classed
@@ -155,9 +120,11 @@ function kalatheme_preprocess_icon(&$variables) {
     switch($variables['bundle']['provider']){
       case 'font_awesome':
         $classes[] = 'fa';
+        $classes[] = 'fa-' . $variables['icon'];
         break;
       case 'bootstrap_glyhicons':
         $classes[] = 'glyphicon';
+        $classes[] = $variables['icon'];
         break;
       default:
         break;
