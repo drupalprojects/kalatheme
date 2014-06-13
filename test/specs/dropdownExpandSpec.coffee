@@ -1,5 +1,6 @@
-module.exports = ($) ->
-  dropdownExpand = require('./../../coffee/dropdownExpand.coffee')
+module.exports = () ->
+  $ = require('../../bower_components/jquery/dist/jquery.js')
+  dropdownExpand = require('./../../src/dropdownExpand.coffee')
   toggle = ''
   menu = ''
   container = ''

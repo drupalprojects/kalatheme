@@ -17,7 +17,7 @@ module.exports =
   ]
   tests: [
     'coffeelint:tests'
-    'coffee:specs'
+    'browserify:tests'
     'jasmine:specs'
   ]
   img: [

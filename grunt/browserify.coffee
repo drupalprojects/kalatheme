@@ -1,4 +1,7 @@
 module.exports =
   theme:
     files:
-      './dist/js/kalatheme.pkg.js' : './src/kalatheme-index.coffee'
+      './test/tests.js' : './test/specs/testIndex.coffee'
+  tests:
+    files:
+      './test/tests.js' : './test/specs/testIndex.coffee'

@@ -1,4 +1,6 @@
-(($)->
+module.exports = ->
+  $ = require('../../bower_components/jquery/dist/jquery.js')
+  require('../../src/kalathemeAutocomplete.coffee')
   describe 'kalathemeAutocomplete', ->
     testInput = null
     testSandbox = null
@@ -25,7 +27,3 @@
 
         expect( Drupal.behaviors.autocomplete ).toBeDefined()
         #@todo get this thing going
-
-
-
-)(jQuery)

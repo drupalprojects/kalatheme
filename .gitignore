@@ -21,3 +21,4 @@ temp
 
 dist
 build
+test/tests.js

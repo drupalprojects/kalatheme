@@ -1,4 +1,6 @@
-(($) ->
+module.exports = ->
+  $ = require('../../bower_components/jquery/dist/jquery.js')
+  require('../../src/kalathemeProgress.coffee')
   describe 'kalathemeProgress bar is a replacement for Drupal core progress bars' , ->
     testProgressBar = null
 
@@ -101,5 +103,3 @@
         expect(text.indexOf(errorMessage)).toBeTruthy()
       it 'should call an error callback', ->
         expect(testProgressBar.errorCallback).toHaveBeenCalled()
-
-)(jQuery)
