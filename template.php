@@ -75,6 +75,9 @@ function kalatheme_theme($existing, $type, $theme, $path) {
         'attributes' => Null
       ),
       'file' => 'includes/utils.inc'
+    ),
+    'icon_html_tag' => array(
+      'file' => 'includes/icons.inc',
     )
   );
 }
