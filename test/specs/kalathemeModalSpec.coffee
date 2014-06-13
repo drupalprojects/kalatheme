@@ -1,5 +1,5 @@
 module.exports = ->
-  $ = require('../../bower_components/jquery/dist/jquery.js')
+  $ = require('jquery')
   require('../../src/kalathemeModal.coffee')
   describe 'kalathemeModal', ->
     Drupal.CTools.Modal.modalContent = () ->

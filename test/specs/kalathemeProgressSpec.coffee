@@ -1,5 +1,5 @@
 module.exports = ->
-  $ = require('../../bower_components/jquery/dist/jquery.js')
+  $ = require('jquery')
   require('../../src/kalathemeProgress.coffee')
   describe 'kalathemeProgress bar is a replacement for Drupal core progress bars' , ->
     testProgressBar = null

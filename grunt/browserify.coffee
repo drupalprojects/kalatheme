@@ -1,7 +1,7 @@
 module.exports =
   theme:
     files:
-      './test/tests.js' : './test/specs/testIndex.coffee'
+      './dist/js/kalatheme.pkg.js' : './src/kalatheme-index.coffee'
   tests:
     files:
-      './test/tests.js' : './test/specs/testIndex.coffee'
+      './test/specs/specsBundle.js' : './test/specs/testIndex.coffee'

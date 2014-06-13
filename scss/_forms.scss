@@ -1,0 +1,12 @@
+// Forms
+/////////////////////////
+
+
+// fixes checkbox alignment 
+table .form-type-checkbox {
+  input[type=checkbox],
+  input[type=radio]{
+    float: none;
+    margin-left: 0;
+  }
+}
