@@ -68,16 +68,8 @@ function kalatheme_theme($existing, $type, $theme, $path) {
         'site_name' => NULL
       )
     ),
-    'font_icon' => array(
-      'variables' => array(
-        'keys' => array( 'flag' ),
-        'alt_text' => Null,
-        'attributes' => Null
-      ),
-      'file' => 'includes/utils.inc'
-    ),
     'icon_html_tag' => array(
-      'file' => 'includes/icons.inc',
+      'file' => 'includes/icons/icons.inc',
     )
   );
 }
