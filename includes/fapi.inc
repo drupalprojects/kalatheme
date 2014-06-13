@@ -22,14 +22,6 @@ function kalatheme_form($variables) {
   return '<form' . drupal_attributes($element['#attributes']) . '><div>' . $element['#children'] . '</div></form>';
 }
 
-function kalatheme_preprocess_form_element(&$variables){
-  dpm($variables);
-  $element = $variables['element'];
-
-}
-
-
-
 /**
  * Implements hook_element_info_alter().
  */
