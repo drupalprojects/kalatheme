@@ -15,9 +15,9 @@ require_once dirname(__FILE__) . '/glyphicons.inc';
  */
 function _kalatheme_font_icon($name, $attr = array()){
   $output = NULL;
-  if (module_exists('icon')){
-    theme()
-  }
+  // if (module_exists('icon')){
+  //   theme('')
+  // }
   if($output === NULL){
     $attr = array();
     $attr += array('aria-hidden' => 'true' );
@@ -32,11 +32,9 @@ function _kalatheme_font_icon($name, $attr = array()){
       $attr['class'][] = 'glyphicon';
     }
 
-    foreach($variables['keys'] as $class){
-      $attr['class'][] = $icon_font_prefix . $class;
-    }
-    $stub = '<span '. drupal_attributes($attr) . '></span>';
-    return $stub;
+
+    $attr['class'][] = $icon_font_prefix . $class;
+    $output = '<span '. drupal_attributes($attr) . '></span>';
   }
   return $output;
 }
