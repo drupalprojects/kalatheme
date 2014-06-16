@@ -46,11 +46,22 @@ function kalatheme_bootstrap_library_form() {
     '#prefix' => "<div id='kalapreview-image-load-image'>",
     '#suffix' => "</div>",
   );
-  $form['bootstrap']['fontawesome'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Use Font Awesome'),
+  $form['bootstrap']['icon_font_library'] = array(
+    '#type' => 'select',
+    '#title' => t('Icon Font Library'),
     '#default_value' => FALSE,
-    '#description' => t('Check here if you want to use the Font Awesome icon set with your theme.'),
+    '#description' => t('Select which icon font library you want to use with the theme.'),
+    '#options' => array(
+      'bootstrap_glyphicons' => t('Bootstrap Glyphicons'),
+      'font_awesome' => t('Font Awesome'),
+      'none' => t('None')
+    )
+  );
+  $form['bootstrap']['font_awesome_cdn'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Icon Font Library'),
+    '#default_value' => TRUE,
+    '#description' => t('Check here if you want to use font-awesome CSS CDN to load the icon-font library'),
   );
   $form['bootstrap']['bootstrap_upload'] = array(
     '#type' => 'file',

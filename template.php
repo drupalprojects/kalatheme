@@ -156,7 +156,7 @@ function kalatheme_process_page(&$variables) {
     }
   }
   // Use Font Awesome
-  if (theme_get_setting('fontawesome')) {
+  if (theme_get_setting('font_awesome_cdn')) {
     // let JS know that we have this enabled
     drupal_add_js(array('kalatheme' => array('fontawesome' => true) ), 'setting');
     drupal_add_css($base['scheme'] . ":" . KALATHEME_FONTAWESOME_CSS, 'external');

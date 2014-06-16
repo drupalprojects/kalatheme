@@ -37,7 +37,8 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   // Kalatheme settings
   $form = array_merge($form, kalatheme_bootstrap_library_form());
   $form['bootstrap']['bootstrap_library']['#default_value'] = theme_get_setting('bootstrap_library');
-  $form['bootstrap']['fontawesome']['#default_value'] = theme_get_setting('fontawesome');
+  $form['bootstrap']['icon_font_library']['#default_value'] = theme_get_setting('icon_font_library');
+  $form['bootstrap']['font_awesome_cdn']['#default_value'] = theme_get_setting('font_awesome_cdn');
   $form['bootstrap']['bootstrap_upload']['#default_value'] = theme_get_setting('bootstrap_upload');
   // Subtheme settings
   $form = array_merge($form, kalatheme_subtheme_form());
@@ -121,14 +122,6 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#field' => $field,
     '#field_type' => $field['type'],
     '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
-  );
-  // Select navbar style and placement
-  $form['navbar_style_fieldset'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Navbar Style'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-    '#description' => t('The navbar\'s style is configurable.')
   );
 
 
