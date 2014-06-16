@@ -13,11 +13,15 @@ require_once dirname(__FILE__) . '/glyphicons.inc';
 /**
  * Theme function for icon fonts.
  */
-function _kalatheme_font_icon($name, $attr = array()){
+function _kalatheme_font_icon($name, $bundle = 'font_awesome' , $attr = array()){
   $output = NULL;
-  // if (module_exists('icon')){
-  //   theme('')
-  // }
+  if (module_exists('icon')){
+    $output = theme('icon', array(
+      'bundle' => $bundle,
+      'icon' => $name,
+      'attributes' => $attr
+    ));
+  }
   if($output === NULL){
     $attr = array();
     $attr += array('aria-hidden' => 'true' );
@@ -153,7 +157,7 @@ function kalatheme_icon_bundles() {
 
   $bundles['bootstrap_glyhicons'] = array(
     'render' => 'html_tag',
-    'provider' => 'bootstrap_glyhicons',
+    'provider' => 'bootstrap_gyphicons',
     'title' => t('Bootstrap Glyphicons'),
     'icons' => _kalatheme_glyphicons_icons()
   );

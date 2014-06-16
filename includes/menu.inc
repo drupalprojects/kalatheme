@@ -234,7 +234,14 @@ function kalatheme_menu_local_actions($variables) {
 
   // Render the dropdown.
   $output = $container_attributes ?  '<li' . $container_attributes . '>' : '<li>';
-  $output .= $toggle_attributes ?  '<a role="button"' . $toggle_attributes . '><span class="glyphicon glyphicon-wrench fa fa-wrench" aria-hidden="true"></span> ' . t('Actions') . '<span class="caret" aria-hidden="true"></span></a>' : '<a role="button">' . t('Actions') . '<span class="caret" aria-hidden="true"></span></a>';
+  if($toggle_attributes){
+    $output .= '<a role="button"' . $toggle_attributes . '>';
+    $output .= _kalatheme_font_icon('wrench') . t('Actions');
+    $output .= '<span class="caret" aria-hidden="true"></span></a>';
+  }else{
+    $output .= '<a role="button">' . t('Actions');
+    $output .= '<span class="caret" aria-hidden="true"></span></a>';
+  }
   $output .= $content_attributes ? '<ul' . $content_attributes . '>' : '<ul>';
   $output .= drupal_render($variables['menu_actions']);
   $output .= '</ul>';
