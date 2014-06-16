@@ -134,9 +134,9 @@ function kalatheme_links__system_main_menu($variables) {
       // If link has child items, print a toggle and dropdown menu.
       if (!empty($link['#below'])) {
         $dropdown_id = 'main-menu-dropdown-' . $i;
-        $output .= '<a href="#"  role="button" class="dropdown-toggle dropdown-toggle-kt" data-toggle="dropdown" id="' . $dropdown_id. '" aria-haspopup="true" aria-expanded="false">';
+        $output .= '<a href="#" class="dropdown-toggle dropdown-toggle-kt" data-toggle="dropdown" id="' . $dropdown_id. '" aria-haspopup="true" aria-expanded="false">';
         //Add in text to be available for AT
-        $output .= '<span class="element-invisible">Toggle submenu for ' . $link['#title'] . '</span><span class="caret" aria-hidden="true"></span></a>';
+        $output .= '<span class="element-invisible">' . $link['#title'] . ' Submenu</span><span class="caret" aria-hidden="true"></span></a>';
         $output .= theme('links__system_main_menu', array(
           'links' => $link['#below'],
           'attributes' => array(
@@ -207,7 +207,8 @@ function kalatheme_menu_local_task($variables) {
     $classes[] = 'dropdown';
     $link['localized_options']['attributes']['class'][] = 'dropdown-toggle';
     $link['localized_options']['attributes']['data-toggle'][] = 'dropdown';
-    $link['localized_options']['attributes']['role'] = 'button';
+    $link['localized_options']['attributes']['aria-haspopup'][] = 'true';
+    $link['localized_options']['attributes']['aria-expanded'][] = 'false';
     $link['href'] = '#';
     $link_text .= ' <span class="caret" aria-hidden="true"></span>';
     $output = '<li class="' . implode(' ', $classes) . '">';
@@ -234,7 +235,7 @@ function kalatheme_menu_local_actions($variables) {
 
   // Render the dropdown.
   $output = $container_attributes ?  '<li' . $container_attributes . '>' : '<li>';
-  $output .= $toggle_attributes ?  '<a role="button"' . $toggle_attributes . '><span class="glyphicon glyphicon-wrench fa fa-wrench" aria-hidden="true"></span> ' . t('Actions') . '<span class="caret" aria-hidden="true"></span></a>' : '<a role="button">' . t('Actions') . '<span class="caret" aria-hidden="true"></span></a>';
+  $output .= $toggle_attributes ?  '<a' . $toggle_attributes . '><span class="glyphicon glyphicon-wrench fa fa-wrench" aria-hidden="true"></span> ' . t('Actions') . '<span class="caret" aria-hidden="true"></span></a>' : '<a href="#">' . t('Actions') . '<span class="caret" aria-hidden="true"></span></a>';
   $output .= $content_attributes ? '<ul' . $content_attributes . '>' : '<ul>';
   $output .= drupal_render($variables['menu_actions']);
   $output .= '</ul>';
