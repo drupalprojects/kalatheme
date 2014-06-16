@@ -50,7 +50,7 @@ function kalatheme_bootstrap_library_form() {
     '#type' => 'select',
     '#title' => t('Icon Font Library'),
     '#default_value' => FALSE,
-    '#description' => t('Select which icon font library you want to use with the theme.'),
+    '#description' => t('Select which icon font library you want to use with the theme. If you\'re using the whole Bootstrap library, glyphicons are already included. Font Awesome is a great choice with over 400 icons.'),
     '#options' => array(
       'bootstrap_glyphicons' => t('Bootstrap Glyphicons'),
       'font_awesome' => t('Font Awesome'),
@@ -59,9 +59,17 @@ function kalatheme_bootstrap_library_form() {
   );
   $form['bootstrap']['font_awesome_cdn'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Icon Font Library'),
-    '#default_value' => TRUE,
+    '#title' => t('CDN Font Awesome CSS'),
+    '#default_value' => FALSE,
     '#description' => t('Check here if you want to use font-awesome CSS CDN to load the icon-font library'),
+    // This #states rule says that the "file upload" field should only
+    // be shown if the "bootstrap_library" form element is set to "custom".
+    '#states' => array(
+      'visible' => array(
+        ':input[name="icon_font_library"]' => array('value' => 'font_awesome'),
+      ),
+    )
+
   );
   $form['bootstrap']['bootstrap_upload'] = array(
     '#type' => 'file',
