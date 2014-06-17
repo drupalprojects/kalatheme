@@ -155,13 +155,14 @@ function kalatheme_process_page(&$variables) {
       drupal_add_css($base['scheme'] . ":" . $css, 'external');
     }
   }
+  $font_awesome_active = FALSE;
   // Use Font Awesome
   if (theme_get_setting('font_awesome_cdn')) {
-    // let JS know that we have this enabled
-    drupal_add_js(array('kalatheme' => array('fontawesome' => true) ), 'setting');
+    $font_awesome_active = TRUE;
     drupal_add_css($base['scheme'] . ":" . KALATHEME_FONTAWESOME_CSS, 'external');
   }
-
+  // let JS know that we have this enabled
+  drupal_add_js(array('kalatheme' => array('fontawesome' => $font_awesome_active ) ), 'setting');
   // Define variables to theme local actions as a dropdown.
   $dropdown_attributes = array(
     'container' => array(
