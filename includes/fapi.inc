@@ -363,3 +363,18 @@ function kalatheme_fieldset($variables) {
   $output .= "</fieldset>\n";
   return $output;
 }
+/**
+ * Implements theme_form_required_marker().
+ */
+function kalatheme_form_required_marker($variables) {
+
+  $t = get_t();
+  $attributes = array(
+    'class' => 'form-required',
+    'title' => $t('This field is required.'),
+    //Don't announce this since we are already giving the form aria-required
+    //required attributes.
+    'aria-hidden' => 'true'
+  );
+  return '<span' . drupal_attributes($attributes) . '>*</span>';
+}
