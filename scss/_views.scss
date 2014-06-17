@@ -1,0 +1,10 @@
+// Views Related styles
+//////////////////////////////////////
+
+// Resolves views-admin label issue;
+// @link https://github.com/drupalprojects/kalatheme/issues/31
+.views-admin-label{
+  display: inline-block;
+  float: left;
+  margin-right: 3pt;
+}
