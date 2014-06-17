@@ -1,3 +1,14 @@
+<a name="4.0.1"></a>
+### 4.0.1 (2014-06-16)
+
+
+#### Bug Fixes
+
+* **a11y:** Usability for ScreenReaders - revert back to ul>li>a ([495c5273](https://github.com/drupalprojects/kalatheme/commit/495c527311048c904ee6823522033ba3fba30ea7))
+* **css:** Fixes issue #20 ([8139f15f](https://github.com/drupalprojects/kalatheme/commit/8139f15f3ae9616e130c99c9a5f8e1e6dc36c744))
+* **kalacustomize:** Resolves issue where panels styles don't render ([250b1353](https://github.com/drupalprojects/kalatheme/commit/250b13536c53436ba8c8e74513bb9932e840622e))
+
+
 <a name="4.0.0"></a>
 ## 4.0.0 (2014-06-12)
 
