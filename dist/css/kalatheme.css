@@ -775,4 +775,9 @@ table .form-type-checkbox input[type=radio] {
     .dropdown-kt > a.dropdown-toggle-kt .caret {
       margin-left: -2px; }
 
+.views-admin-label {
+  display: inline-block;
+  float: left;
+  margin-right: 3pt; }
+
 /*# sourceMappingURL=kalatheme.css.map */
