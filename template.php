@@ -27,7 +27,7 @@ define('KALATHEME_GRID_SILLY', 1/42);
 
 // Load Bootstrap overrides of Drupal theme things
 require_once dirname(__FILE__) . '/includes/core.inc';
-require_once dirname(__FILE__) . '/includes/icons.inc';
+require_once dirname(__FILE__) . '/includes/icons/icons.inc';
 require_once dirname(__FILE__) . '/includes/fapi.inc';
 require_once dirname(__FILE__) . '/includes/fields.inc';
 require_once dirname(__FILE__) . '/includes/menu.inc';
@@ -68,13 +68,8 @@ function kalatheme_theme($existing, $type, $theme, $path) {
         'site_name' => NULL
       )
     ),
-    'font_icon' => array(
-      'variables' => array(
-        'keys' => array( 'flag' ),
-        'alt_text' => Null,
-        'attributes' => Null
-      ),
-      'file' => 'includes/utils.inc'
+    'icon_html_tag' => array(
+      'file' => 'includes/icons/icons.inc',
     )
   );
 }
@@ -161,7 +156,7 @@ function kalatheme_process_page(&$variables) {
     }
   }
   // Use Font Awesome
-  if (theme_get_setting('fontawesome')) {
+  if (theme_get_setting('font_awesome_cdn')) {
     // let JS know that we have this enabled
     drupal_add_js(array('kalatheme' => array('fontawesome' => true) ), 'setting');
     drupal_add_css($base['scheme'] . ":" . KALATHEME_FONTAWESOME_CSS, 'external');
