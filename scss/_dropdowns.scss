@@ -5,14 +5,14 @@
   > a{
     float:left;
     width: 90%;
-    @media (min-width: 768px){
-      width: auto;
-      &.dropdown-toggle-kt{ width: auto; }
-    }
     &.dropdown-toggle-kt{
       width: 10%;
       padding-left: 7.5px;
       .caret{margin-left: -2px;}
+    }
+    @media (min-width: $grid-float-breakpoint){
+      width: auto;
+      &.dropdown-toggle-kt{ width: auto; }
     }
   }
 }
