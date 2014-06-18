@@ -298,16 +298,6 @@ body.ctools-modal-open {
 #modal-content .form-item-exposed-use-pager {
   display: block; }
 
-ul.nav > li.dropdown:after {
-  width: 100%;
-  height: 2px;
-  background: none;
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  right: 0;
-  content: ''; }
-
 .panel-display > .row {
   margin-bottom: 20px; }
 
@@ -764,16 +754,16 @@ table .form-type-checkbox input[type=radio] {
 .dropdown-kt > a {
   float: left;
   width: 90%; }
-  @media (min-width: 768px) {
-    .dropdown-kt > a {
-      width: auto; }
-      .dropdown-kt > a.dropdown-toggle-kt {
-        width: auto; } }
   .dropdown-kt > a.dropdown-toggle-kt {
     width: 10%;
     padding-left: 7.5px; }
     .dropdown-kt > a.dropdown-toggle-kt .caret {
       margin-left: -2px; }
+  @media (min-width: 768px) {
+    .dropdown-kt > a {
+      width: auto; }
+      .dropdown-kt > a.dropdown-toggle-kt {
+        width: auto; } }
 
 .views-admin-label {
   display: inline-block;
