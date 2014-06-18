@@ -1,3 +1,12 @@
+<a name="4.0.2"></a>
+### 4.0.2 (2014-06-17)
+
+
+#### Bug Fixes
+
+* **icons:** Cleanup missing settings and make sure that AJAX works. ([4535c73c](https://github.com/drupalprojects/kalatheme/commit/4535c73cc84435ba63ca835f45adac3133e773ca))
+
+
 <a name="4.0.1"></a>
 ### 4.0.1 (2014-06-17)
 

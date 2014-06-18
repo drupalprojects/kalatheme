@@ -1,4 +1,4 @@
-/*! kalatheme - v4.0.1 - 2014-06-17
+/*! kalatheme - v4.0.2 - 2014-06-17
 * https://drupal.org/project/kalatheme
 * Copyright (c) 2014 ; Licensed  */(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 module.exports = function() {
@@ -256,123 +256,118 @@ require('./dropdownExpand.coffee')();
   if (window.Drupal == null) {
     window.Drupal = {};
   }
-  if (Drupal.CTools == null) {
-    Drupal.CTools = {
-      Modal: {
-        show: null
-      }
-    };
-  }
-  Drupal.CTools.Modal.show = function(choice) {
-    var defaults, opts, resize, settings;
-    opts = {};
-    if (choice && typeof choice === "string" && Drupal.settings[choice]) {
-      $.extend(true, opts, Drupal.settings[choice]);
-    } else {
-      if (choice) {
-        $.extend(true, opts, choice);
-      }
-    }
-    defaults = {
-      modalTheme: "CToolsModalDialog",
-      throbberTheme: "CToolsModalThrobber",
-      animation: "show",
-      animationSpeed: "fast",
-      modalSize: {
-        type: "scale",
-        width: 0.8,
-        height: 0.8,
-        addWidth: 0,
-        addHeight: 0,
-        contentRight: 25,
-        contentBottom: 45
-      },
-      modalOptions: {
-        opacity: 0.55,
-        background: "#fff"
-      }
-    };
-    settings = {};
-    $.extend(true, settings, defaults, Drupal.settings.CToolsModal, opts);
-    if (Drupal.CTools.Modal.currentSettings && Drupal.CTools.Modal.currentSettings !== settings) {
-      Drupal.CTools.Modal.modal.remove();
-      Drupal.CTools.Modal.modal = null;
-    }
-    Drupal.CTools.Modal.currentSettings = settings;
-    resize = function(e) {
-      var context, height, width;
-      context = (e ? document : Drupal.CTools.Modal.modal);
-      if (Drupal.CTools.Modal.currentSettings.modalSize.type === "scale") {
-        width = $(window).width() * Drupal.CTools.Modal.currentSettings.modalSize.width;
-        height = $(window).height() * Drupal.CTools.Modal.currentSettings.modalSize.height;
+  if (Drupal.CTools.Modal != null) {
+    Drupal.CTools.Modal.show = function(choice) {
+      var defaults, opts, resize, settings;
+      opts = {};
+      if (choice && typeof choice === "string" && Drupal.settings[choice]) {
+        $.extend(true, opts, Drupal.settings[choice]);
       } else {
-        width = Drupal.CTools.Modal.currentSettings.modalSize.width;
-        height = Drupal.CTools.Modal.currentSettings.modalSize.height;
+        if (choice) {
+          $.extend(true, opts, choice);
+        }
       }
-      $("div.ctools-modal-dialog", context).css({
-        width: width + Drupal.CTools.Modal.currentSettings.modalSize.addWidth + "px",
-        height: height + Drupal.CTools.Modal.currentSettings.modalSize.addHeight + "px"
-      });
-      $("div.ctools-modal-dialog .modal-body", context).css({
-        width: (width - Drupal.CTools.Modal.currentSettings.modalSize.contentRight) + "px",
-        height: (height - Drupal.CTools.Modal.currentSettings.modalSize.contentBottom) + "px"
-      });
+      defaults = {
+        modalTheme: "CToolsModalDialog",
+        throbberTheme: "CToolsModalThrobber",
+        animation: "show",
+        animationSpeed: "fast",
+        modalSize: {
+          type: "scale",
+          width: 0.8,
+          height: 0.8,
+          addWidth: 0,
+          addHeight: 0,
+          contentRight: 25,
+          contentBottom: 45
+        },
+        modalOptions: {
+          opacity: 0.55,
+          background: "#fff"
+        }
+      };
+      settings = {};
+      $.extend(true, settings, defaults, Drupal.settings.CToolsModal, opts);
+      if (Drupal.CTools.Modal.currentSettings && Drupal.CTools.Modal.currentSettings !== settings) {
+        Drupal.CTools.Modal.modal.remove();
+        Drupal.CTools.Modal.modal = null;
+      }
+      Drupal.CTools.Modal.currentSettings = settings;
+      resize = function(e) {
+        var context, height, width;
+        context = (e ? document : Drupal.CTools.Modal.modal);
+        if (Drupal.CTools.Modal.currentSettings.modalSize.type === "scale") {
+          width = $(window).width() * Drupal.CTools.Modal.currentSettings.modalSize.width;
+          height = $(window).height() * Drupal.CTools.Modal.currentSettings.modalSize.height;
+        } else {
+          width = Drupal.CTools.Modal.currentSettings.modalSize.width;
+          height = Drupal.CTools.Modal.currentSettings.modalSize.height;
+        }
+        $("div.ctools-modal-dialog", context).css({
+          width: width + Drupal.CTools.Modal.currentSettings.modalSize.addWidth + "px",
+          height: height + Drupal.CTools.Modal.currentSettings.modalSize.addHeight + "px"
+        });
+        $("div.ctools-modal-dialog .modal-body", context).css({
+          width: (width - Drupal.CTools.Modal.currentSettings.modalSize.contentRight) + "px",
+          height: (height - Drupal.CTools.Modal.currentSettings.modalSize.contentBottom) + "px"
+        });
+      };
+      if (!Drupal.CTools.Modal.modal) {
+        Drupal.CTools.Modal.modal = $(Drupal.theme(settings.modalTheme));
+        if (settings.modalSize.type === "scale") {
+          $(window).bind("resize", resize);
+        }
+      }
+      $("body").addClass("modal-open");
+      resize();
+      $(".modal-title", Drupal.CTools.Modal.modal).html(Drupal.CTools.Modal.currentSettings.loadingText);
+      Drupal.CTools.Modal.modalContent(Drupal.CTools.Modal.modal, settings.modalOptions, settings.animation, settings.animationSpeed);
+      $("#modalContent .modal-body").html(Drupal.theme(settings.throbberTheme));
     };
-    if (!Drupal.CTools.Modal.modal) {
-      Drupal.CTools.Modal.modal = $(Drupal.theme(settings.modalTheme));
-      if (settings.modalSize.type === "scale") {
-        $(window).bind("resize", resize);
+    Drupal.CTools.Modal.dismiss = function() {
+      console.log("oi");
+      if (Drupal.CTools.Modal.modal) {
+        $("body").removeClass("modal-open");
+        Drupal.CTools.Modal.unmodalContent(Drupal.CTools.Modal.modal);
       }
+    };
+    if (Drupal.theme == null) {
+      Drupal.theme = function() {};
     }
-    $("body").addClass("modal-open");
-    resize();
-    $(".modal-title", Drupal.CTools.Modal.modal).html(Drupal.CTools.Modal.currentSettings.loadingText);
-    Drupal.CTools.Modal.modalContent(Drupal.CTools.Modal.modal, settings.modalOptions, settings.animation, settings.animationSpeed);
-    $("#modalContent .modal-body").html(Drupal.theme(settings.throbberTheme));
-  };
-  Drupal.CTools.Modal.dismiss = function() {
-    console.log("oi");
-    if (Drupal.CTools.Modal.modal) {
-      $("body").removeClass("modal-open");
-      Drupal.CTools.Modal.unmodalContent(Drupal.CTools.Modal.modal);
-    }
-  };
-  if (Drupal.theme == null) {
-    Drupal.theme = function() {};
+
+    /*
+    Provide the HTML for the Modal.
+     */
+    Drupal.theme.prototype.CToolsModalDialog = function() {
+      var html;
+      html = "";
+      html += "  <div id=\"ctools-modal\">";
+      html += "    <div class=\"ctools-modal-dialog modal-dialog\">";
+      html += "      <div class=\"modal-content\">";
+      html += "        <div class=\"modal-header\">";
+      html += "          <button type=\"button\" class=\"close ctools-close-modal\" aria-hidden=\"true\">&times;</button>";
+      html += "          <h4 id=\"modal-title\" class=\"modal-title\">&nbsp;</h4>";
+      html += "        </div>";
+      html += "        <div id=\"modal-content\" class=\"modal-body\">";
+      html += "        </div>";
+      html += "      </div>";
+      html += "    </div>";
+      html += "  </div>";
+      return html;
+    };
+
+    /*
+    Provide the HTML for Modal Throbber.
+     */
+    Drupal.theme.prototype.CToolsModalThrobber = function() {
+      var html;
+      html = "";
+      html += "  <div class=\"loading-spinner\" style=\"position: absolute; top: 45%; left: 50%\">";
+      html += "    <i class=\"fa fa-cog fa-spin fa-3x\"></i>";
+      html += "  </div>";
+      return html;
+    };
   }
-
-  /*
-  Provide the HTML for the Modal.
-   */
-  Drupal.theme.prototype.CToolsModalDialog = function() {
-    var html;
-    html = "";
-    html += "  <div id=\"ctools-modal\">";
-    html += "    <div class=\"ctools-modal-dialog modal-dialog\">";
-    html += "      <div class=\"modal-content\">";
-    html += "        <div class=\"modal-header\">";
-    html += "          <button type=\"button\" class=\"close ctools-close-modal\" aria-hidden=\"true\">&times;</button>";
-    html += "          <h4 id=\"modal-title\" class=\"modal-title\">&nbsp;</h4>";
-    html += "        </div>";
-    html += "        <div id=\"modal-content\" class=\"modal-body\">";
-    html += "        </div>";
-    html += "      </div>";
-    html += "    </div>";
-    html += "  </div>";
-    return html;
-  };
-
-  /*
-  Provide the HTML for Modal Throbber.
-   */
-  Drupal.theme.prototype.CToolsModalThrobber = function() {
-    var html;
-    html = "";
-    html += "  <div class=\"loading-spinner\" style=\"position: absolute; top: 45%; left: 50%\">";
-    html += "    <i class=\"fa fa-cog fa-spin fa-3x\"></i>";
-    html += "  </div>";
-    return html;
-  };
 })(jQuery);
 
 

@@ -103,7 +103,8 @@ function drush_kalatheme($name = NULL) {
   // Get FONT AWESOME
   $fonts = FALSE;
   if (drush_get_option('fonts')) {
-    $theme_settings['fontawesome'] = drush_get_option('fonts');
+    $theme_settings['icon_font_library'] = 'font_awesome';
+    $theme_settings['font_awesome_cdn'] = true;
   }
   // Autoload assets?
   $no_magic = FALSE;
