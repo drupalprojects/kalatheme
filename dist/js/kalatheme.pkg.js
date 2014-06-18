@@ -256,8 +256,8 @@ require('./dropdownExpand.coffee')();
   if (window.Drupal == null) {
     window.Drupal = {};
   }
-  if (Drupal.Ctools == null) {
-    Drupal.Ctools = {};
+  if (Drupal.CTools == null) {
+    Drupal.CTools = {};
   }
   if (Drupal.CTools.Modal != null) {
     Drupal.CTools.Modal.show = function(choice) {
