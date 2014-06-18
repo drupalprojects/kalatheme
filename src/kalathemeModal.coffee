@@ -10,7 +10,7 @@
   the Bootstrap modal classes correctly
   ###
   window.Drupal ?= {}
-  Drupal.Ctools ?= {}
+  Drupal.CTools ?= {}
   # quickly shims to make sure the object is available.
   if Drupal.CTools.Modal?
     Drupal.CTools.Modal.show = (choice) ->
