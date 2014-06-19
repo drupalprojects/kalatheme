@@ -15,9 +15,8 @@ require_once dirname(__FILE__) . '/glyphicons.inc';
  */
 function _kalatheme_font_icon($name, $bundle = NULL, $attr = array(), $resolvePrefix = TRUE){
   if($bundle === NULL){
-    $bundle = theme_get_setting('icon_font_library');
+    $bundle = &drupal_static(theme_get_setting('icon_font_library'));
   }
-
   // Find the icon prefix
   if($resolvePrefix){
     switch($bundle){
@@ -28,8 +27,8 @@ function _kalatheme_font_icon($name, $bundle = NULL, $attr = array(), $resolvePr
         $name = 'glyphicon-' . $name;
         break;
     }
-
   }
+
   $output = NULL;
   if (module_exists('icon')){
     $output = theme('icon', array(
@@ -147,8 +146,6 @@ function kalatheme_preprocess_icon(&$variables) {
         $classes[] = 'glyphicon';
         $classes[] = $variables['icon'];
         break;
-      default:
-        break;
     }
     if( isset($variables['attributes']['class']) ){
       $variables['attributes']['class'] += $classes;
@@ -171,7 +168,7 @@ function kalatheme_icon_bundles() {
 
   $bundles['bootstrap_glyphicons'] = array(
     'render' => 'html_tag',
-    'provider' => 'bootstrap_gyphicons',
+    'provider' => 'bootstrap_glyphicons',
     'title' => t('Bootstrap Glyphicons'),
     'icons' => _kalatheme_glyphicons_icons()
   );
