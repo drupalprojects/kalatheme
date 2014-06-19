@@ -134,9 +134,10 @@ function kalatheme_links__system_main_menu($variables) {
       // If link has child items, print a toggle and dropdown menu.
       if (!empty($link['#below'])) {
         $dropdown_id = 'main-menu-dropdown-' . $i;
-        $output .= '<a href="#" class="dropdown-toggle dropdown-toggle-kt" data-toggle="dropdown" id="' . $dropdown_id. '" aria-haspopup="true" aria-expanded="false">';
+        $output .= '<a href="#" class="dropdown-toggle dropdown-toggle-kt" data-toggle="dropdown" id="' . $dropdown_id. '" aria-expanded="false">';
         //Add in text to be available for AT
-        $output .= '<span class="element-invisible">' . $link['#title'] . ' Submenu</span><span class="caret" aria-hidden="true"></span></a>';
+        $output .= '<span class="element-invisible">' . t('Dropdown: ') . $link['#title']. '</span>';
+        $output .= '<span class="caret" aria-hidden="true"></span></a>';
         $output .= theme('links__system_main_menu', array(
           'links' => $link['#below'],
           'attributes' => array(
@@ -207,7 +208,6 @@ function kalatheme_menu_local_task($variables) {
     $classes[] = 'dropdown';
     $link['localized_options']['attributes']['class'][] = 'dropdown-toggle';
     $link['localized_options']['attributes']['data-toggle'][] = 'dropdown';
-    $link['localized_options']['attributes']['aria-haspopup'][] = 'true';
     $link['localized_options']['attributes']['aria-expanded'][] = 'false';
     $link['href'] = '#';
     $link_text .= ' <span class="caret" aria-hidden="true"></span>';
