@@ -3,7 +3,6 @@ module.exports = ->
   $(->
     toggle = $('.dropdown-toggle')
     toggle.attr({
-      'aria-haspopup': 'true'
       'aria-expanded': 'false'
     })
     $('.dropdown').on('shown.bs.dropdown', (e) ->

@@ -16,11 +16,8 @@ module.exports = () ->
       appendSetFixtures(container)
       )
     it('adds aria attributes', ->
-
-      expect(toggle).not.toHaveAttr('aria-haspopup','false')
       expect(toggle).not.toHaveAttr('aria-expanded','')
       dropdownExpand()
-      expect(toggle).toHaveAttr('aria-haspopup','true')
       expect(toggle).toHaveAttr('aria-expanded','false')
     )
     it('listens for the shown event', ->
