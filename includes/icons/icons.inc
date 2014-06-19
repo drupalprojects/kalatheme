@@ -13,7 +13,22 @@ require_once dirname(__FILE__) . '/glyphicons.inc';
 /**
  * Theme function for icon fonts.
  */
-function _kalatheme_font_icon($name, $bundle = 'font_awesome' , $attr = array()){
+function _kalatheme_font_icon($name, $bundle = NULL, $attr = array(), $resolvePrefix = TRUE){
+  if($bundle === NULL){
+    $bundle = theme_get_setting('icon_font_library');
+  }
+  // Find the icon prefix
+  if($resolvePrefix){
+    switch($bundle){
+      case('font_awesome'):
+        $name = 'fa-' . $name;
+        break;
+      case('bootstrap_glyphicons'):
+        $name = 'glyphicon-' . $name;
+        break;
+    }
+  }
+
   $output = NULL;
   if (module_exists('icon')){
     $output = theme('icon', array(
@@ -26,18 +41,16 @@ function _kalatheme_font_icon($name, $bundle = 'font_awesome' , $attr = array())
     $attr = array();
     $attr += array('aria-hidden' => 'true' );
     $attr['class'] = array();
-    $icon_font_prefix = 'glyicon-';
 
-    if( theme_get_setting('fontawesome') ){
-      $icon_font_prefix = 'fa-';
+    if($bundle === 'font_awesome'){
       $attr['class'][] = 'fa';
     }
-    else{
+    elseif($bundle === 'bootstrap_glyphicons'){
       $attr['class'][] = 'glyphicon';
     }
 
 
-    $attr['class'][] = $icon_font_prefix . $class;
+    $attr['class'][] = $name;
     $output = '<span '. drupal_attributes($attr) . '></span>';
   }
   return $output;
@@ -58,8 +71,8 @@ function kalatheme_icon_providers() {
     ),
   );
 
-  $providers['bootstrap_gyphicons'] = array(
-    'title' => t('Bootstrap Gypicons'),
+  $providers['bootstrap_glyphicons'] = array(
+    'title' => t('Bootstrap Glyphicons'),
     'url' => 'http://getbootstrap.com/components/#glyphicons',
     'default bundle' => array(
       'render' => 'html_tag',
@@ -84,7 +97,7 @@ function kalatheme_icon_default_settings(){
  */
 function kalatheme_icon_bundle_configure(&$settings, &$form_state, &$complete_form) {
   $bundle = $form_state['bundle'];
-  if ($bundle['provider'] === 'font_awesome' || 'bootstrap_gyphicons') {
+  if ($bundle['provider'] === 'font_awesome' || 'bootstrap_glyphicons') {
     $settings['tag'] = array(
       '#type' => 'select',
       '#title' => t('HTML Markup'),
@@ -127,13 +140,11 @@ function kalatheme_preprocess_icon(&$variables) {
     switch($variables['bundle']['provider']){
       case 'font_awesome':
         $classes[] = 'fa';
-        $classes[] = 'fa-' . $variables['icon'];
-        break;
-      case 'bootstrap_glyhicons':
-        $classes[] = 'glyphicon';
         $classes[] = $variables['icon'];
         break;
-      default:
+      case 'bootstrap_glyphicons':
+        $classes[] = 'glyphicon';
+        $classes[] = $variables['icon'];
         break;
     }
     if( isset($variables['attributes']['class']) ){
@@ -155,9 +166,9 @@ function kalatheme_icon_bundles() {
     'icons' => _kalatheme_fontawesome_icons()
   );
 
-  $bundles['bootstrap_glyhicons'] = array(
+  $bundles['bootstrap_glyphicons'] = array(
     'render' => 'html_tag',
-    'provider' => 'bootstrap_gyphicons',
+    'provider' => 'bootstrap_glyphicons',
     'title' => t('Bootstrap Glyphicons'),
     'icons' => _kalatheme_glyphicons_icons()
   );

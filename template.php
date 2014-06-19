@@ -94,21 +94,40 @@ function kalatheme_js_alter(&$javascript){
 }
 
 /**
+ * Helper function to return an array of CSS to remove on the page.
+ */
+function _kalatheme_css_excludes(){
+  // Unset some core css & panopoly css.
+  $excludes = &drupal_static(__FUNCTION__);
+  if (!isset($excludes)) {
+    if ($cache = cache_get('kalatheme_css_excludes')) {
+      $excludes = $cache->data;
+    }
+    else {
+      //Can add more expensive operations here.
+      $panopoly_magic_path = drupal_get_path('module', 'panopoly_magic');
+      $excludes = array(
+        drupal_get_path('module', 'panopoly_admin') . '/panopoly-admin.css',
+        $panopoly_magic_path . '/css/panopoly-modal.css',
+        $panopoly_magic_path . '/css/panopoly-magic.css',
+        'modules/system/system.menus.css',
+        drupal_get_path('module','admin_views') . '/admin_views.css'
+      );
+      // Set the cache
+      cache_set('kalatheme_css_excludes', $excludes, 'cache');
+    }
+  }
+  return $excludes;
+}
+
+/**
  * Remove conflicting CSS.
  *
  * Implements hook_css_alter().
  */
 function kalatheme_css_alter(&$css) {
-  // Unset some core css & panopoly css.
-  $panopoly_magic_path = drupal_get_path('module', 'panopoly_magic');
-  $excludes = array(
-    drupal_get_path('module', 'panopoly_admin') . '/panopoly-admin.css',
-    $panopoly_magic_path . '/css/panopoly-modal.css',
-    $panopoly_magic_path . '/css/panopoly-magic.css',
-    'modules/system/system.menus.css'
-  );
+  $excludes = _kalatheme_css_excludes();
   $css = _kalatheme_remove_by_key($excludes, $css);
-
 }
 
 

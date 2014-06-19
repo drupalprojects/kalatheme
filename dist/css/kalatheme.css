@@ -770,4 +770,10 @@ table .form-type-checkbox input[type=radio] {
   float: left;
   margin-right: 3pt; }
 
+.row .views-exposed-widget[class*="col"] {
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px; }
+
 /*# sourceMappingURL=kalatheme.css.map */

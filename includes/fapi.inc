@@ -321,12 +321,7 @@ function kalatheme_textfield($variables){
     $attributes['disabled'] = 'disabled';
     $attributes['class'][] = 'autocomplete';
 
-    $icon = theme('font_icon',
-      array(
-        'keys' => array( 'refresh' ),
-        'alt_text' => 'Loading'
-      )
-    );
+    $icon = _kalatheme_font_icon('refresh');
 
     $output = '<div class="input-group">' . $output . '<span class="input-group-addon">' . $icon . '</span></div>';
 

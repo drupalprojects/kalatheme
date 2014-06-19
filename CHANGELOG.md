@@ -1,4 +1,37 @@
 <a name="4.0.2"></a>
+### 4.0.2 (2014-06-19)
+
+
+#### Bug Fixes
+
+* **a11y:**
+  * dropdown verbosity fix ([af3df338](https://github.com/drupalprojects/kalatheme/commit/af3df338559ec5249d58489324daf8fbe956a446))
+  * Hides the astrix for AT on required form fields ([4475705a](https://github.com/drupalprojects/kalatheme/commit/4475705a50a5930d6b8006c1d839a04bfb3e5532))
+  * Usability for ScreenReaders - revert back to ul>li>a ([495c5273](https://github.com/drupalprojects/kalatheme/commit/495c527311048c904ee6823522033ba3fba30ea7))
+* **config:** Fixes the new settings form a bit more ([faef85d8](https://github.com/drupalprojects/kalatheme/commit/faef85d8d2cfd8bea1bbf884a1951cdedac45529))
+* **css:**
+  * kt-dropdown styles work better with mobile ([83cfd658](https://github.com/drupalprojects/kalatheme/commit/83cfd6586299b0da9df6a0b75a09aa37a695cea8))
+  * fixes issue #31 views-admin-label ([eac4c3d5](https://github.com/drupalprojects/kalatheme/commit/eac4c3d5b52d378d6b0a885cba20faceefc541d4))
+  * Fixes issue #20 ([8139f15f](https://github.com/drupalprojects/kalatheme/commit/8139f15f3ae9616e130c99c9a5f8e1e6dc36c744))
+* **icons:**
+  * Fixing the icon API integration. ([6cf67104](https://github.com/drupalprojects/kalatheme/commit/6cf67104914312576a769e1d68a4d166640883e0))
+  * Working on stabilizing the icon api integration ([738a4906](https://github.com/drupalprojects/kalatheme/commit/738a4906f2301f2293d2ca205c9d774f62b8b387))
+  * Cleanup missing settings and make sure that AJAX works. ([ed29ffb3](https://github.com/drupalprojects/kalatheme/commit/ed29ffb32f40a6d2939f099395f0a85c6072fba0))
+* **js:**
+  * typo in stubbing statement Drupal.CTools ([265cfab6](https://github.com/drupalprojects/kalatheme/commit/265cfab6faad45ccdea4f86de3ddaa18fa5cc82f))
+  * Drupal.Ctools unknown error ([8235697f](https://github.com/drupalprojects/kalatheme/commit/8235697fe1d97e20d30de42476194249bcbbe65b))
+
+
+#### Features
+
+* **icons:**
+  * Includes support for Icon API integeration. ([caf6127b](https://github.com/drupalprojects/kalatheme/commit/caf6127bde32631341f04830d541050090787e7c))
+  * Updating the theme configuration form ([168dd3cc](https://github.com/drupalprojects/kalatheme/commit/168dd3cce42c96105a8d033ffb76248c133001fd))
+  * Adding support for the icon api ([b169efff](https://github.com/drupalprojects/kalatheme/commit/b169efff1205af51520f5d3dac961a315951501f))
+  * Provides support for icon fonts. ([e4489c8b](https://github.com/drupalprojects/kalatheme/commit/e4489c8be13528682c7856a334ac78c815213c9c))
+
+
+<a name="4.0.2"></a>
 ### 4.0.2 (2014-06-17)
 
 
