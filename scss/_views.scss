@@ -8,3 +8,12 @@
   float: left;
   margin-right: 3pt;
 }
+
+
+//General Reset of padding for better layout
+.row .views-exposed-widget[class*="col"]{
+  position: relative;
+  min-height: 1px;
+  padding-left:  ($grid-gutter-width / 2);
+  padding-right: ($grid-gutter-width / 2);
+}

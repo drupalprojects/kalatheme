@@ -15,7 +15,7 @@ require_once dirname(__FILE__) . '/glyphicons.inc';
  */
 function _kalatheme_font_icon($name, $bundle = NULL, $attr = array(), $resolvePrefix = TRUE){
   if($bundle === NULL){
-    $bundle = &drupal_static(theme_get_setting('icon_font_library'));
+    $bundle = theme_get_setting('icon_font_library');
   }
   // Find the icon prefix
   if($resolvePrefix){
