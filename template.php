@@ -166,7 +166,7 @@ function kalatheme_process_page(&$variables) {
   // Use the CDN if not using libraries
   if (!kalatheme_use_libraries()) {
     $library = theme_get_setting('bootstrap_library');
-    if ($library !== 'none') {
+    if ($library !== 'none' && !empty($library)) {
       // Add the JS
       drupal_add_js($base['scheme'] . ":" . KALATHEME_BOOTSTRAP_JS, 'external');
       // Add the CSS
