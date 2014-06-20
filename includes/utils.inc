@@ -336,14 +336,3 @@ function kalatheme_backend_check() {
 function kalatheme_has_write_access() {
   return is_writable(drupal_realpath(kalatheme_lib_dir())) && is_writable(drupal_realpath('sites/all/modules'));
 }
-
-/**
- * Return the libraries dir to check
- */
-function kalatheme_lib_dir() {
-  if (!is_dir('sites/all/libraries')) {
-    mkdir(DRUPAL_ROOT . '/sites/all/libraries');
-  }
-  return is_dir('sites/all/libraries') ? 'sites/all/libraries' : 'sites/all';
-}
-
