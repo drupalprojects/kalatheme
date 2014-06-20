@@ -77,7 +77,18 @@ casper.test.begin( 'Subtheme generation', 1
       'subtheme_name': 'casper theme'
     }, true
   )
+  casper.waitForText('Installing Kalatheme', ->
+    test.assertExists('#progress', 'progress bar is shown while waiting.')
 
+  )
+
+  casper.waitForUrl(/settings\/casper_theme/, ->
+    test.assertTextExists(
+      'Your new subtheme is enabled! Looking good in the neighborhood!!'
+      , 'shows completion method.'
+    )
+
+  )
 
 
   casper.run(->
