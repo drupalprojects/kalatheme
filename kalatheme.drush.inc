@@ -126,7 +126,12 @@ function drush_kalatheme($name = NULL) {
   // Write the custom bootstrap library if applicable
   $current_dir = getcwd();
   chdir($dtemp);
-  if (($theme_settings['bootstrap_library'] == 'custom') && ($filepath = drush_download_file($custom))) {
+  if (($theme_settings['bootstrap_library'] == 'custom')) {
+    $filepath = drush_download_file($custom);
+    if (empty($filepath)) {
+      drush_print(dt('Could not download custom library.'));
+      return;
+    }
     $filename = basename($filepath);
     $dirname =  basename($filepath, '.zip');
     $library_name = $machine_name . '_bootstrap';
@@ -140,10 +145,7 @@ function drush_kalatheme($name = NULL) {
     drush_op('kalatheme_custom_bootstrap_library_integrate', $files, $machine_name, $dtemp, $lib_tmp_directory, $sub_tmp_directory, !$no_magic);
     drush_move_dir($lib_tmp_directory, $library_path, FILE_EXISTS_OVERWRITE);
   }
-  else {
-    drush_print(dt('Could not download custom library.'));
-    return;
-  }
+
   // Return
   chdir($current_dir);
   // Move the subtheme into the right directory
