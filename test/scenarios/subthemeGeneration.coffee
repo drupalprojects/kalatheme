@@ -52,10 +52,30 @@ casper.test.begin( 'Subtheme generation', 1
     @click('#navbar-link-admin-appearance')
   )
   casper.waitForUrl( /admin\/appearance/, ->
-    test.assertTextExists('Kalatheme (default theme)'
+    test.assertTextExists('Kalatheme'
     , 'finds that kalatheme is the default theme')
+    @click('a[href="/admin/appearance/settings/kalatheme"]')
+  )
+  settingsForm = 'form[action="/admin/appearance/settings/kalatheme"]'
+  casper.waitUntilVisiible(settingsFrom)
+  .then(->
+    test.assertExists('*[name="build_subtheme"]', 'has a build subtheme checkbox')
 
+    if @getFormValues(settingsForm).build_subtheme
+      @fill settingsForm, {
+        'build_subtheme': false
+      }, false
+    @fill settingsForm, {
+      'build_subtheme': false
+    }, true
 
+    test.assertVisible '#edit-magic', 'shows the autoload assets option'
+    test.assertVisible '#edit-subtheme-name', 'shows the theme input'
+
+    @fill settingsForm, {
+      'magic': true
+      'subtheme_name': 'casper theme'
+    }, true
   )
 
 
