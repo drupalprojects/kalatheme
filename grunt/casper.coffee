@@ -1,10 +1,9 @@
 module.exports =
-  theme:
+  funcational:
     options:
       test: true
       verbose: true
       parallel : true
       concurrency : 5
-    src: ['./test/scenarios/**/*.js']
-    dest: (input) ->
-      input.replace(/\.js$/,'.xml')
+    src: ['./test/scenarios/**/*.{js,coffee}']
+    dest: 'result/casper-results.xml'
