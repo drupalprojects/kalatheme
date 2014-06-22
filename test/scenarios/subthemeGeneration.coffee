@@ -24,6 +24,7 @@ casper.test.on "fail", (failure) ->
   casper.capture('./result/casperfailure.png')
 
 
+
 casper.test.begin( 'Subtheme generation', 1
 , suite = (test) ->
 
@@ -57,9 +58,9 @@ casper.test.begin( 'Subtheme generation', 1
     @click('a[href="/admin/appearance/settings/kalatheme"]')
   )
   settingsForm = 'form[action="/admin/appearance/settings/kalatheme"]'
-  casper.waitUntilVisiible(settingsFrom)
-  .then(->
-    test.assertExists('*[name="build_subtheme"]', 'has a build subtheme checkbox')
+
+  casper.waitUntilVisible(settingsForm).then(->
+    test.assertExists('input[name="build_subtheme"]', 'has a build subtheme checkbox')
 
     if @getFormValues(settingsForm).build_subtheme
       @fill settingsForm, {
