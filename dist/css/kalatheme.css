@@ -776,4 +776,7 @@ table .form-type-checkbox input[type=radio] {
   padding-left: 15px;
   padding-right: 15px; }
 
+.progress .percentage {
+  float: none; }
+
 /*# sourceMappingURL=kalatheme.css.map */
