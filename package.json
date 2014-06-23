@@ -58,6 +58,8 @@
     "browserify": "^4.1.9",
     "grunt-browserify": "^2.1.0",
     "coffeeify": "^0.6.0",
-    "browserify-shim": "^3.5.0"
+    "browserify-shim": "^3.5.0",
+    "grunt-casper": "^0.3.9",
+    "underscore": "^1.6.0"
   }
 }
