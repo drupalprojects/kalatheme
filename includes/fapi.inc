@@ -57,10 +57,24 @@ function kalatheme_process_input(&$element, &$form_state) {
     if(!isset($element['#attributes'])){
       $element['#attributes'] = array();
     }
-    // Doubling up on required
-    // @link http://john.foliot.ca/required-inputs/
-    $element['#attributes']['required'] = 'true';
-    $element['#attributes']['aria-required'] = 'true';
+    // is this process going to use a WYSIWYG?
+    $wysiwyg_process = FALSE;
+    // checks prerender function.
+    if(isset($element['#pre_render'])){
+      foreach($element['#pre_render'] as $delta => $callback){
+        if($callback == 'wysiwyg_pre_render_text_format'){
+          $wysiwyg_process = TRUE;
+        }
+      }
+    }
+
+    // Unless it is a wysiwyg field
+    if(!$wysiwyg_process){
+      // Doubling up on required
+      // @link http://john.foliot.ca/required-inputs/
+      $element['#attributes']['required'] = 'true';
+      $element['#attributes']['aria-required'] = 'true';
+    }
   }
 
   $types = array(
