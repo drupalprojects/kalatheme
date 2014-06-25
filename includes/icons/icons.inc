@@ -44,13 +44,15 @@ function _kalatheme_font_icon($name, $bundle = NULL, $attr = array(), $resolvePr
 
     if($bundle === 'font_awesome'){
       $attr['class'][] = 'fa';
+      $attr['class'][] = 'fa-' . $name;
     }
     elseif($bundle === 'bootstrap_glyphicons'){
       $attr['class'][] = 'glyphicon';
+      $attr['class'][] = $name;
     }
 
 
-    $attr['class'][] = $name;
+
     $output = '<span '. drupal_attributes($attr) . '></span>';
   }
   return $output;
@@ -140,7 +142,7 @@ function kalatheme_preprocess_icon(&$variables) {
     switch($variables['bundle']['provider']){
       case 'font_awesome':
         $classes[] = 'fa';
-        $classes[] = $variables['icon'];
+        $classes[] = 'fa-' . $variables['icon'];
         break;
       case 'bootstrap_glyphicons':
         $classes[] = 'glyphicon';
