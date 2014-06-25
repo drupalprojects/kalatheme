@@ -8,3 +8,7 @@ module.exports = () ->
       baseurl + '/misc/autocomplete.js'
       ]
     dest: './temp/drupaljs'
+  fontawesomeicons:
+    src:
+      'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/src/icons.yml'
+    dest: './temp/icons.yml'
