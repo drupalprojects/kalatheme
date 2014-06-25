@@ -11,4 +11,4 @@ module.exports = () ->
   fontawesomeicons:
     src:
       'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/src/icons.yml'
-    dest: './temp/icons.yml'
+    dest: './temp/fontawesome/'
