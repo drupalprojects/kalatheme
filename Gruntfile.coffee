@@ -12,3 +12,10 @@ module.exports = (grunt) ->
       pkg: grunt.file.readJSON('package.json')
     }
   })
+
+  grunt.registerTask('fontawesome'
+    , 'builds the font awesome config for kalatheme'
+    , ()->
+    fontAwesome = grunt.file.readYAML('./includes/icons/fontawesome.yml')
+    grunt.file.write('./includes/icons/fontawesome.json', JSON.stringify(fontAwesome))
+  )
