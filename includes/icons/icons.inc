@@ -5,7 +5,6 @@
  * Kalatheme's theme functions for icons
  */
 
-require_once dirname(__FILE__) . '/fontawesome.inc';
 require_once dirname(__FILE__) . '/glyphicons.inc';
 
 
@@ -186,4 +185,20 @@ function kalatheme_icon_bundles() {
 function kalatheme_icon_render_hooks() {
   $hooks['html_tag'] = array();
   return $hooks;
+}
+
+/**
+ * Helper function to return icons for font awesome.
+ */
+function _kalatheme_fontawesome_icons() {
+  $icons = array();
+  // Load the font awesome json file.
+  if (file_exists(__DIR__ . '/fontawesome.json')) {
+    $file = file_get_contents(__DIR__ . '/fontawesome.json');
+    $raw_icons = json_decode($file, TRUE);
+    foreach ($raw_icons['icons'] as $delta => $icon) {
+      $icons[$icon['id']] = $icon['name'];
+    }
+  }
+  return $icons;
 }
