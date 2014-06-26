@@ -48,3 +48,7 @@ module.exports =
     'buildcontrol:dev'
     'clean:build'
   ]
+  updatefontawesome: [
+    'curl-dir:fontawesome'
+    'fontawesomejson'
+  ]
