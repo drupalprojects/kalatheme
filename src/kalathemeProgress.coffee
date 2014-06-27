@@ -102,7 +102,9 @@
     displayError: (string) ->
       errorHtml = "<div class=\"alert alert-block alert-error\" role=\"alert\">"
       errorHtml += "<button type=\"button\" class=\"close\""
-      errorHtml += " data-dismiss=\"alert\">&times;</button>"
+      errorHtml += " data-dismiss=\"alert\">"
+      errorHtml += "<span aria-hidden=\"true\">&times;</span>"
+      errorHtml += "     <span class=\"sr-only\">Close</span></button>"
       errorHtml += "<h4>Error message</h4></div>"
       error = $(errorHtml).append(string)
       $(@element).before(error).hide()
