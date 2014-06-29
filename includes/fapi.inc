@@ -138,6 +138,7 @@ function kalatheme_form_element($variables) {
 
   switch ($element['#title_display']) {
     case 'before':
+    case 'permissions':
     case 'invisible':
       $output .= ' ' . theme('form_element_label', $variables);
       $output .= ' ' . $prefix . $element['#children'] . $suffix . "\n";
@@ -190,7 +191,7 @@ function kalatheme_form_element_label($variables) {
   if ($element['#title_display'] == 'after' && !$is_radio_or_checkbox) {
     $attributes['class'] = 'option';
   }
-  elseif ($element['#title_display'] == 'invisible') {
+  elseif ($element['#title_display'] == 'invisible' || $element['#title_display'] == 'permissions') {
     $attributes['class'] = 'element-invisible';
   }
 
@@ -199,7 +200,7 @@ function kalatheme_form_element_label($variables) {
   }
 
   $output = '';
-  if ($is_radio_or_checkbox && isset($element['#children'])) {
+  if ($is_radio_or_checkbox && $element['#title_display'] != 'permissions' && isset($element['#children'])) {
     $output .= $element['#children'];
   }
 
