@@ -49,16 +49,18 @@ function theme_kalatheme_kalacustomize_render_pane($vars) {
   $content = &$vars['content'];
   $settings = $vars['settings'];
 
-  $classes = '';
-  if (isset($settigs['devices'])) {
-    $classes .= _kalatheme_get_styles($settings['devices']);
-  }
-  if (isset($settigs['pane_style'])) {
-    $classes .= _kalatheme_get_styles($settings['pane_style']);
+  // This is needed to prevent throwing an error in php 5.5+
+  if (!isset($content->css_class)) {
+    $content->css_class = '';
   }
 
+  if (isset($settings['devices'])) {
+    $content->css_class .= _kalatheme_get_styles($settings['devices']);
+  }
+  if (isset($settings['pane_style'])) {
+    $content->css_class .= _kalatheme_get_styles($settings['pane_style']);
+  }
   $output = theme('panels_pane', $vars);
-  $output =   '<div  class="' . $classes . '"/>' . $output . '</div>';
 
   return $output;
 }
