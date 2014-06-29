@@ -70,6 +70,10 @@
   z-index: 9999;
 }
 
+.views-display-setting .label, .views-display-setting .views-ajax-link {
+  float: none;
+}
+
 /* Tables */
 table .active {
   background-color: transparent;
