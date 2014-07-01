@@ -10,8 +10,8 @@
 require_once dirname(__FILE__) . '/includes/utils.inc';
 
 // Asset stuff
-define('KALATHEME_BOOTSTRAP_CSS', '//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css');
-define('KALATHEME_BOOTSTRAP_JS', '//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js');
+define('KALATHEME_BOOTSTRAP_CSS', '//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css');
+define('KALATHEME_BOOTSTRAP_JS', '//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js');
 define('KALATHEME_FONTAWESOME_CSS', '//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
 
 // Grid size constants
