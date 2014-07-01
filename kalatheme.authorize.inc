@@ -158,5 +158,10 @@ function kalatheme_authorize_install_batch_finished($success, $results) {
   }
   // We need to do the big dump
   // @todo: should figure out the actual caches we need to clear
+  // flush error messages so we dont get annoying bootstrap lib error
+  if ($success) {
+    // drupal_get_message is not loaded so we directly remove errors
+    unset($_SESSION['messages']['error']);
+  }
   drupal_flush_all_caches();
 }
