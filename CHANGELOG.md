@@ -1,3 +1,33 @@
+<a name="4.0.3"></a>
+### 4.0.3 (2014-07-01)
+
+
+#### Bug Fixes
+
+* **css:**
+  * fixes #92 ([d51fabcb](https://github.com/drupalprojects/kalatheme/commit/d51fabcb5e386b49d9fb94610164e84d972b1441))
+  * allows for longer link text node edit ([fdaafa91](https://github.com/drupalprojects/kalatheme/commit/fdaafa917e8bb5d0bca7a2e01277ff456ba078f7))
+* **drush:** fixes #44 ([2c0efca0](https://github.com/drupalprojects/kalatheme/commit/2c0efca0eda5756fafe37435a491acdc3871a37d))
+* **fapi:** fixes #52 ([e12c3cd7](https://github.com/drupalprojects/kalatheme/commit/e12c3cd737cdff18f28e0bfa12f0b91e92a42132))
+* **kalacustomize:** fixes #46 ([c9ae0c83](https://github.com/drupalprojects/kalatheme/commit/c9ae0c8329a7b0cfe5aacf79eed5161bee31dbaf))
+* **libraries:**
+  * fixes #43 ([445e8733](https://github.com/drupalprojects/kalatheme/commit/445e8733db88d3cb730a84336126370da974ff7f))
+  * closes #19 ([00937be7](https://github.com/drupalprojects/kalatheme/commit/00937be71613c023d004a61a3bcbbb879a979319))
+* **progressbar:** fixes #48 ([5d3aa4f8](https://github.com/drupalprojects/kalatheme/commit/5d3aa4f82d548248e5beeaa2ee9e04fbd18b36f5))
+* **views:**
+  * remove row class unless grid ([b6b50b4f](https://github.com/drupalprojects/kalatheme/commit/b6b50b4fe602e90608a7e45d0bdec10dc694e69b))
+  * remove row class from table views content ([a144e13a](https://github.com/drupalprojects/kalatheme/commit/a144e13a3660b16eec1222554a4ef071582d71e4))
+
+
+#### Features
+
+* **grunt:** creates alias to update fontawesome ([2051e9c8](https://github.com/drupalprojects/kalatheme/commit/2051e9c86c4bc5588104e36452c48c1063e27216))
+* **test:**
+  * last steps of the sub theme creation scenario ([5719ec6a](https://github.com/drupalprojects/kalatheme/commit/5719ec6ad3ef731ee9f2d28d87d3821604b85776))
+  * adds theme generation functional test steps ([dd082ac2](https://github.com/drupalprojects/kalatheme/commit/dd082ac284b88f58d033d2c5834a038a9ea3f899))
+  * ads casper test for local development ([c931d4d6](https://github.com/drupalprojects/kalatheme/commit/c931d4d684e343a87192ab061d0a7865281bfbb8))
+
+
 <a name="4.0.2"></a>
 ### 4.0.2 (2014-06-19)
 
