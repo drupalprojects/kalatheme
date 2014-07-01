@@ -478,7 +478,12 @@ function kalatheme_user_admin_permissions($variables) {
       );
       foreach (element_children($form['checkboxes']) as $rid) {
         $form['checkboxes'][$rid][$key]['#title'] = $roles[$rid] . ': ' . $form['permission'][$key]['#markup'];
-        $form['checkboxes'][$rid][$key]['#title_display'] = 'invisible';
+        // We are using a special title here for a couple reasons.
+        // If use invisible the checkboxes get put inside the label as per
+        // the bootstrap markup. However, this breaks the permissions UI
+        // and does not allow us to unset permissions. If we use none then
+        // we have no markup for screen readers.
+        $form['checkboxes'][$rid][$key]['#title_display'] = 'permissions';
         $row[] = array('data' => drupal_render($form['checkboxes'][$rid][$key]));
       }
     }
