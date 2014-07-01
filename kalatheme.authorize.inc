@@ -51,6 +51,10 @@ function kalatheme_authorize_batch_copy_project($project, $updater_name, $local_
     return;
   }
   if ($updater_name == 'KalathemeUpdater') {
+    // This is where we check to see if libraries dir exists or not
+    if (!is_dir(DRUPAL_ROOT . "/sites/all/libraries")) {
+      $filetransfer->createDirectory(DRUPAL_ROOT . "/sites/all/libraries");
+    }
     require_once dirname(__FILE__) . '/kalatheme.updater.inc';
   }
   $updater = new $updater_name($local_url);

@@ -341,11 +341,5 @@ function kalatheme_has_write_access() {
  * Return the libraries dir to check
  */
 function kalatheme_lib_dir() {
-  if (!is_dir('sites/all/libraries')) {
-    mkdir(DRUPAL_ROOT . '/sites/all/libraries');
-    chmod(DRUPAL_ROOT . '/sites/all/libraries', 0755);
-  } else {
-    chmod(DRUPAL_ROOT . '/sites/all/libraries', 0755);
-  }
   return is_dir('sites/all/libraries') ? 'sites/all/libraries' : 'sites/all';
 }
