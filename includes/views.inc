@@ -18,7 +18,7 @@ function kalatheme_preprocess_views_view(&$variables) {
   // Add a .row class to wrap .views-row.
   $variables['view_content_class'] = 'view-content';
   $plugin = $view->style_plugin->plugin_name;
-  if ( $plugin != 'list' || $plugin !== 'table') {
+  if ( $plugin == 'grid' ) {
     $variables['view_content_class'] .= ' row';
   }
 }
