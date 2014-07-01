@@ -67,15 +67,15 @@
   margin-top: 5px;
 }
 
-/**
- * Menu Styling
- */
+// Menu styling for node edit form
 #node-edit .pane-node-form-menu .form-item-menu-parent label,#node-edit .pane-node-form-menu .form-item-menu-link-title label
   {
   float: left;
   font-weight: normal;
   margin-right: 4px;
-  width: 49px;
+  // Panopoly admin override for longer link text
+  // @link https://www.drupal.org/node/2295513
+  width: auto;
 }
 
 /**
