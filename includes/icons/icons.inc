@@ -5,7 +5,6 @@
  * Kalatheme's theme functions for icons
  */
 
-require_once dirname(__FILE__) . '/fontawesome.inc';
 require_once dirname(__FILE__) . '/glyphicons.inc';
 
 
@@ -44,13 +43,15 @@ function _kalatheme_font_icon($name, $bundle = NULL, $attr = array(), $resolvePr
 
     if($bundle === 'font_awesome'){
       $attr['class'][] = 'fa';
+      $attr['class'][] = 'fa-' . $name;
     }
     elseif($bundle === 'bootstrap_glyphicons'){
       $attr['class'][] = 'glyphicon';
+      $attr['class'][] = $name;
     }
 
 
-    $attr['class'][] = $name;
+
     $output = '<span '. drupal_attributes($attr) . '></span>';
   }
   return $output;
@@ -140,7 +141,7 @@ function kalatheme_preprocess_icon(&$variables) {
     switch($variables['bundle']['provider']){
       case 'font_awesome':
         $classes[] = 'fa';
-        $classes[] = $variables['icon'];
+        $classes[] = 'fa-' . $variables['icon'];
         break;
       case 'bootstrap_glyphicons':
         $classes[] = 'glyphicon';
@@ -184,4 +185,20 @@ function kalatheme_icon_bundles() {
 function kalatheme_icon_render_hooks() {
   $hooks['html_tag'] = array();
   return $hooks;
+}
+
+/**
+ * Helper function to return icons for font awesome.
+ */
+function _kalatheme_fontawesome_icons() {
+  $icons = array();
+  // Load the font awesome json file.
+  if (file_exists(__DIR__ . '/fontawesome.json')) {
+    $file = file_get_contents(__DIR__ . '/fontawesome.json');
+    $raw_icons = json_decode($file, TRUE);
+    foreach ($raw_icons['icons'] as $delta => $icon) {
+      $icons[$icon['id']] = $icon['name'];
+    }
+  }
+  return $icons;
 }

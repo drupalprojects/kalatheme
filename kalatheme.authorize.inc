@@ -51,6 +51,10 @@ function kalatheme_authorize_batch_copy_project($project, $updater_name, $local_
     return;
   }
   if ($updater_name == 'KalathemeUpdater') {
+    // This is where we check to see if libraries dir exists or not
+    if (!is_dir(DRUPAL_ROOT . "/sites/all/libraries")) {
+      $filetransfer->createDirectory(DRUPAL_ROOT . "/sites/all/libraries");
+    }
     require_once dirname(__FILE__) . '/kalatheme.updater.inc';
   }
   $updater = new $updater_name($local_url);
@@ -158,5 +162,10 @@ function kalatheme_authorize_install_batch_finished($success, $results) {
   }
   // We need to do the big dump
   // @todo: should figure out the actual caches we need to clear
+  // flush error messages so we dont get annoying bootstrap lib error
+  if ($success) {
+    // drupal_get_message is not loaded so we directly remove errors
+    unset($_SESSION['messages']['error']);
+  }
   drupal_flush_all_caches();
 }

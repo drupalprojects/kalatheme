@@ -18,7 +18,7 @@ function kalatheme_preprocess_views_view(&$variables) {
   // Add a .row class to wrap .views-row.
   $variables['view_content_class'] = 'view-content';
   $plugin = $view->style_plugin->plugin_name;
-  if ( $plugin != 'list' || $plugin !== 'table') {
+  if ( $plugin == 'grid' ) {
     $variables['view_content_class'] .= ' row';
   }
 }
@@ -45,7 +45,7 @@ function kalatheme_preprocess_views_view_grid(&$variables) {
   $variables['gridsize'] = kalatheme_get_grid_size();
   $responsive_tiers = array('xs', 'sm', 'lg');
   foreach ($responsive_tiers as $tier) {
-    if (empty($variables['options']['columns_' . $tier])) {
+    if (!$variables['options']['responsive_toggle']) {
       $variables['options']['columns_' . $tier] = 1;
     }
     if ($variables['gridsize'] % $variables['options']['columns_' . $tier] === 0) {
@@ -55,6 +55,10 @@ function kalatheme_preprocess_views_view_grid(&$variables) {
   // This is set using the default grid columns value not columns_tier
   if ($variables['gridsize'] % $variables['options']['columns'] === 0) {
     $variables['md'] = $variables['gridsize'] / $variables['options']['columns'];
+    // We need to do ths too
+    if (!$variables['options']['responsive_toggle']) {
+      $variables['lg'] = $variables['gridsize'] / $variables['options']['columns'];
+    }
   }
 }
 

@@ -57,14 +57,11 @@
   margin-right: 5px;
   margin-top: 5px; }
 
-/**
- * Menu Styling
- */
 #node-edit .pane-node-form-menu .form-item-menu-parent label, #node-edit .pane-node-form-menu .form-item-menu-link-title label {
   float: left;
   font-weight: normal;
   margin-right: 4px;
-  width: 49px; }
+  width: auto; }
 
 /**
  * Featured Category Styling
@@ -749,7 +746,8 @@ ul.panels-ipe-linkbar {
 table .form-type-checkbox input[type=checkbox],
 table .form-type-checkbox input[type=radio] {
   float: none;
-  margin-left: 0; }
+  margin-left: 0;
+  position: static; }
 
 .dropdown-kt > a {
   float: left;
