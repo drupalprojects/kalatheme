@@ -2,11 +2,13 @@
 /////////////////////////
 
 
-// fixes checkbox alignment 
+// fixes checkbox alignment
 table .form-type-checkbox {
   input[type=checkbox],
   input[type=radio]{
     float: none;
     margin-left: 0;
+    // Reset the positioning for alignment.
+    position: static;
   }
 }
