@@ -9,9 +9,9 @@
  * Implements hook_form_FORM_ID_alter().
  */
 function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
-  // If a non-kalatheme theme is the admin theme we need to
+  // If a non-kalatheme theme is the admin theme, we need to
   // load this stuff again to get grid size info and not throw
-  // errors
+  // errors.
   require_once dirname(__FILE__) . '/includes/config.inc';
   // Don't add custom form elements to Kalatheme's settings page if Kalatheme
   // isn't the default theme.
@@ -24,23 +24,23 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     return;
   }
 
-  // Make default options collapsible
+  // Make default options collapsible.
   $fieldsets = array('theme_settings', 'logo', 'favicon');
   foreach ($fieldsets as $fieldset) {
     $form[$fieldset]['#collapsible'] = TRUE;
     $form[$fieldset]['#collapsed'] = TRUE;
   }
 
-  // Subtheme backend checks
+  // Subtheme backend checks.
   $form = array_merge($form, kalatheme_backend_check_form());
 
-  // Kalatheme settings
+  // Kalatheme settings.
   $form = array_merge($form, kalatheme_bootstrap_library_form());
   $form['bootstrap']['bootstrap_library']['#default_value'] = theme_get_setting('bootstrap_library');
   $form['bootstrap']['icon_font_library']['#default_value'] = theme_get_setting('icon_font_library');
   $form['bootstrap']['font_awesome_cdn']['#default_value'] = theme_get_setting('font_awesome_cdn');
   $form['bootstrap']['bootstrap_upload']['#default_value'] = theme_get_setting('bootstrap_upload');
-  // Subtheme settings
+  // Subtheme settings.
   $form = array_merge($form, kalatheme_subtheme_form());
 
   // Need to pass this through to use list_allowed_values_string without errors.
@@ -52,8 +52,8 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#weight' => 41,
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
-    '#description' => t('By default, Kalatheme only displays page titles on pages that aren\'t rendered through Panels or Panelizer.
-      If toggled on, this setting will cause Kalatheme to always print the page title, regardless of how the page is rendered.'),
+    '#description' => t("By default, Kalatheme only displays page titles on pages that aren't rendered through Panels or Panelizer.
+      If toggled on, this setting will cause Kalatheme to always print the page title, regardless of how the page is rendered."),
   );
   $form['page_title']['always_show_page_title'] = array(
     '#type' => 'checkbox',
@@ -75,8 +75,8 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#prefix' => '<p>',
     '#markup' => t('Kalatheme automatically detects the grid size of your Bootstrap library. That said, please remember that sometimes there are just bad grid size choices. For those occassions
       Kalatheme will try to handle your bad desicions as best as possible. <strong>Your grid is currently: @grid_size columns.</strong>', array(
-      '@grid_size' => kalatheme_get_grid_size(),
-    )),
+        '@grid_size' => kalatheme_get_grid_size(),
+      )),
     '#suffix' => '</p>',
   );
   $form['responsive']['responsive_toggle'] = array(
@@ -124,11 +124,10 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
   );
 
-
-  // Prepare the form with kalatheme things
+  // Prepare the form with kalatheme things.
   $form = kalatheme_prepare_config_form($form);
 
-  // Make sure the callback function and other fun things are actually loaded
+  // Make sure the callback function and other fun things are actually loaded.
   $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/includes/config.inc';
   $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/kalatheme.updater.inc';
 }
