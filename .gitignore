@@ -15,6 +15,7 @@ bower_components
 # Build directories
 temp
 .sass-cache
+/vendor/
 
 # Grunt
 .grunt
@@ -23,3 +24,4 @@ dist
 build
 test/tests.js
 result
+phpcs.txt

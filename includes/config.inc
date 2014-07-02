@@ -4,13 +4,15 @@
  * Kalatheme's subtheme config form stuff
  */
 
-// Load utilities
+
+// Load utilities.
 require_once dirname(__FILE__) . '/utils.inc';
 
 /**
- * Form constructor for Bootstrap library selection form
+ * Form constructor for Bootstrap library selection form.
  *
  * @return array
+ *   Library form for boostrap.
  */
 function kalatheme_bootstrap_library_form() {
   $form = array();
@@ -50,12 +52,12 @@ function kalatheme_bootstrap_library_form() {
     '#type' => 'select',
     '#title' => t('Icon Font Library'),
     '#default_value' => FALSE,
-    '#description' => t('Select which icon font library you want to use with the theme. If you\'re using the whole Bootstrap library, glyphicons are already included. Font Awesome is a great choice with over 400 icons.'),
+    '#description' => t("Select which icon font library you want to use with the theme. If you're using the whole Bootstrap library, glyphicons are already included. Font Awesome is a great choice with over 400 icons."),
     '#options' => array(
       'bootstrap_glyphicons' => t('Bootstrap Glyphicons'),
       'font_awesome' => t('Font Awesome'),
-      'none' => t('None')
-    )
+      'none' => t('None'),
+    ),
   );
   $form['bootstrap']['font_awesome_cdn'] = array(
     '#type' => 'checkbox',
@@ -68,13 +70,12 @@ function kalatheme_bootstrap_library_form() {
       'visible' => array(
         ':input[name="icon_font_library"]' => array('value' => 'font_awesome'),
       ),
-    )
-
+    ),
   );
   $form['bootstrap']['bootstrap_upload'] = array(
     '#type' => 'file',
     '#title' => t('Custom Bootstrap library'),
-    '#description' => t('Upload any <a href="@valid_doc">valid bootstrap library</a> here to complete your install. For example: %filename from your local computer. <strong>DISCLAIMER:</strong> This works pretty good with some libraries but not so great with others. Use this to kick start your project not as a end-all-be-all tool. ', array(
+    '#description' => t('Upload any <a href="@valid_doc">valid bootstrap library</a> here to complete your install. For example: %filename from your local computer. <strong>DISCLAIMER:</strong> This works pretty good with some libraries but not so great with others. Use this to kick start your project not as a end-all-be-all tool.', array(
       '%filename' => 'name.tar.gz',
       '@valid_doc' => 'http://www.drupal.org/project/kalatheme',
     )),
@@ -84,16 +85,17 @@ function kalatheme_bootstrap_library_form() {
       'visible' => array(
         ':input[name="bootstrap_library"]' => array('value' => 'custom'),
       ),
-    )
+    ),
   );
 
   return $form;
 }
 
 /**
- * Form constructor for Bootstrap library selection form
+ * Form constructor for Bootstrap library selection form.
  *
  * @return array
+ *   Built form for backend check.
  */
 function kalatheme_backend_check_form() {
   $form = array();
@@ -130,9 +132,10 @@ function kalatheme_backend_check_form() {
 }
 
 /**
- * Form constructor for subtheme selection form
+ * Form constructor for subtheme selection form.
  *
  * @return array
+ *   The subtheme form.
  */
 function kalatheme_subtheme_form() {
   $form = array();
@@ -155,7 +158,7 @@ function kalatheme_subtheme_form() {
         'progress' => array('type' => 'none'),
       ),
     );
-    // Wrap submit in dix for ajaxification
+    // Wrap submit in dix for ajaxification.
     $form['subtheme']['magic'] = array(
       '#type' => 'checkbox',
       '#title' => t('Autoload extra assets'),
@@ -206,52 +209,45 @@ function kalatheme_subtheme_form() {
 }
 
 /**
- * Handle custom Bootstrap library validation
+ * Handle custom Bootstrap library validation.
  */
 function kalatheme_custom_bootstrap_library_validate(&$form, &$form_state) {
-  // Validate subtehme name if exists
+  // Validate subtehme name if exists.
   $regex = '/^[a-zA-Z][\da-zA-Z _\']*$/';
   if (!empty($form_state['values']['subtheme_name'])) {
     if (!preg_match($regex, $form_state['values']['subtheme_name'])) {
       form_set_error('form', t('Please enter a valid subtheme name.'));
     }
   }
-  // Make sure the user has uploaded an archive
-  // We handle validation of the archive in the submit handler
-  if ($form_state['values']['bootstrap_library'] == 'custom') {
-    if (empty($_FILES['files']['name']['bootstrap_upload'])) {
-      // @todo this is awkward if you just want to edit other parts of your custom
-      //form_set_error('bootstrap_upload', t('You must provide a custom Bootstrap library.'));
-    }
-  }
+
   // Add the default system_form_submit back into the mix if we aren't building
-  // a custom subtheme
+  // a custom subtheme.
   if (isset($form_state['values']['build_subtheme']) && !$form_state['values']['build_subtheme']) {
     $form['#submit'][] = 'system_theme_settings_submit';
   }
 }
 
 /**
- * Handle custom Bootstrap library submission
+ * Handle custom Bootstrap library submission.
  */
 function kalatheme_custom_bootstrap_library_submit(&$form, &$form_state) {
-  // Summon the powerz of update manager
+  // Summon the powerz of update manager.
   module_load_include("inc", "update", "update.manager");
   $projects = array();
 
-  // Generate subtheme and build its settings var
+  // Generate subtheme and build its settings var.
   if (isset($form_state['values']['build_subtheme']) && $form_state['values']['build_subtheme']) {
-    // Trim things
+    // Trim things.
     form_state_values_clean($form_state);
     $projects[] = kalatheme_custom_subtheme_build($form_state['values']);
   }
-  // Use a custom bootstrap library
+  // Use a custom bootstrap library.
   // This can either be a file upload or a URL although the URL option really
-  // only works with drush
+  // only works with drush.
   if ($_FILES['files']['name']['bootstrap_upload'] || !empty($form_state['values']['bootstrap_upload'])) {
     $projects[] = kalatheme_custom_bootstrap_library_build($form_state['values']);
   }
-  // Run the batch operation if we have things to move
+  // Run the batch operation if we have things to move.
   if ($projects) {
     // If the owner of the directory we extracted is the same as the
     // owner of our configuration directory (e.g. sites/default) where we're
@@ -275,8 +271,8 @@ function kalatheme_custom_bootstrap_library_submit(&$form, &$form_state) {
 /**
  * Construct an array of subtheme things.
  *
- * @param $theme_settings
- *
+ * @param array $theme_settings
+ *  The current theme settings.
  */
 function kalatheme_custom_subtheme_build($theme_settings) {
   $machine_name = kalatheme_get_machine_name($theme_settings['subtheme_name']);
@@ -299,20 +295,20 @@ function kalatheme_custom_subtheme_build($theme_settings) {
       'subtheme' => TRUE,
     );
 
-    // Build some magic
+    // Build some magic.
     kalatheme_custom_subtheme_vars($theme_settings);
 
-    // Return the batch
+    // Return the batch.
     return $arguments;
   }
-  return;
+  return NULL;
 }
 
 /**
- * Handle custom Bootstrap library submission
+ * Handle custom Bootstrap library submission.
  */
 function kalatheme_custom_bootstrap_library_build($theme_settings) {
-  // Save the file to tmp
+  // Save the file to tmp.
   $subtheme_name = NULL;
   if (!empty($theme_settings['subtheme_name'])) {
     $subtheme_name = $theme_settings['subtheme_name'];
@@ -326,7 +322,7 @@ function kalatheme_custom_bootstrap_library_build($theme_settings) {
   }
   $local_cache = $finfo->uri;
 
-  // Extract file to tmp
+  // Extract file to tmp.
   global $theme_key;
   $project = (!empty($subtheme_name)) ? kalatheme_get_machine_name($subtheme_name) : $theme_key;
   $subtheme_directory = (!empty($subtheme_name)) ? kalatheme_extract_directory('theme') . DIRECTORY_SEPARATOR . kalatheme_get_machine_name($subtheme_name) : NULL;
@@ -340,7 +336,7 @@ function kalatheme_custom_bootstrap_library_build($theme_settings) {
   }
 
   $files = $archive->listContents();
-  // Validate archive
+  // Validate archive.
   if (!$files) {
     form_set_error($field, t('Provided archive contains no files.'));
     return;
@@ -356,7 +352,7 @@ function kalatheme_custom_bootstrap_library_build($theme_settings) {
     return;
   }
 
-  // Go through the library and do some magic
+  // Go through the library and do some magic.
   $lib_dir = kalatheme_extract_directory('library') . DIRECTORY_SEPARATOR . $project . '_bootstrap';
   kalatheme_custom_bootstrap_library_integrate($files, $project, $tmp_directory, $lib_dir, $subtheme_directory, $theme_settings['magic']);
 
@@ -382,15 +378,15 @@ function kalatheme_custom_bootstrap_library_build($theme_settings) {
 }
 
 /**
- * Set the subtheme vars
+ * Set the subtheme vars.
  *
  * @param $theme_settings
  *
  */
 function kalatheme_custom_subtheme_vars($theme_settings) {
-  // Get the machine name
+  // Get the machine name.
   $machine_name = kalatheme_get_machine_name($theme_settings['subtheme_name']);
-  // remove unneded Vars
+  // Remove unneded Vars.
   unset($theme_settings['var']);
   unset($theme_settings['build_subtheme']);
   unset($theme_settings['bootstrap_upload']);
@@ -426,22 +422,22 @@ function kalatheme_custom_subtheme_vars($theme_settings) {
   if (empty($theme_settings['default_favicon']) && !empty($theme_settings['favicon_path'])) {
     $theme_settings['favicon_mimetype'] = file_get_mimetype($theme_settings['favicon_path']);
   }
-  // Save the new stuff
+  // Save the new stuff.
   $key = 'theme_' . $machine_name . '_settings';
   variable_set($key, $theme_settings);
 }
 
 /**
- * Parse custom bootstrap library
+ * Parse custom bootstrap library.
  */
 function kalatheme_custom_bootstrap_library_integrate($files, $project, $tmp_directory, $lib_dir, $theme_dir, $magic) {
-  // Get rid of all the bullshit
+  // Get rid of all the bullsh*t.
   foreach ($files as $key => $value) {
     if (kalatheme_strip_types($value) || kalatheme_strip_files($value)) {
       unset($files[$key]);
     }
   }
-  // Pull from the archive
+  // Pull from the archive.
   foreach ($files as $key => $value) {
     $filename = basename($value);
     $is_bootstrap = in_array($filename, kalatheme_get_bootstrap_files());
@@ -449,11 +445,11 @@ function kalatheme_custom_bootstrap_library_integrate($files, $project, $tmp_dir
     $old_file = $tmp_directory . DIRECTORY_SEPARATOR . $value;
     $new_base_dir = ($is_bootstrap) ? $lib_dir : $theme_dir;
     $new_file = (!empty($new_base_dir)) ? $new_base_dir . DIRECTORY_SEPARATOR . $dir . DIRECTORY_SEPARATOR . $filename : NULL;
-    // do stuff
+    // If something there do something.
     if (!empty($new_file) && (is_dir(dirname($new_file)) || mkdir(dirname($new_file), 0777, TRUE))) {
-      // Move the file
+      // Move the file.
       copy($old_file, $new_file);
-      // Add some none bootstrap stuff to the info file
+      // Add some none bootstrap stuff to the info file.
       if ($magic) {
         if (!$is_bootstrap && in_array($dir, array('css', 'js'))) {
           $info_file = $theme_dir . DIRECTORY_SEPARATOR . $project . '.info';
@@ -462,9 +458,11 @@ function kalatheme_custom_bootstrap_library_integrate($files, $project, $tmp_dir
             case 'css':
               $contents .= "stylesheets[all][]";
               break;
+
             case 'js':
               $contents .= "scripts[]";
               break;
+
           }
           $contents .= " = " . $dir . DIRECTORY_SEPARATOR . $filename . "\n";
           file_put_contents($info_file, $contents);
@@ -475,10 +473,10 @@ function kalatheme_custom_bootstrap_library_integrate($files, $project, $tmp_dir
 }
 
 /**
- * The batch builder and processor for moving files to drupal
+ * The batch builder and processor for moving files to drupal.
  *
- * taken from update_authorize_run_update
- * builds a batch and process it for installing modules from the templocation
+ * Taken from update_authorize_run_update.
+ * Builds a batch and process it for installing modules from the templocation.
  */
 function kalatheme_run_install($filetransfer, $projects) {
   $operations = array();
@@ -498,7 +496,7 @@ function kalatheme_run_install($filetransfer, $projects) {
   // We have to do this because drupal_get_path doesnt really work
   // in an install profile when this happens. We need a relative path
   // but _batch_process prepends DRUPAL_ROOT so we need to strip that
-  // out here as well
+  // out here as well.
   $file = dirname(__FILE__) . '/../kalatheme.authorize.inc';
   $file = str_replace(DRUPAL_ROOT . DIRECTORY_SEPARATOR, '', $file);
 
@@ -518,12 +516,12 @@ function kalatheme_run_install($filetransfer, $projects) {
 
 
 /**
- * Return basic subtheme skeleton to be written
+ * Return basic subtheme skeleton to be written.
  */
 function kalatheme_custom_subtheme_skeleton($theme_settings) {
   $subtheme = array();
   $machine_name = kalatheme_get_machine_name($theme_settings['subtheme_name']);
-  // Basic Info File
+  // Basic Info File.
   $output  = "name = " . $theme_settings['subtheme_name'] . " \n";
   $output .= "description = A Kalatheme subtheme powered by Twitter Bootstrap & Science. \n";
   $output .= "base theme = " . $theme_settings['subtheme_base'] . " \n";
@@ -534,12 +532,12 @@ function kalatheme_custom_subtheme_skeleton($theme_settings) {
   $output .= "stylesheets[all][] = css/main.css \n";
   $output .= "\n";
   $subtheme[DIRECTORY_SEPARATOR . $machine_name . '.info'] = $output;
-  // Basic CSS File
+  // Basic CSS File.
   $output  = "/*! \n";
   $output .= " * Kalatheme (http://drupal.org/project/kalatheme) \n";
   $output .= " */ \n";
   $subtheme[DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'main.css'] = $output;
-  // Basic Template File
+  // Basic Template File.
   $output  = "<?php \n";
   $output .= "/** \n";
   $output .= " * @file \n";
@@ -626,7 +624,7 @@ function kalatheme_get_base_themes() {
 }
 
 /**
- * Translate human readable to machine name
+ * Translate human readable to machine name.
  */
 function kalatheme_get_machine_name($name) {
   $machine_name = strtolower($name);
@@ -662,10 +660,20 @@ function kalatheme_write_stuff($subtheme, $directory) {
 }
 
 /**
- * Prune custom library, removing types we don't want
+ * Prune custom library, removing types we don't want.
  */
 function kalatheme_strip_types($file) {
-  $wanted_types = array('.css', '.js', '.png', '.jpg', '.woff', '.ttf', '.svg', '.eot', '.json');
+  $wanted_types = array(
+    '.css',
+    '.js',
+    '.png',
+    '.jpg',
+    '.woff',
+    '.ttf',
+    '.svg',
+    '.eot',
+    '.json',
+  );
   foreach ($wanted_types as $type) {
     if (stripos($file, $type) !== FALSE) {
       return FALSE;
@@ -675,7 +683,7 @@ function kalatheme_strip_types($file) {
 }
 
 /**
- * Prune custom library, removing files we don't want
+ * Prune custom library, removing files we don't want.
  */
 function kalatheme_strip_files($file) {
   // @todo might want to update this over time?
@@ -689,7 +697,7 @@ function kalatheme_strip_files($file) {
 }
 
 /**
- * Return the correct asset class for a file
+ * Return the correct asset class for a file.
  */
 function kalatheme_get_asset_class($file) {
   $asset_classes = array(
@@ -698,7 +706,7 @@ function kalatheme_get_asset_class($file) {
     'js' => array('.js'),
     'css' => array('.css'),
   );
-  // Return the correct asset class
+  // Return the correct asset class.
   foreach ($asset_classes as $class => $types) {
     foreach ($types as $type) {
       if (stripos($file, $type) !== FALSE) {
@@ -709,7 +717,7 @@ function kalatheme_get_asset_class($file) {
 }
 
 /**
- * Return the files that make up a standard bootstrap library
+ * Return the files that make up a standard bootstrap library.
  */
 function kalatheme_get_bootstrap_files() {
   return array(
