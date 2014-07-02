@@ -142,7 +142,7 @@ function kalatheme_links__system_main_menu($variables) {
           'links' => $link['#below'],
           'attributes' => array(
             'class' => array('dropdown-menu', 'dropdown-kt'),
-            'aria-labelledby' => $dropdown_id
+            'aria-labelledby' => $dropdown_id,
           ),
         ));
       }
@@ -239,7 +239,8 @@ function kalatheme_menu_local_actions($variables) {
     $output .= '<a href="#" ' . $toggle_attributes . '>';
     $output .= _kalatheme_font_icon('wrench') . t('Actions');
     $output .= '<span class="caret" aria-hidden="true"></span></a>';
-  }else{
+  }
+  else {
     $output .= '<a href="#">' . t('Actions');
     $output .= '<span class="caret" aria-hidden="true"></span></a>';
   }

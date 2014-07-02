@@ -468,7 +468,12 @@ function kalatheme_user_admin_permissions($variables) {
     $row = array();
     // Module name
     if (is_numeric($key)) {
-      $row[] = array('data' => drupal_render($form['permission'][$key]), 'class' => array('module'), 'id' => 'module-' . $form['permission'][$key]['#id'], 'colspan' => count($form['role_names']['#value']) + 1);
+      $row[] = array(
+        'data' => drupal_render($form['permission'][$key]),
+        'class' => array('module'),
+        'id' => 'module-' . $form['permission'][$key]['#id'],
+        'colspan' => count($form['role_names']['#value']) + 1,
+      );
     }
     else {
       // Permission row.
@@ -586,7 +591,7 @@ function kalatheme_pager($variables) {
       if ($i > 1) {
         $items[] = array(
           'class' => array('pager-ellipsis', 'disabled'),
-          'data' => '<span aria-hidden="true">…<span>'
+          'data' => '<span aria-hidden="true">…<span>',
         );
       }
       // Now generate the actual pager piece.

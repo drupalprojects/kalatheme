@@ -157,7 +157,7 @@ function kalatheme_get_bootstrap_panel_classes() {
     'panel-success',
     'panel-info',
     'panel-warning',
-    'panel-danger'
+    'panel-danger',
   );
 }
 

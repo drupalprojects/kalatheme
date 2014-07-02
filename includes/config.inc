@@ -170,7 +170,6 @@ function kalatheme_subtheme_form() {
           ':input[name="bootstrap_library"]' => array('value' => 'custom'),
         ),
       ),
-
     );
     $form['subtheme']['subtheme_name'] = array(
       '#type' => 'textfield',

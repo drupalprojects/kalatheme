@@ -251,7 +251,7 @@ function kalatheme_button($variables) {
     $element['#attributes']['class'][] = 'btn-primary';
   }
 
-  return '<input' . drupal_attributes($element['#attributes']) . ' />';;
+  return '<input' . drupal_attributes($element['#attributes']) . ' />';
 }
 
 /**
@@ -384,7 +384,7 @@ function kalatheme_form_required_marker($variables) {
     'title' => $t('This field is required.'),
     //Don't announce this since we are already giving the form aria-required
     //required attributes.
-    'aria-hidden' => 'true'
+    'aria-hidden' => 'true',
   );
   return '<span' . drupal_attributes($attributes) . '>*</span>';
 }

@@ -33,7 +33,7 @@ function _kalatheme_font_icon($name, $bundle = NULL, $attr = array(), $resolvePr
     $output = theme('icon', array(
       'bundle' => $bundle,
       'icon' => $name,
-      'attributes' => $attr
+      'attributes' => $attr,
     ));
   }
   if($output === NULL){
@@ -88,7 +88,7 @@ function kalatheme_icon_providers() {
  */
 function kalatheme_icon_default_settings(){
   return array(
-    'tag' => 'span'
+    'tag' => 'span',
   );
 }
 
@@ -150,7 +150,8 @@ function kalatheme_preprocess_icon(&$variables) {
     }
     if( isset($variables['attributes']['class']) ){
       $variables['attributes']['class'] += $classes;
-    }else{
+    }
+    else {
       $variables['attributes']['class'] = $classes;
     }
   }
@@ -164,14 +165,14 @@ function kalatheme_icon_bundles() {
     'render' => 'html_tag',
     'provider' => 'font_awesome',
     'title' => t('Font Awsome'),
-    'icons' => _kalatheme_fontawesome_icons()
+    'icons' => _kalatheme_fontawesome_icons(),
   );
 
   $bundles['bootstrap_glyphicons'] = array(
     'render' => 'html_tag',
     'provider' => 'bootstrap_glyphicons',
     'title' => t('Bootstrap Glyphicons'),
-    'icons' => _kalatheme_glyphicons_icons()
+    'icons' => _kalatheme_glyphicons_icons(),
   );
   return $bundles;
 }
@@ -193,8 +194,8 @@ function kalatheme_icon_render_hooks() {
 function _kalatheme_fontawesome_icons() {
   $icons = array();
   // Load the font awesome json file.
-  if (file_exists(__DIR__ . '/fontawesome.json')) {
-    $file = file_get_contents(__DIR__ . '/fontawesome.json');
+  if (file_exists( __DIR__ . '/fontawesome.json')) {
+    $file = file_get_contents( __DIR__ . '/fontawesome.json');
     $raw_icons = json_decode($file, TRUE);
     foreach ($raw_icons['icons'] as $delta => $icon) {
       $icons[$icon['id']] = $icon['name'];
