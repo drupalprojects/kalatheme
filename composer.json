@@ -1,12 +1,12 @@
 {
-    "name": "kalamuna/kalatheme",
-    "authors": [
-        {
-            "name": "kalamuna",
-            "email": "info@kalamuna.com"
-        }
-    ],
-    "require": {
-        "drupal/coder": ">7"
+  "name": "kalamuna/kalatheme",
+  "authors": [
+    {
+      "name": "kalamuna",
+      "email": "info@kalamuna.com"
     }
+  ],
+  "require-dev": {
+      "drupal/coder": ">7"
+  }
 }

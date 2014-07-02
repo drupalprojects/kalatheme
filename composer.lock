@@ -3,8 +3,11 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "06b8d5ea16af2072888c9accfd17a542",
+    "hash": "290c2763752147fd33625e5ab2100887",
     "packages": [
+
+    ],
+    "packages-dev": [
         {
             "name": "drupal/coder",
             "version": "7.2.2",
@@ -109,9 +112,6 @@
             ],
             "time": "2014-05-01 03:07:07"
         }
-    ],
-    "packages-dev": [
-
     ],
     "aliases": [
 
