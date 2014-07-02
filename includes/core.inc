@@ -203,10 +203,10 @@ function kalatheme_status_messages($variables) {
   foreach (drupal_get_messages($display) as $type => $messages) {
     $class = (isset($status_class[$type])) ? ' alert-' . $status_class[$type] : '';
     $output .= "<div class=\"alert alert-block$class\">\n";
-    $output .= "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n";
+    $output .= '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>';
 
     if (!empty($status_heading[$type])) {
-      $output .= '<h3 class="element-invisible">' . $status_heading[$type] . "</h3>\n";
+      $output .= '<strong>' . $status_heading[$type] . "</strong>\n";
     }
 
     if (count($messages) > 1) {
