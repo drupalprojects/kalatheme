@@ -1,7 +1,7 @@
 module.exports =
   theme:
     dir: [
-      '{includes,views,styles}/**/*.inc'
+      '{includes,styles}/**/*.inc'
       './*.{inc,php}'
     ]
   options:
