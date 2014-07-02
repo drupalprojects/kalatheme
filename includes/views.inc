@@ -6,7 +6,7 @@
 
 // Load plugins
 // We need to do this so that our views plugin class will be loaded correctly
-// since we cant use the files[] directive in a theme .info file
+// since we cant use the files[] directive in a theme .info file.
 require_once dirname(__FILE__) . '/../views/plugins/views_plugin_style_grid_bootstrap.inc';
 
 /**
@@ -18,16 +18,15 @@ function kalatheme_preprocess_views_view(&$variables) {
   // Add a .row class to wrap .views-row.
   $variables['view_content_class'] = 'view-content';
   $plugin = $view->style_plugin->plugin_name;
-  if ( $plugin == 'grid' ) {
+  if ($plugin == 'grid') {
     $variables['view_content_class'] .= ' row';
   }
 }
 
 /**
- * Implement hook_views_plugins_alter()
+ * Adds responsive Bootstrap options to views grid displays.
  *
- * We are using this so we can add some responsive Bootstrap options to
- * views grid displays
+ * Implement hook_views_plugins_alter().
  */
 function kalatheme_views_plugins_alter(&$plugins) {
   if (isset($plugins['style']['grid'])) {
@@ -52,10 +51,10 @@ function kalatheme_preprocess_views_view_grid(&$variables) {
       $variables[$tier] = $variables['gridsize'] / $variables['options']['columns_' . $tier];
     }
   }
-  // This is set using the default grid columns value not columns_tier
+  // This is set using the default grid columns value not columns_tier.
   if ($variables['gridsize'] % $variables['options']['columns'] === 0) {
     $variables['md'] = $variables['gridsize'] / $variables['options']['columns'];
-    // We need to do ths too
+    // We need to do ths too.
     if (!$variables['options']['responsive_toggle']) {
       $variables['lg'] = $variables['gridsize'] / $variables['options']['columns'];
     }
@@ -68,19 +67,26 @@ function kalatheme_preprocess_views_view_grid(&$variables) {
 function kalatheme_preprocess_views_view_table(&$variables) {
   $rows = array();
   foreach ($variables['row_classes'] as $row) {
-    // This assume the first element of any row will be the odd/even class which we no longer need
+    // This assume the first element of any row will be the odd/even class,
+    // which we no longer need.
     array_shift($row);
     $rows[] = $row;
   }
   $variables['row_classes'] = $rows;
 
-  // Add in bootstrap classes
-  $variables['classes_array'] = array('table', 'table-striped', 'table-bordered', 'table-hover');
+  // Add in bootstrap classes.
+  $variables['classes_array'] = array(
+    'table',
+    'table-striped',
+    'table-bordered',
+    'table-hover',
+  );
 
-  // Remove the active class from table cells, as Bootstrap 3 gives them a funky background.
+  // Remove the active class from table cells,
+  // as Bootstrap 3 gives them a funky background.
   $handler = $variables['view']->style_plugin;
   $active = !empty($handler->active) ? $handler->active : FALSE;
-  if ($active && array_key_exists($active, $variables['field_classes']) ) {
+  if ($active && array_key_exists($active, $variables['field_classes'])) {
     foreach ($variables['field_classes'][$active] as &$cell) {
       $cell_classes = explode(' ', $cell);
       $active_class_index = array_search('active', $cell_classes);
@@ -110,9 +116,9 @@ function kalatheme_views_mini_pager($vars) {
   $element = $vars['element'];
   $parameters = $vars['parameters'];
 
-  // current is the page we are currently paged to
+  // Current is the page we are currently paged to.
   $pager_current = $pager_page_array[$element] + 1;
-  // max is the maximum page number
+  // Max is the maximum page number.
   $pager_max = $pager_total[$element];
   // End of marker calculations.
 
