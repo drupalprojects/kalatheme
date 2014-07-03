@@ -1,15 +1,16 @@
-language: node_js
-node_js:
-  - "0.10"
+language: php
+php:
+  - 5.5
+  - 5.4
 before_install:
   - rvm use 1.9.3 --fuzzy
   - export GEMDIR=$(rvm gemdir)
-  - curl -sS https://getcomposer.org/installer | php
 install:
   - time npm install -g grunt-cli bower
   - gem install bundler
-  - php composer.phar install
   - bundle
+  - composer install
   - bower install
   - npm install
   - grunt ci
+script: grunt ci
