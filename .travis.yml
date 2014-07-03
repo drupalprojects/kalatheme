@@ -7,7 +7,8 @@ before_install:
 install:
   - time npm install -g grunt-cli bower
   - gem install bundler
+  - composer install
   - bundle
   - bower install
   - npm install
-  - grunt --force
+  - grunt ci
