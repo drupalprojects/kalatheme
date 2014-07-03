@@ -4,10 +4,12 @@ node_js:
 before_install:
   - rvm use 1.9.3 --fuzzy
   - export GEMDIR=$(rvm gemdir)
+  - which php
+  - curl -sS https://getcomposer.org/installer | php
 install:
   - time npm install -g grunt-cli bower
   - gem install bundler
-  - composer install
+  - php composer.phar install
   - bundle
   - bower install
   - npm install
