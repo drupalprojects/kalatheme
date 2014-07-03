@@ -18,9 +18,9 @@ you about it until the ending of the world.
  * Libraries 2.1+
  * Panels 3.3+
  * PHP 5.3+
+ * Views 3.x
  * JQuery Update 2.x (with JQuery version set to 1.7+)
- * A Bootstrap 3.0+ library (read below in Installing Bootstrap)
- *  Optional but highly recommended: Panopoly Theme.
+ * Optional but highly recommended: Panopoly Theme.
  * Optional: A custom Bootstrap library.
 
 The easiest way to satisfy all of these requirements is to just start with
@@ -43,20 +43,17 @@ documentation on creating a basic subtheme
 
 Luckily, Kalatheme features a pretty neat subtheme generation tool that will
 automatically set everything up for you and allow you to customize your
-subtheme.
+subtheme. You don't even need to install a Bootstrap library, Kalatheme will pull one from Bootswatch (http://bootswatch.com/) for you!
+
 https://drupal.org/node/2167149
 
 
 MANUALLY INSTALLING BOOTSTRAP
 -----------------------------
-Kalatheme doesn't do much without a Bootstrap Library so you are going to need
-to shop around for one.
+Kalatheme no longer requires an installed Bootstrap library to work. Our subtheme generator does that for you. However, if you are looking to create a custom bootstrap library, here are some options:
 
  * To get the standard Bootstrap library, or to customize that library:
  http://getbootstrap.com/
-
- * If you are looking for a free and pre-made custom version of Bootstrap:
- http://bootswatch.com/
 
  * If you are looking to rool with a custom version of Bootstrap try out
  http://getbootstrap.com/customize/
@@ -68,8 +65,7 @@ to shop around for one.
  * You can also Google for other sources if you are feeling adventerous.
  http://www.google.com/
 
-Kalatheme uses the Libraries API so in order to get Bootstrap working you need
-to put your Bootstrap files in sites/all/libraries/CURRENT-THEME_bootstrap. For
+If you choose to manually install a custom Bootstrap library, put your Bootstrap files in sites/all/libraries/CURRENT-THEME_bootstrap. For
 example, if you have a Kalatheme subtheme enabled called mytheme, you'd put
 Bootstrap's files in sites/all/libraries/mytheme_bootstrap. If you have
 Kalatheme set as your default theme, you'd use
