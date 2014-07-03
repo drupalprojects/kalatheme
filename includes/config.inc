@@ -271,7 +271,7 @@ function kalatheme_custom_bootstrap_library_submit(&$form, &$form_state) {
  * Construct an array of subtheme things.
  *
  * @param array $theme_settings
- *  The current theme settings.
+ *   The current theme settings.
  */
 function kalatheme_custom_subtheme_build($theme_settings) {
   $machine_name = kalatheme_get_machine_name($theme_settings['subtheme_name']);
@@ -378,9 +378,6 @@ function kalatheme_custom_bootstrap_library_build($theme_settings) {
 
 /**
  * Set the subtheme vars.
- *
- * @param $theme_settings
- *
  */
 function kalatheme_custom_subtheme_vars($theme_settings) {
   // Get the machine name.
@@ -512,8 +509,6 @@ function kalatheme_run_install($filetransfer, $projects) {
   batch_set($batch);
 }
 
-
-
 /**
  * Return basic subtheme skeleton to be written.
  */
@@ -548,22 +543,22 @@ function kalatheme_custom_subtheme_skeleton($theme_settings) {
 }
 
 /**
- * Ajax callback that returns HTML to the setup form so that the user
- * can see a preview of the bootstrap library they are selecting.
+ * Ajax callback that returns HTML to the setup form.
  *
- * @param $form
+ * Allows the user can see a preview of the bootstrap library they selected.
+ *
+ * @param array $form
  *   Form
- * @param $form_state
+ * @param array $form_state
  *   Form state
  *
- * @return
+ * @return array
  *   Updated form state to be merged back in
- *
  */
 function kalatheme_ajax_bootstrap_preview_submit($form, &$form_state) {
   $theme = $form_state['values']['bootstrap_library'];
   if ($theme == 'default' || $theme == 'custom' || $theme == 'none') {
-    $form['bootstrap']['bootstrap_preview']['#markup'] = t('');
+    $form['bootstrap']['bootstrap_preview']['#markup'] = '';
   }
   else {
     $bootswatch = kalatheme_get_bootswatch_theme($theme);
@@ -573,17 +568,15 @@ function kalatheme_ajax_bootstrap_preview_submit($form, &$form_state) {
 }
 
 /**
- * Ajax callback that returns HTML to the submit button so that the user
- * has clearer UX actions based on form selection
+ * Ajax callback that returns HTML to the submit button.
  *
- * @param $form
- *   Form
- * @param $form_state
- *   Form state
+ * @param array $form
+ *   Form.
+ * @param array $form_state
+ *   Form state.
  *
- * @return
- *   Updated form state to be merged back in
- *
+ * @return array
+ *   Updated form state to be merged back in.
  */
 function kalatheme_ajax_submit_submit($form, &$form_state) {
   $subtheme = $form_state['values']['build_subtheme'];
@@ -592,7 +585,7 @@ function kalatheme_ajax_submit_submit($form, &$form_state) {
 }
 
 /**
- * Wrapper for _update_manager_extract_directory()
+ * Wrapper for _update_manager_extract_directory().
  *
  * Since libraries and themes can live in the same location, we need to
  * namespace the types so they don't collide like the colorbox module.
@@ -635,12 +628,13 @@ function kalatheme_get_machine_name($name) {
 /**
  * Translate a subtheme array into writable files.
  *
- * @param $subtheme
- *   Array of stuff to write
+ * @param array $subtheme
+ *   Array of stuff to write.
+ * @param string $directory
+ *   The directory to store the subtheme.
  *
- * @return
- *   TRUE is for success, FALSE is for fail
- *
+ * @return bool
+ *   TRUE is for success, FALSE is for fail.
  */
 function kalatheme_write_stuff($subtheme, $directory) {
   foreach ($subtheme as $key => $value) {
