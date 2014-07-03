@@ -52,3 +52,7 @@ module.exports =
     'curl-dir:fontawesome'
     'fontawesomejson'
   ]
+  ci: [
+    'default',
+    'phpcs:theme'
+  ]

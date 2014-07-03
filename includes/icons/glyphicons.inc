@@ -4,6 +4,12 @@
  * Kalatheme's copy of all the glyphicon names
  */
 
+/**
+ * Helper function for glyphicons.
+ *
+ * @return array
+ *   Associative array of icon class names and descriptive names.
+ */
 function _kalatheme_glyphicons_icons() {
   static $icons = array(
     'glyphicon-adjust' => 'adjust',

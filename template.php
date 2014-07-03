@@ -5,27 +5,27 @@
  */
 
 // Use DIRNAME instead of drupal_get_path so we can use this
-// during an install profile without nuking the world
-// Load some helper functions
+// during an install profile without nuking the world.
+// Load some helper functions..
 require_once dirname(__FILE__) . '/includes/utils.inc';
 
-// Asset stuff
+// Asset stuff.
 define('KALATHEME_BOOTSTRAP_CSS', '//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css');
 define('KALATHEME_BOOTSTRAP_JS', '//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js');
 define('KALATHEME_FONTAWESOME_CSS', '//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
 
-// Grid size constants
+// Grid size constants.
 define('KALATHEME_GRID_SIZE', kalatheme_get_grid_size());
 define('KALATHEME_GRID_FULL', 1);
-define('KALATHEME_GRID_HALF', 1/2);
-define('KALATHEME_GRID_THIRD', 1/3);
-define('KALATHEME_GRID_FOURTH', 1/4);
-define('KALATHEME_GRID_FIFTH', 1/5);
-define('KALATHEME_GRID_SIXTH', 1/6);
-// Just because we can
-define('KALATHEME_GRID_SILLY', 1/42);
+define('KALATHEME_GRID_HALF', 1 / 2);
+define('KALATHEME_GRID_THIRD', 1 / 3);
+define('KALATHEME_GRID_FOURTH', 1 / 4);
+define('KALATHEME_GRID_FIFTH', 1 / 5);
+define('KALATHEME_GRID_SIXTH', 1 / 6);
+// Just because we can!
+define('KALATHEME_GRID_SILLY', 1 / 42);
 
-// Load Bootstrap overrides of Drupal theme things
+// Load Bootstrap overrides of Drupal theme things.
 require_once dirname(__FILE__) . '/includes/core.inc';
 require_once dirname(__FILE__) . '/includes/icons/icons.inc';
 require_once dirname(__FILE__) . '/includes/fapi.inc';
@@ -49,36 +49,36 @@ function kalatheme_theme($existing, $type, $theme, $path) {
     'kt_site_header' => array(
       'template' => 'templates/sections/kt-site-header',
       'variables' => array(
-        'front_page' => false,
+        'front_page' => FALSE,
         'logo' => '',
         'site_name' => '',
-        'hide_site_name' => false,
+        'hide_site_name' => FALSE,
         'site_slogan' => '',
-        'hide_site_slogan' => false
-      )
+        'hide_site_slogan' => FALSE,
+      ),
     ),
     'kt_navbar' => array(
       'template' => 'templates/bootstrap/kt-navbar',
       'variables' => array(
         'main_menu' => NULL,
         'main_menu_expanded' => NULL,
-        'secondary_menu'=> NULL,
+        'secondary_menu' => NULL,
         'site_name' => NULL,
         'front_page' => NULL,
-        'site_name' => NULL
-      )
+        'site_name' => NULL,
+      ),
     ),
     'icon_html_tag' => array(
       'file' => 'includes/icons/icons.inc',
-    )
+    ),
   );
 }
 /**
- * Utitlity function to remove conflicting scripts
+ * Utitlity function to remove conflicting scripts.
  */
-function _kalatheme_remove_by_key(array $keys, array $target){
-  foreach($keys as $key){
-    if(array_key_exists( $key, $target)){
+function _kalatheme_remove_by_key(array $keys, array $target) {
+  foreach ($keys as $key) {
+    if (array_key_exists($key, $target)) {
       unset($target[$key]);
     }
   }
@@ -88,7 +88,7 @@ function _kalatheme_remove_by_key(array $keys, array $target){
 /**
  * Implements hook_js_alter().
  */
-function kalatheme_js_alter(&$javascript){
+function kalatheme_js_alter(&$javascript) {
   $excludes = array('misc/progress.js');
   $javascript = _kalatheme_remove_by_key($excludes, $javascript);
 }
@@ -96,7 +96,7 @@ function kalatheme_js_alter(&$javascript){
 /**
  * Helper function to return an array of CSS to remove on the page.
  */
-function _kalatheme_css_excludes(){
+function _kalatheme_css_excludes() {
   // Unset some core css & panopoly css.
   $excludes = &drupal_static(__FUNCTION__);
   if (!isset($excludes)) {
@@ -104,16 +104,16 @@ function _kalatheme_css_excludes(){
       $excludes = $cache->data;
     }
     else {
-      //Can add more expensive operations here.
+      // Can add more expensive operations here.
       $panopoly_magic_path = drupal_get_path('module', 'panopoly_magic');
       $excludes = array(
         drupal_get_path('module', 'panopoly_admin') . '/panopoly-admin.css',
         $panopoly_magic_path . '/css/panopoly-modal.css',
         $panopoly_magic_path . '/css/panopoly-magic.css',
         'modules/system/system.menus.css',
-        drupal_get_path('module','admin_views') . '/admin_views.css'
+        drupal_get_path('module', 'admin_views') . '/admin_views.css',
       );
-      // Set the cache
+      // Set the cache.
       cache_set('kalatheme_css_excludes', $excludes, 'cache');
     }
   }
@@ -163,25 +163,25 @@ function kalatheme_process_page(&$variables) {
   // Add Bootstrap JS and stock CSS.
   global $base_url;
   $base = parse_url($base_url);
-  // Use the CDN if not using libraries
+  // Use the CDN if not using libraries.
   if (!kalatheme_use_libraries()) {
     $library = theme_get_setting('bootstrap_library');
     if ($library !== 'none' && !empty($library)) {
-      // Add the JS
+      // Add the JS.
       drupal_add_js($base['scheme'] . ":" . KALATHEME_BOOTSTRAP_JS, 'external');
-      // Add the CSS
+      // Add the CSS.
       $css = ($library === 'default') ? KALATHEME_BOOTSTRAP_CSS : kalatheme_get_bootswatch_theme($library)->cssCdn;
       drupal_add_css($base['scheme'] . ":" . $css, 'external');
     }
   }
   $font_awesome_active = FALSE;
-  // Use Font Awesome
+  // Use Font Awesome.
   if (theme_get_setting('font_awesome_cdn')) {
     $font_awesome_active = TRUE;
     drupal_add_css($base['scheme'] . ":" . KALATHEME_FONTAWESOME_CSS, 'external');
   }
-  // let JS know that we have this enabled
-  drupal_add_js(array('kalatheme' => array('fontawesome' => $font_awesome_active ) ), 'setting');
+  // Let JS know that we have this enabled.
+  drupal_add_js(array('kalatheme' => array('fontawesome' => $font_awesome_active)), 'setting');
   // Define variables to theme local actions as a dropdown.
   $dropdown_attributes = array(
     'container' => array(

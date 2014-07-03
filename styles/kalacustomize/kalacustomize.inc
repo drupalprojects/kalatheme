@@ -26,7 +26,7 @@ function theme_kalatheme_kalacustomize_render_region($vars) {
   $settings['attributes'] .= _kalatheme_get_styles($settings['devices']);
   $settings['attributes'] .= _kalatheme_get_styles($settings['pane_style']);
 
-    // Theme.
+  // Theme.
   if (!empty($settings['theme']) && $settings['theme']) {
     $output = theme('panels_default_style_render_region', $vars);
   }
@@ -34,7 +34,7 @@ function theme_kalatheme_kalacustomize_render_region($vars) {
     $output = implode(PHP_EOL, $content);
   }
 
-  // Wrap
+  // Wrap.
   if (!empty($output)) {
     $content_wrapper = _kalatheme_wrapper_wrap($settings);
     $output = $content_wrapper['prefix'] . $output . $content_wrapper['suffix'];
@@ -137,7 +137,7 @@ function _kalatheme_get_styles($styles = array()) {
         unset($styles[$key]);
       }
     }
-   return $styles ? ' ' . implode(' ', $styles) : '';
+    return $styles ? ' ' . implode(' ', $styles) : '';
   }
 }
 
@@ -175,11 +175,14 @@ function _kalatheme_wrapper_wrap($item = array()) {
 }
 
 /**
- * Adds a warning status message letting the user know that no customization
+ * Adds a warning status message.
+ *
+ * Letting the user know that no customization
  * options have been enabled from the theme settings page.
  */
 function _kalatheme_warn_no_style_options() {
-  $settings_link = l(t(variable_get('theme_default', 'kalatheme') . ' settings page'), 'admin/appearance/settings/' . variable_get('theme_default', 'kalatheme'));
-  drupal_set_message(t('You haven\'t enabled any customizations! Please check
-    out the !settings_link to see what\'s available.', array('!settings_link' => $settings_link)), 'warning');
+  $settings_link_title = variable_get('theme_default', 'kalatheme') . ' settings page';
+  $settings_link = l($settings_link_title, 'admin/appearance/settings/' . variable_get('theme_default', 'kalatheme'));
+  drupal_set_message(t("You haven't enabled any customizations! Please check
+    out the @settings_link to see what's available.", array('@settings_link' => $settings_link)), 'warning');
 }

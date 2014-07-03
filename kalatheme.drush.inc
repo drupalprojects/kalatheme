@@ -4,7 +4,7 @@
  * Drushhhhhhhh
  */
 
-// Pull in the setup magic
+// Pull in the setup magic.
 require_once 'includes/config.inc';
 
 /**
@@ -51,9 +51,9 @@ function kalatheme_drush_help($section) {
  * Implements drush_hook_command().
  */
 function drush_kalatheme($name = NULL) {
-  // Let's get it started
+  // Let's get it started.
   $theme_settings = drush_kalatheme_default_settings();
-  // Get arguments and parse the machine name
+  // Get arguments and parse the machine name.
   if (!$name) {
     drush_print(dt('You need a theme name.'));
     return;
@@ -63,14 +63,14 @@ function drush_kalatheme($name = NULL) {
   }
   $machine_name = kalatheme_get_machine_name($name);
 
-  // Get options
-  // Get paths to theme folder
+  // Get options.
+  // Get paths to theme folder.
   $subtheme_path = 'sites/all/themes';
   if ($destination = drush_get_option('destination')) {
     $subtheme_path = drush_trim_path($destination);
   }
   // See if we are going to use a custom bootswatch theme or pull in a custom
-  // bootstrap library from a URL archive
+  // bootstrap library from a URL archive.k
   $custom = FALSE;
   if ($custom = drush_get_option('custom')) {
     $bootswatch = array();
@@ -89,7 +89,7 @@ function drush_kalatheme($name = NULL) {
       return;
     }
   }
-  // Use a custom subtehme basetheme instead of kalatheme
+  // Use a custom subtehme basetheme instead of kalatheme.
   if ($basetheme = drush_get_option('base-theme')) {
     $base_themes = array_keys(kalatheme_get_base_themes());
     if (in_array($basetheme, $base_themes)) {
@@ -100,11 +100,11 @@ function drush_kalatheme($name = NULL) {
       return;
     }
   }
-  // Get FONT AWESOME
+  // Get FONT AWESOME.
   $fonts = FALSE;
   if (drush_get_option('fonts')) {
     $theme_settings['icon_font_library'] = 'font_awesome';
-    $theme_settings['font_awesome_cdn'] = true;
+    $theme_settings['font_awesome_cdn'] = TRUE;
   }
   // Autoload assets?
   $no_magic = FALSE;
@@ -112,7 +112,7 @@ function drush_kalatheme($name = NULL) {
     $no_magic = drush_get_option('no-magic');
   }
 
-  // Write the subtheme and then move it to the right spot
+  // Write the subtheme and then move it to the right spot.
   $dtemp = drush_tempdir();
   $sub_tmp_directory = drush_normalize_path($dtemp . '/' . $machine_name);
   if (kalatheme_write_stuff(kalatheme_custom_subtheme_skeleton($theme_settings), $sub_tmp_directory)) {
@@ -124,7 +124,7 @@ function drush_kalatheme($name = NULL) {
     return;
   }
 
-  // Write the custom bootstrap library if applicable
+  // Write the custom bootstrap library if applicable.
   $current_dir = getcwd();
   chdir($dtemp);
   if (($theme_settings['bootstrap_library'] == 'custom')) {
@@ -134,24 +134,26 @@ function drush_kalatheme($name = NULL) {
       return;
     }
     $filename = basename($filepath);
-    $dirname =  basename($filepath, '.zip');
+    $dirname = basename($filepath, '.zip');
     $library_name = $machine_name . '_bootstrap';
     $library_path = drush_normalize_path(drush_get_context('DRUSH_DRUPAL_ROOT') . '/' . 'sites/all/libraries' . '/' . $library_name);
     $lib_tmp_directory = drush_normalize_path($dtemp . '/' . $library_name);
 
     // Decompress the zip archive.
     drush_tarball_extract($filename, $dirname, TRUE);
-    // Import additional third party bootstrap library assets into your subtheme
+    // Import additional third party bootstrap library assets into
+    // your subtheme.
     $files = array_keys(drush_scan_directory($dirname, '(.*)'));
     drush_op('kalatheme_custom_bootstrap_library_integrate', $files, $machine_name, $dtemp, $lib_tmp_directory, $sub_tmp_directory, !$no_magic);
     drush_move_dir($lib_tmp_directory, $library_path, FILE_EXISTS_OVERWRITE);
   }
 
-  // Return
+  // Return.
   chdir($current_dir);
-  // Move the subtheme into the right directory
-  drush_move_dir(drush_normalize_path($sub_tmp_directory), $subtheme_path , FILE_EXISTS_OVERWRITE);
-  // Notify user of the new polution
+  // Move the subtheme into the right directory.
+  drush_move_dir(drush_normalize_path($sub_tmp_directory), $subtheme_path,
+    FILE_EXISTS_OVERWRITE);
+  // Notify user of the new polution.
   $message = dt('kalatheme subtheme "!name" created in: !path.', array(
     '!name' => $name,
     '!path' => $subtheme_path,
@@ -160,7 +162,7 @@ function drush_kalatheme($name = NULL) {
 }
 
 /**
- * Returns an array of default settings;
+ * Returns an array of default settings.
  */
 function drush_kalatheme_default_settings() {
   return array(
