@@ -12,7 +12,9 @@ In order for us to help you please check that you've completed the following ste
 
 [Submit your issue](https://github.com/drupalprojects/kalatheme/issues)
 
+## Code Style
 
+PHP will be checked against the [Drupal coding conventions](https://www.drupal.org/coding-standards) on pull requests. To run the check locally, install [composer](https://getcomposer.org/), then `$ composer install dev-require`. The grunt task is `$ grunt phpcs`.
 
 ## Developers
 
