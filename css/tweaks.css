@@ -284,4 +284,5 @@ td> .radio-inline input[type="radio"],
 td> .checkbox input[type="checkbox"],
 td> .checkbox-inline input[type="checkbox"]{
   margin-left: 0px;
+  postition:static;
 }
