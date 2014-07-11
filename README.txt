@@ -45,7 +45,7 @@ Luckily, Kalatheme features a pretty neat subtheme generation tool that will
 automatically set everything up for you and allow you to customize your
 subtheme. You don't even need to install a Bootstrap library, Kalatheme will pull one from Bootswatch (http://bootswatch.com/) for you!
 
-Check out more documentation on the Kalatheme subtheme generator GUI: wiki/Setup-and-Installation
+Check out more documentation on the Kalatheme subtheme generator GUI: https://github.com/drupalprojects/kalatheme/wiki/Setup-and-Installation
 
 
 
