@@ -14,90 +14,39 @@ INSTALLING KALATHEME
 
 Unlike other Drupal themes Kalatheme requires some other modules to work properly. Please verify you have the following before proceeding with installation. If you fail to do as Kalatheme has requested it will bug you about it until the ending of the world.
 
-1. [Libraries API 2.1+][1]
-2. [Panels 3.3+][2]
-3. [Views 3.x][3]
-4. [JQuery Update][4] 2.x (with JQuery version set to 1.7+)
-5. [PHP 5.3+][4]
-6. Optional but highly recommended: [Panopoly Theme.][5]
-7. Optional: A custom Bootstrap library.
+1. Libraries API 2.1+
+2. Panels 3.3+
+3. Views 3.x
+4. JQuery Update 2.x (with JQuery version set to 1.7+)
+5. PHP 5.3+
+6. Optional but highly recommended: Panopoly Theme
+7. Optional: A custom Bootstrap library
 
-The easiest way to satisfy all of these requirements is to just start with [Panopoly][6] on [Pantheon][7] as [seen here][8].
+The easiest way to satisfy all of these requirements is to just start with Panopoly on Pantheon:
+https://drupal.org/node/2175703
+
+Then install Kalatheme like any other Drupal theme:
+http://drupal.org/documentation/install/modules-themes
 
 Some people also having troubles using the Kalacustomize plugin were helped by Patch #5 here:
-[#2024441: Fatal error undefined function panels_plugin_get_function when doing #ajax on pane style form][9]
+#2024441: Fatal error undefined function panels_plugin_get_function when doing #ajax on pane style form
 which was rolled against Panels 3.3+41-dev.
 
 UPDATE: This patch is now in the latest dev version of CTools/Panels.
-
-## Installation
-
-Our magical quest to install Kalatheme will begin as it would for any other theme: using the [Drupal Installing Modules and Themes Guide][10]. After you have followed the above and installed your theme you should proceed to the Appearances page where you MUST ENABLE IT AND SET IT AS THE DEFAULT THEME as well.
-
-![Enable me!][11]
 
 
 AUTOMATIC SETUP & SUBTHEMES
 ---------------------------
 Kalatheme is meant to be the base theme that is used to build more powerful
 subthemes. Subthemes inherit almost all of the propoerties of their base theme
-so you can reduce theme clutter and start on the 10th floor. Here is some
-documentation on creating a basic subtheme
+so you can reduce theme clutter and start on the 10th floor. 
 
 Luckily, Kalatheme features a pretty neat subtheme generation tool that will
 automatically set everything up for you and allow you to customize your
 subtheme. You don't even need to install a Bootstrap library, Kalatheme will pull one from Bootswatch (http://bootswatch.com/) for you!
 
-After you enable Kalatheme it is likely you will be blinded by its immense and compelling beauty. What's that? It looks horrible? Never fear! All you need to do is set up kalatheme by going into the theme settings. You can also do this part [with drush](Installation-with-Drush).
+Check out more documentation on the Kalatheme subtheme generator GUI: wiki/Setup-and-Installation
 
-![Kalatheme settings][12]
-
-Currently the setup workflow is pretty stable when starting from [Pantheon][17] or [Kalabox][18]/[Kalastack][19] using the [Panopoly][6] distro.
-
-In the settings you can easily build a Kalatheme subtheme and pair it with either default Bootstrap, [Bootswatch][20] or a [Custom Bootstrap Library][21]. Kalatheme also has limited support for [third party Bootstrap libraries][22] such as from [WrapBootstrap][23]. If you are going to try out a custom or third party library it may be helpful to get your read on [here](Using-custom-Bootstrap-Libraries) before attempting. You may also optionally pull [Font Awesome][25] into your subtheme.
-
-If you want Kalatheme to install and enable these things for you automatically please [make sure your webserver is configured properly](Configuring-Server-for-Automatic-Kalatheme-installation). If not Kalatheme will simply give you an archive of goodies that you will then need to [do something with](Manual-Installation).
-
-If you have no idea what any of the above is, you really just need to fill out the settings form like below--pick a bootstrap library, add Font Awesome if you like, name your subtheme, hit Build and enable subtheme, and voila!
-
-Note: If you are using Pantheon, kalatheme will ask you to switch your connection mode to SFTP to complete the subtheme generation. You should take heed! If you are already in SFTP, this friendly message will still appear, but you don't need to do anything.
-
-![Settings screenshot][28]
-![Settings screenshot][29]
-![Settings screenshot][30]
-
-## Victory
-
-After enabling your new subtheme you will notice that things are styled again. At this point it is best to proceed to [Using Kalatheme and Best Practices](Using-Kalatheme-and-Best-Practices).
-
-![Default Kalatheme][31]
-
-[1]: https://drupal.org/node/1938254
-[2]: https://drupal.org/project/panels
-[3]: https://drupal.org/project/views
-[4]: https://drupal.org/project/jquery_update
-[5]: https://drupal.org/project/panopoly_theme
-[6]: https://drupal.org/project/panopoly
-[7]: https://dashboard.getpantheon.com/products/panopoly/spinup
-[8]: http://www.youtube.com/watch?v=z3y1cdc22cU
-[9]: https://www.drupal.org/node/2024441 "Status: Closed (fixed)"
-[10]: https://drupal.org/documentation/install/modules-themes
-[11]: https://www.drupal.org/files/enabletheme.png
-[12]: https://raw.githubusercontent.com/wiki/katypool/kalatheme/settings_setup.PNG
-[13]: http://getbootstrap.com/
-[15]: https://www.drupal.org/files/setup_0.png
-[17]: http://www.getpantheon.com
-[18]: http://www.kalamuna.com/products/kalabox/
-[19]: https://github.com/kalamuna/kalastack
-[20]: http://bootswatch.com/
-[21]: http://getbootstrap.com/customize/
-[22]: https://www.google.com/#q=twitter+bootstrap+3+themes&amp;safe=off
-[23]: https://wrapbootstrap.com/
-[25]: http://fontawesome.io/
-[28]: https://raw.githubusercontent.com/wiki/katypool/kalatheme/subtheme_generator1.PNG
-[29]: https://raw.githubusercontent.com/wiki/katypool/kalatheme/subtheme_generator2.PNG
-[30]: https://raw.githubusercontent.com/wiki/katypool/kalatheme/subtheme_generator3.PNG
-[31]: https://www.drupal.org/files/Screen%20Shot%202014-01-04%20at%204.30.20%20PM.png
 
 
 MANUALLY INSTALLING BOOTSTRAP
