@@ -108,36 +108,33 @@ files in a KalaSUBtheme.
 You also do not need to have the minified files to get this to work but they are
 highly recommended for better performance.
 
-KEY FEATURES
-------------
+KEY FEATURES OF KALATHEME
+-------------------------
  * Settings
  On the settings page for Kalatheme you can configure how you want the style
  plugin to work.
- https://drupal.org/node/2167213
+https://github.com/drupalprojects/kalatheme/wiki/Kalatheme-settings-and-config
 
  * Style Plugin
  When you choose to "Customize this page" using the Panels In-Place Editor you
  gain access to a bunch of customization tools provided by Kalatheme. Select the
  paintbrush on the panels pane or region you want to edit, choose
  "Kalacustomize" and hit next.
- https://drupal.org/node/2167217
+https://github.com/drupalprojects/kalatheme/wiki/Styles-Plugin
 
- * Views Grid
+ * Grid Systen
  Any content pane view that is made with the grid display and that has an
  amount of columns that can evenly divide the amount of columns in your
  responsive grid (12 by default) will be automatically responsive. You can
  also implement a custom size grid.
- https://drupal.org/node/2167219
+https://github.com/drupalprojects/kalatheme/wiki/Dynamic-Grid-System
 
  * Responsive Menu and Toggling
  The "main-menu" menu will automatically dropdown for subitems. It will also
  automatically "responsify" on tablet and phone. You can also choose what
  device you want each pane to show up on.
- https://drupal.org/node/2167215
+https://github.com/drupalprojects/kalatheme/wiki/Responsive-Toggling
 
  * One Region Theme Nirvana with Panels Layouts
- https://drupal.org/node/2167223
- https://drupal.org/node/2167225
-
- * SASS and COMPASS Support
- https://drupal.org/node/2167227
+ https://github.com/drupalprojects/kalatheme/wiki/Theming-with-One-Region
+https://github.com/drupalprojects/kalatheme/wiki/Panels-Layouts
