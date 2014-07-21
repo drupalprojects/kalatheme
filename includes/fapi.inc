@@ -70,7 +70,7 @@ function kalatheme_process_input(&$element, &$form_state) {
     'urlfield',
   );
   if (!empty($element['#type']) && (in_array($element['#type'], $types))) {
-        $element['#attributes']['class'][] = 'form-control';
+    $element['#attributes']['class'][] = 'form-control';
   }
   return $element;
 }
