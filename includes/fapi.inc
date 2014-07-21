@@ -56,7 +56,7 @@ function kalatheme_process_element(&$element, &$form_state) {
 function kalatheme_process_input(&$element, &$form_state) {
   $types = array(
     'textfield',
-    'textarea',
+    //'textarea',
     'password',
     'password_confirm',
     'select',
@@ -70,7 +70,7 @@ function kalatheme_process_input(&$element, &$form_state) {
     'urlfield',
   );
   if (!empty($element['#type']) && (in_array($element['#type'], $types))) {
-    $element['#attributes']['class'][] = 'form-control';
+        $element['#attributes']['class'][] = 'form-control';
   }
   return $element;
 }
@@ -249,7 +249,7 @@ function kalatheme_textarea($variables) {
   if(isset($element['#rows'])){
     $element['#attributes']['rows'] = $element['#rows'];
   }
-  _form_set_class($element, array('form-textarea'));
+  _form_set_class($element, array('form-textarea','form-control'));
 
   $wrapper_attributes = array(
     'class' => array('form-textarea-wrapper'),
