@@ -56,6 +56,7 @@ function kalatheme_process_element(&$element, &$form_state) {
 function kalatheme_process_input(&$element, &$form_state) {
   $types = array(
     'textfield',
+    'textarea',
     'password',
     'password_confirm',
     'select',
@@ -248,7 +249,7 @@ function kalatheme_textarea($variables) {
   if(isset($element['#rows'])){
     $element['#attributes']['rows'] = $element['#rows'];
   }
-  _form_set_class($element, array('form-textarea','form-control'));
+  _form_set_class($element, array('form-textarea'));
 
   $wrapper_attributes = array(
     'class' => array('form-textarea-wrapper'),
