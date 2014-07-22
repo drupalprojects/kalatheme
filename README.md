@@ -25,8 +25,8 @@ you about it until the ending of the world.
  - PHP 5.3+
  - [JQuery Update 2.x](https://www.drupal.org/project/jquery_update)
    - with JQuery version set to 1.7+
- - [Bootstrap 3](http://getbootstrap.com/)
  - Optional
+  - [Custom Boostrap Library](http://getbootstrap.com/)
   - [Icon API](https://www.drupal.org/project/icon)
   - [Panopoly Theme](https://www.drupal.org/project/panopoly_theme)
   - [Magic](https://www.drupal.org/project/magic)
@@ -43,21 +43,20 @@ which was rolled against Panels 3.3+41-dev.
 
 ### Automatic Setup and Subthemes
 
-Kalatheme is meant to be a base theme that is used to build more powerful
+Kalatheme is meant to be the base theme that is used to build more powerful
 subthemes. Subthemes inherit almost all of the propoerties of their base theme
-so you can reduce theme clutter and start on the 10th floor. Here is some
-documentation on creating a basic subtheme.
+so you can reduce theme clutter and start on the 10th floor. 
 
 Luckily, Kalatheme features a pretty neat subtheme generation tool that will
 automatically set everything up for you and allow you to customize your
-subtheme.
-https://drupal.org/node/2167149
+subtheme. You don't even need to install a Bootstrap library, Kalatheme will pull one from [Bootswatch](http://bootswatch.com/) for you!
+
+Check out more documentation on the [Kalatheme subtheme generator GUI](https://github.com/drupalprojects/kalatheme/wiki/Setup-and-Installation)
 
 
 ### Using Bootstrap
 
-Kalatheme doesn't do much without a Bootstrap Library so you are going to need
-to shop around for one.
+Kalatheme no longer requires an installed Bootstrap library to work. Our subtheme generator does that for you. However, if you are looking to create a custom bootstrap library, here are some options:
 
  - To get the standard Bootstrap library, or to customize that library:
  http://getbootstrap.com/
@@ -127,14 +126,14 @@ highly recommended for better performance.
 
  - Settings
    - On the settings page for Kalatheme you can [configure how you want the style
- plugin to work.](https://drupal.org/node/2167213)
- - Style Plugin
+ plugin to work.](https://github.com/drupalprojects/kalatheme/wiki/Kalatheme-settings-and-config)
+ - [Style Plugin](https://github.com/drupalprojects/kalatheme/wiki/Styles-Plugin)
    - When you choose to "Customize this page" using the Panels In-Place Editor you
  gain access to a bunch of customization tools provided by Kalatheme. Select the
  paintbrush on the panels pane or region you want to edit, choose "Kalacustomize" and hit next.
- - [Mobile first and responsive](https://drupal.org/node/2167215)
- - [One Region Theme Nirvana](https://drupal.org/node/2167223)
- - [Panels Layouts](https://drupal.org/node/2167225)
+ - [Mobile first and responsive](https://github.com/drupalprojects/kalatheme/wiki/Responsive-Toggling)
+ - [One Region Theme Nirvana](https://github.com/drupalprojects/kalatheme/wiki/Theming-with-One-Region)
+ - [Panels Layouts](https://github.com/drupalprojects/kalatheme/wiki/Panels-Layouts)
  -  Accessibility
    - Kalatheme strives to provide and improve accessibiltiy for all users. [Please
  report issues](https://github.com/drupalprojects/kalatheme/issues) with the tag `accessibility`.
