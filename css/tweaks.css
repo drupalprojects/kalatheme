@@ -279,13 +279,18 @@ ul.panels-ipe-linkbar {
   margin-left: 10px;
 }
 
-.features-export-component .radio input[type="radio"],
-.features-export-component .radio-inline input[type="radio"],
-.features-export-component .checkbox input[type="checkbox"],
-.features-export-component .checkbox-inline input[type="checkbox"],
-.features-export-list .radio input[type="radio"],
-.features-export-list .radio-inline input[type="radio"],
-.features-export-list .checkbox input[type="checkbox"],
-.features-export-list .checkbox-inline input[type="checkbox"] {
+/* Bootstrap 3.2.0 Checkboxes Fix*/
+table .radio input[type="radio"],
+table .radio-inline input[type="radio"],
+table .checkbox input[type="checkbox"],
+table .checkbox-inline input[type="checkbox"]{
   margin-left: 0px;
+  position:static;
+}
+
+
+/* Module Filter Display*/
+#module-filter-left ul li.active{
+  margin-right:0px;
+  width:100%;
 }
