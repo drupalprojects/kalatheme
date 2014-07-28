@@ -97,6 +97,9 @@ files.
   /CURRENT-THEME_bootstrap/js/bootstrap.min.js
 ```
 
+### Upgrading Bootstrap to 3.2
+If you have a Custom Bootstrap library that is older than 3.2 you may not have the URL to rebuild the library.  With 3.2, this is now added into the json file.  However, it can be done with older bootstrap json files by following [this StackOverflow post](http://stackoverflow.com/questions/20384330/reload-bootstrap-customization).
+
 #### Important
 
 The only actual requirement here is that either css/bootstrap.css or
