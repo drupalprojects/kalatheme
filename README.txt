@@ -111,6 +111,9 @@ files in a KalaSUBtheme.
 You also do not need to have the minified files to get this to work but they are
 highly recommended for better performance.
 
+### Upgrading Bootstrap to 3.2
+If you have a Custom Bootstrap library that is older than 3.2 you may not have the URL to rebuild the library.  With 3.2, this is now added into the json file.  However, it can be done with older bootstrap json files by following [this StackOverflow post](http://stackoverflow.com/questions/20384330/reload-bootstrap-customization).
+
 KEY FEATURES
 ------------
  * Settings
