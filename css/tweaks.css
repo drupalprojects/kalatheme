@@ -283,7 +283,8 @@ ul.panels-ipe-linkbar {
 table .radio input[type="radio"],
 table .radio-inline input[type="radio"],
 table .checkbox input[type="checkbox"],
-table .checkbox-inline input[type="checkbox"]{
+table .checkbox-inline input[type="checkbox"],
+table .checkbox,table .radio{
   margin-left: 0px;
   position:static;
 }
