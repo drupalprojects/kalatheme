@@ -56,6 +56,9 @@
 
   $.fn.carousel.Constructor.prototype.onSlideComplete = function( vars ){
     this.sliding = false;
+      // hacky way to get at these variables
+      // might want to consider some currying
+      // https://medium.com/@kbrainwave/currying-in-javascript-ce6da2d324fe
       var $next = vars[0];
       var $active = vars[1];
       var direction = vars[2];
