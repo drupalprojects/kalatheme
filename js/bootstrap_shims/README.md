@@ -14,9 +14,13 @@ $.one( 'bs.eventString', complete )
 generally speaking setting an "onMethodComplete" callback to $.fn.bootstrapComponent.Constructor, and replacing the above with:
 
 ```
-$.on('bs.eventString', this.onMethodComplete.bind( this ));
+var aThing = whateverIsHandlingTheEvent;
+aThing.on('bs.eventString', this.onMethodComplete.bind( this ));
 ```
-
-solves these issues. 
+and then from within the onMethodComplete method calling
+```
+whateverIsHandlingTheEvent.off('bs.eventString')
+```
+solves these issues (which is just longhand for what "$.fn.one" does.
 
 We need to run the bootstrap jUnit tests with these overrides... but its a stable OOP solution. 
