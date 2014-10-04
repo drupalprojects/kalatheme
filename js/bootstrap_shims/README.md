@@ -1,4 +1,4 @@
-JQuery Shims
+Bootstrap JQuery 1.7 Shims
 ---------------------
 
 Currently the most current and Kalatheme compatible jQuery version is 1.7 (panopoly, ctools, IPE, etc.)
