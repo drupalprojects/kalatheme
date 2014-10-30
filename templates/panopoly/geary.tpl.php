@@ -14,7 +14,7 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> geary-main-container">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> geary-main-container">
           <?php print $content['header']; ?>
         </div>
       </div>
@@ -23,13 +23,13 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> geary-column-content-region-1">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> geary-column-content-region-1">
           <?php print $content['column1']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> geary-column-content-region-2">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> geary-column-content-region-2">
           <?php print $content['column2']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> geary-column-content-region-3">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> geary-column-content-region-3">
           <?php print $content['column3']; ?>
         </div>
       </div>

@@ -14,24 +14,24 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> bartlett-flipped-everything">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> bartlett-flipped-everything">
           <div class="row">
-            <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD * 2); ?> bartlett-flipped-main">
+            <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD * 2); ?> bartlett-flipped-main">
               <div class="row">
-                <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> bartlett-flipped-main-header">
+                <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> bartlett-flipped-main-header">
                   <?php print $content['contentheader']; ?>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> bartlett-flipped-main-col-1">
+                <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> bartlett-flipped-main-col-1">
                   <?php print $content['contentcolumn1']; ?>
                 </div>
-                <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> bartlett-flipped-main-col-1">
+                <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> bartlett-flipped-main-col-2">
                   <?php print $content['contentcolumn2']; ?>
                 </div>
               </div>
             </div>
-            <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD); ?> bartlett-flipped-side">
+            <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD); ?> bartlett-flipped-side">
               <?php print $content['sidebar']; ?>
             </div>
           </div>

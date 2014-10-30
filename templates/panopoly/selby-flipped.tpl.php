@@ -14,29 +14,29 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD * 2); ?> selby-flipped-column-content-region-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD * 2); ?> selby-flipped-column-content-region-area">
           <div class="row">
-            <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> selby-flipped-column-content-region-area">
+            <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> selby-flipped-column-content-region-area">
               <?php print $content['contentheader']; ?>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> selby-flipped-column-content-region-1">
+            <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> selby-flipped-column-content-region-1">
               <?php print $content['contentcolumn1']; ?>
             </div>
-            <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> selby-flipped-column-content-region-2">
+            <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> selby-flipped-column-content-region-2">
               <?php print $content['contentcolumn2']; ?>
             </div>
           </div><!-- /.selby-flipped-content-container row-->
           <div class="row">
-            <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> selby-flipped-content-footer-area">
+            <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> selby-flipped-content-footer-area">
               <?php print $content['contentfooter']; ?>
             </div>
           </div>
         </div><!-- /.selby-flipped-content-container -->
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD); ?> selby-flipped-sidebar-main-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD); ?> selby-flipped-sidebar-main-area">
           <div class="row">
-            <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> selby-flipped-sidebar-area">
+            <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> selby-flipped-sidebar-area">
               <?php print $content['sidebar']; ?>
             </div>
           </div>

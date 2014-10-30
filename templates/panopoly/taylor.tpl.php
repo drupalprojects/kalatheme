@@ -14,7 +14,7 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> taylor-header-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> taylor-header-area">
           <?php print $content['header']; ?>
         </div>
       </div>
@@ -23,13 +23,13 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF, 3); ?> taylor-half-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF, 3); ?> taylor-half-area">
           <?php print $content['half']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH, 3); ?> taylor-quarter-1-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH, 3); ?> taylor-quarter-1-area">
           <?php print $content['quarter1']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH, 3); ?> taylor-quarter-2-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH, 3); ?> taylor-quarter-2-area">
           <?php print $content['quarter2']; ?>
         </div>
       </div>
@@ -38,7 +38,7 @@
   <footer class="section" id="footer">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> taylor-footer-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> taylor-footer-area">
           <?php print $content['footer']; ?>
         </div>
       </div>

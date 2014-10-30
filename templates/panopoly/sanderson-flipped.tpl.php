@@ -14,13 +14,13 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> sanderson-flipped-column-content-region-1">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> sanderson-flipped-column-content-region-1">
           <?php print $content['column1']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> sanderson-flipped-column-content-region-2">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> sanderson-flipped-column-content-region-2">
           <?php print $content['column2']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> sanderson-flipped-column-content-region-3">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> sanderson-flipped-column-content-region-3">
           <?php print $content['column3']; ?>
         </div>
       </div>
@@ -29,10 +29,10 @@
   <footer class="section" id="footer">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> sanderson-flipped-secondary-column-content-region-1">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> sanderson-flipped-secondary-column-content-region-1">
           <?php print $content['secondarycolumn1']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> sanderson-flipped-secondary-column-content-region-2">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> sanderson-flipped-secondary-column-content-region-2">
           <?php print $content['secondarycolumn2']; ?>
         </div>
       </div>

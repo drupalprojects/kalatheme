@@ -14,7 +14,7 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> webb-flipped-header-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> webb-flipped-header-area">
           <?php print $content['header']; ?>
         </div>
       </div>
@@ -23,22 +23,22 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD * 2); ?> webb-flipped-column-content-region-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD * 2); ?> webb-flipped-column-content-region-area">
           <div class="row">
-            <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> webb-flipped-column-header-region-area">
+            <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> webb-flipped-column-header-region-area">
               <?php print $content['contentheader']; ?>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> webb-flipped-column-content-region-1">
+            <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> webb-flipped-column-content-region-1">
               <?php print $content['contentcolumn1']; ?>
             </div>
-            <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> webb-flipped-column-content-region-2">
+            <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> webb-flipped-column-content-region-2">
               <?php print $content['contentcolumn2']; ?>
             </div>
           </div>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD); ?> webb-flipped-sidebar-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD); ?> webb-flipped-sidebar-area">
           <?php print $content['sidebar']; ?>
         </div>
       </div>
