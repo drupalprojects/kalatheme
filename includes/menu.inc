@@ -121,6 +121,14 @@ function kalatheme_links__system_main_menu($variables) {
       if (!empty($link['#below'])) {
         $class[] = 'dropdown';
         $class[] = 'clearfix';
+        // print a toggle.
+        $link['#options']['attributes']['role'] = array("button");
+        $link['#options']['attributes']['class'] += array("dropdown-toggle");
+        $link['#options']['attributes']['id'] = "main-menu-dropdown-" . $i;
+        $link['#options']['attributes']['data-toggle'] = array("dropdown");
+        $link['#options']['attributes']['aria-haspopup'] = array("true");
+        $link['#options']['html'] = true;
+        $link['#title'] .= '<span class="caret" aria-hidden="true"></span>';
       }
       $output .= '<li' . drupal_attributes(array('class' => $class, 'role' =>'presentation')) . '>';
 
@@ -141,12 +149,11 @@ function kalatheme_links__system_main_menu($variables) {
       }
 
       $clearfix = '';
-      // If link has child items, print a toggle and dropdown menu.
+      // If link has child items, print a dropdown menu.
       if (!empty($link['#below'])) {
         $dropdown_id = 'main-menu-dropdown-' . $i;
-        $output .= '<a href="#"  role="button" class="dropdown-toggle" data-toggle="dropdown" id="' . $dropdown_id. '" aria-haspopup="true">';
         //Add in text to be available for AT
-        $output .= '<span class="element-invisible">Toggle submenu for ' . $link['#title'] . '</span><span class="caret" aria-hidden="true"></span></a>';
+        $output .= '<span class="element-invisible">Toggle submenu for ' . strip_tags($link['#title']) . '</span></a>';
         $output .= theme('links__system_main_menu', array(
           'links' => $link['#below'],
           'attributes' => array(
