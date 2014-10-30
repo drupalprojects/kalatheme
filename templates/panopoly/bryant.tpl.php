@@ -14,10 +14,10 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH); ?> bryant-sidebar-region">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH); ?> bryant-sidebar-region">
           <?php print $content['sidebar']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH * 3); ?> bryant-main-content">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH * 3); ?> bryant-main-content">
           <?php print $content['contentmain']; ?>
         </div>
       </div>

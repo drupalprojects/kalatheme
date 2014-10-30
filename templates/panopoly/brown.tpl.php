@@ -14,10 +14,10 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD * 2); ?> brown-header-2">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD * 2); ?> brown-header-2">
           <?php print $content['slidergutter']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD); ?> brown-header-1">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD); ?> brown-header-1">
           <?php print $content['slider']; ?>
         </div>
       </div>
@@ -26,13 +26,13 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> brown-middle-region-1">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> brown-middle-region-1">
           <?php print $content['column1']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> brown-middle-region-2">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> brown-middle-region-2">
           <?php print $content['column2']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> brown-middle-region-3">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> brown-middle-region-3">
           <?php print $content['column3']; ?>
         </div>
       </div>
@@ -41,13 +41,13 @@
   <footer class="section" id="footer">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> brown-footer-region1">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> brown-footer-region1">
           <?php print $content['footercolumn1']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> brown-footer-region2">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> brown-footer-region2">
           <?php print $content['footercolumn2']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> brown-footer-region3">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> brown-footer-region3">
             <?php print $content['footercolumn3']; ?>
         </div>
       </div>

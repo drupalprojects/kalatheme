@@ -14,7 +14,7 @@
   <section class="section alt" id="promo">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> rolph-header-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> rolph-header-area">
           <?php print $content['header']; ?>
         </div>
       </div>
@@ -23,16 +23,16 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH, 4); ?> rolph-column-content-region1-">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH, 4); ?> rolph-column-content-region-1">
           <?php print $content['quarter1']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH, 4); ?> rolph-column-content-region-2">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH, 4); ?> rolph-column-content-region-2">
           <?php print $content['quarter2']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH, 4); ?> rolph-column-content-region-3">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH, 4); ?> rolph-column-content-region-3">
           <?php print $content['quarter3']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH, 4); ?> rolph-column-content-region-4">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FOURTH, 4); ?> rolph-column-content-region-4">
           <?php print $content['quarter4']; ?>
         </div>
       </div>
@@ -41,7 +41,7 @@
    <footer class="section" id="footer">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> rolph-footer-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> rolph-footer-area">
           <?php print $content['footer']; ?>
         </div>
       </div>

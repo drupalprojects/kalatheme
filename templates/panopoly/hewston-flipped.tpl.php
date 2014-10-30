@@ -14,10 +14,10 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD); ?> hewston-flipped-slider-gutter-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD); ?> hewston-flipped-slider-gutter-area">
           <?php print $content['slidergutter']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD * 2); ?> hewston-flipped-slider-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD * 2); ?> hewston-flipped-slider-area">
           <?php print $content['slider']; ?>
         </div>
       </div>
@@ -26,13 +26,13 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> hewston-flipped-middle-region-1">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> hewston-flipped-middle-region-1">
           <?php print $content['column1']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> hewston-flipped-middle-region-2">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> hewston-flipped-middle-region-2">
           <?php print $content['column2']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> hewston-flipped-middle-region-3">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_THIRD, 3); ?> hewston-flipped-middle-region-3">
           <?php print $content['column3']; ?>
         </div>
       </div>

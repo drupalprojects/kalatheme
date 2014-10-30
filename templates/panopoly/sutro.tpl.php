@@ -14,7 +14,7 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> sutro-header-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> sutro-header-area">
             <?php print $content['header']; ?>
         </div>
       </div>
@@ -23,10 +23,10 @@
   <section class="section">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> sutro-column-content-region-1">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> sutro-column-content-region-1">
           <?php print $content['column1']; ?>
         </div>
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> sutro-column-content-region-2">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_HALF); ?> sutro-column-content-region-2">
           <?php print $content['column2']; ?>
         </div>
       </div>
@@ -35,7 +35,7 @@
   <footer class="section" id="footer">
     <div class="container">
       <div class="row">
-        <div class="col-md-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> sutro-footer-area">
+        <div class="col-sm-<?php print kalatheme_grid_size(KALATHEME_GRID_FULL); ?> sutro-footer-area">
           <?php print $content['footer']; ?>
         </div>
       </div>
