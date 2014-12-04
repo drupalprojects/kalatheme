@@ -11,7 +11,6 @@
  * current theme. You can't use the base theme anymore.
  *
  * @todo assess the security of this... seems probably sketchy?
- *
  */
 global $theme_key;
 $function = $theme_key . '_libraries_info';
@@ -65,11 +64,15 @@ if (!function_exists($function)) {
 }
 
 /**
- * This attempts to find and return the Bootstrap library version
+ * This attempts to find and return the Bootstrap library version.
  *
- * @param $library - The actual library
- * @param $options - Options to help determine the library version
- * @return Library version number
+ * @param array $library
+ *   The actual library
+ * @param array $options
+ *   Options to help determine the library version
+ *
+ * @return int
+ *   Library version number
  */
 function _kalatheme_get_version($library, $options) {
   // Use bootstrap.min.css if exists, if not use normal bootstrap.css
@@ -98,5 +101,3 @@ function _kalatheme_get_version($library, $options) {
   }
   fclose($file);
 }
-
-

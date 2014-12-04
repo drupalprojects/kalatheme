@@ -2,17 +2,17 @@
 
 /**
  * @file
- * Kalatheme's helper functions
+ * Kalatheme's helper functions.
  */
 
-// Constants
+// Constants.
 define('KALATHEME_BOOTSWATCH_API', 'http://api.bootswatch.com/3/');
 
-// Use Libraries intregration if applicable
+// Use Libraries intregration if applicable.
 if (kalatheme_use_libraries()) {
   require_once dirname(__FILE__) . '/../includes/libraries.inc';
   // We want to use the global here to respect alterations from modules
-  // like ThemeKey
+  // like ThemeKey.
   global $theme_key;
   if (!defined('KALATHEME_BOOTSTRAP_LIBRARY')) {
     define('KALATHEME_BOOTSTRAP_LIBRARY', $theme_key . '_bootstrap');
@@ -22,7 +22,6 @@ if (kalatheme_use_libraries()) {
 /**
  * Implements hook_updater_info().
  */
-// Only load if apps module is not around to provide this
 function kalatheme_updater_info_alter(&$updaters) {
   $updaters['library'] = array(
     'class' => 'KalathemeUpdater',
@@ -45,18 +44,18 @@ function _kalatheme_load_dependencies() {
     return $dependencies_loaded;
   }
 
-  // Check some minimal module, variable and bootstrap reqs
-  // See if we are running a 3.x version of panels
+  // Check some minimal module, variable and bootstrap reqs.
+  // See if we are running a 3.x version of panels.
   $panels = FALSE;
   if (module_exists('panels')) {
     $info = system_get_info('module', 'panels');
     $regex = '/^7\.x-3\.[0-9]+.*$/';
-    // Check major version
+    // Check major version.
     if (preg_match($regex, $info['version'])) {
       $minor = substr($info['version'], 6);
       if (strpos($info['version'], 'dev') !== FALSE) {
-        // Keep commit add for potential future use
-        $dev = substr(substr($minor, strpos($minor, '+')+1), 0, -4);
+        // Keep commit add for potential future use.
+        $dev = substr(substr($minor, strpos($minor, '+') + 1), 0, -4);
         $minor = substr($minor, 0, strpos($minor, '+'));
       }
       if ($minor >= 4) {
@@ -71,14 +70,14 @@ function _kalatheme_load_dependencies() {
     drupal_set_message(t('Kalatheme requires at least Panels 3.4.'), 'error');
   }
 
-  // See if we are running at least a 2.x branch of jquery_update
-  // Check to see if we are using jquery 1.7+
+  // See if we are running at least a 2.x branch of jquery_update.
+  // Check to see if we are using jquery 1.7+.
   $jq = FALSE;
   if (module_exists('jquery_update')) {
     $info = system_get_info('module', 'jquery_update');
     $regex = '/^7\.x-2\.[0-9]+.*$/';
     $version = explode('.', variable_get('jquery_update_jquery_version'));
-    if ($version[0] ==1 && $version >= 7) {
+    if ($version[0] == 1 && $version >= 7) {
       $jq = TRUE;
     }
   }
@@ -86,9 +85,9 @@ function _kalatheme_load_dependencies() {
     drupal_set_message(t('Kalatheme requires a 2.x version of JQuery Update that uses at least JQuery 1.7'), 'error');
   }
 
-  // Check to see if we need libraries integration
+  // Check to see if we need libraries integration.
   if (kalatheme_use_libraries()) {
-      // Check to see if we are running at least 2.1 of libraries
+    // Check to see if we are running at least 2.1 of libraries.
     $libs = FALSE;
     if (module_exists('libraries')) {
       $info = system_get_info('module', 'libraries');
@@ -100,7 +99,7 @@ function _kalatheme_load_dependencies() {
     if (!$libs) {
       drupal_set_message(t('Kalatheme requires at least Libraries 2.1.'), 'error');
     }
-    // Check to see if bootstrap libraries exist
+    // Check to see if bootstrap libraries exist.
     $boot = FALSE;
     if (module_exists('libraries')) {
       $bootstrap = libraries_detect(KALATHEME_BOOTSTRAP_LIBRARY);
@@ -138,23 +137,24 @@ function _kalatheme_load_dependencies() {
 }
 
 /**
- * Modifies the config form to contain the required subtheme building stuff
+ * Modifies the config form.
  *
- * @return form
+ * @return array
  *   The modified form
  */
 function kalatheme_prepare_config_form(&$form) {
-  // Provide needed ajax wrappers
+  // Provide needed ajax wrappers.
   $form['actions']['submit']['#prefix'] = "<div id='kala-submit-change-title'>";
   $form['actions']['submit']['#suffix'] = "</div>";
   // Add custom submit and validate functions to handle custom bootstrap
-  // libraries
+  // libraries.
   if (isset($form['#submit']) && is_array($form['#submit']) && !in_array('kalatheme_custom_bootstrap_library_submit', $form['#submit'])) {
-    // Add our submit function first
+    // Add our submit function first.
     array_unshift($form['#submit'], 'kalatheme_custom_bootstrap_library_submit');
-    // Remove system_theme_settings_submit here to prevent form_execute_handlers
-    // from adding the submit function to the control batch
-    // We will add it back in later if needed
+    // Remove system_theme_settings_submit here to prevent
+    // form_execute_handlers from adding the submit function
+    // to the control batch.
+    // We will add it back in later if needed.
     if (($key = array_search('system_theme_settings_submit', $form['#submit'])) !== FALSE) {
       unset($form['#submit'][$key]);
     }
@@ -212,7 +212,7 @@ function _kalatheme_load_grid_size() {
     $column_sizes = array_pop($column_sizes);
     $column_sizes = array_unique($column_sizes);
     foreach ($column_sizes as &$column_size) {
-      $column_size = (int)$column_size;
+      $column_size = (int) $column_size;
     }
     sort($column_sizes);
     return array_pop($column_sizes);
@@ -228,8 +228,9 @@ function _kalatheme_load_grid_size() {
  *
  * @param int $percentage
  *   Whole number version of the percentage to calculate.
- * @param (optional) integer $total_columns
- *   The total actual columns in the current row. Defaults to 2.
+ * @param int $total_columns
+ *   (optional) The total actual columns in the current row.
+ *   Defaults to 2.
  *
  * @return int
  *   The column count, rounded if necessary.
@@ -237,7 +238,7 @@ function _kalatheme_load_grid_size() {
 function kalatheme_grid_size($percentage, $total_columns = 2) {
   $columns = $percentage * KALATHEME_GRID_SIZE;
   // Deal with uneven division.
-  if (!is_integer($columns)) {
+  if (!is_int($columns)) {
     if ($columns > (KALATHEME_GRID_SIZE / $total_columns)) {
       $columns = floor($columns);
     }
@@ -253,7 +254,7 @@ function kalatheme_grid_size($percentage, $total_columns = 2) {
  * Returns the list of Bootwatch themes.
  */
 function kalatheme_get_bootswatch_themes() {
-  // Grab Bootstwatches from API or Drupal Cache
+  // Grab Bootstwatches from API or Drupal Cache.
   if (($bootswatches = cache_get('kalatheme:bootswatches', 'cache')) === FALSE) {
     $bootswatch_info = drupal_http_request(KALATHEME_BOOTSWATCH_API);
     if ($bootswatch_info && $bootswatch_info->code == 200) {
@@ -267,17 +268,16 @@ function kalatheme_get_bootswatch_themes() {
   else {
     $bootswatches = $bootswatches->data;
   }
-  // For the default option
-  // add to the front
+  // For the default option, add to the front.
   $default = new stdClass();
   $default->name = 'Default';
   array_unshift($bootswatches, $default);
-  // For the null option
+  // For the null option.
   $none = new stdClass();
   $none->name = 'None';
   $bootswatches[] = $none;
-  // If the user can use a custom theme
-  if (kalatheme_backend_check()){
+  // If the user can use a custom theme.
+  if (kalatheme_backend_check()) {
     $custom = new stdClass();
     $custom->name = 'Custom';
     $bootswatches[] = $custom;
@@ -286,7 +286,7 @@ function kalatheme_get_bootswatch_themes() {
 }
 
 /**
- * Get specific information about a bootswatch theme
+ * Get specific information about a bootswatch theme.
  */
 function kalatheme_get_bootswatch_theme($theme) {
   $bootswatches = kalatheme_get_bootswatch_themes();
@@ -298,7 +298,7 @@ function kalatheme_get_bootswatch_theme($theme) {
 }
 
 /**
- * Helper function to return whether we are using libraries integration or not
+ * Helper function to return if using libraries integration or not.
  */
 function kalatheme_use_libraries() {
   if (function_exists('theme_get_setting')) {
@@ -309,36 +309,40 @@ function kalatheme_use_libraries() {
 }
 
 /**
- * We want to check if the webserver can write our stuff to the right places.
- * If it can't then we are going to tell the user what's up.
+ * Checks Drupal stack.
  *
- * @return
+ * We want to check if the webserver can write our stuff to the
+ * right places. If it can't, then we are going to tell the user
+ * what's up.
+ *
+ * @return bool
  *   True if all good, message if no good
  */
 function kalatheme_backend_check() {
-  // Verify FTP support
+  // Verify FTP support.
   $ftp_installed = extension_loaded('ftp');
-  // Verify SSH support
+  // Verify SSH support.
   $ssh_installed = extension_loaded('ssh2');
-  // Verify web server write permissions
+  // Verify web server write permissions.
   $install_permissions = kalatheme_has_write_access();
-  // Verify update module is enabled
+  // Verify update module is enabled.
   $updates_module = module_exists('update');
 
   return (($ftp_installed || $ssh_installed || $install_permissions) && $updates_module);
 }
 
 /**
- * Check whether Kalatheme has write access to libraries and modules directories.
+ * Kalatheme has write access to libraries and modules directories.
  *
- * @return boolean
+ * @return bool
+ *   Return if kalatheme can write to that directory.
  */
 function kalatheme_has_write_access() {
   return is_writable(drupal_realpath(kalatheme_lib_dir())) && is_writable(drupal_realpath('sites/all/modules'));
 }
 
 /**
- * Return the libraries dir to check
+ * Return the libraries dir to check.
  */
 function kalatheme_lib_dir() {
   return is_dir('sites/all/libraries') ? 'sites/all/libraries' : 'sites/all';

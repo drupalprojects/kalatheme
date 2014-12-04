@@ -11,7 +11,13 @@
 function kalatheme_table($variables) {
   $variables['attributes']['class'] = (isset($variables['attributes']['class'])) ? $variables['attributes']['class'] : array();
   $variables['attributes']['class'] = (is_array($variables['attributes']['class'])) ? $variables['attributes']['class'] : array($variables['attributes']['class']);
-  $variables['attributes']['class'] = array_merge($variables['attributes']['class'], array('table', 'table-striped', 'table-bordered', 'table-hover'));
+  $variables['attributes']['class'] = array_merge($variables['attributes']['class'],
+    array(
+      'table',
+      'table-striped',
+      'table-bordered',
+      'table-hover',
+    ));
 
   $header = $variables['header'];
   $rows = $variables['rows'];
@@ -45,7 +51,7 @@ function kalatheme_table($variables) {
         $cols = $colgroup;
       }
 
-      // Build colgroup
+      // Build colgroup.
       if (is_array($cols) && count($cols)) {
         $output .= ' <colgroup' . drupal_attributes($attributes) . '>';
         $i = 0;
@@ -88,20 +94,21 @@ function kalatheme_table($variables) {
       $cell = tablesort_header($cell, $header, $ts);
       $output .= _theme_table_cell($cell, TRUE);
     }
-    // Using ternary operator to close the tags based on whether or not there are rows
+    // Using ternary operator to close the tags based on whether,
+    // or not there are rows.
     $output .= (count($rows) ? " </tr></thead>\n" : "</tr>\n");
   }
   else {
     $ts = array();
   }
 
-  // Format the table rows:
+  // Format the table rows.
   if (count($rows)) {
     $output .= "<tbody>\n";
     foreach ($rows as $number => $row) {
       $attributes = array();
 
-      // Check if we're dealing with a simple or complex row
+      // Check if we're dealing with a simple or complex row.
       if (isset($row['data'])) {
         foreach ($row as $key => $value) {
           if ($key == 'data') {
@@ -117,7 +124,7 @@ function kalatheme_table($variables) {
       }
       if (count($cells)) {
 
-        // Build row
+        // Build row.
         $output .= ' <tr' . drupal_attributes($attributes) . '>';
         $i = 0;
         foreach ($cells as $cell) {
@@ -202,7 +209,7 @@ function kalatheme_status_messages($variables) {
 
   foreach (drupal_get_messages($display) as $type => $messages) {
     $class = (isset($status_class[$type])) ? ' alert-' . $status_class[$type] : '';
-    $output .= "<div class=\"alert alert-block$class\">\n";
+    $output .= "<div role=\"alert\" class=\"alert alert-block $class\">\n";
     $output .= '<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>';
 
     if (!empty($status_heading[$type])) {
@@ -263,25 +270,63 @@ function kalatheme_update_report($variables) {
     switch ($project['status']) {
       case UPDATE_CURRENT:
         $class = 'alert alert-success';
-        $icon = theme('image', array('path' => 'misc/watchdog-ok.png', 'width' => 18, 'height' => 18, 'alt' => t('ok'), 'title' => t('ok')));
+        $icon = theme('image', array(
+          'path' => 'misc/watchdog-ok.png',
+          'width' => 18,
+          'height' => 18,
+          'alt' => t('ok'),
+          'title' => t('ok'),
+        ));
         break;
+
       case UPDATE_UNKNOWN:
+        break;
+
       case UPDATE_FETCH_PENDING:
+        break;
+
       case UPDATE_NOT_FETCHED:
         $class = 'alert alert-info';
-        $icon = theme('image', array('path' => 'misc/watchdog-warning.png', 'width' => 18, 'height' => 18, 'alt' => t('warning'), 'title' => t('warning')));
+        $icon = theme('image', array(
+          'path' => 'misc/watchdog-warning.png',
+          'width' => 18,
+          'height' => 18,
+          'alt' => t('warning'),
+          'title' => t('warning'),
+        ));
         break;
+
       case UPDATE_NOT_SECURE:
+        break;
+
       case UPDATE_REVOKED:
+        break;
+
       case UPDATE_NOT_SUPPORTED:
         $class = 'alert alert-danger';
-        $icon = theme('image', array('path' => 'misc/watchdog-error.png', 'width' => 18, 'height' => 18, 'alt' => t('error'), 'title' => t('error')));
+        $icon = theme('image', array(
+          'path' => 'misc/watchdog-error.png',
+          'width' => 18, 'height' => 18,
+          'alt' => t('error'),
+          'title' => t('error'),
+        ));
         break;
+
       case UPDATE_NOT_CHECKED:
+        break;
+
       case UPDATE_NOT_CURRENT:
+        break;
+
       default:
         $class = 'alert alert-warning';
-        $icon = theme('image', array('path' => 'misc/watchdog-warning.png', 'width' => 18, 'height' => 18, 'alt' => t('warning'), 'title' => t('warning')));
+        $icon = theme('image', array(
+          'path' => 'misc/watchdog-warning.png',
+          'width' => 18,
+          'height' => 18,
+          'alt' => t('warning'),
+          'title' => t('warning'),
+        ));
         break;
     }
 
@@ -338,32 +383,52 @@ function kalatheme_update_report($variables) {
               ) {
             $version_class[] = 'version-recommended-strong';
           }
-          $versions_inner .= theme('update_version', array('version' => $project['releases'][$project['recommended']], 'tag' => t('Recommended version:'), 'class' => $version_class));
+          $versions_inner .= theme('update_version', array(
+            'version' => $project['releases'][$project['recommended']],
+            'tag' => t('Recommended version:'),
+            'class' => $version_class,
+          ));
         }
 
         // Now, print any security updates.
         if (!empty($project['security updates'])) {
           $security_class[] = 'version-security';
           foreach ($project['security updates'] as $security_update) {
-            $versions_inner .= theme('update_version', array('version' => $security_update, 'tag' => t('Security update:'), 'class' => $security_class));
+            $versions_inner .= theme('update_version', array(
+              'version' => $security_update,
+              'tag' => t('Security update:'),
+              'class' => $security_class,
+            ));
           }
         }
       }
 
       if ($project['recommended'] !== $project['latest_version']) {
-        $versions_inner .= theme('update_version', array('version' => $project['releases'][$project['latest_version']], 'tag' => t('Latest version:'), 'class' => array('version-latest')));
+        $versions_inner .= theme('update_version', array(
+          'version' => $project['releases'][$project['latest_version']],
+          'tag' => t('Latest version:'),
+          'class' => array('version-latest'),
+        ));
       }
       if ($project['install_type'] == 'dev'
           && $project['status'] != UPDATE_CURRENT
           && isset($project['dev_version'])
           && $project['recommended'] !== $project['dev_version']) {
-        $versions_inner .= theme('update_version', array('version' => $project['releases'][$project['dev_version']], 'tag' => t('Development version:'), 'class' => array('version-latest')));
+        $versions_inner .= theme('update_version', array(
+          'version' => $project['releases'][$project['dev_version']],
+          'tag' => t('Development version:'),
+          'class' => array('version-latest'),
+        ));
       }
     }
 
     if (isset($project['also'])) {
       foreach ($project['also'] as $also) {
-        $versions_inner .= theme('update_version', array('version' => $project['releases'][$also], 'tag' => t('Also available:'), 'class' => array('version-also-available')));
+        $versions_inner .= theme('update_version', array(
+          'version' => $project['releases'][$also],
+          'tag' => t('Also available:'),
+          'class' => array('version-also-available'),
+        ));
       }
     }
 
@@ -379,7 +444,8 @@ function kalatheme_update_report($variables) {
         $row .= drupal_placeholder($value['data']);
         $row .= "</div>\n";
       }
-      $row .= "</div>\n";  // extra div.
+      // Extra div.
+      $row .= "</div>\n";
     }
 
     $row .= '<div class="includes">';
@@ -407,7 +473,11 @@ function kalatheme_update_report($variables) {
           case UPDATE_NOT_SECURE:
           case UPDATE_REVOKED:
           case UPDATE_NOT_SUPPORTED:
-            $base_themes[] = t('%base_theme (!base_label)', array('%base_theme' => $base_theme, '!base_label' => theme('update_status_label', array('status' => $status[$base_key]))));
+            $base_themes[] = t('%base_theme (!base_label)', array(
+              '%base_theme' => $base_theme,
+              '!base_label' => theme('update_status_label', array(
+                'status' => $status[$base_key])),
+            ));
             break;
 
           default:
@@ -424,8 +494,8 @@ function kalatheme_update_report($variables) {
       $row .= t('Required by: %subthemes', array('%subthemes' => implode(', ', $project['sub_themes'])));
       $row .= "</div>\n";
     }
-
-    $row .= "</div>\n"; // info div.
+    // Info div.
+    $row .= "</div>\n";
 
     if (!isset($rows[$project['project_type']])) {
       $rows[$project['project_type']] = array();
@@ -448,7 +518,11 @@ function kalatheme_update_report($variables) {
     if (!empty($rows[$type_name])) {
       ksort($rows[$type_name]);
       $output .= "\n<h3>" . $type_label . "</h3>\n";
-      $output .= theme('table', array('header' => $header, 'rows' => $rows[$type_name], 'attributes' => array('class' => array('update'))));
+      $output .= theme('table', array(
+        'header' => $header,
+        'rows' => $rows[$type_name],
+        'attributes' => array('class' => array('update')),
+      ));
     }
   }
   drupal_add_css(drupal_get_path('module', 'update') . '/update.css');
@@ -458,7 +532,8 @@ function kalatheme_update_report($variables) {
 /**
  * Implements theme_user_admin_permissions().
  *
- * Basically it just removes the 'checkbox' classes to avoid conflicts with Bootstrap.
+ * Basically it just removes the 'checkbox' classes to avoid
+ * conflicts with Bootstrap.
  */
 function kalatheme_user_admin_permissions($variables) {
   $form = $variables['form'];
@@ -466,9 +541,14 @@ function kalatheme_user_admin_permissions($variables) {
   $roles = user_roles();
   foreach (element_children($form['permission']) as $key) {
     $row = array();
-    // Module name
+    // Module name.
     if (is_numeric($key)) {
-      $row[] = array('data' => drupal_render($form['permission'][$key]), 'class' => array('module'), 'id' => 'module-' . $form['permission'][$key]['#id'], 'colspan' => count($form['role_names']['#value']) + 1);
+      $row[] = array(
+        'data' => drupal_render($form['permission'][$key]),
+        'class' => array('module'),
+        'id' => 'module-' . $form['permission'][$key]['#id'],
+        'colspan' => count($form['role_names']['#value']) + 1,
+      );
     }
     else {
       // Permission row.
@@ -494,7 +574,11 @@ function kalatheme_user_admin_permissions($variables) {
     $header[] = array('data' => drupal_render($form['role_names'][$rid]));
   }
   $output = theme('system_compact_link');
-  $output .= theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('id' => 'permissions')));
+  $output .= theme('table', array(
+    'header' => $header,
+    'rows' => $rows,
+    'attributes' => array('id' => 'permissions'),
+  ));
   $output .= drupal_render_children($form);
   return $output;
 }
@@ -538,13 +622,13 @@ function kalatheme_pager($variables) {
   // Calculate various markers within this pager piece:
   // Middle is used to "center" pages around the current page.
   $pager_middle = ceil($quantity / 2);
-  // current is the page we are currently paged to
+  // Current is the page we are currently paged to.
   $pager_current = $pager_page_array[$element] + 1;
-  // first is the first page listed by this pager piece (re quantity)
+  // First is the first page listed by this pager piece (re quantity).
   $pager_first = $pager_current - $pager_middle + 1;
-  // last is the last page listed by this pager piece (re quantity)
+  // Last is the last page listed by this pager piece (re quantity).
   $pager_last = $pager_current + $quantity - $pager_middle;
-  // max is the maximum page number
+  // Max is the maximum page number.
   $pager_max = $pager_total[$element];
   // End of marker calculations.
 
@@ -562,10 +646,31 @@ function kalatheme_pager($variables) {
   }
   // End of generation loop preparation.
 
-  $li_first = theme('pager_first', array('text' => (isset($tags[0]) ? $tags[0] : t('« first')), 'element' => $element, 'parameters' => $parameters));
-  $li_previous = theme('pager_previous', array('text' => (isset($tags[1]) ? $tags[1] : t('‹ previous')), 'element' => $element, 'interval' => 1, 'parameters' => $parameters));
-  $li_next = theme('pager_next', array('text' => (isset($tags[3]) ? $tags[3] : t('next ›')), 'element' => $element, 'interval' => 1, 'parameters' => $parameters));
-  $li_last = theme('pager_last', array('text' => (isset($tags[4]) ? $tags[4] : t('last »')), 'element' => $element, 'parameters' => $parameters));
+  $li_first = theme('pager_first', array(
+    'text' => (isset($tags[0]) ? $tags[0] : t('« first')),
+    'element' => $element,
+    'parameters' => $parameters,
+  ));
+
+  $li_previous = theme('pager_previous', array(
+    'text' => (isset($tags[1]) ? $tags[1] : t('‹ previous')),
+    'element' => $element,
+    'interval' => 1,
+    'parameters' => $parameters,
+  ));
+
+  $li_next = theme('pager_next', array(
+    'text' => (isset($tags[3]) ? $tags[3] : t('next ›')),
+    'element' => $element,
+    'interval' => 1,
+    'parameters' => $parameters,
+  ));
+
+  $li_last = theme('pager_last', array(
+    'text' => (isset($tags[4]) ? $tags[4] : t('last »')),
+    'element' => $element,
+    'parameters' => $parameters,
+  ));
 
   if ($pager_total[$element] > 1) {
     if ($li_first) {
@@ -586,7 +691,7 @@ function kalatheme_pager($variables) {
       if ($i > 1) {
         $items[] = array(
           'class' => array('pager-ellipsis', 'disabled'),
-          'data' => '<span aria-hidden="true">…<span>'
+          'data' => '<span aria-hidden="true">…<span>',
         );
       }
       // Now generate the actual pager piece.
@@ -594,7 +699,12 @@ function kalatheme_pager($variables) {
         if ($i < $pager_current) {
           $items[] = array(
             'class' => array('pager-item'),
-            'data' => theme('pager_previous', array('text' => $i, 'element' => $element, 'interval' => ($pager_current - $i), 'parameters' => $parameters)),
+            'data' => theme('pager_previous', array(
+              'text' => $i,
+              'element' => $element,
+              'interval' => ($pager_current - $i),
+              'parameters' => $parameters,
+            )),
           );
         }
         if ($i == $pager_current) {
@@ -606,7 +716,12 @@ function kalatheme_pager($variables) {
         if ($i > $pager_current) {
           $items[] = array(
             'class' => array('pager-item'),
-            'data' => theme('pager_next', array('text' => $i, 'element' => $element, 'interval' => ($i - $pager_current), 'parameters' => $parameters)),
+            'data' => theme('pager_next', array(
+              'text' => $i,
+              'element' => $element,
+              'interval' => ($i - $pager_current),
+              'parameters' => $parameters,
+            )),
           );
         }
       }
@@ -631,7 +746,7 @@ function kalatheme_pager($variables) {
       );
     }
     return '<nav role="navigation" class="text-center pagination-wrapper">' . theme('item_list', array(
-      'plain' => true,
+      'plain' => TRUE,
       'items' => $items,
       'attributes' => array('class' => array('pagination')),
     )) . '</nav>';
@@ -643,11 +758,11 @@ function kalatheme_pager($variables) {
  * Implements theme_progress_bar().
  */
 function kalatheme_progress_bar($variables) {
-  $output =  '<div id="progress" class="progress active progress-striped">';
+  $output = '<div id="progress" class="progress active progress-striped">';
   $output .= '<div class="progress-bar" role="progressbar" aria-describedby="progressMessage" ';
   $output .= 'aria-valuenow="' . $variables['percent'] . '" ';
   $output .= 'aria-valuemin="0" aria-valuemax="100" style="width: ' . $variables['percent'] . '%;">';
-  $output .=  $variables['percent'] . '% Complete</div></div>';
+  $output .= $variables['percent'] . '% Complete</div></div>';
   $output .= '<p class="help-block" id="progressMessage">' . $variables['message'] . '</p>';
   $output = '<div class="progress-wrapper">' . $output . '</div>';
   return $output;
@@ -657,7 +772,6 @@ function kalatheme_progress_bar($variables) {
 /**
  * Implements theme_item_list().
  */
-
 function kalatheme_item_list($variables) {
   $items = $variables['items'];
   $title = $variables['title'];
@@ -698,7 +812,12 @@ function kalatheme_item_list($variables) {
       }
       if (count($children) > 0) {
         // Render nested list.
-        $data .= theme_item_list(array('items' => $children, 'title' => NULL, 'type' => $type, 'attributes' => $attributes));
+        $data .= theme_item_list(array(
+          'items' => $children,
+          'title' => NULL,
+          'type' => $type,
+          'attributes' => $attributes,
+        ));
       }
       if ($i == 1) {
         $attributes['class'][] = 'first';
@@ -710,7 +829,7 @@ function kalatheme_item_list($variables) {
     }
     $output .= "</$type>";
   }
-  if(!isset($variables['plain'])){
+  if (!isset($variables['plain'])) {
     $output = '<div class="item-list">' . $output . '</div>';
   }
   return $output;

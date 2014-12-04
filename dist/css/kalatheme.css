@@ -5,7 +5,6 @@
   font-size: 2em;
   width: 100%;
   -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
   box-sizing: border-box;
   *width: 98%;
   /* IE 7 and below, as far as I know */ }
@@ -200,7 +199,6 @@ body.ctools-modal-open {
 #modalContent .modal-content {
   width: 100%;
   overflow: hidden;
-  -webkit-box-shadow: none !important;
   box-shadow: none !important; }
 
 #modalContent #modal-content {
@@ -242,7 +240,6 @@ body.ctools-modal-open {
 
 #modalContent .panels-categories-box a.active {
   background: #eeeeee;
-  -webkit-box-shadow: none;
   box-shadow: none; }
 
 #modalContent .panels-root-content-box a.btn {
@@ -305,7 +302,6 @@ div#panels-ipe-control-container {
   width: auto;
   left: 0;
   right: 0;
-  -webkit-box-shadow: none;
   box-shadow: none; }
 
 div#panels-ipe-control-container .panels-ipe-button-container {
@@ -328,7 +324,6 @@ div#panels-ipe-control-container .panels-ipe-form-container form .form-submit {
   padding: 0px 10px 0px 34px; }
 
 div#panels-ipe-control-container .panels-ipe-form-container form .form-submit:hover {
-  -webkit-box-shadow: none;
   box-shadow: none; }
 
 ul.panels-ipe-linkbar {
@@ -632,7 +627,6 @@ div.vertical-tabs .vertical-tabs-panes {
 
 div.vertical-tabs .form-type-textfield input {
   width: 90%;
-  -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box; }
 
@@ -691,7 +685,6 @@ html.js fieldset.collapsed {
 .mceButton,
 .mceButton:before,
 .mceButton:after {
-  -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box; }
 

@@ -31,11 +31,10 @@ function kalatheme_authorize_batch_copy_project($project, $updater_name, $local_
   if (!isset($context['results']['tasks'])) {
     $context['results']['tasks'] = array();
   }
-  // Add some information about what to do when we finish
+  // Add some information about what to do when we finish.
   if ($subtheme) {
     $context['results']['tasks']['log']['subtheme'] = $project;
   }
-
 
   // The batch API uses a session, and since all the arguments are serialized
   // and unserialized between requests, although the FileTransfer object itself
@@ -51,7 +50,7 @@ function kalatheme_authorize_batch_copy_project($project, $updater_name, $local_
     return;
   }
   if ($updater_name == 'KalathemeUpdater') {
-    // This is where we check to see if libraries dir exists or not
+    // This is where we check to see if libraries dir exists or not.
     if (!is_dir(DRUPAL_ROOT . "/sites/all/libraries")) {
       $filetransfer->createDirectory(DRUPAL_ROOT . "/sites/all/libraries");
     }
@@ -92,9 +91,9 @@ function kalatheme_authorize_batch_copy_project($project, $updater_name, $local_
  * authorize.php will render a report. Also responsible for putting the site
  * back online after a successful install if necessary.
  *
- * @param $success
+ * @param bool $success
  *   TRUE if the batch operation was a success; FALSE if there were errors.
- * @param $results
+ * @param array $results
  *   An associative array of results from the batch operation.
  */
 function kalatheme_authorize_install_batch_finished($success, $results) {
@@ -143,28 +142,28 @@ function kalatheme_authorize_install_batch_finished($success, $results) {
   $_SESSION['authorize_results']['tasks'] = $results['tasks'];
   $_SESSION['authorize_operation']['page_title'] = t('Update manager');
 
-  // Enable and redirect if required
+  // Enable and redirect if required.
   if (isset($results['tasks']['log']['subtheme'])) {
-    // Rebuild theme registry stuff
+    // Rebuild theme registry stuff.
     system_rebuild_theme_data();
     drupal_theme_rebuild();
-    // Enable new theme
+    // Enable new theme.
     theme_enable(array($results['tasks']['log']['subtheme']));
     variable_set('theme_default', $results['tasks']['log']['subtheme']);
-    // REfresh everythging and set a message
+    // Refresh everythging and set a message.
     // @todo: make this abstract in the future, piped in from $context?
     drupal_set_message(t('<i class="fa fa-thumbs-up fa-2x">Your new subtheme is enabled! Looking good in the neighborhood!!</i>'), 'status', FALSE);
 
-    // Redirect to new settings page but only if not an install profile
+    // Redirect to new settings page but only if not an install profile.
     if (!drupal_installation_attempted()) {
       drupal_goto('admin/appearance/settings/' . $results['tasks']['log']['subtheme']);
     }
   }
-  // We need to do the big dump
+  // We need to do the big dump.
   // @todo: should figure out the actual caches we need to clear
-  // flush error messages so we dont get annoying bootstrap lib error
+  // flush error messages so we dont get annoying bootstrap lib error.
   if ($success) {
-    // drupal_get_message is not loaded so we directly remove errors
+    // drupal_get_message is not loaded so we directly remove errors.
     unset($_SESSION['messages']['error']);
   }
   drupal_flush_all_caches();

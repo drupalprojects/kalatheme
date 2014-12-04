@@ -4,10 +4,10 @@
  * Theme and hook functions for panels things.
  */
 
-/*
+/**
  * Implements hook_panels_default_style_render_region().
  *
- * Some magic from @malberts with inspiration from Omega
+ * Some magic from @malberts with inspiration from Omega.
  */
 function kalatheme_panels_default_style_render_region(&$variables) {
   // Remove .panels-separator.
@@ -66,7 +66,12 @@ function kalatheme_preprocess_panels_add_content_modal(&$variables) {
   $variables['root_content'] = '';
   if (!empty($variables['categories']['root'])) {
     foreach ($variables['categories']['root']['content'] as $content_type) {
-      $variables['root_content_array'][] = theme('panels_add_content_link', array('renderer' => $variables['renderer'], 'region' => $variables['region'], 'content_type' => $content_type));
+      $variables['root_content_array'][] = theme('panels_add_content_link',
+      array(
+        'renderer' => $variables['renderer'],
+        'region' => $variables['region'],
+        'content_type' => $content_type,
+      ));
     }
   }
 }
@@ -78,23 +83,23 @@ function kalatheme_process_panels_add_content_modal(&$vars) {
   $content = !empty($vars['categories'][$vars['category']]['content']) ? $vars['categories'][$vars['category']]['content'] : array();
 
   // If no category is selected or the category is empty or our special empty
-  // category render a 'header' that will appear instead of the columns.
+  // category, render a 'header' that will appear instead of the columns.
   if (empty($vars['category']) || empty($content) || $vars['category'] == 'root') {
-    // Nothing to do since there is no preview
+    // Nothing to do since there is no preview.
   }
   else {
     $titles = array_keys($content);
     natcasesort($titles);
     $col_size = count($titles) / $vars['column_count'];
 
-    // Zero out the existing column data
+    // Zero out the existing column data.
     $count = 0;
     foreach ($titles as $title) {
       $which = floor($count++ / $col_size) + 1;
       $vars['columns'][$which] = '';
     }
 
-    // Read the column data with our preview functionality
+    // Read the column data with our preview functionality.
     $count = 0;
     foreach ($titles as $title) {
       $which = floor($count++ / $col_size) + 1;
@@ -157,7 +162,6 @@ function kalatheme_get_bootstrap_panel_classes() {
     'panel-success',
     'panel-info',
     'panel-warning',
-    'panel-danger'
+    'panel-danger',
   );
 }
-

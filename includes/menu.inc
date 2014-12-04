@@ -11,20 +11,6 @@ function kalatheme_menu_tree($variables) {
   return '<ul class="menu clearfix">' . $variables['tree'] . '</ul>';
 }
 
-
-/**
- * Implements theme_menu_link().
- * Aria rolese added to the link
- */
-function kalatheme_menu_link($variables) {
-  $element = $variables['element'];
-  $sub_menu = '';
-  if ($element['#below']) {
-    $sub_menu = drupal_render($element['#below']);
-  }
-  $output = l($element['#title'], $element['#href'], $element['#localized_options']);
-  return '<li' . drupal_attributes($element['#attributes']) . '>' . $output . $sub_menu . "</li>\n";
-}
 /**
  * Implements theme_links__system_main_menu.
  */
@@ -68,18 +54,18 @@ function kalatheme_links__system_main_menu($variables) {
     foreach ($links as $key => $link) {
       $class = array('mid-' . $key);
 
-      //Pass in the original link options to include attributes and fragments
+      // Pass in the original link options to include attributes and fragments.
       $link['#options'] = $link['#original_link']['options'];
-      //Makes sure the attributes are set
-      if( empty($link['#options']['attributes']) ){
+      // Makes sure the attributes are set.
+      if (empty($link['#options']['attributes'])) {
         $link['#options']['attributes'] = array();
       }
 
-      // Merge in the attributes
+      // Merge in the attributes.
       $link['#options']['attributes'] += $link['#attributes'];
 
-      // Merge in more attributes if they are set
-      if ( isset($link['#localized_options']['attributes'])){
+      // Merge in more attributes if they are set.
+      if (isset($link['#localized_options']['attributes'])) {
         $link['#options']['attributes'] += $link['#localized_options']['attributes'];
       }
 
@@ -94,7 +80,7 @@ function kalatheme_links__system_main_menu($variables) {
         && (empty($link['#language']) || $link['#language']->language == $language_url->language)) {
         $class[] = 'active';
       }
-      // Check for, and honor active states set by context menu reactions
+      // Check for, and honor active states set by context menu reactions.
       if (module_exists('context')) {
         $contexts = context_active_contexts();
         foreach ($contexts as $context) {
@@ -115,7 +101,7 @@ function kalatheme_links__system_main_menu($variables) {
       $output .= '<li' . drupal_attributes(array('class' => $class)) . '>';
 
       if (isset($link['#href'])) {
-        // Pass in $link with the path and the options set to the l() function
+        // Pass in $link with the path and the options set to the l() function.
         $output .= l($link['#title'], $link['#href'], $link['#options']);
       }
       elseif (!empty($link['#title'])) {
@@ -134,15 +120,16 @@ function kalatheme_links__system_main_menu($variables) {
       // If link has child items, print a toggle and dropdown menu.
       if (!empty($link['#below'])) {
         $dropdown_id = 'main-menu-dropdown-' . $i;
-        $output .= '<a href="#" class="dropdown-toggle dropdown-toggle-kt" data-toggle="dropdown" id="' . $dropdown_id. '" aria-expanded="false">';
-        //Add in text to be available for AT
-        $output .= '<span class="element-invisible">' . t('Dropdown: ') . $link['#title']. '</span>';
+        $output .= '<a href="#" class="dropdown-toggle dropdown-toggle-kt" data-toggle="dropdown" id="' . $dropdown_id . '" aria-expanded="false">';
+        // Add in text to be available for AT.
+        $output .= '<span class="element-invisible">' . t('Dropdown:');
+        $output .= $link['#title'] . '</span>';
         $output .= '<span class="caret" aria-hidden="true"></span></a>';
         $output .= theme('links__system_main_menu', array(
           'links' => $link['#below'],
           'attributes' => array(
             'class' => array('dropdown-menu', 'dropdown-kt'),
-            'aria-labelledby' => $dropdown_id
+            'aria-labelledby' => $dropdown_id,
           ),
         ));
       }
@@ -234,12 +221,13 @@ function kalatheme_menu_local_actions($variables) {
   $content_attributes = isset($variables['attributes']['content']) ? drupal_attributes($variables['attributes']['content']) : FALSE;
 
   // Render the dropdown.
-  $output = $container_attributes ?  '<li' . $container_attributes . '>' : '<li>';
-  if($toggle_attributes){
+  $output = $container_attributes ? '<li' . $container_attributes . '>' : '<li>';
+  if ($toggle_attributes) {
     $output .= '<a href="#" ' . $toggle_attributes . '>';
     $output .= _kalatheme_font_icon('wrench') . t('Actions');
     $output .= '<span class="caret" aria-hidden="true"></span></a>';
-  }else{
+  }
+  else {
     $output .= '<a href="#">' . t('Actions');
     $output .= '<span class="caret" aria-hidden="true"></span></a>';
   }
