@@ -140,5 +140,3 @@ highly recommended for better performance.
  -  Accessibility
    - Kalatheme strives to provide and improve accessibiltiy for all users. [Please
  report issues](https://github.com/drupalprojects/kalatheme/issues) with the tag `accessibility`.
-
- YAY!
