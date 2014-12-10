@@ -45,7 +45,7 @@ which was rolled against Panels 3.3+41-dev.
 
 Kalatheme is meant to be the base theme that is used to build more powerful
 subthemes. Subthemes inherit almost all of the propoerties of their base theme
-so you can reduce theme clutter and start on the 10th floor. 
+so you can reduce theme clutter and start on the 10th floor.
 
 Luckily, Kalatheme features a pretty neat subtheme generation tool that will
 automatically set everything up for you and allow you to customize your
@@ -140,3 +140,5 @@ highly recommended for better performance.
  -  Accessibility
    - Kalatheme strives to provide and improve accessibiltiy for all users. [Please
  report issues](https://github.com/drupalprojects/kalatheme/issues) with the tag `accessibility`.
+
+ YAY!
