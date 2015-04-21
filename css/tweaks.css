@@ -197,16 +197,19 @@ html.js input.throbbing {
   right: 10px;
 }
 
+/* Same as adding FontAwesome fa-spin but faster */
 input.throbbing + .form-control-feedback {
-  -webkit-animation: fa-spin 2s infinite linear;
-        animation: fa-spin 2s infinite linear;
+  -webkit-animation: throbber-spin 1s infinite linear;
+          animation: throbber-spin 1s infinite linear;
 }
 
+/* Set a darker color when spinning */
 input.throbbing + .form-control-feedback:before {
   color: rgba(95, 95, 95, 1);
 }
 
-@-webkit-keyframes fa-spin {
+/* Copied from FontAwesome fa-spin */
+@-webkit-keyframes throbber-spin {
   0% {
     -webkit-transform: rotate(0deg);
             transform: rotate(0deg);
@@ -217,7 +220,7 @@ input.throbbing + .form-control-feedback:before {
   }
 }
 
-@keyframes fa-spin {
+@keyframes throbber-spin {
   0% {
     -webkit-transform: rotate(0deg);
             transform: rotate(0deg);
