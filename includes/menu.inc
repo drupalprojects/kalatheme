@@ -231,7 +231,7 @@ function kalatheme_menu_local_task($variables) {
     $link['localized_options']['attributes']['role'] = 'button';
     $link['href'] = '#';
     $link_text .= ' <span class="caret" aria-hidden="true"></span>';
-    $output = '<li class="' . implode(' ', $classes) . ' role="presentation">';
+    $output = '<li class="' . implode(' ', $classes) . '" role="presentation">';
     $output .= l($link_text, $link['href'], $link['localized_options']);
     $output .= '<ul class="dropdown-menu" role="menu">';
     $output .= drupal_render($children);
