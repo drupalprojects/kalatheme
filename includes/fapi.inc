@@ -89,8 +89,18 @@ function kalatheme_textfield($variables) {
     'size',
     'maxlength',
   ));
-  _form_set_class($element, array('form-text'));
-
+  
+  $input_classes = array('form-text');
+  
+  // Add a class to indicate if FontAwesome theme setting is turned on. Don't 
+  // worry this doesn't clash with any existing fa- classes.
+  $fa_on = theme_get_setting('fontawesome');
+  if ($fa_on) {
+    $input_classes[] = 'fa-on';
+  }
+  
+  _form_set_class($element, $input_classes);
+  
   $output = '<input' . drupal_attributes($element['#attributes']) . ' />';
 
   $extra = '';
@@ -106,9 +116,11 @@ function kalatheme_textfield($variables) {
     $attributes ['class'][] = 'autocomplete';
     $extra = '<input' . drupal_attributes($attributes) . ' />';
     
-    // Add form control feedback.
-    $icon = '<span class="fa fa-circle-o-notch form-control-feedback" aria-hidden="true"></span>';
-    $output = $output . $icon;
+    // Add form control feedback if FontAwesome is available.
+    if ($fa_on) {
+      $icon = '<span class="fa fa-circle-o-notch form-control-feedback" aria-hidden="true"></span>';
+      $output = $output . $icon;
+    }
   }
 
   return $output . $extra;

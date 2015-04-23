@@ -183,9 +183,14 @@ ul.links {
   list-style: none outside none;
 }
 
+/* Default throbber needs some help for when FontAwsome isn't on. */
+html.js input[autocomplete] {
+  background-repeat: no-repeat;
+}
+
 /* Handle the FontAwesome throbber */
-html.js input[autocomplete],
-html.js input.throbbing {
+html.js input[autocomplete].fa-on,
+html.js input.throbbing.fa-on {
   background: transparent;
 }
 
@@ -230,7 +235,6 @@ input.throbbing + .form-control-feedback:before {
             transform: rotate(359deg);
   }
 }
-
 
 form .form-actions .btn {
   margin-right: 10px;
