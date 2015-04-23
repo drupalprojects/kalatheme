@@ -203,11 +203,13 @@
         </div>
       </div> <!-- /.section, /#top-content -->
 
-      <div id="content">
-        <div class="column <?php $no_panels ? print 'container' : ''; ?>">
-          <?php print render($page['content']); ?>
+      <div class="container">
+        <div id="content">
+          <div class="column <?php $no_panels ? print 'container' : ''; ?>">
+            <?php print render($page['content']); ?>
+          </div>
         </div>
-      </div> <!-- /.section, /#content -->
+      </div><!-- /.section, /#content -->
 
     </main><!-- /#main -->
   </div> <!-- /#main-wrapper -->
