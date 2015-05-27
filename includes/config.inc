@@ -229,7 +229,7 @@ function kalatheme_custom_bootstrap_library_submit(&$form, &$form_state) {
   // Use a custom bootstrap library
   // This can either be a file upload or a URL although the URL option really
   // only works with drush
-  if (isset($_FILES['files']['name']['bootstrap_upload']) || !empty($form_state['values']['bootstrap_upload'])) {
+  if (!empty($_FILES['files']['name']['bootstrap_upload']) || !empty($form_state['values']['bootstrap_upload'])) {
     $projects[] = kalatheme_custom_bootstrap_library_build($form_state['values']);
   }
   // Run the batch operation if we have things to move
