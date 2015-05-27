@@ -462,7 +462,6 @@ function kalatheme_custom_bootstrap_library_integrate($files, $project, $tmp_dir
  * builds a batch and process it for installing modules from the templocation
  */
 function kalatheme_run_install($filetransfer, $projects) {
-	xdebug_break();
   $operations = array();
   foreach ($projects as $project_info) {
     $operations[] = array(
