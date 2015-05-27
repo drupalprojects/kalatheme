@@ -120,12 +120,12 @@ function kalatheme_process_page(&$variables) {
       drupal_add_js($base['scheme'] . ":" . KALATHEME_BOOTSTRAP_JS, 'external');
 
       // Add the CSS
-  	  if ($library == 'default') {
-  	  	$css = $base['scheme'] . ':' . KALATHEME_BOOTSTRAP_CSS;
-  	  }
-  	  else {
-  		  $css = kalatheme_get_bootswatch_theme($library)->cssCdn;
-  	  }
+      if ($library == 'default') {
+        $css = $base['scheme'] . ':' . KALATHEME_BOOTSTRAP_CSS;
+      }
+      else {
+        $css = kalatheme_get_bootswatch_theme($library)->cssCdn;
+      }
       drupal_add_css($css, 'external');
     }
   }
