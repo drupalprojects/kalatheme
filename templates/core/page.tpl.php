@@ -143,10 +143,12 @@
         </div>
       </div> <!-- /.section, /#top-content -->
 
-      <div id="content">
-        <div class="column <?php $no_panels ? print 'container' : ''; ?>">
-          <?php print render($page['content']); ?>
-        </div>
+      <div class="container">
+        <div id="content">
+          <div class="column <?php $no_panels ? print 'container' : ''; ?>">
+            <?php print render($page['content']); ?>
+          </div>
+        </div> <!-- /.container -->
       </div> <!-- /.section, /#content -->
 
     </main><!-- /#main -->
