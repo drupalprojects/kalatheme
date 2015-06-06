@@ -17,7 +17,11 @@ class views_plugin_style_grid_bootstrap extends views_plugin_style {
   function option_definition() {
     $options = parent::option_definition();
 
+    $options['responsive_toggle'] = array('default' => FALSE, 'bool' => TRUE);
+    $options['columns_lg'] = array('default' => '');
     $options['columns'] = array('default' => '4');
+    $options['columns_sm'] = array('default' => '');
+    $options['columns_xs'] = array('default' => '');
     $options['alignment'] = array('default' => 'horizontal');
     $options['fill_single_line'] = array('default' => TRUE, 'bool' => TRUE);
     $options['summary'] = array('default' => '');
