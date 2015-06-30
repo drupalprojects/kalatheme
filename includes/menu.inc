@@ -15,7 +15,7 @@ function kalatheme_menu_tree($variables) {
 
 /**
  * Implements theme_menu_link().
- * Aria rolese added to the link
+ * Aria roles added to the link
  */
 function kalatheme_menu_link($variables) {
   $element = $variables['element'];
@@ -130,7 +130,14 @@ function kalatheme_links__system_main_menu($variables) {
         $link['#options']['html'] = true;
         $link['#title'] .= '<span class="caret" aria-hidden="true"></span>';
       }
-      $output .= '<li' . drupal_attributes(array('class' => $class, 'role' =>'presentation')) . '>';
+      
+      // Merge in attributes for the list item.
+      $item_attributes = array('class' => $class, 'role' =>'presentation');
+      if (isset($link['#localized_options']['item_attributes'])) {
+        $item_attributes += $link['#localized_options']['item_attributes'];
+      }
+      
+      $output .= '<li' . drupal_attributes($item_attributes) . '>';
 
       if (isset($link['#href'])) {
         // Pass in $link with the path and the options set to the l() function
@@ -175,6 +182,94 @@ function kalatheme_links__system_main_menu($variables) {
 
   return $output;
 }
+
+/**
+ * Implements theme_menu_link().
+ * Added list item attributes. Plays nicely with  menu_attributes.module amongst
+ * other things.
+ */
+function kalatheme_links__system_secondary_menu($variables) {
+  $links = $variables['links'];
+  $attributes = $variables['attributes'];
+  $heading = $variables['heading'];
+  global $language_url;
+  $output = '';
+
+  if (count($links) > 0) {
+    // Treat the heading first if it is present to prepend it to the
+    // list of links.
+    if (!empty($heading)) {
+      if (is_string($heading)) {
+        // Prepare the array that will be used when the passed heading
+        // is a string.
+        $heading = array(
+          'text' => $heading,
+          // Set the default level of the heading.
+          'level' => 'h2',
+        );
+      }
+      $output .= '<' . $heading['level'];
+      if (!empty($heading['class'])) {
+        $output .= drupal_attributes(array('class' => $heading['class']));
+      }
+      $output .= '>' . check_plain($heading['text']) . '</' . $heading['level'] . '>';
+    }
+
+    $output .= '<ul' . drupal_attributes($attributes) . '>';
+
+    $num_links = count($links);
+    $i = 1;
+
+    foreach ($links as $key => $link) {
+      $class = array($key);
+
+      // Add first, last and active classes to the list of links to help out themers.
+      if ($i == 1) {
+        $class[] = 'first';
+      }
+      if ($i == $num_links) {
+        $class[] = 'last';
+      }
+      if (isset($link['href']) && ($link['href'] == $_GET['q'] || ($link['href'] == '<front>' && drupal_is_front_page()))
+          && (empty($link['language']) || $link['language']->language == $language_url->language)) {
+        $class[] = 'active';
+      }
+      
+      // Unset any empty attributes.
+      $link['item_attributes'] = array_filter($link['item_attributes']);
+
+      // Merge in some extra attributes for the list item.
+      $extra_item_attributes = array('class' => $class, 'role' =>'presentation');
+      $link['item_attributes'] = array_merge_recursive($link['item_attributes'], $extra_item_attributes) ;
+      
+      $output .= '<li' . drupal_attributes($link['item_attributes']) . '>';
+
+      if (isset($link['href'])) {
+        // Pass in $link as $options, they share the same keys.
+        $output .= l($link['title'], $link['href'], $link);
+      }
+      elseif (!empty($link['title'])) {
+        // Some links are actually not links, but we wrap these in <span> for adding title and class attributes.
+        if (empty($link['html'])) {
+          $link['title'] = check_plain($link['title']);
+        }
+        $span_attributes = '';
+        if (isset($link['attributes'])) {
+          $span_attributes = drupal_attributes($link['attributes']);
+        }
+        $output .= '<span' . $span_attributes . '>' . $link['title'] . '</span>';
+      }
+
+      $i++;
+      $output .= "</li>\n";
+    }
+
+    $output .= '</ul>';
+  }
+
+  return $output;
+}
+
 
 /**
  * Returns HTML for primary and secondary local tasks.
