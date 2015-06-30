@@ -270,7 +270,6 @@ function kalatheme_links__system_secondary_menu($variables) {
   return $output;
 }
 
-
 /**
  * Returns HTML for primary and secondary local tasks.
  *
