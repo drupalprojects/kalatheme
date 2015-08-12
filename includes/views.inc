@@ -44,7 +44,8 @@ function kalatheme_preprocess_views_view_grid(&$variables) {
   $variables['gridsize'] = kalatheme_get_grid_size();
   $responsive_tiers = array('xs', 'sm', 'lg');
   foreach ($responsive_tiers as $tier) {
-    if (!$variables['options']['responsive_toggle']) {
+    $responsive_toggle_off = !isset($variables['options']['responsive_toggle']) || !$variables['options']['responsive_toggle'];
+    if ($responsive_toggle_off) {
       $variables['options']['columns_' . $tier] = 1;
     }
     if ($variables['gridsize'] % $variables['options']['columns_' . $tier] === 0) {
@@ -54,8 +55,8 @@ function kalatheme_preprocess_views_view_grid(&$variables) {
   // This is set using the default grid columns value not columns_tier.
   if ($variables['gridsize'] % $variables['options']['columns'] === 0) {
     $variables['md'] = $variables['gridsize'] / $variables['options']['columns'];
-    // We need to do ths too.
-    if (!$variables['options']['responsive_toggle']) {
+    // We need to do this too.
+    if ($responsive_toggle_off) {
       $variables['lg'] = $variables['gridsize'] / $variables['options']['columns'];
     }
   }
