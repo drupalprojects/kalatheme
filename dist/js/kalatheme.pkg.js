@@ -75,7 +75,7 @@ require('./dropdownExpand.coffee')();
       this.progress.object = progressBar;
       return $(this.element).after(this.progress.element);
     } else if (this.progress.type === "throbber") {
-      iconClasses = Drupal.settings.kalatheme.fontawesome === true ? "fa fa-refresh fa-spin" : "glyphicon glyphicon-refresh glyphicon-spin";
+      iconClasses = (Drupal.settings.kalatheme && Drupal.settings.kalatheme.fontawesome === true) ? "fa fa-refresh fa-spin" : "glyphicon glyphicon-refresh glyphicon-spin";
       markup = "<div class=\"ajax-progress ajax-progress-throbber\">";
       markup += "<span class=\"" + iconClasses + "\" aria-hidden=\"true\"></span><span class=\"sr-only\">Loading</span></div>";
       this.progress.element = $(markup);
