@@ -7,10 +7,10 @@ regions[content] = content
 
 stylesheets[all][] = dist/css/kalatheme.min.css
 
-scripts[] = dist/js/kalatheme.pkg.min.js
+;scripts[] = dist/js/kalatheme.pkg.min.js
 
 ;Uncomment if needed
-;scripts[] = dist/js/kalatheme.pkg.js
+scripts[] = dist/js/kalatheme.pkg.js
 
 features[] = logo
 features[] = name
