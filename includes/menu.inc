@@ -236,7 +236,7 @@ function kalatheme_links__system_secondary_menu($variables) {
       }
       
       // Unset any empty attributes.
-      $link['item_attributes'] = array_filter($link['item_attributes']);
+      $link['item_attributes'] = isset($link['item_attributes']) ? array_filter($link['item_attributes']) : array();
 
       // Merge in some extra attributes for the list item.
       $extra_item_attributes = array('class' => $class, 'role' =>'presentation');
