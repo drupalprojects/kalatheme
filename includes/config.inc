@@ -72,45 +72,6 @@ function kalatheme_bootstrap_library_form() {
 }
 
 /**
- * Form constructor for Bootstrap library selection form
- *
- * @return array
- */
-function kalatheme_backend_check_form() {
-  $form = array();
-
-  if (isset($_SERVER['PANTHEON_ENVIRONMENT'])) {
-    $form['pantheon_check'] = array(
-      '#weight' => -100,
-      '#prefix' => '<div class="alert alert-info">',
-      '#markup' => t("You are on Pantheon. <strong>You need to set the connection mode to SFTP</strong> to allow for custom Bootstrap libraries and subtheme generation!"),
-      '#suffix' => '</div>',
-    );
-  }
-  else {
-    if (kalatheme_backend_check()) {
-      $form['backend_check'] = array(
-        '#weight' => -100,
-        '#prefix' => '<div class="alert alert-success">',
-        '#markup' => t("Your webserver is correctly configured to allow for custom Bootstrap libraries and subtheme generation!"),
-        '#suffix' => '</div>',
-      );
-    }
-    else {
-      $form['backend_check'] = array(
-        '#weight' => -100,
-        '#prefix' => '<div class="alert alert-danger">',
-        '#markup' => t("If you want Kalatheme to be able to use custom Bootstrap libraries or generate subthemes automatically please properly configure your webserver."),
-          // @todo add link to docs here
-        '#suffix' => '</div>',
-      );
-    }
-  }
-
-  return $form;
-}
-
-/**
  * Form constructor for subtheme selection form
  *
  * @return array
