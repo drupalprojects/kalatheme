@@ -338,3 +338,26 @@ ul.panels-ipe-linkbar {
 .features-export-list .checkbox-inline input[type="checkbox"] {
   margin-left: 0px;
 }
+
+/* Bootstrap checkboxes and radios are styled with the assumption that they are 
+  preceeding a label but this isn't always the case e.g. Permissions page, 
+  features page etc */ 
+.form-item.radio input[type="radio"],
+.form-item.radio-inline input[type="radio"],
+.form-item.checkbox input[type="checkbox"],
+.form-item.checkbox-inline input[type="checkbox"],
+.form-item.checkbox label.element-invisible + input[type="checkbox"] {
+  position: static;
+  margin-left: 0;
+}
+
+.form-item.radio label input[type="radio"],
+.form-item.radio-inline label input[type="radio"],
+.form-item.checkbox label + input[type="checkbox"],
+.form-item.checkbox-inline label + input[type="checkbox"],
+.form-item.checkbox label input[type="checkbox"],
+.form-item.checkbox-inline label input[type="checkbox"] {
+  position: absolute;
+  margin-left: -20px;
+}
+
