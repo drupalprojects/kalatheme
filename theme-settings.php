@@ -82,7 +82,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#type' => 'checkbox',
     '#title' => t('Use responsive toggling.'),
     '#default_value' => theme_get_setting('responsive_toggle'),
-    '#description' => t('Check here if you want the user to be able to set the device visbility of each panels pane and region.'),
+    '#description' => t('Check here if you want the user to be able to set the device visibility of each panels pane and region.'),
   );
 
   // Panels styles style plugin settings.
