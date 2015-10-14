@@ -145,7 +145,7 @@ function kalatheme_views_mini_pager($vars) {
       'items' => $items,
       'title' => NULL,
       'type' => 'ul',
-      'attributes' => array('class' => array('pagination')),
+      'attributes' => array('class' => array('pager', 'pagination')),
     ));
   }
 }
