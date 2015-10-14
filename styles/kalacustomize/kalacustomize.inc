@@ -7,7 +7,7 @@
 
 $plugin = array(
   'title' => t('Kalacustomize'),
-  'description' => t('Customize elements, visbility and classes with Twitter Bootstrap'),
+  'description' => t('Customize elements, visibility and classes with Twitter Bootstrap'),
   'render region' => 'kalatheme_kalacustomize_render_region',
   'render pane' => 'kalatheme_kalacustomize_render_pane',
   'settings form' => 'kalatheme_kalacustomize_pane_settings_form',
