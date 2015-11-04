@@ -120,7 +120,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
     '#field_has_data' => FALSE,
     '#field' => $field,
     '#field_type' => $field['type'],
-    '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.'),
+    '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.') . '</p>',
   );
 
   // Prepare the form with kalatheme things
