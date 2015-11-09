@@ -22,13 +22,14 @@ function kalatheme_bootstrap_library_form() {
     '#collapsible' => FALSE,
     '#collapsed' => FALSE,
   );
+  $l_options = array('attributes' => array('target' => '_blank'));
   $form['bootstrap']['bootstrap_library'] = array(
     '#type' => 'select',
     '#title' => t('Select a Bootstrap library.'),
     '#description' => t('Select a Bootstrap library to use with your subtheme. Visit !bootswatch for more info. Select "custom" to upload a third party Bootstrap library such as one from !wrapbootstrap or built using Bootstrap\'s !bootcustom.', array(
-      '!bootswatch' => l('Bootswatch', 'http://bootswatch.com/'),
-      '!wrapbootstrap' => l('Wrapbootstrap', 'http://wrapbootstrap.com/'),
-      '!bootcustom' => l('Customization Utility', 'http://getbootstrap.com/customize/'),
+      '!bootswatch' => l('Bootswatch', 'http://bootswatch.com/', $l_options),
+      '!wrapbootstrap' => l('Wrapbootstrap', 'http://wrapbootstrap.com/', $l_options),
+      '!bootcustom' => l('Customization Utility', 'http://getbootstrap.com/customize/', $l_options),
     )),
     '#ajax' => array(
       'callback' => 'kalatheme_ajax_bootstrap_preview_submit',
