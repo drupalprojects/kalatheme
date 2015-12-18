@@ -6,7 +6,7 @@
  */
 
 // Constants
-define('KALATHEME_BOOTSWATCH_API', 'http://api.bootswatch.com/3/');
+define('KALATHEME_BOOTSWATCH_API', 'https://bootswatch.com/api/3.json');
 
 // Use Libraries intregration if applicable
 if (kalatheme_use_libraries()) {
