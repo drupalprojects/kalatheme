@@ -234,6 +234,6 @@ function kalatheme_preprocess_node(&$variables) {
 function kalatheme_preprocess_block(&$variables) {
   // In the header region visually hide block titles.
   if ($variables['block']->region == 'header') {
-    $variables['title_attributes_array']['class'][] = 'element-invisible';
+    $variables['title_attributes_array']['class'][] = 'sr-only';
   }
 }
