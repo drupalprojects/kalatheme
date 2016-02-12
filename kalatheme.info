@@ -32,10 +32,3 @@ settings[build_subtheme] = 0
 settings[fontawesome] = 1
 
 plugins[panels][styles] = styles
-
-; Information added by Drupal.org packaging script on 2014-05-10
-version = "7.x-3.0-rc3"
-core = "7.x"
-project = "kalatheme"
-datestamp = "1399740528"
-
