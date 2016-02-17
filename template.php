@@ -155,12 +155,6 @@ function kalatheme_process_page(&$variables) {
     $variables['action_links'] = FALSE;
   }
 
-  // Get the entire main menu tree.
-  $main_menu_tree = array();
-  $main_menu_tree = menu_tree_all_data('main-menu', NULL, 2);
-  // Add the rendered output to the $main_menu_expanded variable.
-  $variables['main_menu_expanded'] = menu_tree_output($main_menu_tree);
-
   // Always print the site name and slogan, but if they are toggled off, we'll
   // just hide them visually.
   $variables['hide_site_name']   = theme_get_setting('toggle_name') ? FALSE : TRUE;
@@ -195,6 +189,62 @@ function kalatheme_process_page(&$variables) {
 
   // Check if we're to always print the page title, even on panelized pages.
   $variables['always_show_page_title'] = theme_get_setting('always_show_page_title') ? TRUE : FALSE;
+}
+
+/**
+ * Override or insert variables into the page template at a later stage compared
+ * to template_process_page()
+ *
+ * Implements template_preprocess_page().
+ */
+function kalatheme_preprocess_page(&$variables) {
+  // Get the entire main menu tree.
+  $main_menu_tree = array();
+  $main_menu_tree = menu_tree_all_data('main-menu', NULL, 2);
+  // Add the rendered output to the $main_menu_expanded variable.
+  $main_menu_expanded = menu_tree_output($main_menu_tree);
+
+  // Prepare the primary_nav
+  $pri_attributes = array(
+    'class' => array(
+      'nav',
+      'navbar-nav',
+      'links',
+      'clearfix',
+    ),
+  );
+  if (!$variables['main_menu']) {
+    $pri_attributes['class'][] = 'element-invisible';
+  }
+  $variables['primary_nav'] = array(
+    '#theme' => 'links__system_main_menu',
+    '#links' => $main_menu_expanded,
+    '#attributes' => $pri_attributes,
+    '#heading' => array(
+      'text' => t('Main menu'),
+      'level' => 'h2',
+      'class' => array('element-invisible'),
+    ),
+  );
+
+  // Prepare the secondary_nav
+  $sec_attributes = array(
+    'id' => 'secondary-menu-links',
+    'class' => array('nav', 'navbar-nav', 'secondary-links'),
+  );
+  if (!$variables['secondary_menu']) {
+    $sec_attributes['class'][] = 'element-invisible';
+  }
+  $variables['secondary_nav'] = array(
+    '#theme' => 'links__system_secondary_menu',
+    '#links' => $variables['secondary_menu'],
+    '#attributes' => $sec_attributes,
+    '#heading' => array(
+      'text' => t('Secondary menu'),
+      'level' => 'h2',
+      'class' => array('element-invisible'),
+    ),
+  );
 }
 
 /**
