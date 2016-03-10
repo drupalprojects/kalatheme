@@ -23,23 +23,23 @@
 <body class="<?php print $classes; ?>" <?php print $attributes;?>>
 
   <div id="skip-link">
-    <a href="#main-content" class="element-focusable element-invisible"><?php print t('Skip to main content'); ?></a>
+    <a href="#main-content" class="element-focusable sr-only"><?php print t('Skip to main content'); ?></a>
   </div>
 
   <div id="page-wrapper"><div id="page">
 
     <div id="header"><div class="section clearfix">
       <?php if ($site_name || $site_slogan): ?>
-        <div id="name-and-slogan"<?php ($hide_site_name && $hide_site_slogan) ? print ' class="element-invisible"' : ''; ?>>
+        <div id="name-and-slogan"<?php ($hide_site_name && $hide_site_slogan) ? print ' class="sr-only"' : ''; ?>>
           <?php if ($site_name): ?>
-            <div id="site-name"<?php $hide_site_name ? print ' class="element-invisible"' : ''; ?>>
+            <div id="site-name"<?php $hide_site_name ? print ' class="sr-only"' : ''; ?>>
               <strong>
                 <a href="<?php print $front_page; ?>" title="<?php print t('Home'); ?>" rel="home"><span><?php print $site_name; ?></span></a>
               </strong>
             </div>
           <?php endif; ?>
           <?php if ($site_slogan): ?>
-            <div id="site-slogan"<?php $hide_site_slogan ? print ' class="element-invisible"' : ''; ?>>
+            <div id="site-slogan"<?php $hide_site_slogan ? print ' class="sr-only"' : ''; ?>>
               <?php print $site_slogan; ?>
             </div>
           <?php endif; ?>

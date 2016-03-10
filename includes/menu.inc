@@ -153,7 +153,7 @@ function kalatheme_links__system_main_menu($variables) {
       if (!empty($link['#below'])) {
         $dropdown_id = 'main-menu-dropdown-' . $i;
         //Add in text to be available for AT
-        $output .= '<span class="element-invisible">Toggle submenu for ' . strip_tags($link['#title']) . '</span></a>';
+        $output .= '<span class="sr-only">Toggle submenu for ' . strip_tags($link['#title']) . '</span></a>';
         $output .= theme('links__system_main_menu', array(
           'links' => $link['#below'],
           'attributes' => array(
@@ -185,7 +185,7 @@ function kalatheme_menu_local_tasks(&$variables) {
   $output = '';
 
   if (!empty($variables['primary'])) {
-    $variables['primary']['#prefix'] = '<h3 class="element-invisible">' . t('Primary tabs') . '</h3>';
+    $variables['primary']['#prefix'] = '<h3 class="sr-only">' . t('Primary tabs') . '</h3>';
     $variables['primary']['#prefix'] = '<ul class="nav nav-pills" role="menu">';
     $variables['primary']['#suffix'] = '</ul>';
     if (!empty($variables['secondary'])) {
@@ -210,7 +210,7 @@ function kalatheme_menu_local_task($variables) {
 
   if (!empty($variables['element']['#active'])) {
     // Add text to indicate active tab for non-visual users.
-    $active = '<span class="element-invisible">' . t('(active tab)') . '</span>';
+    $active = '<span class="sr-only">' . t('(active tab)') . '</span>';
 
     // If the link does not contain HTML already, check_plain() it now.
     // After we set 'html'=TRUE the link will not be sanitized by l().

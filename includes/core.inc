@@ -162,7 +162,7 @@ function kalatheme_status_report($variables) {
   foreach ($requirements as $requirement) {
     if (empty($requirement['#type'])) {
       $severity = $severities[isset($requirement['severity']) ? (int) $requirement['severity'] : 0];
-      $severity['icon'] = '<div title="' . $severity['title'] . '"><span class="element-invisible">' . $severity['title'] . '</span></div>';
+      $severity['icon'] = '<div title="' . $severity['title'] . '"><span class="sr-only">' . $severity['title'] . '</span></div>';
 
       // Output table row(s)
       if (!empty($requirement['description'])) {
@@ -206,7 +206,7 @@ function kalatheme_status_messages($variables) {
     $output .= "  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>\n";
 
     if (!empty($status_heading[$type])) {
-      $output .= '<h3 class="element-invisible">' . $status_heading[$type] . "</h3>\n";
+      $output .= '<h3 class="sr-only">' . $status_heading[$type] . "</h3>\n";
     }
 
     if (count($messages) > 1) {

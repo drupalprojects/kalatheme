@@ -214,7 +214,7 @@ function kalatheme_preprocess_page(&$variables) {
     ),
   );
   if (!$variables['main_menu']) {
-    $pri_attributes['class'][] = 'element-invisible';
+    $pri_attributes['class'][] = 'sr-only';
   }
   $variables['primary_nav'] = array(
     '#theme' => 'links__system_main_menu',
@@ -223,7 +223,7 @@ function kalatheme_preprocess_page(&$variables) {
     '#heading' => array(
       'text' => t('Main menu'),
       'level' => 'h2',
-      'class' => array('element-invisible'),
+      'class' => array('sr-only'),
     ),
   );
 
@@ -233,7 +233,7 @@ function kalatheme_preprocess_page(&$variables) {
     'class' => array('nav', 'navbar-nav', 'secondary-links'),
   );
   if (!$variables['secondary_menu']) {
-    $sec_attributes['class'][] = 'element-invisible';
+    $sec_attributes['class'][] = 'sr-only';
   }
   $variables['secondary_nav'] = array(
     '#theme' => 'links__system_secondary_menu',
@@ -242,7 +242,7 @@ function kalatheme_preprocess_page(&$variables) {
     '#heading' => array(
       'text' => t('Secondary menu'),
       'level' => 'h2',
-      'class' => array('element-invisible'),
+      'class' => array('sr-only'),
     ),
   );
 }
@@ -284,6 +284,6 @@ function kalatheme_preprocess_node(&$variables) {
 function kalatheme_preprocess_block(&$variables) {
   // In the header region visually hide block titles.
   if ($variables['block']->region == 'header') {
-    $variables['title_attributes_array']['class'][] = 'element-invisible';
+    $variables['title_attributes_array']['class'][] = 'sr-only';
   }
 }
