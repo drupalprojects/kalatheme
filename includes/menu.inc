@@ -228,7 +228,10 @@ function kalatheme_links__system_secondary_menu($variables) {
       }
 
       $item_attributes = array('class' => $class);
-      $item_attributes = array_merge_recursive($item_attributes, $link['item_attributes']);
+      if (!empty($link['item_attributes'])) {
+        $item_attributes = array_merge_recursive($item_attributes, $link['item_attributes']);
+      }
+
       $output .= '<li' . drupal_attributes($item_attributes) . '>';
 
       if (isset($link['href'])) {
