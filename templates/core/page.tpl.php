@@ -134,7 +134,7 @@
             ),
           );
           if (!$main_menu) {
-            $pri_attributes['class'][] = 'sr-only';
+            $pri_attributes['class'][] = 'element-invisible';
           }
         ?>
         <?php print theme('links__system_main_menu', array(
@@ -143,7 +143,7 @@
           'heading' => array(
             'text' => t('Main menu'),
             'level' => 'h2',
-            'class' => array('sr-only'),
+            'class' => array('element-invisible'),
           ),
         )); ?>
 
@@ -153,7 +153,7 @@
             'class' => array('nav', 'navbar-nav', 'secondary-links'),
           );
           if (!$secondary_menu) {
-            $sec_attributes['class'][] = 'sr-only';
+            $sec_attributes['class'][] = 'element-invisible';
           }
         ?>
 
@@ -163,7 +163,7 @@
           'heading' => array(
             'text' => t('Secondary menu'),
             'level' => 'h2',
-            'class' => array('sr-only'),
+            'class' => array('element-invisible'),
           ),
         )); ?>
       </nav>
