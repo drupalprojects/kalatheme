@@ -38,11 +38,12 @@
  * Navigation:
  * - $main_menu (array): An array containing the Main menu links for the
  *   site, if they have been configured.
- * - $main_menu_expanded (array): An array containing 2 depths of the Main
- *   menu links
- *   for the site, if they have been configured.
+ * - $primary_nav (array): A render array for the primary navigation that uses
+ *   the main_menu
  * - $secondary_menu (array): An array containing the Secondary menu links for
  *   the site, if they have been configured.
+ * - $secondary_nav (array): A render array for the secondary navigation that
+ *   uses the secondary_menu
  * - $breadcrumb: The breadcrumb trail for the current page.
  *
  * Page content (in order of occurrence in the default page.tpl.php):
@@ -124,48 +125,8 @@
       </div><!-- /.navbar-header -->
 
       <nav class="collapse navbar-collapse <?php if (!$main_menu && !$secondary_menu) { print 'element-invisible'; } ?>" role="navigation">
-        <?php
-          $pri_attributes = array(
-            'class' => array(
-              'nav',
-              'navbar-nav',
-              'links',
-              'clearfix',
-            ),
-          );
-          if (!$main_menu) {
-            $pri_attributes['class'][] = 'element-invisible';
-          }
-        ?>
-        <?php print theme('links__system_main_menu', array(
-          'links' => $main_menu_expanded,
-          'attributes' => $pri_attributes,
-          'heading' => array(
-            'text' => t('Main menu'),
-            'level' => 'h2',
-            'class' => array('element-invisible'),
-          ),
-        )); ?>
-
-        <?php
-          $sec_attributes = array(
-            'id' => 'secondary-menu-links',
-            'class' => array('nav', 'navbar-nav', 'secondary-links'),
-          );
-          if (!$secondary_menu) {
-            $sec_attributes['class'][] = 'element-invisible';
-          }
-        ?>
-
-        <?php print theme('links__system_secondary_menu', array(
-          'links' => $secondary_menu,
-          'attributes' => $sec_attributes,
-          'heading' => array(
-            'text' => t('Secondary menu'),
-            'level' => 'h2',
-            'class' => array('element-invisible'),
-          ),
-        )); ?>
+        <?php print render($primary_nav); ?>
+        <?php print render($secondary_nav); ?>
       </nav>
 
     </div>
