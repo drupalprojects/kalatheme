@@ -205,9 +205,10 @@ function kalatheme_process_page(&$variables) {
  * Implements template_preprocess_page().
  */
 function kalatheme_preprocess_page(&$variables) {
-  // Get the entire main menu tree.
-  $main_menu_tree = array();
-  $main_menu_tree = menu_tree_all_data('main-menu', NULL, 2);
+  // Get the menu tree for the menu that is set as 'Source for the Main links'.
+  $main_links_menu = variable_get('menu_main_links_source', 'main-menu');
+  $main_menu_tree = menu_tree_all_data($main_links_menu, NULL, 2);
+  
   // Add the rendered output to the $main_menu_expanded variable.
   $main_menu_expanded = menu_tree_output($main_menu_tree);
 
