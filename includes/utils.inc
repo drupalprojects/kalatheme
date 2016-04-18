@@ -331,15 +331,12 @@ function kalatheme_backend_check() {
 /**
  * Check whether Kalatheme has write access to libraries and modules directories.
  *
+ * This check indicates whether we have enough access to be able to use 
+ * authorize.php and the updater.
+ *
  * @return boolean
  */
 function kalatheme_has_write_access() {
-  return is_writable(drupal_realpath(kalatheme_lib_dir())) && is_writable(drupal_realpath('sites/all/modules'));
-}
-
-/**
- * Return the libraries dir to check
- */
-function kalatheme_lib_dir() {
-  return is_dir('sites/all/libraries') ? 'sites/all/libraries' : 'sites/all';
+  $libs_or_sites_all = is_dir('sites/all/libraries') ? 'sites/all/libraries' : 'sites/all';
+  return is_writable(drupal_realpath($libs_or_sites_all)) && is_writable(drupal_realpath('sites/all/modules'));
 }
