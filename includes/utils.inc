@@ -326,29 +326,31 @@ function kalatheme_backend_check() {
       if (isset($check['messages'][$bool])) {
         $message = $check['messages'][$bool];
         $status = $check['bool'] ? 'status' : 'error';
-        
+
         // Make sure we don't set a message twice.
         $already_set = FALSE;
-        foreach ($messages[$status] as $existing) {
-          if ($existing == $message) {
-            $already_set = TRUE;
-            break;
+        if (isset($messages[$status])) {
+          foreach ($messages[$status] as $existing) {
+            if ($existing == $message) {
+              $already_set = TRUE;
+              break;
+            }
           }
         }
-        
+
         if (!$already_set) {
           drupal_set_message($message, $status);
         }
       }
     }
   }
-  
+
   return ($info['install_permissions'] && $info['updates_module']);
 }
 
 /**
  * Store and return info about backend features that we might need for Kalatheme
- * to work properly. 
+ * to work properly.
  */
 function kalatheme_backend_check_info(){
   $info = array(
@@ -384,7 +386,7 @@ function kalatheme_backend_check_info(){
       ),
     ),
   );
-  
+
   // This one is a conglomerate of some of the others.
   $info['install_permissions'] = array(
       'bool' => $info['ftp']['bool'] || $info['ssh']['bool'] || $info['write_access']['bool'],
@@ -393,43 +395,9 @@ function kalatheme_backend_check_info(){
         FALSE => t('Kalatheme need FTP, SSH or write access in order to generate a subtheme.'),
       ),
   );
-  
+
   return $info;
 }
-
-
-if (isset($_SERVER['PANTHEON_ENVIRONMENT'])) {
-    $form['pantheon_check'] = array(
-      '#weight' => -100,
-      '#prefix' => '<div class="alert alert-info">',
-      '#markup' => t("You are on Pantheon. <strong>You need to set the connection mode to SFTP</strong> to allow for custom Bootstrap libraries and subtheme generation!"),
-      '#suffix' => '</div>',
-    );
-  }
-  else {
-    if (kalatheme_backend_check()) {
-      $form['backend_check'] = array(
-        '#weight' => -100,
-        '#prefix' => '<div class="alert alert-success">',
-        '#markup' => t("Your webserver is correctly configured to allow for custom Bootstrap libraries and subtheme generation!"),
-        '#suffix' => '</div>',
-      );
-    }
-    else {
-      $form['backend_check'] = array(
-        '#weight' => -100,
-        '#prefix' => '<div class="alert alert-danger">',
-        '#markup' => t("If you want Kalatheme to be able to use custom Bootstrap libraries or generate subthemes automatically please properly configure your webserver."),
-          // @todo add link to docs here
-        '#suffix' => '</div>',
-      );
-    }
-  }
-
-
-
-
-
 
 /**
  * Check whether Kalatheme has write access to libraries and modules directories.
