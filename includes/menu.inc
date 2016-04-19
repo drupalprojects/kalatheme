@@ -130,11 +130,25 @@ function kalatheme_links__system_main_menu($variables) {
         $link['#options']['html'] = true;
         $link['#title'] .= '<span class="caret" aria-hidden="true"></span>';
       }
-      
+
       // Merge in attributes for the list item.
       $item_attributes = array('class' => $class, 'role' =>'presentation');
       if (isset($link['#localized_options']['item_attributes'])) {
-        $item_attributes += $link['#localized_options']['item_attributes'];
+        foreach ($link['#localized_options']['item_attributes'] as $attr => $val) {
+          if (!empty($val)) {
+            // Ensure we're not setting empty attributes which is bad for A11Y.
+            if ($attr == 'class') {
+              // Note this is assuming class is the only multi-value attribute 
+              // that will come through here. It's probably not fool-proof but 
+              // it is pragmatic.
+              $val = explode(' ', $val);
+              $item_attributes[$attr] += $val;
+            }
+            else {
+              $item_attributes[$attr] = $val;
+            }
+          }
+        }
       }
       
       $output .= '<li' . drupal_attributes($item_attributes) . '>';
