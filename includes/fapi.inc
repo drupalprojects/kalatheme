@@ -89,18 +89,18 @@ function kalatheme_textfield($variables) {
     'size',
     'maxlength',
   ));
-  
+
   $input_classes = array('form-text');
-  
-  // Add a class to indicate if FontAwesome theme setting is turned on. Don't 
+
+  // Add a class to indicate if FontAwesome theme setting is turned on. Don't
   // worry this doesn't clash with any existing fa- classes.
   $fa_on = theme_get_setting('fontawesome');
   if ($fa_on) {
     $input_classes[] = 'fa-on';
   }
-  
+
   _form_set_class($element, $input_classes);
-  
+
   $output = '<input' . drupal_attributes($element['#attributes']) . ' />';
 
   $extra = '';
@@ -115,7 +115,7 @@ function kalatheme_textfield($variables) {
     $attributes ['disabled'] = 'disabled';
     $attributes ['class'][] = 'autocomplete';
     $extra = '<input' . drupal_attributes($attributes) . ' />';
-    
+
     // Add form control feedback if FontAwesome is available.
     if ($fa_on) {
       $icon = '<span class="fa fa-circle-o-notch form-control-feedback" aria-hidden="true"></span>';
@@ -172,7 +172,7 @@ function kalatheme_form_element($variables) {
     }
     else {
       $attributes['class'][] = 'form-group';
-      
+
       //
       if (isset($element['#autocomplete_path']) && drupal_valid_path($element['#autocomplete_path'])) {
         $attributes['class'][] = 'has-feedback';
@@ -247,7 +247,7 @@ function kalatheme_form_element_label($variables) {
     $attributes['class'] = 'option';
   }
   elseif ($element['#title_display'] == 'invisible' || $element['#title_display'] == 'permissions') {
-    $attributes['class'] = 'element-invisible';
+    $attributes['class'] = 'sr-only';
   }
 
   if (!empty($element['#id'])) {

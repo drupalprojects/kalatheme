@@ -100,9 +100,19 @@ tr.even, tr.odd {
   padding: inherit;
 }
 
-table th.checkbox input, table td.checkbox input {
-  float: none !important;
-  margin-left: 0 !important;
+
+table th .checkbox input[type="checkbox"], 
+table td .checkbox input[type="checkbox"],
+table th .radio input[type="radio"], 
+table td .radio input[type="radio"] {
+  position: static;
+  float: none;
+  margin-left: 0;
+}
+
+#modalContent .view-settings-wrapper .form-radio {
+	margin-top: 7px;
+	margin-left: -18px;
 }
 
 /* Fieldsets */
@@ -317,24 +327,4 @@ div#admin-toolbar.vertical {
 /* Make IPE region buttons inline */
 ul.panels-ipe-linkbar {
   list-style: none outside none;
-}
-
-/* Cramped features display */
-#features-export-form .features-export-parent {
-  margin: 0 0 20px;
-}
-
-.features-export-component .checkbox label {
-  margin-left: 10px;
-}
-
-.features-export-component .radio input[type="radio"],
-.features-export-component .radio-inline input[type="radio"],
-.features-export-component .checkbox input[type="checkbox"],
-.features-export-component .checkbox-inline input[type="checkbox"],
-.features-export-list .radio input[type="radio"],
-.features-export-list .radio-inline input[type="radio"],
-.features-export-list .checkbox input[type="checkbox"],
-.features-export-list .checkbox-inline input[type="checkbox"] {
-  margin-left: 0px;
 }

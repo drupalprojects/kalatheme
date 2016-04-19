@@ -22,13 +22,14 @@ function kalatheme_bootstrap_library_form() {
     '#collapsible' => FALSE,
     '#collapsed' => FALSE,
   );
+  $l_options = array('attributes' => array('target' => '_blank'));
   $form['bootstrap']['bootstrap_library'] = array(
     '#type' => 'select',
     '#title' => t('Select a Bootstrap library.'),
-    '#description' => t('Select a Bootstrap library to use with your subtheme. Visit <a href="@bootswatch">Bootswatch</a> for more info. Select "custom" to upload a third party Bootstrap library such as one from <a href="@wrapbootstrap">Wrapbootstrap</a> or built using Bootstrap\'s <a href="@bootcustom">Customization Utility</a>.', array(
-      '@bootswatch' => 'http://bootswatch.com/',
-      '@wrapbootstrap' => 'http://wrapbootstrap.com/',
-      '@bootcustom' => 'http://getbootstrap.com/customize/',
+    '#description' => t('Select a Bootstrap library to use with your subtheme. Visit !bootswatch for more info. Select "custom" to upload a third party Bootstrap library such as one from !wrapbootstrap or built using Bootstrap\'s !bootcustom. Note that at present you can\'t add a Bootswatch or custom library to an existing theme, you need to build a new subtheme by checking the \'Build and enable a custom subtheme\' checkbox below.', array(
+      '!bootswatch' => l('Bootswatch', 'http://bootswatch.com/', $l_options),
+      '!wrapbootstrap' => l('Wrapbootstrap', 'http://wrapbootstrap.com/', $l_options),
+      '!bootcustom' => l('Customization Utility', 'http://getbootstrap.com/customize/', $l_options),
     )),
     '#ajax' => array(
       'callback' => 'kalatheme_ajax_bootstrap_preview_submit',
