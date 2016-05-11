@@ -138,8 +138,8 @@ function kalatheme_links__system_main_menu($variables) {
           if (!empty($val)) {
             // Ensure we're not setting empty attributes which is bad for A11Y.
             if ($attr == 'class') {
-              // Note this is assuming class is the only multi-value attribute 
-              // that will come through here. It's probably not fool-proof but 
+              // Note this is assuming class is the only multi-value attribute
+              // that will come through here. It's probably not fool-proof but
               // it is pragmatic.
               $val = explode(' ', $val);
               $item_attributes[$attr] += $val;
@@ -150,7 +150,7 @@ function kalatheme_links__system_main_menu($variables) {
           }
         }
       }
-      
+
       $output .= '<li' . drupal_attributes($item_attributes) . '>';
 
       if (isset($link['#href'])) {
@@ -198,9 +198,10 @@ function kalatheme_links__system_main_menu($variables) {
 }
 
 /**
- * Implements theme_menu_link().
+ * Implements theme_links__system_secondary_menu().
  * Added list item attributes. Plays nicely with  menu_attributes.module amongst
  * other things.
+ * Implements theme_links__system_secondary_menu.
  */
 function kalatheme_links__system_secondary_menu($variables) {
   $links = $variables['links'];
@@ -237,7 +238,8 @@ function kalatheme_links__system_secondary_menu($variables) {
     foreach ($links as $key => $link) {
       $class = array($key);
 
-      // Add first, last and active classes to the list of links to help out themers.
+      // Add first, last and active classes to the list of links to help out
+      // themers.
       if ($i == 1) {
         $class[] = 'first';
       }
@@ -245,25 +247,24 @@ function kalatheme_links__system_secondary_menu($variables) {
         $class[] = 'last';
       }
       if (isset($link['href']) && ($link['href'] == $_GET['q'] || ($link['href'] == '<front>' && drupal_is_front_page()))
-          && (empty($link['language']) || $link['language']->language == $language_url->language)) {
+         && (empty($link['language']) || $link['language']->language == $language_url->language)) {
         $class[] = 'active';
       }
-      
-      // Unset any empty attributes.
-      $link['item_attributes'] = isset($link['item_attributes']) ? array_filter($link['item_attributes']) : array();
 
-      // Merge in some extra attributes for the list item.
-      $extra_item_attributes = array('class' => $class, 'role' =>'presentation');
-      $link['item_attributes'] = array_merge_recursive($link['item_attributes'], $extra_item_attributes) ;
-      
-      $output .= '<li' . drupal_attributes($link['item_attributes']) . '>';
+      $item_attributes = array('class' => $class, 'role' =>'presentation');
+      if (!empty($link['item_attributes'])) {
+        $item_attributes = array_merge_recursive($item_attributes, $link['item_attributes']);
+      }
+
+      $output .= '<li' . drupal_attributes($item_attributes) . '>';
 
       if (isset($link['href'])) {
         // Pass in $link as $options, they share the same keys.
         $output .= l($link['title'], $link['href'], $link);
       }
       elseif (!empty($link['title'])) {
-        // Some links are actually not links, but we wrap these in <span> for adding title and class attributes.
+        // Some links are actually not links, but we wrap these in <span> for
+        // adding title and class attributes.
         if (empty($link['html'])) {
           $link['title'] = check_plain($link['title']);
         }
