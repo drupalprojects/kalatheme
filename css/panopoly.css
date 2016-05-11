@@ -367,11 +367,9 @@ body.ctools-modal-open {
   text-align: right;
 }
 
-#modal-content .form-item-view-settings {
-  display: block;
-}
-
-#modal-content .form-item-exposed-use-pager {
+#modal-content .form-item-view-settings,
+#modal-content .form-item-exposed-use-pager,
+#modal-content #views-exposed-pane div.form-item {
   display: block;
 }
 
