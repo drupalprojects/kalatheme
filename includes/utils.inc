@@ -320,12 +320,13 @@ function kalatheme_backend_check() {
   $messages = drupal_get_messages(NULL, FALSE);
 
   // Output messages for each of the checks.
-  foreach ($info as $check) {
+  foreach ($info as $type => $check) {
     if (isset($check['messages']) && !empty($check['messages'])) {
       $bool = $check['bool'];
       if (isset($check['messages'][$bool])) {
         $message = $check['messages'][$bool];
         $status = $check['bool'] ? 'status' : 'error';
+        $status = $type == 'pantheon' ? 'warning' : $status;
 
         // Make sure we don't set a message twice.
         $already_set = FALSE;
@@ -345,7 +346,7 @@ function kalatheme_backend_check() {
     }
   }
 
-  return ($info['install_permissions'] && $info['updates_module']);
+  return ($info['install_permissions']['bool'] && $info['updates_module']['bool']);
 }
 
 /**
@@ -387,14 +388,17 @@ function kalatheme_backend_check_info(){
     ),
   );
 
-  // This one is a conglomerate of some of the others.
-  $info['install_permissions'] = array(
-      'bool' => $info['ftp']['bool'] || $info['ssh']['bool'] || $info['write_access']['bool'],
-      'messages' => array(
-        TRUE => t('Your webserver is correctly configured to allow for custom Bootstrap libraries and subtheme generation!'),
-        FALSE => t('Kalatheme need FTP, SSH or write access in order to generate a subtheme.'),
-      ),
-  );
+  $info['install_permissions'] = array('bool' => TRUE);
+  if (!isset($_SERVER['PANTHEON_ENVIRONMENT'])) {
+    // This one is a conglomerate of some of the others.
+    $info['install_permissions'] = array(
+        'bool' => $info['ftp']['bool'] || $info['ssh']['bool'] || $info['write_access']['bool'],
+        'messages' => array(
+          TRUE => t('Your webserver is correctly configured to allow for custom Bootstrap libraries and subtheme generation!'),
+          FALSE => t('Kalatheme needs FTP, SSH or write access in order to generate a subtheme.'),
+        ),
+    );
+  }
 
   return $info;
 }
@@ -402,7 +406,7 @@ function kalatheme_backend_check_info(){
 /**
  * Check whether Kalatheme has write access to libraries and modules directories.
  *
- * This check indicates whether we have enough access to be able to use 
+ * This check indicates whether we have enough access to be able to use
  * authorize.php and the updater.
  *
  * @return boolean
