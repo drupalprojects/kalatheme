@@ -272,10 +272,18 @@ function kalatheme_get_bootswatch_themes() {
         $bootswatches = $data->themes;
       }
     }
+    else {
+      $error_msg = t('@error. If this persists please post an issue on the !link.', array('@error' => $bootswatch_info->error, '!link' => l('Kalatheme Github issue queue', 'https://github.com/drupalprojects/kalatheme/issues')));
+      drupal_set_message($error_msg, 'error');
+
+      // Make sure $bootswatches is an array to prevent further errors.
+      $bootswatches = array();
+    }
   }
   else {
     $bootswatches = $bootswatches->data;
   }
+
   // For the default option
   // add to the front
   $default = new stdClass();
