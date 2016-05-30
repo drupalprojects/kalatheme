@@ -6,7 +6,8 @@
  */
 
 // Constants
-define('KALATHEME_BOOTSWATCH_API', 'https://bootswatch.com/api/3.json');
+define('KALATHEME_BOOTSWATCH_API_URI', 'bootswatch.com/api/3.json');
+define('KALATHEME_BOOTSWATCH_API', 'https://' . KALATHEME_BOOTSWATCH_API_URI);
 
 // Use Libraries intregration if applicable
 if (kalatheme_use_libraries()) {
@@ -147,9 +148,9 @@ function kalatheme_prepare_config_form(&$form) {
   // Provide needed ajax wrappers
   $form['actions']['submit']['#prefix'] = "<div id='kala-submit-change-title'>";
   $form['actions']['submit']['#suffix'] = "</div>";
-  
+
   // Add custom submit and validate functions to handle custom bootstrap
-  // libraries. Note that because of https://www.drupal.org/node/943212 it's 
+  // libraries. Note that because of https://www.drupal.org/node/943212 it's
   // possible for this function to end up getting called before #submit exists.
   if (isset($form['#submit'])) {
     if (!in_array('kalatheme_custom_bootstrap_library_submit', $form['#submit'])) {
@@ -167,11 +168,11 @@ function kalatheme_prepare_config_form(&$form) {
   else {
     $form['#submit'][] = 'kalatheme_custom_bootstrap_library_submit';
   }
-  
+
   if (!isset($form['#validate']) || isset($form['#validate']) && !in_array('kalatheme_custom_bootstrap_library_validate', $form['#validate'])) {
     $form['#validate'][] = 'kalatheme_custom_bootstrap_library_validate';
   }
-  
+
   return $form;
 }
 
@@ -265,6 +266,10 @@ function kalatheme_get_bootswatch_themes() {
   // Grab Bootstwatches from API or Drupal Cache
   if (($bootswatches = cache_get('kalatheme:bootswatches', 'cache')) === FALSE) {
     $bootswatch_info = drupal_http_request(KALATHEME_BOOTSWATCH_API);
+    if (!$bootswatch_info || $bootswatch_info->code != 200) {
+      // Sometimes https fails so lets try http instead.
+      $bootswatch_info = drupal_http_request('http://' . KALATHEME_BOOTSWATCH_API_URI);
+    }
     if ($bootswatch_info && $bootswatch_info->code == 200) {
       $data = json_decode($bootswatch_info->data);
       if (isset($data->themes) && is_array($data->themes)) {
@@ -348,7 +353,7 @@ function kalatheme_backend_check() {
 /**
  * Check whether Kalatheme has write access to libraries and modules directories.
  *
- * This check indicates whether we have enough access to be able to use 
+ * This check indicates whether we have enough access to be able to use
  * authorize.php and the updater.
  *
  * @return boolean
