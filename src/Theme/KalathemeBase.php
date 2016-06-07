@@ -44,16 +44,16 @@ abstract class KalathemeBase {
    * @see hook_library_info_build
    */
   public function libraryBuild() {
-    $libraries = [];
+    $libraries[$this->getFramework()] = [];
 
     // If CDN do things n stuff.
     if (theme_get_setting('kalatheme_' . $this->getFramework() . '_enable_cdn')) {
-      // Load the theme settings for the CDN.
+      // Load the theme settings from the CDN.
       $js = theme_get_setting('kalatheme_' . $this->getFramework() . '_cdn_js');
       $css = theme_get_setting('kalatheme_' . $this->getFramework() . '_cdn_css');
 
       // Add them to the library.
-      $libraries[$this->getFramework()] = [
+      $libraries[$this->getFramework()] += [
         'js' => [
           $js => [
             'type' => 'external',
@@ -67,6 +67,32 @@ abstract class KalathemeBase {
               'minified' => 'true',
             ],
           ],
+        ],
+      ];
+    }
+    // Check for fontawesome.
+    if (theme_get_setting('kalatheme_fontawesome_enable')) {
+      // Load the fontawesome settings from the CDN.
+      $css = theme_get_setting('kalatheme_fontawesome_cdn');
+
+      // Add fontawesome to the library.
+      $libraries[$this->getFramework()]['css']['component'] += [
+        $css => [
+          'type' => 'external',
+          'minified' => 'true',
+        ],
+      ];
+    }
+    // Check for foundation icons.
+    if (theme_get_setting('kalatheme_foundationicon_enable')) {
+      // Load the foundation settings from the CDN.
+      $css = theme_get_setting('kalatheme_foundationicon_cdn');
+
+      // Add foundation to the library.
+      $libraries[$this->getFramework()]['css']['component'] += [
+        $css => [
+          'type' => 'external',
+          'minified' => 'true',
         ],
       ];
     }

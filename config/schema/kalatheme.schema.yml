@@ -12,3 +12,11 @@ kalatheme.settings:
       type: string
     kalatheme_bootstrap_cdn_js:
       type: string
+    kalatheme_fontawesome_enable:
+      type: boolean
+    kalatheme_fontawesome_cdn:
+      type: string
+    kalatheme_foundationicon_enable:
+      type: boolean
+    kalatheme_foundationicon_cdn:
+      type: string

@@ -52,7 +52,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, FormStateInterface $
   // Framework settings detail wrapper.
   $form['framework'] = [
     '#type' => 'details',
-    '#title' => t('Framework Settings'),
+    '#title' => t('Framework Selection'),
     '#group' => 'kalatheme',
     '#weight' => 1,
   ];
@@ -68,25 +68,17 @@ function kalatheme_form_system_theme_settings_alter(&$form, FormStateInterface $
     '#description' => t('Choose the front end framework'),
   ];
 
-  // Framework configuration detail wrapper.
-  $form['framework_config'] = [
+  // Framework library detail wrapper.
+  $form['framework_library'] = [
     '#type' => 'details',
-    '#title' => t('Framework Configuration'),
+    '#title' => t('Framework Library'),
     '#group' => 'kalatheme',
     '#weight' => 2,
   ];
 
-  // Framework Select list that goes into Config.
-  $form['framework_config']['viewport'] = [
-    '#type' => 'textfield',
-    '#title' => t('Viewport'),
-    '#default_value' => theme_get_setting('kalatheme_viewport'),
-    '#description' => t('Change the viewport if the need arises'),
-  ];
-
 
   // Bootstrap CDN Selection.
-  $form['framework_config']['bootstrap_cdn'] = [
+  $form['framework_library']['bootstrap_cdn'] = [
     '#type' => 'fieldset',
     '#title' => t('Bootstrap CDN Settings'),
     '#states' => [
@@ -102,8 +94,8 @@ function kalatheme_form_system_theme_settings_alter(&$form, FormStateInterface $
     <a href="@bs" target="_blank">Get Bootstrap Page</a>', [
     '@bs' => 'http://getbootstrap.com/getting-started/#download-cdn'
   ]);
-
-  $form['framework_config']['bootstrap_cdn']['bootstrap_enable_cdn'] = [
+http://fontawesome.io/icons/
+  $form['framework_library']['bootstrap_cdn']['bootstrap_enable_cdn'] = [
     '#type' => 'checkbox',
     '#title' => t('Enable Bootstap CDN?'),
     '#default_value' => theme_get_setting('kalatheme_bootstrap_enable_cdn'),
@@ -116,7 +108,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, FormStateInterface $
   ];
 
   // Bootstrap CDN CSS URL.
-  $form['framework_config']['bootstrap_cdn']['bootstrap_cdn_css'] = [
+  $form['framework_library']['bootstrap_cdn']['bootstrap_cdn_css'] = [
     '#type' => 'textfield',
     '#title' => t('Bootstrap CDN CSS'),
     '#default_value' => theme_get_setting('kalatheme_bootstrap_cdn_css'),
@@ -130,7 +122,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, FormStateInterface $
   ];
 
   // Bootstrap CDN JS URL.
-  $form['framework_config']['bootstrap_cdn']['bootstrap_cdn_js'] = [
+  $form['framework_library']['bootstrap_cdn']['bootstrap_cdn_js'] = [
     '#type' => 'textfield',
     '#title' => t('Bootstrap CDN JS'),
     '#default_value' => theme_get_setting('kalatheme_bootstrap_cdn_js'),
@@ -139,6 +131,76 @@ function kalatheme_form_system_theme_settings_alter(&$form, FormStateInterface $
       'visible' => [
         'select[name="framework"]' => ['value' => 'bootstrap'],
         'input[name="bootstrap_enable_cdn"]' => ['checked' => TRUE],
+      ],
+    ],
+  ];
+
+  // Framework configuration detail wrapper.
+  $form['framework_config'] = [
+    '#type' => 'details',
+    '#title' => t('Framework Configuration'),
+    '#group' => 'kalatheme',
+    '#weight' => 3,
+  ];
+
+  // Framework Config - View Port Settings.
+  $form['framework_config']['viewport'] = [
+    '#type' => 'textfield',
+    '#title' => t('Viewport'),
+    '#default_value' => theme_get_setting('kalatheme_viewport'),
+    '#description' => t('Change the viewport if the need arises'),
+  ];
+
+  // Framework Config - Icons Libraries.
+  $form['framework_config']['icon'] = [
+    '#type' => 'fieldset',
+    '#title' => t('Additional Font Icon Libraries'),
+  ];
+
+  // Framework Config - Fontawesome.
+  $fadesc = t('<a href="@fa" target="_blank">Font Awesome Icon Info</a>', [
+    '@fa' => 'http://fontawesome.io/icons/'
+  ]);
+  $form['framework_config']['icon']['fontawesome_enable'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Use Font Awesome?'),
+    '#default_value' => theme_get_setting('kalatheme_fontawesome_enable'),
+    '#description' => $fadesc,
+  ];
+
+  // Framework Config - Fontawesome.
+  $form['framework_config']['icon']['fontawesome_cdn'] = [
+    '#type' => 'textfield',
+    '#title' => t('Font Awesome CDN'),
+    '#default_value' => theme_get_setting('kalatheme_fontawesome_cdn'),
+    '#description' => t('You can override this to use a different version if need be'),
+    '#states' => [
+      'visible' => [
+        'input[name="fontawesome_enable"]' => ['checked' => TRUE],
+      ],
+    ],
+  ];
+
+  // Framework Config - Foundation Icon.
+  $foundesc = t('<a href="@fo" target="_blank">Foundation Icon Fonts Info</a>', [
+    '@fo' => 'http://zurb.com/playground/foundation-icon-fonts-3'
+  ]);
+  $form['framework_config']['icon']['foundationicon_enable'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Use Foundation Icon Fonts?'),
+    '#default_value' => theme_get_setting('kalatheme_foundationicon_enable'),
+    '#description' => $foundesc,
+  ];
+
+  // Framework Config - Foundation Icon.
+  $form['framework_config']['icon']['foundationicon_cdn'] = [
+    '#type' => 'textfield',
+    '#title' => t('Foundation Icon Fonts CDN'),
+    '#default_value' => theme_get_setting('kalatheme_foundationicon_cdn'),
+    '#description' => t('You can override this to use a different version if need be'),
+    '#states' => [
+      'visible' => [
+        'input[name="foundationicon_enable"]' => ['checked' => TRUE],
       ],
     ],
   ];
