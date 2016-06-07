@@ -1,0 +1,14 @@
+kalatheme.settings:
+  type: theme_settings
+  label: 'Kalatheme settings'
+  mapping:
+    kalatheme_framework:
+      type: string
+    kalatheme_viewport:
+      type: string
+    kalatheme_bootstrap_enable_cdn:
+      type: boolean
+    kalatheme_bootstrap_cdn_css:
+      type: string
+    kalatheme_bootstrap_cdn_js:
+      type: string

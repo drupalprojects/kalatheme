@@ -1,0 +1,5 @@
+kalatheme_framework: 'bootstrap'
+kalatheme_viewport: 'width=device-width, initial-scale=1.0'
+kalatheme_bootstrap_enable_cdn: false
+kalatheme_bootstrap_cdn_css: '//cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css'
+kalatheme_bootstrap_cdn_js: '//cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js'

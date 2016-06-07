@@ -1,0 +1,6 @@
+theme:
+  css:
+    theme:
+      css/tweaks.css: {}
+  dependencies:
+    - core/jquery
