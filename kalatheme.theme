@@ -6,6 +6,7 @@
  */
 
 use Drupal\kalatheme\Utility\KalathemeFrameworkGetter;
+use Drupal\block\Entity\Block;
 
 /**
  * Implements hook_library_info_build().
@@ -35,6 +36,35 @@ function kalatheme_page_attachments_alter(array &$page) {
  */
 function kalatheme_preprocess_page(array &$variables) {
   KalathemeFrameworkGetter::initialize()->preprocessPage($variables);
+
+  // Get active theme
+  $theme = explode("/", \Drupal::theme()->getActiveTheme()->getPath());
+  $theme = end($theme);
+
+  // Load up the site branding block into a var.
+  // So we don't need to use a region or the block in content.
+  $brand = Block::load($theme . '_branding');
+  $variables['branding'] = \Drupal::entityManager()
+  ->getViewBuilder('block')
+  ->view($brand);
+
+  // Load up help block, same as above.
+  $help = Block::load($theme . '_help');
+  $variables['help'] = \Drupal::entityManager()
+  ->getViewBuilder('block')
+  ->view($help);
+
+  // Load up main menu, same as above.
+  $main_menu = Block::load($theme . '_main_menu');
+  $variables['main_menu'] = \Drupal::entityManager()
+  ->getViewBuilder('block')
+  ->view($main_menu);
+
+  // Load up user / account menu, same as above.
+  $acct_menu = Block::load($theme . '_account_menu');
+  $variables['acct_menu'] = \Drupal::entityManager()
+  ->getViewBuilder('block')
+  ->view($main_menu);
 }
 
 /**
