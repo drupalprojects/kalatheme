@@ -27,15 +27,4 @@ interface KalathemePagePreprocessInterface {
    * @see template_preprocess_html
    */
   public function preprocessHtml(array &$variables);
-
-  /**
-   * Return altered variables for the page template.
-   *
-   * @return array
-   *   An associative array of the same format as returned by
-   *   template_preprocess_page().
-   *
-   * @see template_preprocess_page
-   */
-  public function preprocessPage(array &$variables);
 }

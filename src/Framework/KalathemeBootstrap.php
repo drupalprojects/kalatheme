@@ -24,11 +24,6 @@ class KalathemeBootstrap extends KalathemeBase implements KalathemePagePreproces
   /**
    * {@inheritdoc}
    */
-  public function preprocessPage(array &$variables) {}
-
-  /**
-   * {@inheritdoc}
-   */
   public function preprocessMenuMain(array &$variables) {}
 
   /**

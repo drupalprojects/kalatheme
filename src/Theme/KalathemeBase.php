@@ -7,6 +7,7 @@
 
 namespace Drupal\kalatheme\Theme;
 
+use Drupal\block\Entity\Block;
 
 /**
  * Defines base class to be used with all Framework Classes.
@@ -98,6 +99,36 @@ abstract class KalathemeBase {
     }
     // Send this all back to win.
     return $libraries;
+  }
+
+  /**
+   * Return altered variables for the page template.
+   *
+   * @return array
+   *   An associative array of the same format as returned by
+   *   template_preprocess_page().
+   *
+   * @see template_preprocess_page
+   */
+  public function preprocessPage(array &$variables) {
+    // Get active theme
+    $theme = \Drupal::theme()->getActiveTheme()->getName();
+
+    // Load all the blocks to parse through.
+    $blocks = Block::loadMultiple();
+    // We are adding all the blocks so we can.
+    // achieve for the One content region setup.
+    foreach ($blocks as $key => $block) {
+      $check = strstr($key, '_', TRUE);
+      // Check is the block name matches the theme.
+      if ($check == $theme) {
+        $name = ltrim(strstr($key, '_'), '_');
+        // Load the block as a var to use in the page.html.twig.
+        $variables[$name] = \Drupal::entityManager()
+        ->getViewBuilder('block')
+        ->view($block);
+      }
+    }
   }
 
   /**
