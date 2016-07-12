@@ -101,9 +101,9 @@ tr.even, tr.odd {
 }
 
 
-table th .checkbox input[type="checkbox"], 
+table th .checkbox input[type="checkbox"],
 table td .checkbox input[type="checkbox"],
-table th .radio input[type="radio"], 
+table th .radio input[type="radio"],
 table td .radio input[type="radio"] {
   position: static;
   float: none;

@@ -2,133 +2,228 @@
 
 /**
  * @file
- * Theme setting callbacks for kalatheme.
+ * Kalatheme's theme settings form page.
+ *
+ * @todo  I tried to do this a OOP way, but I ran into problems.
+ * with the form_state values and calling am alter on a form.
+ * I have the code here:
+ * https://gist.github.com/labboy0276/e6ed2204f3ea68ca67836bb198ce2a85
+ *
+ * Another thought is to alter the route of the theme settings route:
+ * https://www.drupal.org/node/2187643
+ * Then build this form?
+ *
+ * Another thought would be to render this form as a service and use
+ * DI as per: https://www.drupal.org/node/2203931
+ *
+ * Not sure, been there may be a better way then this or not, who knows.
  */
+
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
+ *
+ * Theme settings configuration.
  */
-function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
-  // If a non-kalatheme theme is the admin theme we need to
-  // load this stuff again to get grid size info and not throw
-  // errors
-  require_once dirname(__FILE__) . '/includes/config.inc';
-  // Don't add custom form elements to Kalatheme's settings page if Kalatheme
-  // isn't the default theme.
-  // Also, don't add custom form elements to a subtheme's settings page if it
-  // isn't the default theme.
-  $default_theme = variable_get('theme_default', $GLOBALS['theme_key']);
-  $theme_name_matches = array();
-  preg_match('/^admin\/appearance\/settings\/([^\/]+)\/?$/', request_path(), $theme_name_matches);
-  if (isset($theme_name_matches[1]) && $default_theme != $theme_name_matches[1]) {
-    return;
+function kalatheme_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
+  // This adds the veritcal tab to put the global settings in it.
+  $form['old'] = [
+    '#type' => 'vertical_tabs',
+    '#prefix' => '<h2>' . t('Global Settings') . '</h2>',
+    '#weight' => 10,
+  ];
+
+  // This adds the old group to the settings.
+  foreach ($form as $key => &$value) {
+    if (isset($value['#type']) && $value['#type'] == 'details') {
+      $value['#group'] = 'old';
+    }
   }
 
-  // Make default options collapsible
-  $fieldsets = array('theme_settings', 'logo', 'favicon');
-  foreach ($fieldsets as $fieldset) {
-    $form[$fieldset]['#collapsible'] = TRUE;
-    $form[$fieldset]['#collapsed'] = TRUE;
-  }
+  // New Kaltheme Settings.
+  // Vertical Group Settings.
+  $form['kalatheme'] = [
+    '#type' => 'vertical_tabs',
+    '#prefix' => '<h2>' . t('Kalatheme Settings') . '</h2>',
+    '#weight' => -10,
+  ];
 
-  // Subtheme backend checks
-  $form = array_merge($form, kalatheme_backend_check_form());
+  // Framework settings detail wrapper.
+  $form['framework'] = [
+    '#type' => 'details',
+    '#title' => t('Framework Selection'),
+    '#group' => 'kalatheme',
+    '#weight' => 1,
+  ];
 
-  // Kalatheme settings
-  $form = array_merge($form, kalatheme_bootstrap_library_form());
-  $form['bootstrap']['bootstrap_library']['#default_value'] = theme_get_setting('bootstrap_library');
-  $form['bootstrap']['fontawesome']['#default_value'] = theme_get_setting('fontawesome');
-  $form['bootstrap']['bootstrap_upload']['#default_value'] = theme_get_setting('bootstrap_upload');
-  // Subtheme settings
-  $form = array_merge($form, kalatheme_subtheme_form());
+  // Framework Select list that goes into Config.
+  $form['framework']['framework'] = [
+    '#type' => 'select',
+    '#title' => t('Choose Framework'),
+    '#default_value' => theme_get_setting('kalatheme_framework'),
+    '#options' => [
+      'bootstrap' => 'Bootstrap',
+    ],
+    '#description' => t('Choose the front end framework'),
+  ];
 
-  // Need to pass this through to use list_allowed_values_string without errors.
-  $field = array('type' => 'list_text');
-  // Page title setting (only print on non-panel pages or always print).
-  $form['page_title'] = array(
+  // Framework library detail wrapper.
+  $form['framework_library'] = [
+    '#type' => 'details',
+    '#title' => t('Framework Library'),
+    '#group' => 'kalatheme',
+    '#weight' => 2,
+  ];
+
+
+  // Bootstrap CDN Selection.
+  $form['framework_library']['bootstrap_cdn'] = [
     '#type' => 'fieldset',
-    '#title' => t('Page Title'),
-    '#weight' => 41,
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-    '#description' => t('By default, Kalatheme only displays page titles on pages that aren\'t rendered through Panels or Panelizer.
-      If toggled on, this setting will cause Kalatheme to always print the page title, regardless of how the page is rendered.'),
-  );
-  $form['page_title']['always_show_page_title'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Always show page title.'),
-    '#default_value' => theme_get_setting('always_show_page_title'),
-    '#description' => t('Check here to always print page titles on panels pages.'),
-  );
+    '#title' => t('Bootstrap CDN Settings'),
+    '#states' => [
+      'visible' => [
+        'select[name="framework_selection"]' => ['value' => 'bootstrap'],
+      ],
+    ],
+  ];
 
-  // Responsive style plugin settings.
-  $form['responsive'] = array(
+  // Bootstrap CDN Selection Enable that goes into Config.
+  // The Outbound link for the decription as well.
+  $bsdesc = t('The CDN is obtained from:
+    <a href="@bs" target="_blank">Get Bootstrap Page</a>', [
+    '@bs' => 'http://getbootstrap.com/getting-started/#download-cdn'
+  ]);
+http://fontawesome.io/icons/
+  $form['framework_library']['bootstrap_cdn']['bootstrap_enable_cdn'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Enable Bootstap CDN?'),
+    '#default_value' => theme_get_setting('kalatheme_bootstrap_enable_cdn'),
+    '#description' => $bsdesc,
+    '#states' => [
+      'visible' => [
+        'select[name="framework"]' => ['value' => 'bootstrap'],
+      ],
+    ],
+  ];
+
+  // Bootstrap CDN CSS URL.
+  $form['framework_library']['bootstrap_cdn']['bootstrap_cdn_css'] = [
+    '#type' => 'textfield',
+    '#title' => t('Bootstrap CDN CSS'),
+    '#default_value' => theme_get_setting('kalatheme_bootstrap_cdn_css'),
+    '#description' => t('You can override this CSS to use a different version if need be'),
+    '#states' => [
+      'visible' => [
+        'select[name="framework"]' => ['value' => 'bootstrap'],
+        'input[name="bootstrap_enable_cdn"]' => ['checked' => TRUE],
+      ],
+    ],
+  ];
+
+  // Bootstrap CDN JS URL.
+  $form['framework_library']['bootstrap_cdn']['bootstrap_cdn_js'] = [
+    '#type' => 'textfield',
+    '#title' => t('Bootstrap CDN JS'),
+    '#default_value' => theme_get_setting('kalatheme_bootstrap_cdn_js'),
+    '#description' => t('You can override this JS to use a different version if need be'),
+    '#states' => [
+      'visible' => [
+        'select[name="framework"]' => ['value' => 'bootstrap'],
+        'input[name="bootstrap_enable_cdn"]' => ['checked' => TRUE],
+      ],
+    ],
+  ];
+
+  // Framework configuration detail wrapper.
+  $form['framework_config'] = [
+    '#type' => 'details',
+    '#title' => t('Framework Configuration'),
+    '#group' => 'kalatheme',
+    '#weight' => 3,
+  ];
+
+  // Framework Config - View Port Settings.
+  $form['framework_config']['viewport'] = [
+    '#type' => 'textfield',
+    '#title' => t('Viewport'),
+    '#default_value' => theme_get_setting('kalatheme_viewport'),
+    '#description' => t('Change the viewport if the need arises'),
+  ];
+
+  // Framework Config - Icons Libraries.
+  $form['framework_config']['icon'] = [
     '#type' => 'fieldset',
-    '#title' => t('Responsive'),
-    '#weight' => 42,
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-  );
-  $form['responsive']['grid_size'] = array(
-    '#type' => 'markup',
-    '#prefix' => '<p>',
-    '#markup' => t('Kalatheme automatically detects the grid size of your Bootstrap library. That said, please remember that sometimes there are just bad grid size choices. For those occassions
-      Kalatheme will try to handle your bad desicions as best as possible. <strong>Your grid is currently: @grid_size columns.</strong>', array(
-      '@grid_size' => kalatheme_get_grid_size(),
-    )),
-    '#suffix' => '</p>',
-  );
-  $form['responsive']['responsive_toggle'] = array(
+    '#title' => t('Additional Font Icon Libraries'),
+  ];
+
+  // Framework Config - Fontawesome.
+  $fadesc = t('<a href="@fa" target="_blank">Font Awesome Icon Info</a>', [
+    '@fa' => 'http://fontawesome.io/icons/'
+  ]);
+  $form['framework_config']['icon']['fontawesome_enable'] = [
     '#type' => 'checkbox',
-    '#title' => t('Use responsive toggling.'),
-    '#default_value' => theme_get_setting('responsive_toggle'),
-    '#description' => t('Check here if you want the user to be able to set the device visibility of each panels pane and region.'),
-  );
+    '#title' => t('Use Font Awesome?'),
+    '#default_value' => theme_get_setting('kalatheme_fontawesome_enable'),
+    '#description' => $fadesc,
+  ];
 
-  // Panels styles style plugin settings.
-  $form['pane_styles'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Pane and Region Styles'),
-    '#weight' => 43,
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-    '#description' => t('If toggled on, the kalacustomize style plugin will allow the user to set a class for panels panes and regions.'),
-  );
-  $form['pane_styles']['pane_styles_toggle'] = array(
+  // Framework Config - Fontawesome.
+  $form['framework_config']['icon']['fontawesome_cdn'] = [
+    '#type' => 'textfield',
+    '#title' => t('Font Awesome CDN'),
+    '#default_value' => theme_get_setting('kalatheme_fontawesome_cdn'),
+    '#description' => t('You can override this to use a different version if need be'),
+    '#states' => [
+      'visible' => [
+        'input[name="fontawesome_enable"]' => ['checked' => TRUE],
+      ],
+    ],
+  ];
+
+  // Framework Config - Foundation Icon.
+  $foundesc = t('<a href="@fo" target="_blank">Foundation Icon Fonts Info</a>', [
+    '@fo' => 'http://zurb.com/playground/foundation-icon-fonts-3'
+  ]);
+  $form['framework_config']['icon']['foundationicon_enable'] = [
     '#type' => 'checkbox',
-    '#title' => t('Use panels styles.'),
-    '#default_value' => theme_get_setting('pane_styles_toggle'),
-    '#description' => t('Check here if you want to set the class for each panels pane or region.'),
-  );
-  $form['pane_styles']['pane_styles_settings'] = array(
-    '#type' => 'container',
-    '#states' => array(
-      'invisible' => array(
-        ':input[name="pane_styles_toggle"]' => array('checked' => FALSE),
-      ),
-    ),
-  );
+    '#title' => t('Use Foundation Icon Fonts?'),
+    '#default_value' => theme_get_setting('kalatheme_foundationicon_enable'),
+    '#description' => $foundesc,
+  ];
 
-  // Set defaults here instead of info because it is an array.
-  $pane_classes = (theme_get_setting('pane_classes')) ? list_allowed_values_string(theme_get_setting('pane_classes')) : '';
-  $form['pane_styles']['pane_styles_settings']['pane_classes'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Allowed values list'),
-    '#default_value' => $pane_classes,
-    '#rows' => 10,
-    '#element_validate' => array('list_allowed_values_setting_validate'),
-    '#field_has_data' => FALSE,
-    '#field' => $field,
-    '#field_type' => $field['type'],
-    '#description' => '<p>' . t('The possible values this field can contain. Enter one value per line, in the format key|label.') . '</p>',
-  );
+  // Framework Config - Foundation Icon.
+  $form['framework_config']['icon']['foundationicon_cdn'] = [
+    '#type' => 'textfield',
+    '#title' => t('Foundation Icon Fonts CDN'),
+    '#default_value' => theme_get_setting('kalatheme_foundationicon_cdn'),
+    '#description' => t('You can override this to use a different version if need be'),
+    '#states' => [
+      'visible' => [
+        'input[name="foundationicon_enable"]' => ['checked' => TRUE],
+      ],
+    ],
+  ];
 
-  // Prepare the form with kalatheme things
-  $form = kalatheme_prepare_config_form($form);
 
-  // Make sure the callback function and other fun things are actually loaded
-  $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/includes/config.inc';
-  $form_state['build_info']['files'][] = drupal_get_path('theme', 'kalatheme') . '/kalatheme.updater.inc';
+  $form['#submit'][] = '_kalatheme_system_theme_settings_submit';
 }
 
+/**
+ * Submit Handler for kalatheme_form_system_theme_settings_alter().
+ */
+function _kalatheme_system_theme_settings_submit(&$form, FormStateInterface $form_state) {
+  // Clean up the values
+  $form_state->cleanValues();
 
+  // Load up Config Factory for Kalatheme, don;t add any if not there.
+  $config = \Drupal::configFactory()->getEditable('kalatheme.settings', FALSE);
+
+  // Go through each value and set it to appropriate value.
+  foreach ($form_state->getValues() as $name => $value) {
+    $config->set('kalatheme_' . $name, $value);
+  }
+
+  // Save this up.
+  $config->save();
+}
