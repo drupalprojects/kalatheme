@@ -130,14 +130,15 @@ function kalatheme_kalacustomize_pane_settings_form($style_settings) {
  *   Array with prefix and suffix keys.
  */
 function _kalatheme_get_styles($styles = array()) {
-  if (isset($styles)) {
+  if (isset($styles) && is_array($styles)) {
     foreach ($styles as $key => $class) {
       if ($class === 0) {
         unset($styles[$key]);
       }
     }
-   return $styles ? ' ' . implode(' ', $styles) : '';
+    return $styles ? ' ' . implode(' ', $styles) : '';
   }
+  return '';
 }
 
 /**
