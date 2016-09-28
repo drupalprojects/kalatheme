@@ -162,7 +162,11 @@ function kalatheme_process_page(&$variables) {
 
   // Add local actions as the last item in the local tasks.
   if (!empty($variables['action_links'])) {
-    $variables['tabs']['#primary'][]['#markup'] = theme('menu_local_actions', array('menu_actions' => $variables['action_links'], 'attributes' => $dropdown_attributes));
+    $variables['tabs']['#primary'][] = array(
+      '#theme' => 'menu_local_actions',
+      '#menu_actions' => $variables['action_links'],
+      '#attributes' => $dropdown_attributes,
+    );
     $variables['action_links'] = FALSE;
   }
 
@@ -212,7 +216,7 @@ function kalatheme_preprocess_page(&$variables) {
   // Get the menu tree for the menu that is set as 'Source for the Main links'.
   $main_links_menu = variable_get('menu_main_links_source', 'main-menu');
   $main_menu_tree = menu_tree_all_data($main_links_menu, NULL, 2);
-  
+
   // Add the rendered output to the $main_menu_expanded variable.
   $main_menu_expanded = menu_tree_output($main_menu_tree);
 
