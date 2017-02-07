@@ -68,7 +68,8 @@ function _kalatheme_load_dependencies() {
     }
   }
   if (!$panels) {
-    drupal_set_message(t('Kalatheme requires at least Panels 3.4.'), 'error');
+    // TODO: Only display error messages on system requirements page.
+    //drupal_set_message(t('Kalatheme requires at least Panels 3.4.'), 'error');
   }
 
   // See if we are running at least a 2.x branch of jquery_update
@@ -83,7 +84,8 @@ function _kalatheme_load_dependencies() {
     }
   }
   if (!$jq) {
-    drupal_set_message(t('Kalatheme requires a 2.x version of JQuery Update that uses at least JQuery 1.7'), 'error');
+    // TODO: Only display error messages on system requirements page.
+    //drupal_set_message(t('Kalatheme requires a 2.x version of JQuery Update that uses at least JQuery 1.7'), 'error');
   }
 
   // Check to see if we need libraries integration
