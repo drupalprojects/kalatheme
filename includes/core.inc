@@ -21,6 +21,13 @@ function kalatheme_table($variables) {
   $sticky = $variables['sticky'];
   $empty = $variables['empty'];
 
+  if (count($header) && $sticky) {
+    drupal_add_js('misc/tableheader.js');
+    // Add 'sticky-enabled' class to the table to identify it for JS.
+    // This is needed to target tables constructed by this function.
+    $attributes['class'][] = 'sticky-enabled';
+  }
+
   $output = '<table' . drupal_attributes($attributes) . ">\n";
 
   if (isset($caption)) {
