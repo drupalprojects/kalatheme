@@ -1,7 +1,13 @@
-# Attention fellow Kalathemers
-Due to changing priorities and workflows here at [Kalamuna](https://www.kalamuna.com) Kalatheme will no longer be developed.
-There will not be a Drupal 8 version of Kalatheme as we have switched to a more
-bespoke approach that utilizes [Paragraphs](https://www.drupal.org/project/paragraphs) and [Kalastatic](https://github.com/kalamuna/kalastatic). We are still developing a base theme called [Kalabase](https://github.com/kalamuna/kalabase) however it will likely remain rather opiniated and not super useful to others.
+Attention fellow Kalathemers
+----------------------------
+
+[Kalamuna](https://www.kalamuna.com) has been developing exciting component-based, prototype-backed workflows over the past 2 years in Drupal 7 and 8 centered around our best-of-breed framework, [Kalastatic](https://github.com/kalamuna/kalastatic).
+
+This front-end model is a significant departure from the Panopoly-driven approach expressed by Kalatheme. To support this initiative in Drupal 8, we are advancing a lightweight base theme, [Kalabase](https://github.com/kalamuna/kalabase).
+
+Kalatheme will continue to be supported and maintained for the Drupal 7 community at large, but we are not advancing an upgrade path to 8 with this project.
+
+
 
 CONTENTS OF THIS FILE
 ---------------------
