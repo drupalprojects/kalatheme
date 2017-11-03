@@ -1,3 +1,13 @@
+Attention fellow Kalathemers
+----------------------------
+
+[Kalamuna](https://www.kalamuna.com) has been developing exciting component-based, prototype-backed workflows over the past 2 years in Drupal 7 and 8 centered around our best-of-breed framework, [Kalastatic](https://github.com/kalamuna/kalastatic).
+
+This front-end model is a significant departure from the Panopoly-driven approach expressed by Kalatheme. To support this initiative in Drupal 8, we are advancing a lightweight base theme, [Kalabase](https://github.com/kalamuna/kalabase).
+
+Kalatheme will continue to be supported and maintained for the Drupal 7 community at large, but we are not advancing an upgrade path to 8 with this project.
+
+
 
 CONTENTS OF THIS FILE
 ---------------------
