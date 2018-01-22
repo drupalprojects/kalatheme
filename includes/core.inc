@@ -633,7 +633,10 @@ function kalatheme_pager($variables) {
     return '<nav class="text-center pagination-wrapper">' . theme('item_list', array(
       'plain' => true,
       'items' => $items,
-      'attributes' => array('class' => array('pager', 'pagination')),
+      'attributes' => array(
+        'class' => array('pager', 'pagination'),
+        'aria-label' => 'pager',
+      ),
     )) . '</nav>';
   }
 }
