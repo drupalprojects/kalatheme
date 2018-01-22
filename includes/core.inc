@@ -630,7 +630,7 @@ function kalatheme_pager($variables) {
         'data' => $li_last,
       );
     }
-    return '<nav role="navigation" class="text-center pagination-wrapper">' . theme('item_list', array(
+    return '<nav class="text-center pagination-wrapper">' . theme('item_list', array(
       'plain' => true,
       'items' => $items,
       'attributes' => array('class' => array('pager', 'pagination')),
