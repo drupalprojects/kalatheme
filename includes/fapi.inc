@@ -283,7 +283,10 @@ function kalatheme_button($variables) {
     $element['#attributes']['class'][] = 'btn-primary';
   }
 
-  return '<input' . drupal_attributes($element['#attributes']) . ' />';;
+  // Allow embedding some markup inside the button element.
+  $output = '<input' . drupal_attributes($element['#attributes']);
+  $output .= isset($element['#markup']) ? '>' . $element['#markup'] . '</input>' : '/>';
+  return $output;
 }
 
 /**
