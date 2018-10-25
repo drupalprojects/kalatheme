@@ -162,6 +162,9 @@ function kalatheme_process_page(&$variables) {
 
   // Add local actions as the last item in the local tasks.
   if (!empty($variables['action_links'])) {
+    if (empty($variables['tabs']['#primary'])) {
+      $variables['tabs']['#primary'] = array();
+    }
     $variables['tabs']['#primary'][] = array(
       '#theme' => 'menu_local_actions',
       '#menu_actions' => $variables['action_links'],
