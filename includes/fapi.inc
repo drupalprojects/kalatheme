@@ -104,7 +104,7 @@ function kalatheme_textfield($variables) {
   $output = '<input' . drupal_attributes($element['#attributes']) . ' />';
 
   $extra = '';
-  if (isset($element['#autocomplete_path']) && drupal_valid_path($element['#autocomplete_path'])) {
+  if (!empty($element['#autocomplete_path']) && drupal_valid_path($element['#autocomplete_path'])) {
     drupal_add_library('system', 'drupal.autocomplete');
     $element ['#attributes']['class'][] = 'form-autocomplete';
 
