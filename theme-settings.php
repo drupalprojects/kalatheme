@@ -32,7 +32,7 @@ function kalatheme_form_system_theme_settings_alter(&$form, &$form_state) {
   }
 
   // Subtheme backend checks
-  $form = array_merge($form, kalatheme_backend_check_form());
+  kalatheme_backend_check();
 
   // Kalatheme settings
   $form = array_merge($form, kalatheme_bootstrap_library_form());
